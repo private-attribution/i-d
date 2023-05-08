@@ -1,10 +1,10 @@
 ---
-title: "Pseudorandom Secret Sharing (PRSS)"
+title: "High Performance Pseudorandom Secret Sharing (PRSS)"
 abbrev: "PRSS"
 category: std
 
 docname: draft-thomson-ppm-prss-latest
-submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
+submissiontype: IETF
 number:
 date:
 consensus: true
@@ -12,6 +12,7 @@ v: 3
 area: "Security"
 workgroup: "Privacy Preserving Measurement"
 keyword:
+ - prng
  - next generation
  - unicorn
  - sparkling distributed ledger
@@ -36,32 +37,597 @@ informative:
 
 --- abstract
 
-TODO Abstract
+Pseudorandom secret sharing (PRSS) enables the generation of a large number of
+shared pseudorandom values from a single shared seed.  This is useful in
+contexts where a large amount of shared randomness is needed, such as
+multi-party computation (MPC).
 
 
 --- middle
 
 # Introduction
 
-TODO Introduction
+A number of protocols benefit from having some means by which protocol entities
+agree on a random value.  This is particularly useful in multi-party computation
+(MPC), such as TBD, where some settings rely on being able to generate large
+amounts of shared randomness.
+
+Pseudorandom secret sharing (PRSS) {{?CDI05=DOI.10.1007/978-3-540-30576-7_19}}
+is a means of non-interactively establishing multiple shared values from a
+single shared secret.  This document describes concrete PRSS protocol that can
+efficiently produce large quantities of shared randomness.
+
+This protocol is parameterized and offers algorithm agility.  This protocol
+combines a chosen key encapsulation method (KEM) and key derivation function
+(KDF) to generate shared secrets.  These shared secrets form the basis of a
+randomness context ({{context}}) in which a chosen lightweight pseudorandom
+function (PRF) is used to generate large amounts of shared randomness.  Each
+randomness context can either be used as a sequential source of randomness
+{{sequential}} or as an indexed source {{indexed}}, depending on need.
+
+
+## Two-Party Protocol
+
+This document describes a PRSS protocol for two parties.  The set of KEMs
+defined only work in a two-party context.  If the goal is to create randomness
+that is shared with more than one entity, group key exchange methods, such as
+MLS {{?MLS=I-D.ietf-mls-protocol}}, could be adapted as a means of key
+agreement, retaining the other elements of this protocol unchanged.
 
 
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
+[participant]: #
+[participants]: #participant
+
+This document uses the term "participant" to refer to entities that execute the
+protocol.
+{: anchor="participant"}
+
+Notation for KEM and KDF functions is taken from {{!HPKE=RFC9180}}.  `e =
+I2OSP(n, i)` and `i = OS2IP(e)` functions are taken from {{!RSA=RFC8017}} and
+describe encoding and decoding non-negative integers to and from a byte string,
+respectively, using network byte order.  `rev()` reverses the order of a
+sequence of bytes; `concat()` concatenates multiple sequences of bytes; `xor()`
+computes the exclusive or of byte strings or integers of the same type;
+`x[a..b]` takes a range of bytes indexed from `a` (inclusive) to `b` (exclusive)
+from `x`.
+
+
+# Overview
+
+A PRSS begins with the establishment of a shared secret.  This protocol uses a
+KEM to establish this value.  This is the only communication that occurs between
+participants; see {{fig-kex}} and {{kex}}.
+
+~~~ aasvg
+   +----------+               +----------+
+   |  Sender  |               | Receiver |
+   +----+-----+               +----+-----+
+        |                          |
+        |<---------- pk -----------+
+        |                          |
+        +---------- enc ---------->|
+        |                          |
+~~~
+{: #fig-kex title="Key Agreement"}
+
+From this shared secret, a KDF is used to generate one or more randomness
+contexts; see {{context}}.  Each randomness context can be used independently to
+produce many random values through the use of a PRF; see {{fig-context}} and
+{{prf}}.
+
+~~~ aasvg
+shared secret
+      |
+      |
+      v
+   Extract()
+      |
+      |
+      |\
+      | `--> Expand(secret, info_0) --> PRF(context_0, 0)
+      |                             --> PRF(context_0, 1)
+      |                             --> PRF(context_0, 2)
+      |                             --> PRF(context_0, 3)
+      |                             --> PRF(context_0, 4)
+      |                             --> PRF(context_0, 5)
+      |                                 ...
+      |\
+      | `--> KDF(secret, info_1) --> PRF(context_1, 0)
+      |\
+      | `--> KDF(secret, info_2) --> PRF(context_2, 0)
+     ...
+~~~
+{: #fig-context title="PRSS Key Schedule"}
+
+This document describes both sequential ({{sequential}}) and indexed
+({{indexed}}) access to randomness contexts, with different sampling methods
+({{sampling}}).
+
+
+# Key Agreement {#kex}
+
+The first stage of the protocol is key agreement.  In this phase, participants
+communicate and establish a shared secret.
+
+Protocol participants are assumed to have a means of authenticating each other.
+A confidential communications channel is not necessary, though the use of TLS
+{{?TLS=RFC8446}} for authentication purposes will also provide confidentiality
+in most cases.
+
+This document uses the system of describing, naming, and identifying KEMs
+defined in {{!HPKE=RFC9180}}.  For use in PRSS, a KEM is first chosen for use.
+KEM identifiers from {{Section 7.1 of !HPKE}} MAY be used for identification or
+negotiation.
+
+Once a KEM is chosen, one participant is assigned as sender role; the other
+participant becomes the receiver.
+
+The receiver commences by generating a KEM key pair as follows:
+
+~~~ pseudocode
+function: sk, pk_bytes = KeyGen(kem)
+
+sk, pk = kem.GenerateKeyPair()
+pk_bytes = kem.SerializePublicKey(pk)
+~~~
+
+The receiver advertises their public key to the sender by transmitting
+`pk_bytes`.  The sender then encapsulates the KEM shared secret as follows:
+
+~~~ pseudocode
+function: ss, enc = Send(kem, pk_bytes)
+
+pk = kem.DeserializePublicKey(pk_bytes)
+ss, enc = kem.Encap(pk)
+~~~
+
+The sender then sends the encapsulated public key, `enc`, to the receiver.  The
+receiver decapsulates this value to obtain the shared secret, `secret`:
+
+~~~ pseudocode
+function: ss = Receive(kem, sk, enc)
+
+ss = kem.Decap(enc, sk)
+~~~
+
+This produces a value, `ss`, that is `Nsecret` bytes in length.
+
+
+# Randomness Contexts {#context}
+
+The single shared secret that is produced by a KEM is not suitable for use as a
+source of randomness.  A key derivation function (KDF) is used to first extract
+randomness from the secret and then to expand it for use in different contexts.
+
+A randomness context is a concept that is defined by protocols that use PRSS.
+Each context is identified by a unique string of bytes.  This string is passed
+to the KDF to produce a shared value that is unique to that context.
+
+This document uses the system of describing, naming, and identifying KEMs
+defined in {{!HPKE=RFC9180}}.  A KDF is first chosen for use.  KDF identifiers
+from {{Section 7.2 of !HPKE}} MAY be used for identification or negotiation.
+
+
+## Entropy Extraction {#extract}
+
+A labelled method of entropy extraction is used by this document to ensure that
+the randomness provided is bound to both the chosen protocol parameters (KEM,
+KDF, and PRF) as well as the values chosen by participants during key agreement.
+
+Each participant constructs a byte sequence by concatenating the following
+sequences of bytes:
+
+1. The ASCII encoding {{!ASCII=RFC0020}} of the string "PRSS-00".
+
+2. The identifier for the chosen KEM from {{Section 7.1 of HPKE}}, encoded in
+   two bytes in network byte order.
+
+3. The identifier for the chosen KDF from {{Section 7.2 of HPKE}}, encoded in
+   two bytes in network byte order.
+
+4. The identifier for the chosen PRF from {{prf}}, encoded in two bytes in
+   network byte order.
+
+5. A two byte encoding of the KEM parameter `Npk` in network byte order.
+
+6. The value of `pk_bytes`, the public key from the receiver.
+
+7. A two byte encoding of the KEM parameter `Nenc` in network byte order.
+
+8. The value of `enc`, the key encapsulation from the sender.
+
+Note:
+
+: Draft versions of this protocol will be identified as "PRSS-00".  The suffix
+  of this string matches the draft revision in which the scheme last changed.
+  The string will not be updated unless the scheme changes in an incompatible
+  fashion.  A final version might either omit this suffix or include a different
+  string.
+
+This byte sequence is provided as the `ikm` input to the `Extract()` function of
+the chosen KDF.  The shared secret, `ss`, is provided as the `salt` input, as
+follows:
+
+~~~ pseudocode
+function: shared = LabeledExtract(kem, kdf, prf, pk_bytes, enc)
+
+label = concat(
+        ascii("PRSS-00"),
+        I2OSP(kem.id, 2),
+        I2OSP(kdf.id, 2),
+        I2OSP(prf.id, 2),
+        I2OSP(kem.Npk, 2),
+        pk_bytes,
+        I2OSP(kem.Nenc, 2),
+        enc,
+      )
+shared = Extract(salt = ss, ikm = label)
+~~~
+
+This process extracts shared entropy that is bound to this protocol and the
+context in which it was created.
+
+
+## Creating Randomness Contexts
+
+A randomness context is identified by a byte sequence.  Applications that use
+PRSS need to describe how each randomness context it uses is identified.
+Participants with the same shared entropy and the same randomness context
+identifier will produce the same randomness.
+
+A randomness context is produced by invoking the `Expand()` function of the
+chosen KDF, passing the shared entropy generated in {{extract}} as the `prk`
+input, the byte sequence that identifies the context as the `info` input, and
+the PRF parameter `Nk` as the `L` input, as follows:
+
+~~~ pseudocode
+function: context = Context.new(kdf, prf, shared, context_id)
+
+context = kdf.Expand(prk = shared, info = context_id, L = prf.Nk)
+~~~
+
+The expanded entropy produced by this process is the only information that is
+essential for a randomness context, though a real instantiation might also track
+which KEM, KDF, and PRF are used.
+
+
+# Pseudorandom Function {#prf}
+
+A PRF is instantiated with a secret key, `k`, and provides a single function
+`PRF(i)`.
+
+This document adapts the PRF interface to take a non-negative integer
+as input and to produce a non-negative integer as output.  Each PRF definition
+MUST define the maximum value of both input (`Mi`) and output (`Mo`) values.
+
+Importantly, the maximum input value SHOULD reflect a limit that is based on
+maintaining security when all input values between 0 (inclusive) and that
+maximum (exclusive) are provided.  This limit might be less than the constraints
+that might be implied by the underlying function.
+
+This assumes the usage modes from {{modes}}; alternative usage modes that pass
+inputs that are randomized or sparse across the entire input space of the
+underlying function are possible, but these have not been specified.
+
+Each PRF is identified by a two-byte identifier, allocated using the process in
+{{iana}}.
+
+
+## Fixed-Key AES PRF {#aes}
+
+This document defines a PRF based on that described in
+{{?GKWWY20=DOI.10.1007/978-3-030-56880-1_28}}.  This provides a PRF that has
+circular correlation robustness.
+
+This uses the AES function, either AES-128 or AES-256, as defined in
+{{!AES=DOI.10.6028/NIST.FIPS.197}}.  Both of these functions accept a 16 byte
+input.  The primary difference in these functions is the size of the key;
+AES-128 uses a 16 byte key, whereas AES-256 uses a 32 byte key.  This
+information is summarized in {{table-prf}}.
+
+| PRF Name | Identifier | Nk | Mi | Mo |
+|:--|--:|--:|--:|--:|--:|
+| PRF_AES_128 | 0x0001 | 16 | 2<sup>64</sup> | 2<sup>128</sup> |
+| PRF_AES_256 | 0x0002 | 32 | 2<sup>64</sup> | 2<sup>128</sup> |
+{: #table-prf title="Pseudorandom Function Summary"}
+
+Both AES PRFs use the same process:
+
+1. The input, `i`, is converted to a 16-byte input using a little-endian
+   encoding.
+
+2. These bytes are then split into two chunks of 8 bytes each, the first 8 bytes
+   containing the least significant 64 bits of the original value; the second 8
+   bytes containing the most significant 64 bits.
+
+3. A 16-byte sequence is formed from the most significant 8 bytes, followed by
+   the XORed values of both chunks.
+
+4. These bytes are then input to the AES function to produce a 16 byte output.
+
+5. The AES input and output are XORed produce a 16 byte sequence, which is
+   interpreted as an integer using little-endian encoding to produce the final
+   randomness.
+
+The process in pseudocode is:
+
+~~~ pseudocode
+function: randomness = Context.PRF(i)
+
+i_bytes = rev(I2OSP(i, 16))
+lo, hi = i_bytes[0..8], i_bytes[8..16]
+input = concat(hi, xor(lo, hi))
+output = aes(k, input)
+randomness = OS2IP(rev(xor(output, input)))
+~~~
+
+This step is performance-sensitive, so little endian encoding is chosen to match
+the endianness of most hardware that is in use.  This PRF uses a fixed key,
+which allows implementations to avoid computing the key expansion on each PRF
+invocation by caching the expanded values.
+
+Note:
+
+: The same PRF core is defined in {{Section 6.2.2 of ?VDAF=I-D.irtf-cfrg-vdaf}}.
+
+
+# Randomness Usage Modes {#modes}
+
+The same PRF input MUST NOT be used more than once.  Using the same input more
+than once will produce identical outputs, which might be exploited by an
+attacker.
+
+This section describes two basic access modes that provide safeguards against
+accidental reuse of inputs:
+
+* A sequential randomness context provides access using a counter; see
+  {{sequential}}.
+
+* An indexed randomness context provides random access; see {{indexed}}.
+
+These usages are incompatible; only one mode of access can be used for a given
+context.
+
+These usage modes are intended to use a contiguous block of input values,
+starting from 0.  The definition of the `Mi` parameter of the PRF function (see
+{{aes}}) assumes this usage model.
+
+
+## Sequential Randomness {#sequential}
+
+In this mode, a counter, starting at zero, is retained with the randomness
+context.  Each use of the randomness context first uses that counter as input to
+the PRF, then increments it.
+
+~~~ pseudocode
+function randomness = Context.next()
+
+randomness = Context.PRF(this.counter)
+this.counter = this.counter + 1
+~~~
+
+This is the simplest access scheme, which is compatible with any sampling
+method; see {{sampling}}.
+
+
+## Indexed Randomness {#indexed}
+
+Indexed randomness ties the use of the randomness context to a sequence of
+application records.  The processing of each record is defined to each use `M`
+invocations of a certain randomness context.  Therefore, for a given record,
+`r`, and usage, `m`, the context is invoked as `context.PRF(r * M + m)`.  The
+simplest indexing scheme sets `M` to 1.
+
+Indexed usage is best suited to applications where individual records might be
+processed concurrently.  Using an index based on application context can ensure
+that the same PRF input is only used once and frees the context from using a
+tracker.
+
+Binary sampling ({{binary}}) or oversampling ({{oversampling}}) are best suited
+for use with indexed modes.  Rejection sampling ({{rejection}}) is likely to be
+unsuitable for an indexed mode because it requires a variable number of PRF
+invocations to successfully complete.
+
+
+# Sampling from the PRF Output {#sampling}
+
+PRSS natively produces a uniformly random value in the range from 0 (inclusive)
+to `Mo` (exclusive).
+
+Many applications of PRSS require the selection of a uniform random value from a
+fixed range of values.
+
+
+## Available Randomness
+
+The total randomness available is limited by the entropy from the chosen KEM,
+KDF, and PRF.  Each KEM is only able to convey a maximum amount of entropy.
+Similarly, each KDF is limited in the amount of entropy it only able to retain.
+Finally, each PRF also has limits that might further reduce the maximum entropy
+available.
+
+Selecting values from a range that is larger than the available entropy will
+reduce effectiveness.  The result being that the selection is not uniformly
+random.  In particular, these methods MUST NOT be used to select from a range
+that has more values than the `Mo` parameter of the chosen PRF.
+
+
+## Binary Sampling {#binary}
+
+If the range of desired values is a whole power of 2, then simple bit operations
+can be used to obtain a value. For a maximum of `2<sup>n</sup>` (exclusive),
+bitwise operations can produce a value of `randomness & ((1 << n) - 1)`.
+
+Binary sampling produces uniformly random values with the only drawback being
+the constraint on its output range.
+
+For small values of `n`, the same PRF invocation could be used to produce
+multiple values, depending on the value of `Mo` for the chosen PRF.
+
+
+## Rejection Sampling {#rejection}
+
+Rejection sampling takes random values until the resulting value is in range.
+
+For values in the range 0 (inclusive) to `m` (exclusive), the value `m` is
+rounded up to the next power of 2; that is, an integer `n` is chosen such that
+`2<sup>n-1</sup> < m < 2<sup>n</sup>`.  Then, binary sampling ({{binary}}) is
+applied repeatedly for this larger range until the resulting value is less than
+`m`.
+
+Rejection sampling provides uniform randomness across the range from 0 to `m`
+without bias.  However, rejection sampling can require an indefinite number of
+PRF invocations to produce a result.  Rejection is more likely - and so the PRF
+invocation requirements are higher - when `m` is closer to `2<sup>n-1</sup>`
+than `2<sup>n</sup>`.  This can make rejection sampling unsuitable for use with
+indexed randomness ({{indexed}}), though it might be used a finite number of
+times before falling back to oversampling, which might reduce the effect of
+oversampling bias.
+
+
+## Oversampling {#oversampling}
+
+For a target range that is much smaller than the range of values produced by the
+PRF, reducing the PRF output modulo the maximum in the range can produce outputs
+with negligible bias.
+
+For example, an application goal might seek to produce values in the prime field
+`p = 2<sup>61</sup> - 1`.  Using the AES PRF, where `Mo` is `2<sup>128</sup>`
+and reducing its output modulo `p` results in a bias that causes the first 64
+values of the field to be chosen with a probability of about `2<sup>-67</sup>`
+more than the remaining values. This degree of bias might be acceptable in some
+applications.
+
+To avoid excessive bias, applications SHOULD NOT use oversampling where the
+output is less than 2<sup>48</sup> times smaller than `Mo`.
+
 
 # Security Considerations
 
-TODO Security
+TODO
+
+* analysis
+* usage limits that aren't just birthday bounds
 
 
-# IANA Considerations
+# IANA Considerations {#iana}
 
-This document has no IANA actions.
+This document establishes a new registry for "PRF Functions", under the grouping
+"PRSS".  This registry operates on a "Expert Review" for provisional
+registrations or the "Specification Required" policy for permanent registrations
+{{!RFC8126}}.  Experts for the registry are advised to reject registrations only
+when the requests are invalid, abusive, or duplicative of existing entries.
+
+New entries for the "PRF Functions" registry MUST include the following
+information:
+
+Name:
+
+: A short mnemonic for the PRF.
+
+Identifier:
+
+: An identifier from the range 0 to 65535 (inclusive).
+
+Nk:
+
+: The number of bytes in the PRF key.
+
+Mi:
+
+: The maximum value of the PRF input.
+
+Mo:
+
+: The maximum value of the PRF output.
+
+Status:
+
+: Either "permanent" or "provisional".
+
+Specification:
+
+: A reference to a specification for the PRF.  This field is optional for
+  provisional registrations.
+
+Last Updated:
+
+: The date of when the registration was last updated.
+
+The name and identifier MUST be unique within this registry.
+
+No special allowance is made for private use or experimentation in this
+registry.  People conducting experiments are encouraged to provisionally
+register a codepoint so that conflicting use of the same identifier can be
+avoided.  New PRFs are encouraged to use an identifier that is selected at
+random.  IANA are advised not to perform allocation for identifiers, but to use
+the identifier that is provided with the registration.
+
+Provisional registrations MAY be removed on request.  Experts can approve
+removal after having first attempted to determine that the value is no longer in
+use and attempting to contact registrants.  Two months notice MUST be provided
+before removing a registration, even when the original registrant requests
+removal.  Any entry that are in standards track RFCs or that has been updated in
+the past 24 months cannot be removed.
+
+A request to update an entry can be made at any time; any request only refreshes
+the "Last Updated" field can be allowed automatically, without consulting the
+assigned experts.
+
+Starting values for the registry are shown in {{table-prf}}; these entries are
+given a "permanent" status and entries reference {{prf}} of this document.
 
 
 --- back
+
+# Alternative Designs
+
+Where a small number of shared secrets is desired, communication can be a good
+substitute for the methods described in this document.  Depending on the
+context, protocol participants can use one of a range of methods to agree on a
+random value.  This might involve the use of the KEM and KDF method described in
+{{kex}}, a commit-then-reveal protocol, or one of many alternative protocols.
+
+TLS exporters {{Section 7.5 of ?TLS=RFC8446}} are an existing example of
+pseudorandom secret sharing.  TLS exporters are suitable for small numbers of
+secrets if a TLS connection is available for use, but TLS exporters are an not
+efficient means of generating large amounts of randomness.
+
+In some applications, a TLS exporter might be used in place of the KEM to
+produce a shared secret; alternatively, the randomness context identifier might
+be provided as context to a TLS exporter so that a randomness context might be
+produced directly.
+
+
+# Application to 2-of-3 Replicated Secret Sharing
+
+This section describes how PRSS might be used to produce replicated shares for
+use with replicated secret sharing MPC protocols that use additive or XOR secret
+sharing.  {{?CDI05}} describes how to use PRSS for protocols that use polynomial
+shares.
+
+The simplest replicated secret sharing involves three participants that are
+arranged logically in a ring.  Each participant receives two of the three shares
+of values.  In this scheme, each participant has one share in common with the
+participant to its left and right respectively.
+
+Executing PRSS in this setting requires use of the protocol in a pairwise
+fashion; each participant executes the protocol once with the participant to its
+left and once with the participant to its right.  As long as participants agree
+on parameters - which randomness context is used ({{context}}), which mode is
+used ({{modes}}), which index (if using an indexed mode; {{indexed}}), and the
+sampling method ({{sampling}}) - this produces replicated shares of a random
+value that is not known to any single participant.
+
+{{?CDI05}} also describes how shares of a known, specific value might be
+produced using the same scheme, but this is more trivially accomplished in this
+setting by setting a pre-arranged share value to the desired value and all
+others to zero.
+
 
 # Acknowledgments
 {:numbered="false"}
