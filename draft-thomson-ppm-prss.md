@@ -45,9 +45,9 @@ venue:
 
 author:
  -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+    fullname: Martin Thomson
+    organization: Mozilla
+    email: mt@lowentropy.net
 
 normative:
 
