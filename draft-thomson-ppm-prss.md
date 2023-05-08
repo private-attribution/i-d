@@ -19,11 +19,11 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
-category: info
+title: "Pseudorandom Secret Sharing (PRSS)"
+abbrev: "PRSS"
+category: std
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-thomson-ppm-prss-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
