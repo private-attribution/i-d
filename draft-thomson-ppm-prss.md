@@ -459,7 +459,7 @@ that has more values than the `Mo` parameter of the chosen PRF.
 ## Binary Sampling {#binary}
 
 If the range of desired values is a whole power of 2, then simple bit operations
-can be used to obtain a value. For a maximum of `2<sup>n</sup>` (exclusive),
+can be used to obtain a value. For a maximum of 2<sup>n</sup> (exclusive),
 bitwise operations can produce a value of `randomness & ((1 << n) - 1)`.
 
 Binary sampling produces uniformly random values with the only drawback being
@@ -475,17 +475,17 @@ Rejection sampling takes random values until the resulting value is in range.
 
 For values in the range 0 (inclusive) to `m` (exclusive), the value `m` is
 rounded up to the next power of 2; that is, an integer `n` is chosen such that
-`2<sup>n-1</sup> < m < 2<sup>n</sup>`.  Then, binary sampling ({{binary}}) is
+2<sup>n-1</sup> < `m` <= 2<sup>n</sup>.  Then, binary sampling ({{binary}}) is
 applied repeatedly for this larger range until the resulting value is less than
 `m`.
 
 Rejection sampling provides uniform randomness across the range from 0 to `m`
 without bias.  However, rejection sampling can require an indefinite number of
 PRF invocations to produce a result.  Rejection is more likely - and so the PRF
-invocation requirements are higher - when `m` is closer to `2<sup>n-1</sup>`
-than `2<sup>n</sup>`.  This can make rejection sampling unsuitable for use with
-indexed randomness ({{indexed}}), though it might be used a finite number of
-times before falling back to oversampling, which might reduce the effect of
+invocation requirements are higher - when `m` is closer to 2<sup>n-1</sup> than
+2<sup>n</sup>.  This can make rejection sampling unsuitable for use with indexed
+randomness ({{indexed}}), though it might be used a finite number of times
+before falling back to oversampling, which might reduce the effect of
 oversampling bias.
 
 
@@ -496,9 +496,9 @@ PRF, reducing the PRF output modulo the maximum in the range can produce outputs
 with negligible bias.
 
 For example, an application goal might seek to produce values in the prime field
-`p = 2<sup>61</sup> - 1`.  Using the AES PRF, where `Mo` is `2<sup>128</sup>`
+`p` = 2<sup>61</sup> - 1.  Using the AES PRF, where `Mo` is 2<sup>128</sup>
 and reducing its output modulo `p` results in a bias that causes the first 64
-values of the field to be chosen with a probability of about `2<sup>-67</sup>`
+values of the field to be chosen with a probability of about 2<sup>-67</sup>
 more than the remaining values. This degree of bias might be acceptable in some
 applications.
 
