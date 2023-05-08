@@ -253,7 +253,7 @@ the chosen KDF.  The shared secret, `ss`, is provided as the `salt` input, as
 follows:
 
 ~~~ pseudocode
-function: shared = LabeledExtract(kem, kdf, prf, pk_bytes, enc)
+function: shared = LabeledExtract(kem, kdf, prf, ss, pk_bytes, enc)
 
 label = concat(
         ascii("PRSS-00"),
@@ -381,13 +381,13 @@ The same PRF input MUST NOT be used more than once.  Using the same input more
 than once will produce identical outputs, which might be exploited by an
 attacker.
 
-This section describes two basic access modes that provide safeguards against
-accidental reuse of inputs:
+This section describes two basic access modes for randomness contexts that
+provide some safeguards against accidental reuse of inputs:
 
 * A sequential randomness context provides access using a counter; see
   {{sequential}}.
 
-* An indexed randomness context provides random access; see {{indexed}}.
+* An indexed randomness context provides concurrent access; see {{indexed}}.
 
 These usages are incompatible; only one mode of access can be used for a given
 context.
@@ -423,14 +423,14 @@ invocations of a certain randomness context.  Therefore, for a given record,
 simplest indexing scheme sets `M` to 1.
 
 Indexed usage is best suited to applications where individual records might be
-processed concurrently.  Using an index based on application context can ensure
-that the same PRF input is only used once and frees the context from using a
-tracker.
+processed concurrently.  Using indices based on identifiers from an application,
+such as record indices, can ensure that the same PRF input is only used once and
+frees the randomness context from needing its own counter.
 
 Binary sampling ({{binary}}) or oversampling ({{oversampling}}) are best suited
 for use with indexed modes.  Rejection sampling ({{rejection}}) is likely to be
-unsuitable for an indexed mode because it requires a variable number of PRF
-invocations to successfully complete.
+unsuitable for an indexed mode because it requires an unpredictable number of
+PRF invocations to successfully complete.
 
 
 # Sampling from the PRF Output {#sampling}
