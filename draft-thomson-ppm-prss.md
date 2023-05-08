@@ -136,9 +136,9 @@ shared secret
       |                             --> PRF(context_0, 5)
       |                                 ...
       |\
-      | `--> KDF(secret, info_1) --> PRF(context_1, 0)
+      | `--> Expand(secret, info_1) --> PRF(context_1, 0)
       |\
-      | `--> KDF(secret, info_2) --> PRF(context_2, 0)
+      | `--> Expand(secret, info_2) --> PRF(context_2, 0)
      ...
 ~~~
 {: #fig-context title="PRSS Key Schedule"}
