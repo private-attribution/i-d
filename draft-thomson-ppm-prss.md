@@ -5,8 +5,6 @@ category: std
 
 docname: draft-thomson-ppm-prss-latest
 submissiontype: IETF
-number:
-date:
 consensus: true
 v: 3
 area: "Security"
@@ -300,14 +298,16 @@ which KEM, KDF, and PRF are used.
 A PRF is instantiated with a secret key, `k`, and provides a single function
 `PRF(i)`.
 
-This document adapts the PRF interface to take a non-negative integer
-as input and to produce a non-negative integer as output.  Each PRF definition
-MUST define the maximum value of both input (`Mi`) and output (`Mo`) values.
+This document adapts the PRF interface to take a non-negative integer as input
+and to produce a non-negative integer as output.  New PRF definitions MUST
+define the maximum value of both input (`Mi`) and output (`Mo`) values.
 
 Importantly, the maximum input value SHOULD reflect a limit that is based on
-maintaining security when all input values between 0 (inclusive) and that
-maximum (exclusive) are provided.  This limit might be less than the constraints
-that might be implied by the underlying function.
+keeping attacker advantage negligible relative to an ideal PRF.  Any advantage
+needs to be bounded when an attacker is able to obtain output values for all
+input values between 0 (inclusive) and that maximum (exclusive).  The maximum
+input (`Mi`) is therefore likely to be less than the underlying function might
+otherwise permit.
 
 This assumes the usage modes from {{modes}}; alternative usage modes that pass
 inputs that are randomized or sparse across the entire input space of the
@@ -317,13 +317,13 @@ Each PRF is identified by a two-byte identifier, allocated using the process in
 {{iana}}.
 
 
-## Fixed-Key AES PRF {#aes}
+## Cached-Key AES PRF {#aes}
 
 This document defines a PRF based on that described in
-{{?GKWWY20=DOI.10.1007/978-3-030-56880-1_28}}.  This provides a PRF that has
+{{?GKWY20=DOI.10.1109/SP40000.2020.00016}}.  This provides a PRF that has
 circular correlation robustness.
 
-This uses the AES function, either AES-128 or AES-256, as defined in
+This PRF uses the AES function, either AES-128 or AES-256, as defined in
 {{!AES=DOI.10.6028/NIST.FIPS.197}}.  Both of these functions accept a 16 byte
 input.  The primary difference in these functions is the size of the key;
 AES-128 uses a 16 byte key, whereas AES-256 uses a 32 byte key.  This
@@ -340,39 +340,37 @@ Both AES PRFs use the same process:
 1. The input, `i`, is converted to a 16-byte input using a little-endian
    encoding.
 
-2. These bytes are then split into two chunks of 8 bytes each, the first 8 bytes
-   containing the least significant 64 bits of the original value; the second 8
-   bytes containing the most significant 64 bits.
+2. These bytes are then input to the AES function to produce a 16 byte output.
 
-3. A 16-byte sequence is formed from the most significant 8 bytes, followed by
-   the XORed values of both chunks.
+3. The AES input and output are XORed produce a 16 byte sequence.
 
-4. These bytes are then input to the AES function to produce a 16 byte output.
-
-5. The AES input and output are XORed produce a 16 byte sequence, which is
-   interpreted as an integer using little-endian encoding to produce the final
-   randomness.
+4. The byte sequence is interpreted as an integer using little-endian encoding
+   to produce the output randomness.
 
 The process in pseudocode is:
 
 ~~~ pseudocode
 function: randomness = Context.PRF(i)
 
-i_bytes = rev(I2OSP(i, 16))
-lo, hi = i_bytes[0..8], i_bytes[8..16]
-input = concat(hi, xor(lo, hi))
+input = rev(I2OSP(i, 16))
 output = aes(k, input)
-randomness = OS2IP(rev(xor(output, input)))
+r_bytes = xor(output, input)
+randomness = OS2IP(rev(r_bytes))
 ~~~
 
 This step is performance-sensitive, so little endian encoding is chosen to match
-the endianness of most hardware that is in use.  This PRF uses a fixed key,
+the endianness of most hardware that is in use.  This PRF uses a constant key,
 which allows implementations to avoid computing the key expansion on each PRF
 invocation by caching the expanded values.
 
 Note:
 
-: The same PRF core is defined in {{Section 6.2.2 of ?VDAF=I-D.irtf-cfrg-vdaf}}.
+: A similar PRF core is described in {{Section 6.2.2 of
+  ?VDAF=I-D.irtf-cfrg-vdaf}}, based on the analysis in
+  {{?GKWWY20=DOI.10.1007/978-3-030-56880-1_28}}.  This version operates from a
+  limited input domain that always results in the high bits being zero in all
+  cases, making the difference between the two approaches negligible; these
+  approaches consequently only differ in the position of the input bits.
 
 
 # Randomness Usage Modes {#modes}
@@ -481,12 +479,13 @@ applied repeatedly for this larger range until the resulting value is less than
 
 Rejection sampling provides uniform randomness across the range from 0 to `m`
 without bias.  However, rejection sampling can require an indefinite number of
-PRF invocations to produce a result.  Rejection is more likely - and so the PRF
-invocation requirements are higher - when `m` is closer to 2<sup>n-1</sup> than
-2<sup>n</sup>.  This can make rejection sampling unsuitable for use with indexed
-randomness ({{indexed}}), though it might be used a finite number of times
-before falling back to oversampling, which might reduce the effect of
-oversampling bias.
+PRF invocations to produce a result.  Rejection is more likely -- and so the
+expected number of PRF invocations increases -- when `m` is closer to
+2<sup>n-1</sup> than 2<sup>n</sup>.  This can make rejection sampling unsuitable
+for use with indexed randomness ({{indexed}}).  Rejection sampling might be used
+a limited number of times before falling back to oversampling
+({{oversampling}}), which can reduce oversampling bias while capping the number
+of PRF invocations.
 
 
 ## Oversampling {#oversampling}
@@ -508,10 +507,39 @@ output is less than 2<sup>48</sup> times smaller than `Mo`.
 
 # Security Considerations
 
-TODO
+## Usage Limit Analysis
 
-* analysis
-* usage limits that aren't just birthday bounds
+The usage limits in {{aes}} ensure that attacker advantage remains small.
+Theorem 4 of {{?GKWY20}} shows that advantage comprises two components:
+
+* a computational limit of `q^2/2.2^k` that is based solely on attacker work
+  (`q`) and the key size (`k`) of the permutation
+
+* a usage limit of `2pq/2^b` that provides advantage proportional to the number
+  of uses of the PRF (`p`), with the entropy of the pseudorandom function (`b`)
+  acting to counteract attacker advantage
+
+This analysis will focus on the second component, as the first component is
+unaffected by usage of the PRF.
+
+The first component applies to an idealized PRF.  This provides statistical
+security of 2<sup>-64</sup> for AES-128 based on the birthday bound.
+
+Consequently, there is no significant benefit to limiting the second component
+to be significantly smaller than 2<sup>-64</sup>.  This analysis assumes the
+same limit for AES-256 for simplicity.  AES uses the same block size for all
+variants, so the entropy (`b`) is the same at 128 bits.
+
+For an overall advantage of 2<sup>-63</sup>, the usage component is limited to
+2<sup>-64</sup>, leading to a limit of 2<sup>64</sup> uses of the PRF, as shown
+in {{table-prf}}.
+
+This assumes that AES is modeled as an ideal pseudorandom permutation.
+
+
+## Formal Analysis
+
+TODO
 
 
 # IANA Considerations {#iana}
