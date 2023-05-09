@@ -449,9 +449,13 @@ Finally, each PRF also has limits that might further reduce the maximum entropy
 available.
 
 Selecting values from a range that is larger than the available entropy will
-reduce effectiveness.  The result being that the selection is not uniformly
-random.  In particular, these methods MUST NOT be used to select from a range
-that has more values than the `Mo` parameter of the chosen PRF.
+affect the uniformity of the output.  In particular, these methods MUST NOT be
+used to select from a range that has more values than the `Mo` parameter of the
+chosen PRF.
+
+If values larger than `Mo` are needed, the output of multiple PRF invocations
+can be combined.  With `k` invocations, the effective value of `Mo` increases to
+`Mo`<sup>`k`</sup>.
 
 
 ## Binary Sampling {#binary}
@@ -501,10 +505,16 @@ of the field to be chosen with a probability of about 2<sup>-67</sup> more than
 other values. This degree of bias might be acceptable in some applications.
 
 To avoid excessive bias, applications SHOULD NOT use oversampling where the
-output is less than 2<sup>48</sup> times smaller than `Mo`.
+output is less than 2<sup>48</sup> times smaller than `Mo`.  The output of
+multiple PRF invocations could be combined to reduce bias.
 
 
 # Security Considerations
+
+This document describes a small component of a larger system.  A discussion of
+considerations necessary to ensure correct application of the included
+techniques is provided in relevant sections.  This section concentrates on a
+more general analysis of these mechanisms.
 
 ## Usage Limit Analysis
 
