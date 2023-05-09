@@ -367,10 +367,11 @@ Note:
 
 : A similar PRF core is described in {{Section 6.2.2 of
   ?VDAF=I-D.irtf-cfrg-vdaf}}, based on the analysis in
-  {{?GKWWY20=DOI.10.1007/978-3-030-56880-1_28}}.  This version operates from a
-  limited input domain that always results in the high bits being zero in all
-  cases, making the difference between the two approaches negligible; these
-  approaches consequently only differ in the position of the input bits.
+  {{?GKWWY20=DOI.10.1007/978-3-030-56880-1_28}}.  The function described in this
+  document operates from a limited input domain that always results in the high
+  bits being zero in all cases, making the difference between the two approaches
+  negligible; these approaches consequently only differ in the placement of the
+  input bits.
 
 
 # Randomness Usage Modes {#modes}
