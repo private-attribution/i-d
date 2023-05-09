@@ -512,7 +512,7 @@ output is less than 2<sup>48</sup> times smaller than `Mo`.
 The usage limits in {{aes}} ensure that attacker advantage remains small.
 Theorem 4 of {{?GKWY20}} shows that advantage comprises two components:
 
-* a computational limit of `q^2/2.2^k` that is based solely on attacker work
+* a computational limit of `q^2/(2*2^k)` that is based solely on attacker work
   (`q`) and the key size (`k`) of the permutation
 
 * a usage limit of `2pq/2^b` that provides advantage proportional to the number
@@ -579,12 +579,13 @@ Status:
 
 Specification:
 
-: A reference to a specification for the PRF.  This field is optional for
-  provisional registrations.
+: A reference to a specification for the PRF.  Citing a specification is
+  optional for provisional registrations.
 
 Last Updated:
 
 : The date of when the registration was last updated.
+{: spacing="compact"}
 
 The name and identifier MUST be unique within this registry.
 
