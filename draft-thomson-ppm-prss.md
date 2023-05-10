@@ -47,12 +47,12 @@ multi-party computation (MPC).
 
 A number of protocols benefit from having some means by which protocol entities
 agree on a random value.  This is particularly useful in multi-party computation
-(MPC), such as TBD, where some settings rely on being able to generate large
-amounts of shared randomness.
+(MPC), such as the three-party, honest majority setting, where many protocols
+rely on being able to generate large amounts of shared randomness.
 
 Pseudorandom secret sharing (PRSS) {{?CDI05=DOI.10.1007/978-3-540-30576-7_19}}
 is a means of non-interactively establishing multiple shared values from a
-single shared secret.  This document describes concrete PRSS protocol that can
+single shared secret.  This document describes a concrete PRSS protocol that can
 efficiently produce large quantities of shared randomness.
 
 This protocol is parameterized and offers algorithm agility.  This protocol
@@ -161,35 +161,32 @@ defined in {{!HPKE=RFC9180}}.  For use in PRSS, a KEM is first chosen for use.
 KEM identifiers from {{Section 7.1 of !HPKE}} MAY be used for identification or
 negotiation.
 
-Once a KEM is chosen, one participant is assigned as sender role; the other
-participant becomes the receiver.
+Once a KEM is chosen, one participant is assigned the "sender" role; the other
+participant becomes the "receiver".
 
 The receiver commences by generating a KEM key pair as follows:
 
 ~~~ pseudocode
-function: sk, pk_bytes = KeyGen(kem)
-
-sk, pk = kem.GenerateKeyPair()
-pk_bytes = kem.SerializePublicKey(pk)
+def sk, pk_bytes = KeyGen(kem):
+    sk, pk = kem.GenerateKeyPair()
+    pk_bytes = kem.SerializePublicKey(pk)
 ~~~
 
 The receiver advertises their public key to the sender by transmitting
 `pk_bytes`.  The sender then encapsulates the KEM shared secret as follows:
 
 ~~~ pseudocode
-function: ss, enc = Send(kem, pk_bytes)
-
-pk = kem.DeserializePublicKey(pk_bytes)
-ss, enc = kem.Encap(pk)
+def ss, enc = Send(kem, pk_bytes):
+    pk = kem.DeserializePublicKey(pk_bytes)
+    ss, enc = kem.Encap(pk)
 ~~~
 
 The sender then sends the encapsulated public key, `enc`, to the receiver.  The
 receiver decapsulates this value to obtain the shared secret, `secret`:
 
 ~~~ pseudocode
-function: ss = Receive(kem, sk, enc)
-
-ss = kem.Decap(enc, sk)
+def ss = Receive(kem, sk, enc):
+    ss = kem.Decap(enc, sk)
 ~~~
 
 This produces a value, `ss`, that is `Nsecret` bytes in length.
@@ -251,19 +248,18 @@ the chosen KDF.  The shared secret, `ss`, is provided as the `salt` input, as
 follows:
 
 ~~~ pseudocode
-function: shared = LabeledExtract(kem, kdf, prf, ss, pk_bytes, enc)
-
-label = concat(
-        ascii("PRSS-00"),
-        I2OSP(kem.id, 2),
-        I2OSP(kdf.id, 2),
-        I2OSP(prf.id, 2),
-        I2OSP(kem.Npk, 2),
-        pk_bytes,
-        I2OSP(kem.Nenc, 2),
-        enc,
-      )
-shared = kdf.Extract(salt = ss, ikm = label)
+def extracted = LabeledExtract(kem, kdf, prf, ss, pk_bytes, enc):
+    label = concat(
+            ascii("PRSS-00"),
+            I2OSP(kem.id, 2),
+            I2OSP(kdf.id, 2),
+            I2OSP(prf.id, 2),
+            I2OSP(kem.Npk, 2),
+            pk_bytes,
+            I2OSP(kem.Nenc, 2),
+            enc,
+          )
+    extracted = kdf.Extract(salt = ss, ikm = label)
 ~~~
 
 This process extracts shared entropy that is bound to this protocol and the
@@ -279,13 +275,12 @@ identifier will produce the same randomness.
 
 A randomness context is produced by invoking the `Expand()` function of the
 chosen KDF, passing the shared entropy generated in {{extract}} as the `prk`
-input, the byte sequence that identifies the context as the `info` input, and
-the PRF parameter `Nk` as the `L` input, as follows:
+input, the byte sequence that identifies the context (`ctx_id`) as the `info`
+input, and the PRF parameter `Nk` as the `L` input (see {{prf}}), as follows:
 
 ~~~ pseudocode
-function: context = Context.new(kdf, prf, shared, context_id)
-
-context = kdf.Expand(prk = shared, info = context_id, L = prf.Nk)
+def context = Context.new(kdf, prf, extracted, ctx_id):
+    context = kdf.Expand(prk = extracted, info = ctx_id, L = prf.Nk)
 ~~~
 
 The expanded entropy produced by this process is the only information that is
@@ -300,7 +295,11 @@ A PRF is instantiated with a secret key, `k`, and provides a single function
 
 This document adapts the PRF interface to take a non-negative integer as input
 and to produce a non-negative integer as output.  New PRF definitions MUST
-define the maximum value of both input (`Mi`) and output (`Mo`) values.
+define three parameters:
+
+* the size of the key (`Nk`),
+* the maximum allowed value for the input (`Mi`), and
+* the maximum value that can be produced as output (`Mo`).
 
 Importantly, the maximum input value SHOULD reflect a limit that is based on
 keeping attacker advantage negligible relative to an ideal PRF.  Any advantage
@@ -350,12 +349,11 @@ Both AES PRFs use the same process:
 The process in pseudocode is:
 
 ~~~ pseudocode
-function: randomness = Context.PRF(i)
-
-input = rev(I2OSP(i, 16))
-output = aes(k, input)
-r_bytes = xor(output, input)
-randomness = OS2IP(rev(r_bytes))
+def randomness = Context.PRF(i):
+    input = rev(I2OSP(i, 16))
+    output = aes(k, input)
+    r_bytes = xor(output, input)
+    randomness = OS2IP(rev(r_bytes))
 ~~~
 
 This step is performance-sensitive, so little endian encoding is chosen to match
@@ -403,10 +401,9 @@ context.  Each use of the randomness context first uses that counter as input to
 the PRF, then increments it.
 
 ~~~ pseudocode
-function randomness = Context.next()
-
-randomness = Context.PRF(this.counter)
-this.counter = this.counter + 1
+def randomness = Context.next():
+    randomness = Context.PRF(this.counter)
+    this.counter = this.counter + 1
 ~~~
 
 This is the simplest access scheme, which is compatible with any sampling
