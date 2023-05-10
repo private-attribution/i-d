@@ -212,7 +212,7 @@ from {{Section 7.2 of !HPKE}} MAY be used for identification or negotiation.
 
 ## Entropy Extraction {#extract}
 
-A labelled method of entropy extraction is used by this document to ensure that
+A labeled method of entropy extraction is used by this document to ensure that
 the randomness provided is bound to both the chosen protocol parameters (KEM,
 KDF, and PRF) as well as the values chosen by participants during key agreement.
 
