@@ -263,7 +263,7 @@ label = concat(
         I2OSP(kem.Nenc, 2),
         enc,
       )
-shared = Extract(salt = ss, ikm = label)
+shared = kdf.Extract(salt = ss, ikm = label)
 ~~~
 
 This process extracts shared entropy that is bound to this protocol and the
