@@ -1,0 +1,111 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-04-23T00:55:54.706309+00:00",
+  "repo": "private-attribution/i-d",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOJgF-t85QKNct",
+      "title": "Some of Ben's feedback",
+      "url": "https://github.com/private-attribution/i-d/pull/1",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I'm trying out a pythonic syntax (mostly)",
+      "createdAt": "2023-05-10T07:23:17Z",
+      "updatedAt": "2024-04-16T00:21:12Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "95df8573e71342471c2fbe71d2f72c6b2d286357",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "bens-stuff",
+      "headRefOid": "35d854f96ead75ed90ac6da59afb2ad7c65edf7b",
+      "closedAt": "2024-04-16T00:21:12Z",
+      "mergedAt": "2024-04-16T00:21:12Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "d6bffd0d86b33ed7f4c3c14735168312712a4a08"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOJgF-t85QKOAB",
+      "title": "Adding Ben as author",
+      "url": "https://github.com/private-attribution/i-d/pull/2",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "@benjaminsavage, you might need approval for this.  Talk to Murray if you have questions about IETF participation at Meta; I have no idea what rules you need to follow.",
+      "createdAt": "2023-05-10T07:25:21Z",
+      "updatedAt": "2024-04-16T00:21:12Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "95df8573e71342471c2fbe71d2f72c6b2d286357",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "ben-author",
+      "headRefOid": "6d4118f07d7c330f8ed4e11651f121aa938b1494",
+      "closedAt": "2024-04-16T00:21:12Z",
+      "mergedAt": "2024-04-16T00:21:12Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "d6bffd0d86b33ed7f4c3c14735168312712a4a08"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
