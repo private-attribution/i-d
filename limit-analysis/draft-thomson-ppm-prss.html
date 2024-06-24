@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>High Performance Pseudorandom Secret Sharing (PRSS)</title>
+<meta content="Martin Thomson" name="author">
+<meta content="Ben Savage" name="author">
+<meta content="
+       Pseudorandom secret sharing (PRSS) enables the generation of a large number of
+shared pseudorandom values from a single shared seed.  This is useful in
+contexts where a large amount of shared randomness is needed, such as
+multi-party computation (MPC). 
+    " name="description">
+<meta content="xml2rfc 3.21.0" name="generator">
+<meta content="prng" name="keyword">
+<meta content="next generation" name="keyword">
+<meta content="unicorn" name="keyword">
+<meta content="sparkling distributed ledger" name="keyword">
+<meta content="draft-thomson-ppm-prss-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.21.0
+    Python 3.12.3
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.0
+    intervaltree 3.1.0
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
+    pycountry 22.3.5
+    PyYAML 6.0.1
+    requests 2.31.0
+    setuptools 69.5.1
+    six 1.16.0
+    wcwidth 0.2.13
+-->
+<link href="draft-thomson-ppm-prss.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+}
+:is(ol, ul) :is(ol, ul) {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  line-height: 1;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+}
+dl.olPercent {
+  --indent: 5ch;
+}
+dl > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+dl.olPercent > dt {
+  min-width: calc(var(--indent) - 2ch);
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:first-child, .break:first-child + *) {
+  margin-top: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:last-child) {
+  margin-bottom: 0;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    overflow-x: auto;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+}
+a.pilcrow[href] { color: var(--pilcrow-weak); }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  min-width: var(--identifier-width);
+  clear: left;
+  float: left;
+  text-align: right;
+  margin-right: 1ch;
+}
+#identifiers dd {
+  margin: 0;
+  margin-left: calc(1em + var(--identifier-width)) !important;
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 2px 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 10ch;
+  margin-right: 1.5ch;
+}
+.references dt:target::before {
+  content: "⇒";
+  width: 15px;
+  margin: 0 10px 0 -25px;
+}
+.references dd {
+  margin-left: 12ch !important;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul :is(p, li) {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+  .toplink {
+    display: none;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">PRSS</td>
+<td class="right">June 2024</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Thomson &amp; Savage</td>
+<td class="center">Expires 26 December 2024</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Privacy Preserving Measurement</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-thomson-ppm-prss-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2024-06-24" class="published">24 June 2024</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2024-12-26">26 December 2024</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">M. Thomson</div>
+<div class="org">Mozilla</div>
+</div>
+<div class="author">
+      <div class="author-name">B. Savage</div>
+<div class="org">Meta</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">High Performance Pseudorandom Secret Sharing (PRSS)</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">Pseudorandom secret sharing (PRSS) enables the generation of a large number of
+shared pseudorandom values from a single shared seed.  This is useful in
+contexts where a large amount of shared randomness is needed, such as
+multi-party computation (MPC).<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://martinthomson.github.io/ipa-id/draft-thomson-ppm-prss.html">https://martinthomson.github.io/ipa-id/draft-thomson-ppm-prss.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-thomson-ppm-prss/">https://datatracker.ietf.org/doc/draft-thomson-ppm-prss/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        Privacy Preserving Measurement Working Group mailing list (<span><a href="mailto:ppm@ietf.org">mailto:ppm@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/ppm/">https://mailarchive.ietf.org/arch/browse/ppm/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/ppm/">https://www.ietf.org/mailman/listinfo/ppm/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/martinthomson/ipa-id">https://github.com/martinthomson/ipa-id</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 26 December 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2024 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-two-party-protocol" class="internal xref">Two-Party Protocol</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-overview" class="internal xref">Overview</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-key-agreement-2" class="internal xref">Key Agreement</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-randomness-contexts" class="internal xref">Randomness Contexts</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-entropy-extraction" class="internal xref">Entropy Extraction</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-creating-randomness-context" class="internal xref">Creating Randomness Contexts</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-pseudorandom-function" class="internal xref">Pseudorandom Function</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-cached-key-aes-prf" class="internal xref">Cached-Key AES PRF</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-randomness-usage-modes" class="internal xref">Randomness Usage Modes</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-sequential-randomness" class="internal xref">Sequential Randomness</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-indexed-randomness" class="internal xref">Indexed Randomness</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-sampling-from-the-prf-outpu" class="internal xref">Sampling from the PRF Output</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-available-randomness" class="internal xref">Available Randomness</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-binary-sampling" class="internal xref">Binary Sampling</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-rejection-sampling" class="internal xref">Rejection Sampling</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4">
+                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-oversampling" class="internal xref">Oversampling</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-usage-limit-analysis" class="internal xref">Usage Limit Analysis</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-formal-analysis" class="internal xref">Formal Analysis</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
+                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="auto internal xref">11.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
+                <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="auto internal xref">11.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-alternative-designs" class="internal xref">Alternative Designs</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-application-to-2-of-3-repli" class="internal xref">Application to 2-of-3 Replicated Secret Sharing</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
+            <p id="section-toc.1-1.15.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">A number of protocols benefit from having some means by which protocol entities
+agree on a random value.  This is particularly useful in multi-party computation
+(MPC), such as the three-party, honest majority setting, where many protocols
+rely on being able to generate large amounts of shared randomness.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Pseudorandom secret sharing (PRSS) <span>[<a href="#CDI05" class="cite xref">CDI05</a>]</span>
+is a means of non-interactively establishing multiple shared values from a
+single shared secret.  This document describes a concrete PRSS protocol that can
+efficiently produce large quantities of shared randomness.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">This protocol is parameterized and offers algorithm agility.  This protocol
+combines a chosen key encapsulation method (KEM) and key derivation function
+(KDF) to generate shared secrets.  These shared secrets form the basis of a
+randomness context (<a href="#context" class="auto internal xref">Section 5</a>) in which a chosen lightweight pseudorandom
+function (PRF) is used to generate large amounts of shared randomness.  Each
+randomness context can either be used as a sequential source of randomness
+<a href="#sequential" class="auto internal xref">Section 7.1</a> or as an indexed source <a href="#indexed" class="auto internal xref">Section 7.2</a>, depending on need.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<div id="two-party-protocol">
+<section id="section-1.1">
+        <h3 id="name-two-party-protocol">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-two-party-protocol" class="section-name selfRef">Two-Party Protocol</a>
+        </h3>
+<p id="section-1.1-1">This document describes a PRSS protocol for two parties.  The set of KEMs
+defined only work in a two-party context.  If the goal is to create randomness
+that is shared with more than one entity, group key exchange methods, such as
+MLS <span>[<a href="#MLS" class="cite xref">MLS</a>]</span>, could be adapted as a means of key
+agreement, retaining the other elements of this protocol unchanged.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="conventions-and-definitions">
+<section id="section-2">
+      <h2 id="name-conventions-and-definitions">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
+      </h2>
+<p id="section-2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="participant">
+<p id="section-2-2">This document uses the term "participant" to refer to entities that execute the
+protocol.<a href="#section-2-2" class="pilcrow">¶</a></p>
+</div>
+<p id="section-2-3">Notation for KEM and KDF functions is taken from <span>[<a href="#HPKE" class="cite xref">HPKE</a>]</span>.  <code>e =
+I2OSP(n, i)</code> and <code>i = OS2IP(e)</code> functions are taken from <span>[<a href="#RSA" class="cite xref">RSA</a>]</span> and
+describe encoding and decoding non-negative integers to and from a byte string,
+respectively, using network byte order.  <code>rev()</code> reverses the order of a
+sequence of bytes; <code>concat()</code> concatenates multiple sequences of bytes; <code>xor()</code>
+computes the exclusive or of byte strings or integers of the same type;
+<code>x[a..b]</code> takes a range of bytes indexed from <code>a</code> (inclusive) to <code>b</code> (exclusive)
+from <code>x</code>.<a href="#section-2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="overview">
+<section id="section-3">
+      <h2 id="name-overview">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-overview" class="section-name selfRef">Overview</a>
+      </h2>
+<p id="section-3-1">A PRSS begins with the establishment of a shared secret.  This protocol uses a
+KEM to establish this value.  This is the only communication that occurs between
+participants; see <a href="#fig-kex" class="auto internal xref">Figure 1</a> and <a href="#kex" class="auto internal xref">Section 4</a>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<span id="name-key-agreement"></span><div id="fig-kex">
+<figure id="figure-1">
+        <div id="section-3-2.1">
+          <div class="alignLeft art-svg artwork" id="section-3-2.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="176" width="320" viewBox="0 0 320 176" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 8,32 L 8,64" fill="none" stroke="black"></path>
+              <path d="M 48,64 L 48,144" fill="none" stroke="black"></path>
+              <path d="M 96,32 L 96,64" fill="none" stroke="black"></path>
+              <path d="M 224,32 L 224,64" fill="none" stroke="black"></path>
+              <path d="M 264,64 L 264,144" fill="none" stroke="black"></path>
+              <path d="M 312,32 L 312,64" fill="none" stroke="black"></path>
+              <path d="M 8,32 L 96,32" fill="none" stroke="black"></path>
+              <path d="M 224,32 L 312,32" fill="none" stroke="black"></path>
+              <path d="M 8,64 L 96,64" fill="none" stroke="black"></path>
+              <path d="M 224,64 L 312,64" fill="none" stroke="black"></path>
+              <path d="M 56,96 L 136,96" fill="none" stroke="black"></path>
+              <path d="M 176,96 L 264,96" fill="none" stroke="black"></path>
+              <path d="M 48,128 L 128,128" fill="none" stroke="black"></path>
+              <path d="M 176,128 L 256,128" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="264,128 252,122.4 252,133.6" fill="black" transform="rotate(0,256,128)"></polygon>
+              <polygon class="arrowhead" points="64,96 52,90.4 52,101.6" fill="black" transform="rotate(180,56,96)"></polygon>
+              <g class="text">
+                <text x="52" y="52">Sender</text>
+                <text x="268" y="52">Receiver</text>
+                <text x="156" y="100">pk</text>
+                <text x="152" y="132">enc</text>
+              </g>
+            </svg><a href="#section-3-2.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-key-agreement" class="selfRef">Key Agreement</a>
+        </figcaption></figure>
+</div>
+<p id="section-3-3">From this shared secret, a KDF is used to generate one or more randomness
+contexts; see <a href="#context" class="auto internal xref">Section 5</a>.  Each randomness context can be used independently to
+produce many random values through the use of a PRF; see <a href="#fig-context" class="auto internal xref">Figure 2</a> and
+<a href="#prf" class="auto internal xref">Section 6</a>.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<span id="name-prss-key-schedule"></span><div id="fig-context">
+<figure id="figure-2">
+        <div id="section-3-4.1">
+          <div class="alignLeft art-svg artwork" id="section-3-4.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="352" width="464" viewBox="0 0 464 352" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 56,48 L 56,80" fill="none" stroke="black"></path>
+              <path d="M 56,112 L 56,328" fill="none" stroke="black"></path>
+              <path d="M 72,160 L 96,160" fill="none" stroke="black"></path>
+              <path d="M 296,160 L 312,160" fill="none" stroke="black"></path>
+              <path d="M 296,176 L 312,176" fill="none" stroke="black"></path>
+              <path d="M 296,192 L 312,192" fill="none" stroke="black"></path>
+              <path d="M 296,208 L 312,208" fill="none" stroke="black"></path>
+              <path d="M 296,224 L 312,224" fill="none" stroke="black"></path>
+              <path d="M 296,240 L 312,240" fill="none" stroke="black"></path>
+              <path d="M 72,288 L 96,288" fill="none" stroke="black"></path>
+              <path d="M 296,288 L 312,288" fill="none" stroke="black"></path>
+              <path d="M 72,320 L 96,320" fill="none" stroke="black"></path>
+              <path d="M 296,320 L 312,320" fill="none" stroke="black"></path>
+              <path d="M 56,288 L 72,320" fill="none" stroke="black"></path>
+              <path d="M 56,256 L 72,288" fill="none" stroke="black"></path>
+              <path d="M 56,128 L 72,160" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="320,320 308,314.4 308,325.6" fill="black" transform="rotate(0,312,320)"></polygon>
+              <polygon class="arrowhead" points="320,288 308,282.4 308,293.6" fill="black" transform="rotate(0,312,288)"></polygon>
+              <polygon class="arrowhead" points="320,240 308,234.4 308,245.6" fill="black" transform="rotate(0,312,240)"></polygon>
+              <polygon class="arrowhead" points="320,224 308,218.4 308,229.6" fill="black" transform="rotate(0,312,224)"></polygon>
+              <polygon class="arrowhead" points="320,208 308,202.4 308,213.6" fill="black" transform="rotate(0,312,208)"></polygon>
+              <polygon class="arrowhead" points="320,192 308,186.4 308,197.6" fill="black" transform="rotate(0,312,192)"></polygon>
+              <polygon class="arrowhead" points="320,176 308,170.4 308,181.6" fill="black" transform="rotate(0,312,176)"></polygon>
+              <polygon class="arrowhead" points="320,160 308,154.4 308,165.6" fill="black" transform="rotate(0,312,160)"></polygon>
+              <polygon class="arrowhead" points="104,320 92,314.4 92,325.6" fill="black" transform="rotate(0,96,320)"></polygon>
+              <polygon class="arrowhead" points="104,288 92,282.4 92,293.6" fill="black" transform="rotate(0,96,288)"></polygon>
+              <polygon class="arrowhead" points="104,160 92,154.4 92,165.6" fill="black" transform="rotate(0,96,160)"></polygon>
+              <polygon class="arrowhead" points="64,80 52,74.4 52,85.6" fill="black" transform="rotate(90,56,80)"></polygon>
+              <g class="text">
+                <text x="28" y="36">shared</text>
+                <text x="84" y="36">secret</text>
+                <text x="64" y="100">Extract()</text>
+                <text x="164" y="164">Expand(secret,</text>
+                <text x="256" y="164">info_0)</text>
+                <text x="380" y="164">PRF(context_0,</text>
+                <text x="452" y="164">0)</text>
+                <text x="380" y="180">PRF(context_0,</text>
+                <text x="452" y="180">1)</text>
+                <text x="380" y="196">PRF(context_0,</text>
+                <text x="452" y="196">2)</text>
+                <text x="380" y="212">PRF(context_0,</text>
+                <text x="452" y="212">3)</text>
+                <text x="380" y="228">PRF(context_0,</text>
+                <text x="452" y="228">4)</text>
+                <text x="380" y="244">PRF(context_0,</text>
+                <text x="452" y="244">5)</text>
+                <text x="336" y="260">...</text>
+                <text x="164" y="292">Expand(secret,</text>
+                <text x="256" y="292">info_1)</text>
+                <text x="380" y="292">PRF(context_1,</text>
+                <text x="452" y="292">0)</text>
+                <text x="164" y="324">Expand(secret,</text>
+                <text x="256" y="324">info_2)</text>
+                <text x="380" y="324">PRF(context_2,</text>
+                <text x="452" y="324">0)</text>
+                <text x="56" y="340">...</text>
+              </g>
+            </svg><a href="#section-3-4.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-prss-key-schedule" class="selfRef">PRSS Key Schedule</a>
+        </figcaption></figure>
+</div>
+<p id="section-3-5">This document describes both sequential (<a href="#sequential" class="auto internal xref">Section 7.1</a>) and indexed
+(<a href="#indexed" class="auto internal xref">Section 7.2</a>) access to randomness contexts, with different sampling methods
+(<a href="#sampling" class="auto internal xref">Section 8</a>).<a href="#section-3-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="kex">
+<section id="section-4">
+      <h2 id="name-key-agreement-2">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-key-agreement-2" class="section-name selfRef">Key Agreement</a>
+      </h2>
+<p id="section-4-1">The first stage of the protocol is key agreement.  In this phase, participants
+communicate and establish a shared secret.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">Protocol participants are assumed to have a means of authenticating each other.
+A confidential communications channel is not necessary, though the use of TLS
+<span>[<a href="#TLS" class="cite xref">TLS</a>]</span> for authentication purposes will also provide confidentiality
+in most cases.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">This document uses the system of describing, naming, and identifying KEMs
+defined in <span>[<a href="#HPKE" class="cite xref">HPKE</a>]</span>.  For use in PRSS, a KEM is first chosen for use.
+KEM identifiers from <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.1" class="relref">Section 7.1</a> of [<a href="#HPKE" class="cite xref">HPKE</a>]</span> are used for identification and
+can be used in negotiation.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">Once a KEM is chosen, one participant is assigned the "sender" role; the other
+participant becomes the "receiver".<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">The receiver commences by generating a KEM key pair as follows:<a href="#section-4-5" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4-6">
+<pre>
+def sk, pk_bytes = KeyGen(kem):
+    sk, pk = kem.GenerateKeyPair()
+    pk_bytes = kem.SerializePublicKey(pk)
+</pre><a href="#section-4-6" class="pilcrow">¶</a>
+</div>
+<p id="section-4-7">The receiver advertises their public key to the sender by transmitting
+<code>pk_bytes</code>.  The sender then encapsulates the KEM shared secret as follows:<a href="#section-4-7" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4-8">
+<pre>
+def ss, enc = Send(kem, pk_bytes):
+    pk = kem.DeserializePublicKey(pk_bytes)
+    ss, enc = kem.Encap(pk)
+</pre><a href="#section-4-8" class="pilcrow">¶</a>
+</div>
+<p id="section-4-9">The sender then sends the encapsulated public key, <code>enc</code>, to the receiver.  The
+receiver decapsulates this value to obtain the shared secret, <code>secret</code>:<a href="#section-4-9" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4-10">
+<pre>
+def ss = Receive(kem, sk, enc):
+    ss = kem.Decap(enc, sk)
+</pre><a href="#section-4-10" class="pilcrow">¶</a>
+</div>
+<p id="section-4-11">This produces a value, <code>ss</code>, that is <code>Nsecret</code> bytes in length.<a href="#section-4-11" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="context">
+<section id="section-5">
+      <h2 id="name-randomness-contexts">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-randomness-contexts" class="section-name selfRef">Randomness Contexts</a>
+      </h2>
+<p id="section-5-1">The single shared secret that is produced by a KEM is not suitable for use as a
+source of randomness.  A key derivation function (KDF) is used to first extract
+randomness from the secret and then to expand it for use in different contexts.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">A randomness context is a concept that is defined by protocols that use PRSS.
+Each context is identified by a unique string of bytes.  This string is passed
+to the KDF to produce a shared value that is unique to that context.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">This document uses the system of describing, naming, and identifying KEMs
+defined in <span>[<a href="#HPKE" class="cite xref">HPKE</a>]</span>.  A KDF is first chosen for use.  KDF identifiers
+from <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.2" class="relref">Section 7.2</a> of [<a href="#HPKE" class="cite xref">HPKE</a>]</span> are used for identification and can be used in
+negotiation.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<div id="extract">
+<section id="section-5.1">
+        <h3 id="name-entropy-extraction">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-entropy-extraction" class="section-name selfRef">Entropy Extraction</a>
+        </h3>
+<p id="section-5.1-1">A labeled method of entropy extraction is used by this document to ensure that
+the randomness provided is bound to both the chosen protocol parameters (KEM,
+KDF, and PRF) as well as the values chosen by participants during key agreement.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">Each participant constructs a byte sequence by concatenating the following
+sequences of bytes:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5.1-3">
+<li id="section-5.1-3.1">
+            <p id="section-5.1-3.1.1">The ASCII encoding <span>[<a href="#ASCII" class="cite xref">ASCII</a>]</span> of the string "PRSS-00".<a href="#section-5.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.1-3.2">
+            <p id="section-5.1-3.2.1">The identifier for the chosen KEM from <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.1" class="relref">Section 7.1</a> of [<a href="#HPKE" class="cite xref">HPKE</a>]</span>, encoded in
+two bytes in network byte order.<a href="#section-5.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.1-3.3">
+            <p id="section-5.1-3.3.1">The identifier for the chosen KDF from <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.2" class="relref">Section 7.2</a> of [<a href="#HPKE" class="cite xref">HPKE</a>]</span>, encoded in
+two bytes in network byte order.<a href="#section-5.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.1-3.4">
+            <p id="section-5.1-3.4.1">The identifier for the chosen PRF from <a href="#prf" class="auto internal xref">Section 6</a>, encoded in two bytes in
+network byte order.<a href="#section-5.1-3.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.1-3.5">
+            <p id="section-5.1-3.5.1">A two byte encoding of the KEM parameter <code>Npk</code> in network byte order.<a href="#section-5.1-3.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.1-3.6">
+            <p id="section-5.1-3.6.1">The value of <code>pk_bytes</code>, the public key from the receiver.<a href="#section-5.1-3.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.1-3.7">
+            <p id="section-5.1-3.7.1">A two byte encoding of the KEM parameter <code>Nenc</code> in network byte order.<a href="#section-5.1-3.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-5.1-3.8">
+            <p id="section-5.1-3.8.1">The value of <code>enc</code>, the key encapsulation from the sender.<a href="#section-5.1-3.8.1" class="pilcrow">¶</a></p>
+</li>
+        </ol>
+<span class="break"></span><dl class="dlParallel" id="section-5.1-4">
+          <dt id="section-5.1-4.1">Note:</dt>
+          <dd style="margin-left: 1.5em" id="section-5.1-4.2">
+            <p id="section-5.1-4.2.1">Draft versions of this protocol will be identified as "PRSS-00".  The suffix
+of this string matches the draft revision in which the scheme last changed.
+The string will not be updated unless the scheme changes in an incompatible
+fashion.  A final version might either omit this suffix or include a different
+string.<a href="#section-5.1-4.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+<p id="section-5.1-5">This byte sequence is provided as the <code>ikm</code> input to the <code>Extract()</code> function of
+the chosen KDF.  The shared secret, <code>ss</code>, is provided as the <code>salt</code> input, as
+follows:<a href="#section-5.1-5" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-5.1-6">
+<pre>
+def extracted = LabeledExtract(kem, kdf, prf, ss, pk_bytes, enc):
+    label = concat(
+            ascii("PRSS-00"),
+            I2OSP(kem.id, 2),
+            I2OSP(kdf.id, 2),
+            I2OSP(prf.id, 2),
+            I2OSP(kem.Npk, 2),
+            pk_bytes,
+            I2OSP(kem.Nenc, 2),
+            enc,
+          )
+    extracted = kdf.Extract(salt = ss, ikm = label)
+</pre><a href="#section-5.1-6" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-7">This process extracts shared entropy that is bound to this protocol and the
+context in which it was created.<a href="#section-5.1-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="creating-randomness-contexts">
+<section id="section-5.2">
+        <h3 id="name-creating-randomness-context">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-creating-randomness-context" class="section-name selfRef">Creating Randomness Contexts</a>
+        </h3>
+<p id="section-5.2-1">A randomness context is identified by a byte sequence.  Applications that use
+PRSS need to describe how each randomness context it uses is identified.
+Participants with the same shared entropy and the same randomness context
+identifier will produce the same randomness.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">A randomness context is produced by invoking the <code>Expand()</code> function of the
+chosen KDF, passing the shared entropy generated in <a href="#extract" class="auto internal xref">Section 5.1</a> as the <code>prk</code>
+input, the byte sequence that identifies the context (<code>ctx_id</code>) as the <code>info</code>
+input, and the PRF parameter <code>Nk</code> as the <code>L</code> input (see <a href="#prf" class="auto internal xref">Section 6</a>), as follows:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-5.2-3">
+<pre>
+def context = Context.new(kdf, prf, extracted, ctx_id):
+    context = kdf.Expand(prk = extracted, info = ctx_id, L = prf.Nk)
+</pre><a href="#section-5.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2-4">The expanded entropy produced by this process is the only information that is
+essential for a randomness context, though a real instantiation might also track
+which KEM, KDF, and PRF are used.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="prf">
+<section id="section-6">
+      <h2 id="name-pseudorandom-function">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-pseudorandom-function" class="section-name selfRef">Pseudorandom Function</a>
+      </h2>
+<p id="section-6-1">A PRF is instantiated with a secret key, <code>k</code>, and provides a single function
+<code>PRF(i)</code>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">This document adapts the PRF interface to take a non-negative integer as input
+and to produce a non-negative integer as output.  New PRF definitions <span class="bcp14">MUST</span>
+define three parameters:<a href="#section-6-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-3.1">
+          <p id="section-6-3.1.1">the size of the key (<code>Nk</code>),<a href="#section-6-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-6-3.2">
+          <p id="section-6-3.2.1">the maximum allowed value for the input (<code>Mi</code>), and<a href="#section-6-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-6-3.3">
+          <p id="section-6-3.3.1">the maximum value that can be produced as output (<code>Mo</code>).<a href="#section-6-3.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-6-4">Importantly, the maximum input value <span class="bcp14">SHOULD</span> reflect a limit that is based on
+keeping attacker advantage negligible relative to an ideal PRF.  Any advantage
+needs to be bounded when an attacker is able to obtain output values for all
+input values between 0 (inclusive) and that maximum (exclusive).  The maximum
+input (<code>Mi</code>) is therefore likely to be less than the underlying function might
+otherwise permit.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-5">This assumes the usage modes from <a href="#modes" class="auto internal xref">Section 7</a>; alternative usage modes that pass
+inputs that are randomized or sparse across the entire input space of the
+underlying function are possible, but these have not been specified.<a href="#section-6-5" class="pilcrow">¶</a></p>
+<p id="section-6-6">Each PRF is identified by a two-byte identifier, allocated using the process in
+<a href="#iana" class="auto internal xref">Section 10</a>.<a href="#section-6-6" class="pilcrow">¶</a></p>
+<div id="aes">
+<section id="section-6.1">
+        <h3 id="name-cached-key-aes-prf">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-cached-key-aes-prf" class="section-name selfRef">Cached-Key AES PRF</a>
+        </h3>
+<p id="section-6.1-1">This document defines a PRF based on that described in
+<span>[<a href="#GKWY20" class="cite xref">GKWY20</a>]</span>.  This provides a PRF that has
+circular correlation robustness.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">This PRF uses the AES function, either AES-128 or AES-256, as defined in
+<span>[<a href="#AES" class="cite xref">AES</a>]</span>.  Both of these functions accept a 16 byte
+input.  The primary difference in these functions is the size of the key;
+AES-128 uses a 16 byte key, whereas AES-256 uses a 32 byte key.  This
+information is summarized in <a href="#_table-prf" class="auto internal xref">Table 1</a>.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<span id="name-pseudorandom-function-summa"></span><div id="_table-prf">
+<table class="center" id="table-1">
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-pseudorandom-function-summa" class="selfRef">Pseudorandom Function Summary</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">PRF Name</th>
+              <th class="text-right" rowspan="1" colspan="1">Identifier</th>
+              <th class="text-right" rowspan="1" colspan="1">Nk</th>
+              <th class="text-right" rowspan="1" colspan="1">Mi</th>
+              <th class="text-right" rowspan="1" colspan="1">Mo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">PRF_AES_128</td>
+              <td class="text-right" rowspan="1" colspan="1">0x0001</td>
+              <td class="text-right" rowspan="1" colspan="1">16</td>
+              <td class="text-right" rowspan="1" colspan="1">2<sup>42</sup>
+</td>
+              <td class="text-right" rowspan="1" colspan="1">2<sup>128</sup>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">PRF_AES_256</td>
+              <td class="text-right" rowspan="1" colspan="1">0x0002</td>
+              <td class="text-right" rowspan="1" colspan="1">32</td>
+              <td class="text-right" rowspan="1" colspan="1">2<sup>42</sup>
+</td>
+              <td class="text-right" rowspan="1" colspan="1">2<sup>128</sup>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-6.1-4">Both AES PRFs use the same process:<a href="#section-6.1-4" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-6.1-5">
+<li id="section-6.1-5.1">
+            <p id="section-6.1-5.1.1">The input, <code>i</code>, is converted to a 16-byte input using a little-endian
+encoding.<a href="#section-6.1-5.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-6.1-5.2">
+            <p id="section-6.1-5.2.1">These bytes are then input to the AES function to produce a 16 byte output.<a href="#section-6.1-5.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-6.1-5.3">
+            <p id="section-6.1-5.3.1">The AES input and output are XORed produce a 16 byte sequence.<a href="#section-6.1-5.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-6.1-5.4">
+            <p id="section-6.1-5.4.1">The byte sequence is interpreted as an integer using little-endian encoding
+to produce the output randomness.<a href="#section-6.1-5.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ol>
+<p id="section-6.1-6">The process in pseudocode is:<a href="#section-6.1-6" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-6.1-7">
+<pre>
+def randomness = Context.PRF(i):
+    input = rev(I2OSP(i, 16))
+    output = aes(k, input)
+    r_bytes = xor(output, input)
+    randomness = OS2IP(rev(r_bytes))
+</pre><a href="#section-6.1-7" class="pilcrow">¶</a>
+</div>
+<p id="section-6.1-8">This step is performance-sensitive, so little endian encoding is chosen to match
+the endianness of most hardware that is in use.  This PRF uses a constant key,
+which allows implementations to avoid computing the key expansion on each PRF
+invocation by caching the expanded values.<a href="#section-6.1-8" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-6.1-9">
+          <dt id="section-6.1-9.1">Note:</dt>
+          <dd style="margin-left: 1.5em" id="section-6.1-9.2">
+            <p id="section-6.1-9.2.1">A similar PRF core is described in <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vdaf-09#section-6.2.2" class="relref">Section 6.2.2</a> of [<a href="#VDAF" class="cite xref">VDAF</a>]</span>, based on the analysis in
+<span>[<a href="#GKWWY20" class="cite xref">GKWWY20</a>]</span>.  The function described in this
+document operates from a limited input domain that always results in the high
+bits being zero in all cases, making the difference between the two approaches
+negligible; these approaches consequently only differ in the placement of the
+input bits.<a href="#section-6.1-9.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="modes">
+<section id="section-7">
+      <h2 id="name-randomness-usage-modes">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-randomness-usage-modes" class="section-name selfRef">Randomness Usage Modes</a>
+      </h2>
+<p id="section-7-1">The same PRF input <span class="bcp14">MUST NOT</span> be used more than once.  Using the same input more
+than once will produce identical outputs, which might be exploited by an
+attacker.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">This section describes two basic access modes for randomness contexts that
+provide some safeguards against accidental reuse of inputs:<a href="#section-7-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-3.1">
+          <p id="section-7-3.1.1">A sequential randomness context provides access using a counter; see
+<a href="#sequential" class="auto internal xref">Section 7.1</a>.<a href="#section-7-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-3.2">
+          <p id="section-7-3.2.1">An indexed randomness context provides concurrent access; see <a href="#indexed" class="auto internal xref">Section 7.2</a>.<a href="#section-7-3.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-7-4">These usages are incompatible; only one mode of access can be used for a given
+context.<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-5">These usage modes are intended to use a contiguous block of input values,
+starting from 0.  The definition of the <code>Mi</code> parameter of the PRF function (see
+<a href="#aes" class="auto internal xref">Section 6.1</a>) assumes this usage model.<a href="#section-7-5" class="pilcrow">¶</a></p>
+<div id="sequential">
+<section id="section-7.1">
+        <h3 id="name-sequential-randomness">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-sequential-randomness" class="section-name selfRef">Sequential Randomness</a>
+        </h3>
+<p id="section-7.1-1">In this mode, a counter, starting at zero, is retained with the randomness
+context.  Each use of the randomness context first uses that counter as input to
+the PRF, then increments it.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-7.1-2">
+<pre>
+def randomness = Context.next():
+    randomness = Context.PRF(this.counter)
+    this.counter = this.counter + 1
+</pre><a href="#section-7.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-7.1-3">This is the simplest access scheme, which is compatible with any sampling
+method; see <a href="#sampling" class="auto internal xref">Section 8</a>.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="indexed">
+<section id="section-7.2">
+        <h3 id="name-indexed-randomness">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-indexed-randomness" class="section-name selfRef">Indexed Randomness</a>
+        </h3>
+<p id="section-7.2-1">Indexed randomness ties the use of the randomness context to a sequence of
+application records.  The processing of each record is defined to each use <code>M</code>
+invocations of a certain randomness context.  Therefore, for a given record,
+<code>r</code>, and usage, <code>m</code>, the context is invoked as <code>context.PRF(r * M + m)</code>.  The
+simplest indexing scheme sets <code>M</code> to 1.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-2">Indexed usage is best suited to applications where individual records might be
+processed concurrently.  Using indices based on identifiers from an application,
+such as record indices, can ensure that the same PRF input is only used once and
+frees the randomness context from maintaining its own counter.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.2-3">Binary sampling (<a href="#binary" class="auto internal xref">Section 8.2</a>) or oversampling (<a href="#oversampling" class="auto internal xref">Section 8.4</a>) are best suited
+for use with indexed modes.  Rejection sampling (<a href="#rejection" class="auto internal xref">Section 8.3</a>) is likely to be
+unsuitable for an indexed mode because it requires an unpredictable number of
+PRF invocations to successfully complete.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="sampling">
+<section id="section-8">
+      <h2 id="name-sampling-from-the-prf-outpu">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-sampling-from-the-prf-outpu" class="section-name selfRef">Sampling from the PRF Output</a>
+      </h2>
+<p id="section-8-1">PRSS natively produces a uniformly random value in the range from 0 (inclusive)
+to <code>Mo</code> (exclusive).<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">Many applications of PRSS require the selection of a uniform random value from a
+fixed range of values.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<div id="available-randomness">
+<section id="section-8.1">
+        <h3 id="name-available-randomness">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-available-randomness" class="section-name selfRef">Available Randomness</a>
+        </h3>
+<p id="section-8.1-1">The total randomness available is limited by the entropy from the chosen KEM,
+KDF, and PRF.  Each KEM is only able to convey a maximum amount of entropy.
+Similarly, each KDF is limited in the amount of entropy it only able to retain.
+Finally, each PRF also has limits that might further reduce the maximum entropy
+available.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-2">Selecting values from a range that is larger than the available entropy will
+affect the uniformity of the output.  In particular, these methods <span class="bcp14">MUST NOT</span> be
+used to select from a range that has more values than the <code>Mo</code> parameter of the
+chosen PRF.<a href="#section-8.1-2" class="pilcrow">¶</a></p>
+<p id="section-8.1-3">If values larger than <code>Mo</code> are needed, the output of multiple PRF invocations
+can be combined.  With <code>k</code> invocations, the effective value of <code>Mo</code> increases to
+<code>Mo</code><sup><code>k</code></sup>.<a href="#section-8.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="binary">
+<section id="section-8.2">
+        <h3 id="name-binary-sampling">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-binary-sampling" class="section-name selfRef">Binary Sampling</a>
+        </h3>
+<p id="section-8.2-1">If the range of desired values is a whole power of 2, then simple bit operations
+can be used to obtain a value. For a maximum of 2<sup>n</sup> (exclusive),
+bitwise operations can produce a value of <code>randomness &amp; ((1 &lt;&lt; n) - 1)</code>.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<p id="section-8.2-2">Binary sampling produces uniformly random values with the only drawback being
+the constraint on its output range.<a href="#section-8.2-2" class="pilcrow">¶</a></p>
+<p id="section-8.2-3">For small values of <code>n</code>, the same PRF invocation could be used to produce
+multiple values, depending on the value of <code>Mo</code> for the chosen PRF.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="rejection">
+<section id="section-8.3">
+        <h3 id="name-rejection-sampling">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-rejection-sampling" class="section-name selfRef">Rejection Sampling</a>
+        </h3>
+<p id="section-8.3-1">Rejection sampling takes random values until the resulting value is in range.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<p id="section-8.3-2">For values in the range 0 (inclusive) to <code>m</code> (exclusive), the value <code>m</code> is
+rounded up to the next power of 2; that is, an integer <code>n</code> is chosen such that
+2<sup>n-1</sup> &lt; <code>m</code> &lt;= 2<sup>n</sup>.  Then, binary sampling (<a href="#binary" class="auto internal xref">Section 8.2</a>) is
+applied repeatedly for this larger range until the resulting value is less than
+<code>m</code>.<a href="#section-8.3-2" class="pilcrow">¶</a></p>
+<p id="section-8.3-3">Rejection sampling provides uniform randomness across the range from 0 to <code>m</code>
+without bias.  However, rejection sampling can require an indefinite number of
+PRF invocations to produce a result.  Rejection is more likely -- and so the
+expected number of PRF invocations increases -- when <code>m</code> is closer to
+2<sup>n-1</sup> than 2<sup>n</sup>.  This can make rejection sampling unsuitable
+for use with indexed randomness (<a href="#indexed" class="auto internal xref">Section 7.2</a>).<a href="#section-8.3-3" class="pilcrow">¶</a></p>
+<p id="section-8.3-4">Rejection sampling might be used a limited number of times before falling back
+to oversampling (<a href="#oversampling" class="auto internal xref">Section 8.4</a>), which can reduce oversampling bias while
+capping the number of PRF invocations.<a href="#section-8.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="oversampling">
+<section id="section-8.4">
+        <h3 id="name-oversampling">
+<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-oversampling" class="section-name selfRef">Oversampling</a>
+        </h3>
+<p id="section-8.4-1">For a target range that is much smaller than the range of values produced by the
+PRF, reducing the PRF output modulo the maximum in the range can produce outputs
+with negligible bias.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
+<p id="section-8.4-2">For example, an application goal might seek to produce values in the prime field
+<code>p</code> = 2<sup>61</sup> - 1.  Using the AES PRF, where <code>Mo</code> is 2<sup>128</sup>, and
+reducing its output modulo <code>p</code> results in a bias that causes the first 64 values
+of the field to be chosen with a probability of about 2<sup>-67</sup> more than
+other values. This degree of bias might be acceptable in some applications.<a href="#section-8.4-2" class="pilcrow">¶</a></p>
+<p id="section-8.4-3">To avoid excessive bias, applications <span class="bcp14">SHOULD NOT</span> use oversampling where the
+output is less than 2<sup>48</sup> times smaller than <code>Mo</code>.  The output of
+multiple PRF invocations could be combined to reduce bias.<a href="#section-8.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-9">
+      <h2 id="name-security-considerations">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-9-1">This document describes a small component of a larger system.  A discussion of
+considerations necessary to ensure correct application of the included
+techniques is provided in relevant sections.  This section concentrates on a
+more general analysis of these mechanisms.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<div id="usage-limit-analysis">
+<section id="section-9.1">
+        <h3 id="name-usage-limit-analysis">
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-usage-limit-analysis" class="section-name selfRef">Usage Limit Analysis</a>
+        </h3>
+<p id="section-9.1-1">The usage limits in <a href="#aes" class="auto internal xref">Section 6.1</a> ensure that attacker advantage remains small.
+Theorem 4 of <span>[<a href="#GKWY20" class="cite xref">GKWY20</a>]</span> models the underlying permutation function as an ideal
+PRP and shows that attacker advantage comprises two components:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9.1-2.1">
+            <p id="section-9.1-2.1.1">a computational limit of <code>q^2/(2*2^k)</code> that is based solely on attacker work
+(<code>q</code>) and the key size (<code>k</code>) of the permutation<a href="#section-9.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-9.1-2.2">
+            <p id="section-9.1-2.2.1">a usage limit of <code>2pq/2^b</code> that provides advantage proportional to the number
+of uses of the PRF (<code>p</code>), with the entropy of the pseudorandom function (<code>b</code>)
+acting to counteract attacker advantage<a href="#section-9.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-9.1-3">The number of uses (<code>p</code>) are only affected by the second component, as the first
+component is unaffected by usage of the permutation.  However, the first
+component guides our assumptions about the number of times the attacker might be
+willing to invoke the permutation. The result shows that statistical security is
+provided based on the birthday bound. For instance, <code>q</code> being 2<sup>-64</sup>
+results in a disastrous advantage of 0.5 for the AES-128 key size of 128 bits.
+This first term therefore places an upper bound on the value that <code>q</code> can take
+before an attacker can rely solely on this computational limit.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
+<p id="section-9.1-4">We use this first component to bound the value of <code>q</code> for the second component.
+If advantage is equally divided between each component we can bound <code>q</code> to be at
+most <code>2^((k-a)/2)</code>, where <code>a</code> is the desired attacker advantage in bits (that
+is, advantage is at most 2<sup>-a</sup>).<a href="#section-9.1-4" class="pilcrow">¶</a></p>
+<p id="section-9.1-5">Using that value for <code>q</code> and an advantage of <code>(2^a)/2</code> for the second component
+leads to a limit for <code>p</code> of <code>2^(b-(k+a)/2-2)</code>.  For example, to obtain 40 bits
+of security, the value of <code>p</code> for AES-128 is limited to 2<sup>42</sup>, which
+assumes a value of <code>q</code> no more than 2<sup>44</sup>.<a href="#section-9.1-5" class="pilcrow">¶</a></p>
+<p id="section-9.1-6">For AES-256, the first component is negligible with a similar value for the same
+<code>q</code>.  However, with the same block size, a larger value of <code>q</code> only reduces the
+value of <code>p</code> that is permitted.  Using the same assumed value for <code>q</code> as in the
+AES-128 analysis allows the limit to be doubled (to 2<sup>43</sup> for 40 bits
+of security), given that the value for the first component is negligible.  That
+is, limiting <code>q</code> to 2<sup>44</sup> leads to the first component being at most
+2<sup>-169</sup>.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
+<p id="section-9.1-7">This analysis models AES as an ideal pseudorandom permutation.<a href="#section-9.1-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="formal-analysis">
+<section id="section-9.2">
+        <h3 id="name-formal-analysis">
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-formal-analysis" class="section-name selfRef">Formal Analysis</a>
+        </h3>
+<p id="section-9.2-1">TODO<a href="#section-9.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="iana">
+<section id="section-10">
+      <h2 id="name-iana-considerations">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-10-1">This document establishes a new registry for "PRF Functions", under the grouping
+"PRSS".  This registry operates on a "Expert Review" for provisional
+registrations or the "Specification Required" policy for permanent registrations
+<span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span>.  Experts for the registry are advised to reject registrations only
+when the requests are invalid, abusive, or duplicative of existing entries.<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-10-2">New entries for the "PRF Functions" registry <span class="bcp14">MUST</span> include the following
+information:<a href="#section-10-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-10-3">
+        <dt id="section-10-3.1">Name:</dt>
+        <dd style="margin-left: 1.5em" id="section-10-3.2">
+          <p id="section-10-3.2.1">A short mnemonic for the PRF.<a href="#section-10-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-10-3.3">Identifier:</dt>
+        <dd style="margin-left: 1.5em" id="section-10-3.4">
+          <p id="section-10-3.4.1">An identifier from the range 0 to 65535 (inclusive).<a href="#section-10-3.4.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-10-3.5">Nk:</dt>
+        <dd style="margin-left: 1.5em" id="section-10-3.6">
+          <p id="section-10-3.6.1">The number of bytes in the PRF key.<a href="#section-10-3.6.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-10-3.7">Mi:</dt>
+        <dd style="margin-left: 1.5em" id="section-10-3.8">
+          <p id="section-10-3.8.1">The maximum value of the PRF input.<a href="#section-10-3.8.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-10-3.9">Mo:</dt>
+        <dd style="margin-left: 1.5em" id="section-10-3.10">
+          <p id="section-10-3.10.1">The maximum value of the PRF output.<a href="#section-10-3.10.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-10-3.11">Status:</dt>
+        <dd style="margin-left: 1.5em" id="section-10-3.12">
+          <p id="section-10-3.12.1">Either "permanent" or "provisional".<a href="#section-10-3.12.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-10-3.13">Specification:</dt>
+        <dd style="margin-left: 1.5em" id="section-10-3.14">
+          <p id="section-10-3.14.1">A reference to a specification for the PRF.  Citing a specification is
+optional for provisional registrations.<a href="#section-10-3.14.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-10-3.15">Last Updated:</dt>
+        <dd style="margin-left: 1.5em" id="section-10-3.16">
+          <p id="section-10-3.16.1">The date of when the registration was last updated.<a href="#section-10-3.16.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
+<p id="section-10-4">The name and identifier <span class="bcp14">MUST</span> be unique within this registry.<a href="#section-10-4" class="pilcrow">¶</a></p>
+<p id="section-10-5">No special allowance is made for private use or experimentation in this
+registry.  People conducting experiments are encouraged to provisionally
+register a codepoint so that conflicting use of the same identifier can be
+avoided.  New PRFs are encouraged to use an identifier that is selected at
+random.  IANA are advised not to perform allocation for identifiers, but to use
+the identifier that is provided with the registration.<a href="#section-10-5" class="pilcrow">¶</a></p>
+<p id="section-10-6">Provisional registrations <span class="bcp14">MAY</span> be removed on request.  Experts can approve
+removal after having first attempted to determine that the value is no longer in
+use and attempting to contact registrants.  Two months notice <span class="bcp14">MUST</span> be provided
+before removing a registration, even when the original registrant requests
+removal.  Any entry that are in standards track RFCs or that has been updated in
+the past 24 months cannot be removed.<a href="#section-10-6" class="pilcrow">¶</a></p>
+<p id="section-10-7">A request to update an entry can be made at any time; any request only refreshes
+the "Last Updated" field can be allowed automatically, without consulting the
+assigned experts.<a href="#section-10-7" class="pilcrow">¶</a></p>
+<p id="section-10-8">Starting values for the registry are shown in <a href="#_table-prf" class="auto internal xref">Table 1</a>; these entries are
+given a "permanent" status and entries reference <a href="#prf" class="auto internal xref">Section 6</a> of this document.<a href="#section-10-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-11">
+      <h2 id="name-references">
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-11.1">
+        <h3 id="name-normative-references">
+<a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="AES">[AES]</dt>
+        <dd>
+<span class="refTitle">"Advanced encryption standard (AES)"</span>, <span class="refContent">National Institute of Standards and Technology</span>, <span class="seriesInfo">DOI 10.6028/nist.fips.197</span>, <time datetime="2001-11" class="refDate">November 2001</time>, <span>&lt;<a href="https://doi.org/10.6028/nist.fips.197">https://doi.org/10.6028/nist.fips.197</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ASCII">[ASCII]</dt>
+        <dd>
+<span class="refAuthor">Cerf, V.</span>, <span class="refTitle">"ASCII format for network interchange"</span>, <span class="seriesInfo">STD 80</span>, <span class="seriesInfo">RFC 20</span>, <span class="seriesInfo">DOI 10.17487/RFC0020</span>, <time datetime="1969-10" class="refDate">October 1969</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc20">https://www.rfc-editor.org/rfc/rfc20</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="HPKE">[HPKE]</dt>
+        <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8126">[RFC8126]</dt>
+        <dd>
+<span class="refAuthor">Cotton, M.</span>, <span class="refAuthor">Leiba, B.</span>, and <span class="refAuthor">T. Narten</span>, <span class="refTitle">"Guidelines for Writing an IANA Considerations Section in RFCs"</span>, <span class="seriesInfo">BCP 26</span>, <span class="seriesInfo">RFC 8126</span>, <span class="seriesInfo">DOI 10.17487/RFC8126</span>, <time datetime="2017-06" class="refDate">June 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8126">https://www.rfc-editor.org/rfc/rfc8126</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RSA">[RSA]</dt>
+      <dd>
+<span class="refAuthor">Moriarty, K., Ed.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Jonsson, J.</span>, and <span class="refAuthor">A. Rusch</span>, <span class="refTitle">"PKCS #1: RSA Cryptography Specifications Version 2.2"</span>, <span class="seriesInfo">RFC 8017</span>, <span class="seriesInfo">DOI 10.17487/RFC8017</span>, <time datetime="2016-11" class="refDate">November 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8017">https://www.rfc-editor.org/rfc/rfc8017</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-11.2">
+        <h3 id="name-informative-references">
+<a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="CDI05">[CDI05]</dt>
+        <dd>
+<span class="refAuthor">Cramer, R.</span>, <span class="refAuthor">Damgård, I.</span>, and <span class="refAuthor">Y. Ishai</span>, <span class="refTitle">"Share Conversion, Pseudorandom Secret-Sharing and Applications to Secure Computation"</span>, <span class="refContent">Springer Berlin Heidelberg</span>, <span class="seriesInfo">Theory of Cryptography pp. 342-362</span>, <span class="seriesInfo">DOI 10.1007/978-3-540-30576-7_19</span>, <span class="seriesInfo">ISBN ["9783540245735", "9783540305767"]</span>, <time datetime="2005" class="refDate">2005</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-540-30576-7_19">https://doi.org/10.1007/978-3-540-30576-7_19</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="GKWWY20">[GKWWY20]</dt>
+        <dd>
+<span class="refAuthor">Guo, C.</span>, <span class="refAuthor">Katz, J.</span>, <span class="refAuthor">Wang, X.</span>, <span class="refAuthor">Weng, C.</span>, and <span class="refAuthor">Y. Yu</span>, <span class="refTitle">"Better Concrete Security for Half-Gates Garbling (in the Multi-instance Setting)"</span>, <span class="refContent">Springer International Publishing</span>, <span class="seriesInfo">Advances in Cryptology – CRYPTO 2020 pp. 793-822</span>, <span class="seriesInfo">DOI 10.1007/978-3-030-56880-1_28</span>, <span class="seriesInfo">ISBN ["9783030568795", "9783030568801"]</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-030-56880-1_28">https://doi.org/10.1007/978-3-030-56880-1_28</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="GKWY20">[GKWY20]</dt>
+        <dd>
+<span class="refAuthor">Guo, C.</span>, <span class="refAuthor">Katz, J.</span>, <span class="refAuthor">Wang, X.</span>, and <span class="refAuthor">Y. Yu</span>, <span class="refTitle">"Efficient and Secure Multiparty Computation from Fixed-Key Block Ciphers"</span>, <span class="refContent">IEEE</span>, <span class="seriesInfo">2020 IEEE Symposium on Security and Privacy (SP)</span>, <span class="seriesInfo">DOI 10.1109/sp40000.2020.00016</span>, <time datetime="2020-05" class="refDate">May 2020</time>, <span>&lt;<a href="https://doi.org/10.1109/sp40000.2020.00016">https://doi.org/10.1109/sp40000.2020.00016</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="MLS">[MLS]</dt>
+        <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Beurdouche, B.</span>, <span class="refAuthor">Robert, R.</span>, <span class="refAuthor">Millican, J.</span>, <span class="refAuthor">Omara, E.</span>, and <span class="refAuthor">K. Cohn-Gordon</span>, <span class="refTitle">"The Messaging Layer Security (MLS) Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-mls-protocol-20</span>, <time datetime="2023-03-27" class="refDate">27 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-mls-protocol-20">https://datatracker.ietf.org/doc/html/draft-ietf-mls-protocol-20</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TLS">[TLS]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="VDAF">[VDAF]</dt>
+      <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Cook, D.</span>, <span class="refAuthor">Patton, C.</span>, and <span class="refAuthor">P. Schoppmann</span>, <span class="refTitle">"Verifiable Distributed Aggregation Functions"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-vdaf-09</span>, <time datetime="2024-05-13" class="refDate">13 May 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vdaf-09">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vdaf-09</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+<div id="alternative-designs">
+<section id="appendix-A">
+      <h2 id="name-alternative-designs">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-alternative-designs" class="section-name selfRef">Alternative Designs</a>
+      </h2>
+<p id="appendix-A-1">Where a small number of shared secrets is desired, communication can be a good
+substitute for the methods described in this document.  Depending on the
+context, protocol participants can use one of a range of methods to agree on a
+random value.  This might involve the use of the KEM and KDF method described in
+<a href="#kex" class="auto internal xref">Section 4</a>, a commit-then-reveal protocol, or one of many alternative protocols.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">TLS exporters <span><a href="https://rfc-editor.org/rfc/rfc8446#section-7.5" class="relref">Section 7.5</a> of [<a href="#TLS" class="cite xref">TLS</a>]</span> are an existing example of
+pseudorandom secret sharing.  TLS exporters are suitable for small numbers of
+secrets if a TLS connection is available for use, but TLS exporters are an not
+efficient means of generating large amounts of randomness.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+<p id="appendix-A-3">In some applications, a TLS exporter might be used in place of the KEM to
+produce a shared secret; alternatively, the randomness context identifier might
+be provided as context to a TLS exporter so that a randomness context might be
+produced directly.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="application-to-2-of-3-replicated-secret-sharing">
+<section id="appendix-B">
+      <h2 id="name-application-to-2-of-3-repli">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-application-to-2-of-3-repli" class="section-name selfRef">Application to 2-of-3 Replicated Secret Sharing</a>
+      </h2>
+<p id="appendix-B-1">This section describes how PRSS might be used to produce replicated shares for
+use with replicated secret sharing MPC protocols that use additive or XOR secret
+sharing.  <span>[<a href="#CDI05" class="cite xref">CDI05</a>]</span> describes how to use PRSS for protocols that use polynomial
+shares.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">The simplest replicated secret sharing involves three participants that are
+arranged logically in a ring.  Each participant receives two of the three shares
+of values.  In this scheme, each participant has one share in common with the
+participant to its left and right respectively.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<p id="appendix-B-3">Executing PRSS in this setting requires use of the protocol in a pairwise
+fashion; each participant executes the protocol once with the participant to its
+left and once with the participant to its right.  As long as participants agree
+on parameters - which randomness context is used (<a href="#context" class="auto internal xref">Section 5</a>), which mode is
+used (<a href="#modes" class="auto internal xref">Section 7</a>), which index (if using an indexed mode; <a href="#indexed" class="auto internal xref">Section 7.2</a>), and the
+sampling method (<a href="#sampling" class="auto internal xref">Section 8</a>) - this produces replicated shares of a random
+value that is not known to any single participant.<a href="#appendix-B-3" class="pilcrow">¶</a></p>
+<p id="appendix-B-4"><span>[<a href="#CDI05" class="cite xref">CDI05</a>]</span> also describes how shares of a known, specific value might be
+produced using the same scheme, but this is more trivially accomplished in this
+setting by setting a pre-arranged share value to the desired value and all
+others to zero.<a href="#appendix-B-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-C">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-C-1">TODO acknowledge.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-D">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Martin Thomson</span></div>
+<div dir="auto" class="left"><span class="org">Mozilla</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:mt@lowentropy.net" class="email">mt@lowentropy.net</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Ben Savage</span></div>
+<div dir="auto" class="left"><span class="org">Meta</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:btsavage@meta.com" class="email">btsavage@meta.com</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
