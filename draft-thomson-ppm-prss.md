@@ -568,13 +568,14 @@ leads to a limit for `p` of `2^(b-(k+a)/2-2)`.  For example, to obtain 40 bits
 of security, the value of `p` for AES-128 is limited to 2<sup>42</sup>, which
 assumes a value of `q` no more than 2<sup>44</sup>.
 
-For AES-256, the first component is negligible with a similar value for the same
-`q`.  However, with the same block size, a larger value of `q` only reduces the
-value of `p` that is permitted.  Using the same assumed value for `q` as in the
-AES-128 analysis allows the limit to be doubled (to 2<sup>43</sup> for 40 bits
-of security), given that the value for the first component is negligible.  That
-is, limiting `q` to 2<sup>44</sup> leads to the first component being at most
-2<sup>-169</sup>.
+For AES-256, the larger key size means that the first component is negligible
+for any value of `q`, unless `p` and `a` are both very small.  This is due to
+AES-256 having the same 128-bit block size as AES-128.  Consequently, increasing
+`q` only reduces the value of `p`.
+
+On this basis, the same `q` value can be used for AES-256 as for AES-128. The
+usage limit for AES-256 can be doubled to `2^(b-(k+a)/2-1)` (2<sup>43</sup> for
+40 bits of security; the first component is the negligible 2<sup>-169</sup>).
 
 This analysis models AES as an ideal pseudorandom permutation.
 
