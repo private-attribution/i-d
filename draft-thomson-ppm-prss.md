@@ -336,7 +336,7 @@ information is summarized in {{table-prf}}.
 | PRF Name | Identifier | Nk | Mi | Mo |
 |:--|--:|--:|--:|--:|--:|
 | PRF_AES_128 | 0x0001 | 16 | 2<sup>42</sup> | 2<sup>128</sup> |
-| PRF_AES_256 | 0x0002 | 32 | 2<sup>42</sup> | 2<sup>128</sup> |
+| PRF_AES_256 | 0x0002 | 32 | 2<sup>43</sup> | 2<sup>128</sup> |
 {: #table-prf title="Pseudorandom Function Summary"}
 
 Both AES PRFs use the same process:
