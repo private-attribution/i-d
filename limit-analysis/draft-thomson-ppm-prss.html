@@ -1903,14 +1903,14 @@ is, advantage is at most 2<sup>-a</sup>).<a href="#section-9.1-4" class="pilcrow
 leads to a limit for <code>p</code> of <code>2^(b-(k+a)/2-2)</code>.  For example, to obtain 40 bits
 of security, the value of <code>p</code> for AES-128 is limited to 2<sup>42</sup>, which
 assumes a value of <code>q</code> no more than 2<sup>44</sup>.<a href="#section-9.1-5" class="pilcrow">¶</a></p>
-<p id="section-9.1-6">For AES-256, the first component is negligible with a similar value for the same
-<code>q</code>.  However, with the same block size, a larger value of <code>q</code> only reduces the
-value of <code>p</code> that is permitted.  Using the same assumed value for <code>q</code> as in the
-AES-128 analysis allows the limit to be doubled (to 2<sup>43</sup> for 40 bits
-of security), given that the value for the first component is negligible.  That
-is, limiting <code>q</code> to 2<sup>44</sup> leads to the first component being at most
-2<sup>-169</sup>.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
-<p id="section-9.1-7">This analysis models AES as an ideal pseudorandom permutation.<a href="#section-9.1-7" class="pilcrow">¶</a></p>
+<p id="section-9.1-6">For AES-256, the larger key size means that the first component is negligible
+for any value of <code>q</code>, unless <code>p</code> and <code>a</code> are both very small.  This is due to
+AES-256 having the same 128-bit block size as AES-128.  Consequently, increasing
+<code>q</code> only reduces the value of <code>p</code>.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
+<p id="section-9.1-7">On this basis, the same <code>q</code> value can be used for AES-256 as for AES-128. The
+usage limit for AES-256 can be doubled to <code>2^(b-(k+a)/2-1)</code> (2<sup>43</sup> for
+40 bits of security; the first component is the negligible 2<sup>-169</sup>).<a href="#section-9.1-7" class="pilcrow">¶</a></p>
+<p id="section-9.1-8">This analysis models AES as an ideal pseudorandom permutation.<a href="#section-9.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="formal-analysis">
