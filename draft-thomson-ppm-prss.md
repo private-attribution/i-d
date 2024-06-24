@@ -19,8 +19,8 @@ venue:
   type: "Working Group"
   mail: "ppm@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/ppm/"
-  github: "martinthomson/ipa-id"
-  latest: "https://martinthomson.github.io/ipa-id/draft-thomson-ppm-prss.html"
+  github: "private-attribution/i-d"
+  latest: "https://private-attribution.github.io/i-d/draft-thomson-ppm-prss.html"
 
 author:
  -
