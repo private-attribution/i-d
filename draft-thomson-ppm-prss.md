@@ -162,7 +162,7 @@ in most cases.
 
 This document uses the system of describing, naming, and identifying KEMs
 defined in {{!HPKE=RFC9180}}.  For use in PRSS, a KEM is first chosen for use.
-KEM identifiers from {{Section 7.1 of !HPKE}} MAY be used for identification or
+KEM identifiers from {{Section 7.1 of !HPKE}} could used for identification or
 negotiation.
 
 Once a KEM is chosen, one participant is assigned the "sender" role; the other
