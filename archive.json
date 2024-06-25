@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-06-23T01:04:07.409668+00:00",
+  "timestamp": "2024-06-25T01:00:19.346607+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -106,6 +106,73 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOJgF-t85zTiSF",
+      "title": "Limit analysis",
+      "url": "https://github.com/private-attribution/i-d/pull/3",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I spent some time with this and concluded that our limits were not good in the first time around.  A more careful analysis shows that we are still OK, but the limits are closer than ideal.  We're assuming $2^{44}$ work for the adversary here for 40 bits of security, which is probably fine, though it is much weaker than the same analysis I've seen for cipher usage elsewhere.\r\n\r\nConcrete numbers: $2^{64}$ becomes $2^{42}$ for AES-128 (double that for AES-256).",
+      "createdAt": "2024-06-24T02:53:04Z",
+      "updatedAt": "2024-06-24T06:54:36Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "9adcc2d9fee4d94dee6455c09e256d2ba1971464",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "limit-analysis",
+      "headRefOid": "7e55ac6cdbdba45c4c5b526ee3321b277d0375c8",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t85_Pgqs",
+          "commit": {
+            "abbreviatedOid": "8acb6b6"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-06-24T06:29:26Z",
+          "updatedAt": "2024-06-24T06:29:26Z",
+          "comments": [
+            {
+              "originalPosition": 90,
+              "body": "```suggestion\r\nwilling to invoke the permutation (`q`). The result shows that statistical security is\r\n```",
+              "createdAt": "2024-06-24T06:29:26Z",
+              "updatedAt": "2024-06-24T06:29:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t85_Pgyg",
+          "commit": {
+            "abbreviatedOid": "a6c4aa3"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-06-24T06:29:46Z",
+          "updatedAt": "2024-06-24T06:29:47Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "```suggestion\r\n| PRF_AES_256 | 0x0002 | 32 | 2<sup>43</sup> | 2<sup>128</sup> |\r\n```",
+              "createdAt": "2024-06-24T06:29:46Z",
+              "updatedAt": "2024-06-24T06:29:47Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
