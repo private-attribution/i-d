@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                               B. Savage
-Expires: 26 December 2024                                           Meta
-                                                            24 June 2024
+Expires: 28 December 2024                                           Meta
+                                                            26 June 2024
 
 
           High Performance Pseudorandom Secret Sharing (PRSS)
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 December 2024.
+   This Internet-Draft will expire on 28 December 2024.
 
 Copyright Notice
 
@@ -603,7 +603,7 @@ Table of Contents
 
    On this basis, the same q value can be used for AES-256 as for AES-
    128.  The usage limit for AES-256 can be doubled to 2^(b-(k+a)/2-1)
-   (2^43 for 40 bits of security; the first component is the negligible
+   (2^43 for 40 bits of security; the first component is a negligible
    2^-169).
 
    This analysis models AES as an ideal pseudorandom permutation.
