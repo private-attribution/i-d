@@ -575,7 +575,7 @@ AES-256 having the same 128-bit block size as AES-128.  Consequently, increasing
 
 On this basis, the same `q` value can be used for AES-256 as for AES-128. The
 usage limit for AES-256 can be doubled to `2^(b-(k+a)/2-1)` (2<sup>43</sup> for
-40 bits of security; the first component is the negligible 2<sup>-169</sup>).
+40 bits of security; the first component is a negligible 2<sup>-169</sup>).
 
 This analysis models AES as an ideal pseudorandom permutation.
 
