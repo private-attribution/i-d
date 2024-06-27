@@ -73,8 +73,8 @@ randomness context can either be used as a sequential source of randomness
 This document describes a PRSS protocol for two parties.  The set of KEMs
 defined only work in a two-party context.  If the goal is to create randomness
 that is shared with more than one entity, group key exchange methods, such as
-MLS {{?MLS=I-D.ietf-mls-protocol}}, could be adapted as a means of key
-agreement, retaining the other elements of this protocol unchanged.
+MLS {{?MLS=RFC9420}}, could be adapted as a means of key agreement, retaining
+the other elements of this protocol unchanged.
 
 
 # Conventions and Definitions
