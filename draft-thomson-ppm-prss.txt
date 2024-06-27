@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                               B. Savage
-Expires: 26 December 2024                                           Meta
-                                                            24 June 2024
+Expires: 29 December 2024                                           Meta
+                                                            27 June 2024
 
 
           High Performance Pseudorandom Secret Sharing (PRSS)
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 December 2024.
+   This Internet-Draft will expire on 29 December 2024.
 
 Copyright Notice
 
@@ -706,10 +706,8 @@ Table of Contents
 
    [MLS]      Barnes, R., Beurdouche, B., Robert, R., Millican, J.,
               Omara, E., and K. Cohn-Gordon, "The Messaging Layer
-              Security (MLS) Protocol", Work in Progress, Internet-
-              Draft, draft-ietf-mls-protocol-20, 27 March 2023,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-mls-
-              protocol-20>.
+              Security (MLS) Protocol", RFC 9420, DOI 10.17487/RFC9420,
+              July 2023, <https://www.rfc-editor.org/rfc/rfc9420>.
 
    [TLS]      Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
