@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                               B. Savage
-Expires: 28 December 2024                                           Meta
-                                                            26 June 2024
+Expires: 30 December 2024                                           Meta
+                                                            28 June 2024
 
 
           High Performance Pseudorandom Secret Sharing (PRSS)
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 December 2024.
+   This Internet-Draft will expire on 30 December 2024.
 
 Copyright Notice
 
@@ -581,7 +581,7 @@ Table of Contents
    However, the first component guides our assumptions about the number
    of times the attacker might be willing to invoke the permutation (q).
    The result shows that statistical security is provided based on the
-   birthday bound.  For instance, q being 2^-64 results in a disastrous
+   birthday bound.  For instance, q being 2^64 results in a disastrous
    advantage of 0.5 for the AES-128 key size of 128 bits.  This first
    term therefore places an upper bound on the value that q can take
    before an attacker can rely solely on this computational limit.
