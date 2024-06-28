@@ -537,7 +537,7 @@ The number of uses (`p`) are only affected by the second component, as the first
 component is unaffected by usage of the permutation.  However, the first
 component guides our assumptions about the number of times the attacker might be
 willing to invoke the permutation (`q`). The result shows that statistical security is
-provided based on the birthday bound. For instance, `q` being 2<sup>-64</sup>
+provided based on the birthday bound. For instance, `q` being 2<sup>64</sup>
 results in a disastrous advantage of 0.5 for the AES-128 key size of 128 bits.
 This first term therefore places an upper bound on the value that `q` can take
 before an attacker can rely solely on this computational limit.
