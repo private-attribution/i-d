@@ -567,10 +567,10 @@ g_4 = -½(1 - 2·e<sub>-</sub>)
 And where:
 
 ~~~ pseudocode
-e<sub>-</sub> = x<sub>-</sub> · y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub>
+e_- = x_-·y_- ⊕ z_- ⊕ r_-
 ~~~
 
-In this field, the negative inverse of two (-½) is 1,152,921,504,606,846,975.
+In this field, the negative inverse of two (-½) is `1,152,921,504,606,846,975`.
 
 ## Validating a batch of multiplications {#initial-uv}
 
