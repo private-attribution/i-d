@@ -468,8 +468,8 @@ large field, the XOR operation can be computed with the expression:
 
 ~~~ pseudocode
 f(x, y) = x ⊕ y
-        = x + y - 2*x*y
-        = x*(1 - 2*y) + y
+        = x + y - 2·x·y
+        = x·(1 - 2·y) + y
 ~~~
 
 Using this relation, the expression that must be proven can be converted into a
