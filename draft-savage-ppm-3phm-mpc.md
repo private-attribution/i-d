@@ -719,7 +719,11 @@ At each iteration:
        statement, but with the new vectors `u’` and `v’` having length `L` times
        shorter than the original vectors.
 
-    2. Each of the verifiers can use the `2L - 1` points they received (their share
+    2. `u’` and `v’` need not be communicated, since the prover and verifier `P_-`
+       can both compute each value `p<sub>i</sub>(r)` using Lagrange interpolation,
+       just as the prover and verifier `P_+` can compute each value `q<sub>i</sub>(r)`.
+
+    3. Each of the verifiers can use the `2L - 1` points they received (their share
        of `G(x)`) to compute a share of `G(r)` using Lagrange interpolation. These
        shares become their share of a new value for `t`.
 
