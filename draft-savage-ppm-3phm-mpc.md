@@ -377,15 +377,12 @@ While an additive attack does not result in information about the inputs being r
 
 For example, if the parties were computing a function that erases a value unless it has reached some minimum such as:
 
-if total_count > 1000 {
-
-reveal(total_count);
-
-} else {
-
-reveal(0);
-
-}
+~~~ python
+if total_count > 1000:
+    reveal(total_count)
+else:
+    reveal(0)
+~~~
 
 If a corrupted helper wanted to reveal a total_count that was less than 1000, it could add 1 to the final multiplication used to compute the condition total_count > 1000. The result is that values below the minimum are revealed (and values above the minimum are erased), violating the conditions on the protocol.
 
