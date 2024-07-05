@@ -399,13 +399,13 @@ Each of the parties, P<sub>=</sub>, produces a "Zero Knowledge Proof" (ZKP) that
 When operating in a boolean field, if P<sub>=</sub> followed the protocol correctly, this is how they would compute z<sub>-</sub>
 
 ~~~ pseudocode
-z_- = x_-∧y_- ⊕ x_-∧y_+ ⊕ x_+∧y_- ⊕ r_- ⊕ r_+
+z_- = x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+
 ~~~
 
 So the expression:
 
 ~~~ pseudocode
-x_-∧y_- ⊕ x_-∧y_+ ⊕ x_+∧y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
+x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
 will hold true if the protocol was followed correctly, but will equal **_one_** if there was an additive attack.
@@ -419,7 +419,7 @@ For this protocol, the parties will use the field of integers mod p, where p is 
 The prover needs to prove that for each multiplication in a batch:
 
 ~~~ pseudocode
-x_-∧y_- ⊕ x_-∧y_+ ⊕ x_+∧y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
+x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
 The verifier on the left, P<sub>-</sub>, knows the values of:
@@ -479,19 +479,19 @@ P<sub>-</sub>, the other being known to both P<sub>=</sub> and P<sub>+</sub>.
 Rearranging terms:
 
 ~~~ pseudocode
-x<sub>-</sub> ∧ y<sub>+</sub> ⊕ (x<sub>-</sub> ∧ y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub> ) ⊕ x<sub>+</sub> ∧ y<sub>-</sub> ⊕ r<sub>+</sub> = 0
+x<sub>-</sub> · y<sub>+</sub> ⊕ (x<sub>-</sub> · y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub> ) ⊕ x<sub>+</sub> · y<sub>-</sub> ⊕ r<sub>+</sub> = 0
 ~~~
 
 Define:
 
 ~~~ pseudocode
-e<sub>-</sub> = x<sub>-</sub> ∧ y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub>
+e<sub>-</sub> = x<sub>-</sub> · y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub>
 ~~~
 
 Then:
 
 ~~~ pseudocode
-(x<sub>-</sub> ∧ y<sub>+</sub> ⊕ e<sub>-</sub> ) ⊕ (x<sub>+</sub> ∧ y<sub>-</sub> ⊕ r<sub>+</sub>) = 0
+(x<sub>-</sub> · y<sub>+</sub> ⊕ e<sub>-</sub> ) ⊕ (x<sub>+</sub> · y<sub>-</sub> ⊕ r<sub>+</sub>) = 0
 ~~~
 
 Using: `x ⊕ y = x*(1 - 2*y) + y`
@@ -567,7 +567,7 @@ g<sub>4</sub> = -½(1 - 2·e<sub>-</sub>)
 And where:
 
 ~~~ pseudocode
-e<sub>-</sub> = x<sub>-</sub> ∧ y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub>
+e<sub>-</sub> = x<sub>-</sub> · y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub>
 ~~~
 
 In this field, the negative inverse of two (-½) is 1,152,921,504,606,846,975.
