@@ -543,10 +543,10 @@ g_1·h_1 + g_2·h_2 + g_3·h_3 + g_4·h_4 = -½
 Or alternatively:
 
 ~~~ pseudocode
-sum(i=1..4, g<sub>i</sub> · h<sub>i</sub>) = -½
+sum(i=1..4, g_i·h_i) = -½
 ~~~
 
-Where P<sub>=</sub> and P<sub>+</sub> both compute `h<sub>i</sub>` as follows:
+Where P<sub>=</sub> and P<sub>+</sub> both compute `h_i` as follows:
 
 ~~~ pseudocode
 h_1 = y<sub>+</sub>·x<sub>+</sub>·(1 - 2·r<sub>+</sub>)
@@ -555,7 +555,7 @@ h_3 = y<sub>+</sub>·(1 - 2·r<sub>+</sub>)
 h_4 = 1 − 2·r<sub>+</sub>
 ~~~
 
-And P<sub>=</sub> and P<sub>-</sub> both compute g<sub>i</sub> as follows:
+And P<sub>=</sub> and P<sub>-</sub> both compute `g_i` as follows:
 
 ~~~ pseudocode
 g_1 = -2·x<sub>-</sub>·y<sub>-</sub>·(1 - 2·e<sub>-</sub> )
