@@ -479,59 +479,59 @@ P<sub>-</sub>, the other being known to both P<sub>=</sub> and P<sub>+</sub>.
 Rearranging terms:
 
 ~~~ pseudocode
-x<sub>-</sub> · y<sub>+</sub> ⊕ (x<sub>-</sub> · y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub> ) ⊕ x<sub>+</sub> · y<sub>-</sub> ⊕ r<sub>+</sub> = 0
+x_-·y_+ ⊕ (x_-·y_- ⊕ z_- ⊕ r_- ) ⊕ x_+·y_- ⊕ r_+ = 0
 ~~~
 
 Define:
 
 ~~~ pseudocode
-e<sub>-</sub> = x<sub>-</sub> · y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub>
+e_- = x_-·y_- ⊕ z_- ⊕ r_-
 ~~~
 
 Then:
 
 ~~~ pseudocode
-(x<sub>-</sub> · y<sub>+</sub> ⊕ e<sub>-</sub> ) ⊕ (x<sub>+</sub> · y<sub>-</sub> ⊕ r<sub>+</sub>) = 0
+(x_-·y_+ ⊕ e_- ) ⊕ (x_+·y_- ⊕ r_+) = 0
 ~~~
 
 Using: `x ⊕ y = x*(1 - 2*y) + y`
 
 ~~~ pseudocode
-(x<sub>-</sub>·y<sub>+</sub>·(1 - 2e<sub>-</sub>) + e<sub>-</sub>) ⊕ (x<sub>+</sub>·y<sub>-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>) = 0
+(x_-·y_+·(1 - 2e_-) + e_-) ⊕ (x_+·y_-·(1 - 2r_+) + r_+) = 0
 ~~~
 
 Using: x ⊕ y = x + y - 2*x*y
 
 ~~~ pseudocode
-(x<sub>-</sub>·y<sub>+</sub>·(1 - 2e<sub>-</sub>) + e<sub>-</sub>)
-+ (x<sub>+</sub>·y<sub>-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>)
-- 2(x<sub>-</sub>·y<sub>+</sub>·(1 - 2e<sub>-</sub>) + e<sub>-</sub>)(x<sub>+</sub>·y<sub>-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>) = 0
+(x_-·y_+·(1 - 2e_-) + e_-)
++ (x_+·y_-·(1 - 2r_+) + r_+)
+- 2(x_-·y_+·(1 - 2e_-) + e_-)(x_+·y_-·(1 - 2r_+) + r_+) = 0
 ~~~
 
 Distributing Terms:
 
 ~~~ pseudocode
-x<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub> + e<sub>-</sub>
-+ y<sub>-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>
-- 2x<sub>-</sub>·y<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2x<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub>·r<sub>+</sub> - 2e<sub>-</sub>·y<sub>-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2e<sub>-</sub>·r<sub>+</sub> = 0
+x_-·(1 - 2e_-)·y_+ + e_-
++ y_-·x_+·(1 - 2r_+) + r_+
+- 2x_-·y_-·(1 - 2e_-)·y_+·x_+·(1 - 2r_+) - 2x_-·(1 - 2e_-)·y_+·r_+ - 2e_-·y_-·x_+·(1 - 2r_+) - 2e_-·r_+ = 0
 ~~~
 
 Rearranging terms, and subtracting 1/2 from both sides:
 
 ~~~ pseudocode
-- 2x<sub>-</sub>·y<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)
-+ y<sub>-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2e<sub>-</sub>·y<sub>-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)
-+ x<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub> - 2x<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub>·r<sub>+</sub>
-+ e<sub>-</sub> - 2e<sub>-</sub>·r<sub>+</sub> + r<sub>+</sub> - ½ = - ½
+- 2x_-·y_-·(1 - 2e_-)·y_+·x_+·(1 - 2r_+)
++ y_-·x_+·(1 - 2r_+) - 2e_-·y_-·x_+·(1 - 2r_+)
++ x_-·(1 - 2e_-)·y_+ - 2x_-·(1 - 2e_-)·y_+·r_+
++ e_- - 2e_-·r_+ + r_+ - ½ = - ½
 ~~~
 
 Factoring allows this to be written as an expression with four terms, each with a component taken from the left (which we will label g) and a component from the right (which we will label h):
 
 ~~~ pseudocode
-[-2x<sub>-</sub>·y<sub>-</sub>·(1 - 2e<sub>-</sub>)] · [y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)]
-+ [y<sub>-</sub>(1 - 2e<sub>-</sub>)] · [x<sub>+</sub>·(1 - 2r<sub>+</sub>)]
-+ [x<sub>-</sub>·(1 - 2e<sub>-</sub>)] · [y<sub>+</sub>(1 - 2r<sub>+</sub>)]
-+ [-½(1 - 2e<sub>-</sub>)] · [(1 - 2r<sub>+</sub>)] = -½
+[-2x_-·y_-·(1 - 2e_-)] · [y_+·x_+·(1 - 2r_+)]
++ [y_-(1 - 2e_-)] · [x_+·(1 - 2r_+)]
++ [x_-·(1 - 2e_-)] · [y_+(1 - 2r_+)]
++ [-½(1 - 2e_-)] · [(1 - 2r_+)] = -½
 ~~~
 
 Renaming terms as new variables, the result is the dot product of two four dimensional vectors, g and h:
