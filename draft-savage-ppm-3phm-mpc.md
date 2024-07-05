@@ -310,9 +310,7 @@ This can be illustrated with a 3 by 3 table:
 
 To compute the product, each party locally computes the sum of three products as follows:
 
-~~~ pseudocode
-z<sub>\-</sub> = x<sub>\-</sub>\*y<sub>\-</sub> + x<sub>\-</sub>\*y<sub>+</sub> + x<sub>\+</sub>\*y<sub>-</sub>
-~~~
+z<sub>-</sub> = x<sub>-</sub>·y<sub>-</sub> + x<sub>-</sub>·y<sub>+</sub> + x<sub>+</sub>·y<sub>-</sub>
 
 To visualize this, {{fig-mul}} shows cells labeled with the party responsible for computing that partial product:
 
@@ -350,7 +348,7 @@ Using a source of shared randomness (such as {{PRSS}}), each pair of helpers gen
 
 Each party uses r<sub>\-</sub> and r<sub>+</sub> to create a masked value of z<sub>\-</sub> as follows:
 
-z<sub>\-</sub> = x<sub>\-</sub> · y<sub>\-</sub> + x<sub>\-</sub> · y<sub>+</sub> + x<sub>+</sub> · y<sub>\-</sub> + r<sub>\-</sub> - r<sub>+</sub>
+z<sub>\-</sub> = x<sub>\-</sub>·y<sub>\-</sub> + x<sub>\-</sub>·y<sub>+</sub> + x<sub>+</sub>·y<sub>\-</sub> + r<sub>\-</sub> - r<sub>+</sub>
 
 These three mask values sum to zero, so this masking does not alter the result. Importantly, the value of r<sub>+</sub> is not known to P<sub>\-</sub>, which ensures that z<sub>\-</sub> cannot be used by P<sub>\-</sub> to recover x or y. Thus, z<sub>\-</sub> is safe to send to P<sub>\-</sub>.
 
