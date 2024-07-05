@@ -1809,13 +1809,13 @@ else:
 <p id="section-4.3-2">When operating in a boolean field, if P<sub>=</sub> followed the protocol correctly, this is how they would compute z<sub>-</sub><a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.3-3">
 <pre>
-z₋ = x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊
+z₋ = x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊
 </pre><a href="#section-4.3-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.3-4">So the expression:<a href="#section-4.3-4" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.3-5">
 <pre>
-x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
+x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 </pre><a href="#section-4.3-5" class="pilcrow">¶</a>
 </div>
 <p id="section-4.3-6">will hold true if the protocol was followed correctly, but will equal <strong><em>one</em></strong> if there was an additive attack.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
@@ -1831,7 +1831,7 @@ x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 <p id="section-4.4-1">The prover needs to prove that for each multiplication in a batch:<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.4-2">
 <pre>
-x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
+x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 </pre><a href="#section-4.4-2" class="pilcrow">¶</a>
 </div>
 <p id="section-4.4-3">The verifier on the left, P<sub>-</sub>, knows the values of:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
@@ -1910,19 +1910,19 @@ P<sub>-</sub>, the other being known to both P<sub>=</sub> and P<sub>+</sub>.<a 
 <p id="section-4.6-4">Rearranging terms:<a href="#section-4.6-4" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-5">
 <pre>
-x₋ ∧ y₊ ⊕ (x₋ ∧ y₋ ⊕ z₋ ⊕ r₋ ) ⊕ x₊ ∧ y₋ ⊕ r₊ = 0
+x₋ · y₊ ⊕ (x₋ · y₋ ⊕ z₋ ⊕ r₋ ) ⊕ x₊ · y₋ ⊕ r₊ = 0
 </pre><a href="#section-4.6-5" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-6">Define:<a href="#section-4.6-6" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-7">
 <pre>
-e₋ = x₋ ∧ y₋ ⊕ z₋ ⊕ r₋
+e₋ = x₋ · y₋ ⊕ z₋ ⊕ r₋
 </pre><a href="#section-4.6-7" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-8">Then:<a href="#section-4.6-8" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-9">
 <pre>
-(x₋ ∧ y₊ ⊕ e₋ ) ⊕ (x₊ ∧ y₋ ⊕ r₊) = 0
+(x₋ · y₊ ⊕ e₋ ) ⊕ (x₊ · y₋ ⊕ r₊) = 0
 </pre><a href="#section-4.6-9" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-10">Using: <code>x ⊕ y = x*(1 - 2*y) + y</code><a href="#section-4.6-10" class="pilcrow">¶</a></p>
@@ -1998,7 +1998,7 @@ g₄ = -½(1 - 2·e₋)
 <p id="section-4.6-28">And where:<a href="#section-4.6-28" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-29">
 <pre>
-e₋ = x₋ ∧ y₋ ⊕ z₋ ⊕ r₋
+e₋ = x₋ · y₋ ⊕ z₋ ⊕ r₋
 </pre><a href="#section-4.6-29" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-30">In this field, the negative inverse of two (-½) is 1,152,921,504,606,846,975.<a href="#section-4.6-30" class="pilcrow">¶</a></p>
