@@ -640,7 +640,7 @@ Table of Contents
 
    And where:
 
-   e₋ = x₋ · y₋ ⊕ z₋ ⊕ r₋
+   e₋ = x₋·y₋ ⊕ z₋ ⊕ r₋
 
    In this field, the negative inverse of two (-½) is
    1,152,921,504,606,846,975.
