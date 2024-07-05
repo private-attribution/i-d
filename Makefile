@@ -1,4 +1,5 @@
 LIBDIR := lib
+MD_PREPROCESSOR := fix-sub.py
 include $(LIBDIR)/main.mk
 
 $(LIBDIR)/main.mk:
