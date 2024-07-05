@@ -489,11 +489,11 @@ Table of Contents
    When operating in a boolean field, if P_(=) followed the protocol
    correctly, this is how they would compute z_(-)
 
-   z<sub>\-</sub> = x<sub>\-</sub>∧y<sub>\-</sub> ⊕ x<sub>\-</sub>∧y₊ ⊕ x<sub>\+</sub>∧y<sub>\-</sub> ⊕ r<sub>\-</sub> ⊕ r₊
+   z₋ = x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊
 
    So the expression:
 
-   x<sub>\-</sub>∧y<sub>\-</sub> ⊕ x<sub>\-</sub>∧y₊ ⊕ x<sub>\+</sub>∧y<sub>\-</sub> ⊕ r<sub>\-</sub> ⊕ r₊ ⊕ z<sub>\-</sub> = 0
+   x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 
    will hold true if the protocol was followed correctly, but will equal
    *_one_* if there was an additive attack.
@@ -515,8 +515,7 @@ Table of Contents
 
    The prover needs to prove that for each multiplication in a batch:
 
-   x_(-) ∧ y_(-) ⊕ x_(-) ∧ y_(+) ⊕ x_(+) ∧ y_(-) ⊕ r_(-) ⊕ r_(+) ⊕ z_(-)
-   = 0
+   x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 
    The verifier on the left, P_(-), knows the values of:
 

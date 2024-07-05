@@ -1806,13 +1806,13 @@ z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&
 <p id="section-4.3-2">When operating in a boolean field, if P<sub>=</sub> followed the protocol correctly, this is how they would compute z<sub>-</sub><a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.3-3">
 <pre>
-z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ x&lt;sub&gt;\-&lt;/sub&gt;∧y₊ ⊕ x&lt;sub&gt;\+&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;\-&lt;/sub&gt; ⊕ r₊
+z₋ = x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊
 </pre><a href="#section-4.3-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.3-4">So the expression:<a href="#section-4.3-4" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.3-5">
 <pre>
-x&lt;sub&gt;\-&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ x&lt;sub&gt;\-&lt;/sub&gt;∧y₊ ⊕ x&lt;sub&gt;\+&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;\-&lt;/sub&gt; ⊕ r₊ ⊕ z&lt;sub&gt;\-&lt;/sub&gt; = 0
+x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 </pre><a href="#section-4.3-5" class="pilcrow">¶</a>
 </div>
 <p id="section-4.3-6">will hold true if the protocol was followed correctly, but will equal <strong><em>one</em></strong> if there was an additive attack.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
@@ -1826,7 +1826,11 @@ x&lt;sub&gt;\-&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ x&lt;sub&gt;\-&lt;/s
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-distributed-zero-knowledge-" class="section-name selfRef">Distributed Zero-Knowledge Proofs</a>
         </h3>
 <p id="section-4.4-1">The prover needs to prove that for each multiplication in a batch:<a href="#section-4.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.4-2">x<sub>-</sub> ∧ y<sub>-</sub> ⊕ x<sub>-</sub> ∧ y<sub>+</sub> ⊕ x<sub>+</sub> ∧ y<sub>-</sub> ⊕ r<sub>-</sub> ⊕ r<sub>+</sub> ⊕ z<sub>-</sub> = 0<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.4-2">
+<pre>
+x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
+</pre><a href="#section-4.4-2" class="pilcrow">¶</a>
+</div>
 <p id="section-4.4-3">The verifier on the left, P<sub>-</sub>, knows the values of:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-4.1">
