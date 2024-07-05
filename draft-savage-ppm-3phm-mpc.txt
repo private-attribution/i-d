@@ -573,15 +573,15 @@ Table of Contents
 
    Rearranging terms:
 
-   x₋ · y₊ ⊕ (x₋ · y₋ ⊕ z₋ ⊕ r₋ ) ⊕ x₊ · y₋ ⊕ r₊ = 0
+   x₋·y₊ ⊕ (x₋·y₋ ⊕ z₋ ⊕ r₋ ) ⊕ x₊·y₋ ⊕ r₊ = 0
 
    Define:
 
-   e₋ = x₋ · y₋ ⊕ z₋ ⊕ r₋
+   e₋ = x₋·y₋ ⊕ z₋ ⊕ r₋
 
    Then:
 
-   (x₋ · y₊ ⊕ e₋ ) ⊕ (x₊ · y₋ ⊕ r₊) = 0
+   (x₋·y₊ ⊕ e₋ ) ⊕ (x₊·y₋ ⊕ r₊) = 0
 
    Using: x ⊕ y = x*(1 - 2*y) + y
 
