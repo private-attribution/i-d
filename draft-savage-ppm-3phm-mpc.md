@@ -676,12 +676,12 @@ At each iteration:
 
     2. These `2L - 1` points are split into two additive secret-shares
        `G(x)_-` and `G(x)_+` and sent to the verifiers
-       P<sub>-</sub> and P<sub>+</sub>, respectively. These shares form the
+       `P_-` and `P_+`, respectively. These shares form the
        distributed zero-knowledge proof.
 
     3. The verifiers each sum together the first `L - 1` points they were given:
-       `P_-` computes `sum_-` = sum(i=0..L-1, G(i)_-)`
-       `P_+` computes `sum_+` = sum(i=0..L-1, G(i)_+)`
+       `P_-` computes `sum_- = sum(i=0..L-1, G(i)_-)`
+       `P_+` computes `sum_+ = sum(i=0..L-1, G(i)_+)`
        where `sum_- + sum_+ = sum(0..L-1, G(i)`.
 
     4. Now the verifiers verify the proposition `sum(i=0..L-1, G(i)) = t` by having
