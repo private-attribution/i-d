@@ -108,7 +108,7 @@ confidentiality of inputs provided that no pair of parties reveals their shares
 to either of the other parties.
 
 The protocols described in this document depend on having three MPC parties
-execute them. The protocols described here are secure with abort, even when one 
+execute them. The protocols described here are secure with abort, even when one
 party is not honest.
 
 Concretely, this means that a single dishonest party cannot cause the value of
@@ -172,7 +172,6 @@ Each input value (`x`) is split into three shares (`x<sub>1</sub>`, `x<sub>2</su
 `x<sub>3</sub>`), such that `x = x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub>`. Any
 method can be used, but the following process is typical:
 
-<!-- write a script to handle <sub> in code and pseudocode blocks -->
 ~~~ pseudocode
 x_1 = random()
 x_2 = random()
@@ -187,8 +186,8 @@ single party is able to construct the original value (`x`), but the values from
 any two parties include all three shares and can be used to reconstruct the
 original value.
 
-Some protocols might require that the parties construct a sharing of a value 
-which is known to all the parties. In that case, the value of `x<sub>1</sub>` is 
+Some protocols might require that the parties construct a sharing of a value
+which is known to all the parties. In that case, the value of `x<sub>1</sub>` is
 set to the known value, with `x<sub>2</sub>` and `x<sub>3</sub>` both set to zero.
 
 ## Identifying Shares and Parties
@@ -213,7 +212,12 @@ illustrated in {{fig-shares-parties}}:
 
 Three parties are identified as P<sub>1</sub>, P<sub>2</sub>, and P<sub>3</sub>.
 
-The three parties are logically placed in a ring, with higher numbered parties to the right of lower-numbered parties. P<sub>3</sub> is placed to the left of P<sub>1</sub>. This means that if a protocol involves sending a value to the left, P<sub>1</sub> sends the value to P<sub>3</sub>, P<sub>2</sub> sends to P<sub>1</sub>, and P<sub>3</sub> sends to P<sub>2</sub>. The sending directions are illustrated in {{fig-send-direction}}.
+The three parties are logically placed in a ring, with higher numbered parties
+to the right of lower-numbered parties. P<sub>3</sub> is placed to the left of
+P<sub>1</sub>. This means that if a protocol involves sending a value to the
+left, P<sub>1</sub> sends the value to P<sub>3</sub>, P<sub>2</sub> sends to
+P<sub>1</sub>, and P<sub>3</sub> sends to P<sub>2</sub>. The sending directions
+are illustrated in {{fig-send-direction}}.
 
 
 ~~~ aasvg
@@ -276,15 +280,18 @@ compute z = x + y, each party separately computes the sum of the shares they
 hold:
 
 ~~~ pseudocode
-z<sub>\-</sub> = x<sub>\-</sub> + y<sub>\-</sub>
+z<sub>-</sub> = x<sub>-</sub> + y<sub>-</sub>
 z<sub>+</sub> = x<sub>+</sub> + y<sub>+</sub>
 ~~~
 
 This produces shares of the sum without requiring communication.
 
-A similar process can be used for multiplication with a value that is known to all parties, negation, and subtraction.
+A similar process can be used for multiplication with a value that is known to
+all parties, negation, and subtraction.
 
-Note: In a binary field addition is the same as subtraction, so both are equivalent to the XOR operation.
+{:aside}
+> Note: Addition in a binary field is the same as subtraction and both are
+> equivalent to the XOR operation.
 
 # Multiplication Protocol {#multiplication}
 
@@ -297,16 +304,14 @@ y<sub>2</sub> + y<sub>3</sub> the product z = x \* y can be expanded as:
 z = (x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub>) \* (y<sub>1</sub> + y<sub>2</sub> + y<sub>3</sub>)
 ~~~
 
-This can be illustrated with a 3 by 3 table:
+This can be illustrated with a 3 by 3 table ({{tab-mul}}):
 
-|     | y<sub>1</sub> | y<sub>2</sub> | y<sub>3</sub> |
-| --- | --- | --- | --- |
+|  |  y₁ | y₂ | y₃ |
+|---|---|---|---|
 | x<sub>1</sub> | x<sub>1</sub>\*y<sub>1</sub> | x<sub>1</sub>\*y<sub>2</sub> | x<sub>1</sub>\*y<sub>3</sub> |
-| --- | --- | --- | --- |
 | x<sub>2</sub> | x<sub>2</sub>\*y<sub>1</sub> | x<sub>2</sub>\*y<sub>2</sub> | x<sub>2</sub>\*y<sub>3</sub> |
-| --- | --- | --- | --- |
 | x<sub>3</sub> | x<sub>3</sub>\*y<sub>1</sub> | x<sub>3</sub>\*y<sub>2</sub> | x<sub>3</sub>\*y<sub>3</sub> |
-| --- | --- | --- | --- |
+{: #tab-mul title="Multiplication by Parts"}
 
 To compute the product, each party locally computes the sum of three products as follows:
 
