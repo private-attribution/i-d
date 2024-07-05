@@ -694,8 +694,8 @@ At each iteration:
    pass this test even if they had performed an additive attack. The proof needs
    to be validated by confirming that `G(r) = sum(i=0..s, p<sub>i</sub>(r) ·
    q<sub>i</sub>(r))` for a randomly selected challenge point `r`. As long as
-   the prover cannot control the choice of `r`, the likelihood that the prover
-   is dishonest is inversely proportional to the field size.
+   the prover cannot control the choice of `r`, the likelihood that a dishonest
+   prover can cheat without detection is inversely proportional to the field size.
 
     1. If we define two new vectors `u’ = <p<sub>0</sub>(r), …,
        p<sub>s-1</sub>(r)>`, and `v’ = <q<sub>0</sub>(r), …,
