@@ -1205,22 +1205,25 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10">
-                <p id="section-toc.1-1.4.2.10.1"><a href="#section-4.10" class="auto internal xref">4.10</a>. <a href="#name-producing-the-zero-knowledg" class="internal xref">Producing the zero knowledge proof</a></p>
+                <p id="section-toc.1-1.4.2.10.1"><a href="#section-4.10" class="auto internal xref">4.10</a>. <a href="#name-producing-the-zero-knowledg" class="internal xref">Producing the Zero Knowledge Proof</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.1">
-                    <p id="section-toc.1-1.4.2.10.2.1.1"><a href="#section-4.10.1" class="auto internal xref">4.10.1</a>.  <a href="#name-masking-the-zero-knowledge-" class="internal xref">Masking the zero-knowledge proof</a></p>
+                    <p id="section-toc.1-1.4.2.10.2.1.1"><a href="#section-4.10.1" class="auto internal xref">4.10.1</a>.  <a href="#name-masking-the-zero-knowledge-" class="internal xref">Masking the Zero-Knowledge Proof</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.2">
-                    <p id="section-toc.1-1.4.2.10.2.2.1"><a href="#section-4.10.2" class="auto internal xref">4.10.2</a>.  <a href="#name-checking-that-the-proof-say" class="internal xref">Checking that the proof says the right thing</a></p>
+                    <p id="section-toc.1-1.4.2.10.2.2.1"><a href="#section-4.10.2" class="auto internal xref">4.10.2</a>.  <a href="#name-validating-the-proof-increm" class="internal xref">Validating the Proof Increment</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.3">
-                    <p id="section-toc.1-1.4.2.10.2.3.1"><a href="#section-4.10.3" class="auto internal xref">4.10.3</a>.  <a href="#name-generating-a-random-challen" class="internal xref">Generating a random challenge</a></p>
+                    <p id="section-toc.1-1.4.2.10.2.3.1"><a href="#section-4.10.3" class="auto internal xref">4.10.3</a>.  <a href="#name-random-challenge" class="internal xref">Random Challenge</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.4">
-                    <p id="section-toc.1-1.4.2.10.2.4.1"><a href="#section-4.10.4" class="auto internal xref">4.10.4</a>.  <a href="#name-recursive-proof" class="internal xref">Recursive Proof</a></p>
+                    <p id="section-toc.1-1.4.2.10.2.4.1"><a href="#section-4.10.4" class="auto internal xref">4.10.4</a>.  <a href="#name-fiat-shamir-challenge-selec" class="internal xref">Fiat-Shamir Challenge Selection</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.5">
-                    <p id="section-toc.1-1.4.2.10.2.5.1"><a href="#section-4.10.5" class="auto internal xref">4.10.5</a>.  <a href="#name-the-final-iteration" class="internal xref">The Final Iteration</a></p>
+                    <p id="section-toc.1-1.4.2.10.2.5.1"><a href="#section-4.10.5" class="auto internal xref">4.10.5</a>.  <a href="#name-recursive-proof" class="internal xref">Recursive Proof</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.6">
+                    <p id="section-toc.1-1.4.2.10.2.6.1"><a href="#section-4.10.6" class="auto internal xref">4.10.6</a>.  <a href="#name-the-final-iteration" class="internal xref">The Final Iteration</a></p>
 </li>
                 </ul>
 </li>
@@ -1557,10 +1560,10 @@ P<sub>+</sub>. Where necessary, the current party is identified as
 P<sub>=</sub>.<a href="#section-2.4-6" class="pilcrow">¶</a></p>
 <p id="section-2.4-7">The two shares that each party holds are referred to as "left" and "right"
 shares. The "left" share is identified with a subscript of "-" (e.g.,
-x<sub>-</sub>); the numeric identifier for the left share at each party matches
+x_-); the numeric identifier for the left share at each party matches
 the identifier for that party, so the left share of x that P<sub>1</sub> holds
 is named x<sub>1</sub>. The right share is designated with a subscript of "+"
-(e.g., y<sub>+</sub>); the numeric identifier for the right share is one higher
+(e.g., y_+); the numeric identifier for the right share is one higher
 than the identifier for the party, so the right share at P<sub>3</sub> is (also)
 x<sub>1</sub>.<a href="#section-2.4-7" class="pilcrow">¶</a></p>
 </section>
@@ -1627,7 +1630,7 @@ equivalent to the XOR operation.<a href="#section-2.6-5.1" class="pilcrow">¶</a
 y<sub>2</sub> + y<sub>3</sub> the product z = x * y can be expanded as:<a href="#section-3-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-3-3">
 <pre>
-z = (x₁ + x₂ + x₃) \* (y₁ + y₂ + y₃)
+z = (x₁ + x₂ + x₃) · (y₁ + y₂ + y₃)
 </pre><a href="#section-3-3" class="pilcrow">¶</a>
 </div>
 <p id="section-3-4">This can be illustrated with a 3 by 3 table (<a href="#tab-mul" class="auto internal xref">Table 1</a>):<a href="#section-3-4" class="pilcrow">¶</a></p>
@@ -1749,20 +1752,20 @@ z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋
 <a href="#name-multiplication-by-party" class="selfRef">Multiplication by Party</a>
         </figcaption></figure>
 </div>
-<p id="section-3-10">The result is a non-replicated sharing of the result <code>z = z&lt;sub&gt;1&lt;/sub&gt; +
+<p id="section-3-10">The result is a non-replicated sharing of the result <code>z = z₁ +
 z₂ + z₃</code>.<a href="#section-3-10" class="pilcrow">¶</a></p>
 <p id="section-3-11">To reach the desired state where parties each have replicated shares of z, each
-party needs to send its share, z<sub>-</sub>, to the party to its left.<a href="#section-3-11" class="pilcrow">¶</a></p>
-<p id="section-3-12">Unfortunately, each party cannot simply send this value to another party, as this would allow the recipient to reconstruct the full input values, x and y, using z<sub>-</sub>. To prevent this, the value of z<sub>-</sub> is masked with a uniformly distributed random mask that is unknown to party P<sub>-</sub>.<a href="#section-3-12" class="pilcrow">¶</a></p>
-<p id="section-3-13">Using a source of shared randomness (such as <span>[<a href="#PRSS" class="cite xref">PRSS</a>]</span>), each pair of helpers generates a uniformly distributed random value known only to the two of them. Let r<sub>-</sub> denote the left value (known to P<sub>-</sub>) and r<sub>+</sub> be the right value (known to P<sub>+</sub>).<a href="#section-3-13" class="pilcrow">¶</a></p>
-<p id="section-3-14">Each party uses r<sub>-</sub> and r<sub>+</sub> to create a masked value of z<sub>-</sub> as follows:<a href="#section-3-14" class="pilcrow">¶</a></p>
+party needs to send its share, z_-, to the party to its left.<a href="#section-3-11" class="pilcrow">¶</a></p>
+<p id="section-3-12">Unfortunately, each party cannot simply send this value to another party, as this would allow the recipient to reconstruct the full input values, x and y, using z_-. To prevent this, the value of z_- is masked with a uniformly distributed random mask that is unknown to party P<sub>-</sub>.<a href="#section-3-12" class="pilcrow">¶</a></p>
+<p id="section-3-13">Using a source of shared randomness (such as <span>[<a href="#PRSS" class="cite xref">PRSS</a>]</span>), each pair of helpers generates a uniformly distributed random value known only to the two of them. Let r_- denote the left value (known to P<sub>-</sub>) and r_+ be the right value (known to P<sub>+</sub>).<a href="#section-3-13" class="pilcrow">¶</a></p>
+<p id="section-3-14">Each party uses r_- and r_+ to create a masked value of z_- as follows:<a href="#section-3-14" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-3-15">
 <pre>
 z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋ + r₋ - r₊
 </pre><a href="#section-3-15" class="pilcrow">¶</a>
 </div>
-<p id="section-3-16">These three mask values sum to zero, so this masking does not alter the result. Importantly, the value of r<sub>+</sub> is not known to P<sub>-</sub>, which ensures that z<sub>-</sub> cannot be used by P<sub>-</sub> to recover x or y. Thus, z<sub>-</sub> is safe to send to P<sub>-</sub>.<a href="#section-3-16" class="pilcrow">¶</a></p>
-<p id="section-3-17">Upon receiving a value from its right — which the recipient names z<sub>+</sub> — each helper is now in possession of two-of-three shares, (z<sub>-</sub>, z<sub>+</sub>), which is a replicated secret sharing of the product of x and y.<a href="#section-3-17" class="pilcrow">¶</a></p>
+<p id="section-3-16">These three mask values sum to zero, so this masking does not alter the result. Importantly, the value of r_+ is not known to P<sub>-</sub>, which ensures that z_- cannot be used by P<sub>-</sub> to recover x or y. Thus, z_- is safe to send to P<sub>-</sub>.<a href="#section-3-16" class="pilcrow">¶</a></p>
+<p id="section-3-17">Upon receiving a value from its right — which the recipient names z_+ — each helper is now in possession of two-of-three shares, (z_-, z_+), which is a replicated secret sharing of the product of x and y.<a href="#section-3-17" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="validation">
@@ -1776,8 +1779,8 @@ z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋ + r₋ - r₊
         <h3 id="name-additive-attack">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-additive-attack" class="section-name selfRef">Additive Attack</a>
         </h3>
-<p id="section-4.1-1">By "additive attack", we mean that instead of sending the value z<sub>-</sub>, a corrupted party could instead send z<sub>-</sub> + a. In the context of boolean circuits, the only possible additive attack is to add 1.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1-2">The multiplication protocol described does not prevent this. Since the value z<sub>-</sub> is randomly distributed, the party (P<sub>-</sub>) that receives this value cannot tell if an additive attack has been applied.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">By "additive attack", we mean that instead of sending the value z_-, a corrupted party could instead send z_- + a. In the context of boolean circuits, the only possible additive attack is to add 1.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">The multiplication protocol described does not prevent this. Since the value z_- is randomly distributed, the party (P<sub>-</sub>) that receives this value cannot tell if an additive attack has been applied.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 <p id="section-4.1-3">While an additive attack does not result in information about the inputs being revealed, it corrupts the results. If a protocol depends on revealing certain values, this sort of corruption could be used to reveal information that might not otherwise be revealed.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <p id="section-4.1-4">For example, if the parties were computing a function that erases a value unless it has reached some minimum such as:<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 <div class="lang-python sourcecode" id="section-4.1-5">
@@ -1806,7 +1809,7 @@ else:
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-overview-of-the-validation-" class="section-name selfRef">Overview of the validation protocol</a>
         </h3>
 <p id="section-4.3-1">Each of the parties, P<sub>=</sub>, produces a "Zero Knowledge Proof" (ZKP) that proves all of the multiplications it performed were done correctly. The other two parties, P<sub>-</sub> and P<sub>+</sub>, act as "verifiers" and validate this zero knowledge proof.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.3-2">When operating in a boolean field, if P<sub>=</sub> followed the protocol correctly, this is how they would compute z<sub>-</sub><a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">When operating in a boolean field, if P<sub>=</sub> followed the protocol correctly, this is how they would compute z_-<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.3-3">
 <pre>
 z₋ = x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊
@@ -1837,28 +1840,28 @@ x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 <p id="section-4.4-3">The verifier on the left, P<sub>-</sub>, knows the values of:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-4.1">
-            <p id="section-4.4-4.1.1">y<sub>-</sub><a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-4.1.1">y_-<a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.4-4.2">
-            <p id="section-4.4-4.2.1">x<sub>-</sub><a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-4.2.1">x_-<a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.4-4.3">
-            <p id="section-4.4-4.3.1">r<sub>-</sub><a href="#section-4.4-4.3.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-4.3.1">r_-<a href="#section-4.4-4.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.4-4.4">
-            <p id="section-4.4-4.4.1">z<sub>-</sub><a href="#section-4.4-4.4.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-4.4.1">z_-<a href="#section-4.4-4.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.4-5">The verifier on the right, P<sub>+</sub>, knows the values of:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-6.1">
-            <p id="section-4.4-6.1.1">x<sub>+</sub><a href="#section-4.4-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-6.1.1">x_+<a href="#section-4.4-6.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.4-6.2">
-            <p id="section-4.4-6.2.1">y<sub>+</sub><a href="#section-4.4-6.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-6.2.1">y_+<a href="#section-4.4-6.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.4-6.3">
-            <p id="section-4.4-6.3.1">r<sub>+</sub><a href="#section-4.4-6.3.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-6.3.1">r_+<a href="#section-4.4-6.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.4-7">This means that the "prover", P<sub>=</sub>, does not need to send any of these values to the verifiers. Verifiers use information they already have to validate the proof.<a href="#section-4.4-7" class="pilcrow">¶</a></p>
@@ -1881,7 +1884,7 @@ sum(i=0..n, uᵢ · vᵢ) = t
 (P<sub>-</sub>) both are in possession of the n-vector <code>u</code>, the Prover
 (P<sub>=</sub>) and the other verifier (P<sub>+</sub>) are in possession of the
 n-vector <code>v</code>, and the verifiers P<sub>-</sub> and P<sub>+</sub> hold
-t<sub>-</sub> and t<sub>+</sub> respectively and <code>t&lt;sub&gt;-&lt;/sub&gt; +
+t_- and t_+ respectively and <code>t₋ +
 t₊ = t</code>.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
 <p id="section-4.5-4">However, the security of this protocol requires the vector elements <code>u</code> and <code>v</code>
 to be members of a large field. So the first step of the validation protocol is
@@ -2074,15 +2077,15 @@ minimal number required to uniquely define it.<a href="#section-4.8-4.3.4.1.1" c
 </li>
               <li id="section-4.8-4.3.4.2">
                 <p id="section-4.8-4.3.4.2.1">These <code>2L - 1</code> points are split into two additive secret-shares
-<code>G(x)₋</code> and <code>G(x)₊</code> and sent to the verifiers
+<code>G(x)_-</code> and <code>G(x)_+</code> and sent to the verifiers
 P<sub>-</sub> and P<sub>+</sub>, respectively. These shares form the
 distributed zero-knowledge proof.<a href="#section-4.8-4.3.4.2.1" class="pilcrow">¶</a></p>
 </li>
               <li id="section-4.8-4.3.4.3">
                 <p id="section-4.8-4.3.4.3.1">The verifiers verify the proposition using their shares by computing
-<code>b₋ = t₋ - sum(i=0..L-1, G(x)₋)</code> and
-<code>b₊ = t₊ - sum(i=0..L-1, G(x)₊)</code>. They
-send each other the value they compute and confirm that <code>b&lt;sub&gt;-&lt;/sub&gt; +
+<code>b₋ = t₋ - sum(i=0..L-1, G(x)_-)</code> and
+<code>b₊ = t₊ - sum(i=0..L-1, G(x)_+)</code>. They
+send each other the value they compute and confirm that <code>b₋ +
 b₊ = 0</code>. If this test fails, the entire protocol is aborted.<a href="#section-4.8-4.3.4.3.1" class="pilcrow">¶</a></p>
 </li>
             </ol>
@@ -2090,14 +2093,14 @@ b₊ = 0</code>. If this test fails, the entire protocol is aborted.<a href="#se
           <li id="section-4.8-4.4">
             <p id="section-4.8-4.4.1">At this point, the prover could have produced values for <code>G(0..L-1)</code> that
 pass this test even if they had performed an additive attack. The proof needs
-to be validated by confirming that <code>G(r) = sum(i=0..s, p&lt;sub&gt;i&lt;/sub&gt;(r) ·
+to be validated by confirming that <code>G(r) = sum(i=0..s, pᵢ(r) ·
 qᵢ(r))</code> for a randomly selected challenge point <code>r</code>. As long as
 the prover cannot control the choice of <code>r</code>, the likelihood that the prover
 is dishonest is inversely proportional to the field size.<a href="#section-4.8-4.4.1" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.8-4.4.2">
 <li id="section-4.8-4.4.2.1">
-                <p id="section-4.8-4.4.2.1.1">If we define two new vectors <code>u’ = &lt;p&lt;sub&gt;0&lt;/sub&gt;(r), …,
-p&lt;sub&gt;s-1&lt;/sub&gt;(r)&gt;</code>, and <code>v’ = &lt;q&lt;sub&gt;0&lt;/sub&gt;(r), …,
+                <p id="section-4.8-4.4.2.1.1">If we define two new vectors <code>u’ = &lt;p₀(r), …,
+p&lt;sub&gt;s-1&lt;/sub&gt;(r)&gt;</code>, and <code>v’ = &lt;q₀(r), …,
 q&lt;sub&gt;s-1&lt;/sub&gt;(r)&gt;</code>, then we can rewrite the statement that needs to be
 proven as: <code>u’ · v’ = G(r)</code>. This is of the same form as the original
 statement, but with the new vectors <code>u’</code> and <code>v’</code> having length <code>L</code> times
@@ -2122,7 +2125,7 @@ set to <code>G(r)</code>, and the next iteration is started.<a href="#section-4.
         </ol>
 <p id="section-4.8-5">The recursion ends when the vectors <code>u</code> and <code>v</code> have length less than <code>L</code>.  The
 verifiers validate the soundness of the final iteration of the proof in a
-simpler, more direct way; see <a href="#final-iteration" class="auto internal xref">Section 4.10.5</a>.<a href="#section-4.8-5" class="pilcrow">¶</a></p>
+simpler, more direct way; see <a href="#final-iteration" class="auto internal xref">Section 4.10.6</a>.<a href="#section-4.8-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="detailed-validation-algorithm">
@@ -2153,36 +2156,55 @@ lookup tables if necessary.<a href="#section-4.9.1-2" class="pilcrow">¶</a></p>
           </h4>
 <p id="section-4.9.2-1">The prover (P<sub>=</sub>) and the verifier P<sub>-</sub>, chunk the vector
 <code>u</code> into <code>s</code> chunks of length <code>L</code>.<a href="#section-4.9.2-1" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.9.2-2">
-<pre>
-chunk 0: &lt;u₀, u₁, …, u&lt;sub&gt;L-1&lt;/sub&gt;&gt;
-chunk 1: &lt;u&lt;sub&gt;L&lt;/sub&gt;, u&lt;sub&gt;L+1&lt;/sub&gt;, …, u&lt;sub&gt;2L-1&lt;/sub&gt;&gt;
-…
-chunk s-1: &lt;u&lt;sub&gt;(s-1)L&lt;/sub&gt;, u&lt;sub&gt;(s-1)L+1&lt;/sub&gt;, …, u&lt;sub&gt;sL-1&lt;/sub&gt;&gt;
-</pre><a href="#section-4.9.2-2" class="pilcrow">¶</a>
-</div>
+<ul class="normal">
+<li class="normal" id="section-4.9.2-2.1">
+              <p id="section-4.9.2-2.1.1">chunk 0: &lt;u<sub>0</sub>, u<sub>1</sub>, …, u<sub>L-1</sub>&gt;<a href="#section-4.9.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.9.2-2.2">
+              <p id="section-4.9.2-2.2.1">chunk 1: &lt;u<sub>L</sub>, u<sub>L+1</sub>, …, u<sub>2L-1</sub>&gt;<a href="#section-4.9.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.9.2-2.3">
+              <p id="section-4.9.2-2.3.1">…<a href="#section-4.9.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.9.2-2.4">
+              <p id="section-4.9.2-2.4.1">chunk s-1: &lt;u<sub>(s-1)L</sub>, u<sub>(s-1)L+1</sub>, …, u<sub>sL-1</sub>&gt;<a href="#section-4.9.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
 <p id="section-4.9.2-3">If the length of <code>u</code> is not divisible by <code>L</code>, then the final chunk will be
 padded with zeros.<a href="#section-4.9.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.9.2-4">In the first iteration there will be <code>s = ceil(4m / L)</code> chunks, as the original
 vectors <code>u</code> and <code>v</code> have length <code>4m</code>. In subsequent iterations there will be
 fewer chunks.<a href="#section-4.9.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-5">They will interpret each chunk (i) as L points lying on a polynomial, p<sub>i</sub>(x) of degree L - 1, corresponding to the x coordinates 0, 1, …, L-1, that is to say they will interpret them as p<sub>i</sub>(0), p<sub>i</sub>(1), …, p<sub>i</sub>(L-1).<a href="#section-4.9.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-6">The Prover (P<sub>=</sub>) and verifier (P<sub>-</sub>) can find the value of p<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.<a href="#section-4.9.2-6" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-7">The Prover will use Lagrange interpolation to compute the value of p<sub>i</sub>(L), p<sub>i</sub>(L+1), …, p<sub>i</sub>(2L-2).<a href="#section-4.9.2-7" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-8">The same process is applied for the vector v.<a href="#section-4.9.2-8" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-9">The Prover (P<sub>=</sub>) and the verifier P<sub>+</sub>, will chunk the vector v into s chunks of length L.<a href="#section-4.9.2-9" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.9.2-10">
-<pre>
-chunk 0: &lt;v₀, v₁, …, v&lt;sub&gt;L-1&lt;/sub&gt;&gt;
-chunk 1: &lt;v&lt;sub&gt;L&lt;/sub&gt;, v&lt;sub&gt;L+1&lt;/sub&gt;, …, v&lt;sub&gt;2L-1&lt;/sub&gt;&gt;
-…
-chunk s-1: &lt;v&lt;sub&gt;(s-1)L&lt;/sub&gt;, v&lt;sub&gt;(s-1)L+1&lt;/sub&gt;, …, v&lt;sub&gt;sL-1&lt;/sub&gt;&gt;
-</pre><a href="#section-4.9.2-10" class="pilcrow">¶</a>
-</div>
-<p id="section-4.9.2-11">As before, if the length of v is not a multiple of L, the final chunk will be padded with zeros.<a href="#section-4.9.2-11" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-12">They will interpret each chunk as L points lying on a polynomial, q<sub>i</sub>(x), having degree L - 1. Where the x coordinates are 0, 1, …, L-1, which is to say they will interpret these points as q<sub>i</sub>(0), q<sub>i</sub>(1), …, q<sub>i</sub>(L-1).<a href="#section-4.9.2-12" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-13">The Prover (P<sub>=</sub>) and verifier P<sub>+</sub> can find the value of q<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.<a href="#section-4.9.2-13" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-14">The Prover will use Lagrange interpolation to compute the value of q<sub>i</sub>(L), q<sub>i</sub>(L+1), …, q<sub>i</sub>(2L-2).<a href="#section-4.9.2-14" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-5">They will interpret each chunk as <code>L</code> points lying on a polynomial,
+<code>pᵢ(x)</code> of degree <code>L-1</code>, corresponding to the <code>x</code> coordinates <code>{ 0,
+1, …, L-1}</code>, that is to say they will interpret them as <code>{ pᵢ(0),
+pᵢ(1), …, pᵢ(L-1) }</code>.<a href="#section-4.9.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-6">The prover (P<sub>=</sub>) and verifier (P<sub>-</sub>) can find the value of
+<code>pᵢ(x)</code> for any other value of <code>x</code> using Lagrange interpolation.<a href="#section-4.9.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-7">The prover will use Lagrange interpolation to compute the values <code>{
+pᵢ(L), pᵢ(L+1), …, pᵢ(2L-2) }</code>.<a href="#section-4.9.2-7" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-8">The same process is applied for the vector <code>v</code> with a verifier, P<sub>+</sub>.<a href="#section-4.9.2-8" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-9">The prover (P<sub>=</sub>) and the verifier P<sub>+</sub>, chunk the vector <code>v</code>
+into <code>s</code> chunks of length <code>L</code>.<a href="#section-4.9.2-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.9.2-10.1">
+              <p id="section-4.9.2-10.1.1">chunk 0: &lt;v<sub>0</sub>, v<sub>1</sub>, …, v<sub>L-1</sub>&gt;<a href="#section-4.9.2-10.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.9.2-10.2">
+              <p id="section-4.9.2-10.2.1">chunk 1: &lt;v<sub>L</sub>, v<sub>L+1</sub>, …, v<sub>2L-1</sub>&gt;<a href="#section-4.9.2-10.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.9.2-10.3">
+              <p id="section-4.9.2-10.3.1">…<a href="#section-4.9.2-10.3.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.9.2-10.4">
+              <p id="section-4.9.2-10.4.1">chunk s-1: &lt;v<sub>(s-1)L</sub>, v<sub>(s-1)L+1</sub>, …, v<sub>sL-1</sub>&gt;<a href="#section-4.9.2-10.4.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-4.9.2-11">As before, if the length of <code>v</code> is not a multiple of <code>L</code>, the final chunk will
+be padded with zeros.<a href="#section-4.9.2-11" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-12">They will interpret each chunk as L points lying on a polynomial and compute the
+values <code>{ qᵢ(L), qᵢ(L+1), …, qᵢ(2L-2) }</code>
+using Lagrange interpolation.<a href="#section-4.9.2-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2190,153 +2212,200 @@ chunk s-1: &lt;v&lt;sub&gt;(s-1)L&lt;/sub&gt;, v&lt;sub&gt;(s-1)L+1&lt;/sub&gt;,
 <div id="producing-the-zero-knowledge-proof">
 <section id="section-4.10">
         <h3 id="name-producing-the-zero-knowledg">
-<a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-producing-the-zero-knowledg" class="section-name selfRef">Producing the zero knowledge proof</a>
+<a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-producing-the-zero-knowledg" class="section-name selfRef">Producing the Zero Knowledge Proof</a>
         </h3>
-<p id="section-4.10-1">In order to prove that u · v = t, the prover will compute the value of 2L - 1 points on the polynomial G(x), which is defined as:<a href="#section-4.10-1" class="pilcrow">¶</a></p>
-<p id="section-4.10-2">G(x) = sum(i=1..s, p<sub>i</sub>(x) · q<sub>i</sub>(x))<a href="#section-4.10-2" class="pilcrow">¶</a></p>
-<p id="section-4.10-3">The prover computes the values of G(0), G(1), …, G(2L-2) by incrementally aggregating the products of p<sub>i</sub>(0), p<sub>i</sub>(1), …, p<sub>i</sub>(2L-21) and q<sub>i</sub>(L), q<sub>i</sub>(L+1), …, q<sub>i</sub>(2L-2), it computes for each chunk (i).<a href="#section-4.10-3" class="pilcrow">¶</a></p>
-<p id="section-4.10-4">These 2L - 1 points on the polynomial G(x) constitute the zero-knowledge proof that u · v = t.<a href="#section-4.10-4" class="pilcrow">¶</a></p>
-<p id="section-4.10-5">An equivalent method of proving u · v = t, is to show that sum(i=0..L-1, G(i)) = t<a href="#section-4.10-5" class="pilcrow">¶</a></p>
+<p id="section-4.10-1">In order to prove that <code>u·v = t</code>, the prover will compute the value of <code>2L-1</code>
+points on the polynomial <code>G(x)</code>, which is defined as:<a href="#section-4.10-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10-2">
+<pre>
+G(x) = sum(i=1..s, pᵢ(x) · qᵢ(x))
+</pre><a href="#section-4.10-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10-3">The prover computes the values of <code>{ G(0), G(1), …, G(2L-2) }</code> by incrementally
+aggregating the products of <code>{ pᵢ(0), pᵢ(1), …,
+pᵢ(2L-21) }</code> and <code>{ qᵢ(L), qᵢ(L+1), …,
+qᵢ(2L-2) }</code>, for each chunk.<a href="#section-4.10-3" class="pilcrow">¶</a></p>
+<p id="section-4.10-4">These <code>2L-1</code> points on the polynomial <code>G(x)</code> constitute the zero-knowledge proof
+that <code>u·v = t</code>.<a href="#section-4.10-4" class="pilcrow">¶</a></p>
+<p id="section-4.10-5">An equivalent method of proving <code>u·v = t</code>, is to show that <code>sum(i=0..L-1, G(i))
+= t</code>.<a href="#section-4.10-5" class="pilcrow">¶</a></p>
 <div id="masking-the-zero-knowledge-proof">
 <section id="section-4.10.1">
           <h4 id="name-masking-the-zero-knowledge-">
-<a href="#section-4.10.1" class="section-number selfRef">4.10.1. </a><a href="#name-masking-the-zero-knowledge-" class="section-name selfRef">Masking the zero-knowledge proof</a>
+<a href="#section-4.10.1" class="section-number selfRef">4.10.1. </a><a href="#name-masking-the-zero-knowledge-" class="section-name selfRef">Masking the Zero-Knowledge Proof</a>
           </h4>
-<p id="section-4.10.1-1">The Prover (P<sub>=</sub>), cannot simply send this zero-knowledge proof to the verifiers, as doing so would release private information. Instead, the prover can produce a two-part additive secret-sharing of these 2L - 1 points, sending one share to each verifier.<a href="#section-4.10.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.10.1-2">The Prover (P<sub>=</sub>) and the right verifier (P<sub>+</sub>) will generate one share using their shared randomness. We will denote this share G(x)<sub>+</sub>. This requires no communication.<a href="#section-4.10.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.10.1-3">The Prover (P<sub>=</sub>) will compute the other share via subtraction, and will send it to the left verifier (P<sub>-</sub>). Transmitting this share G(x)<sub>-</sub>, will require sending 2L - 1 field values, which will require 8 bytes per field value as we are using Mersenne prime 2<sup>61</sup>-1 for our prime field.<a href="#section-4.10.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.10.1-1">The Prover (P<sub>=</sub>), cannot simply send this zero-knowledge proof to the
+verifiers, as doing so would release private information. Instead, the prover
+produces a two-part additive secret-sharing of these <code>2L-1</code> points, sending one
+share to each verifier.<a href="#section-4.10.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.1-2">The prover (P<sub>=</sub>) and the right verifier (P<sub>+</sub>) generate one
+share using their shared randomness, which means that no communication is
+needed.  This share is denoted <code>G(x)_+</code>.<a href="#section-4.10.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.10.1-3">The prover (P<sub>=</sub>) computes the other share via subtraction.  That is
+<code>G₋(x) = G(x) - G₊(x)</code>.  This value is sent to the left verifier
+(P<sub>-</sub>). Transmitting this share <code>G(x)_-</code> involves sending <code>2L-1</code> field
+values.<a href="#section-4.10.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="checking-that-the-proof-says-the-right-thing">
+<div id="validating-the-proof-increment">
 <section id="section-4.10.2">
-          <h4 id="name-checking-that-the-proof-say">
-<a href="#section-4.10.2" class="section-number selfRef">4.10.2. </a><a href="#name-checking-that-the-proof-say" class="section-name selfRef">Checking that the proof says the right thing</a>
+          <h4 id="name-validating-the-proof-increm">
+<a href="#section-4.10.2" class="section-number selfRef">4.10.2. </a><a href="#name-validating-the-proof-increm" class="section-name selfRef">Validating the Proof Increment</a>
           </h4>
-<p id="section-4.10.2-1">To check that:<a href="#section-4.10.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-2">sum(i=0..L-1, G(i)) = t<a href="#section-4.10.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-3">The left verifier P<sub>-</sub> will compute:<a href="#section-4.10.2-3" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-4">b<sub>-</sub> = t<sub>-</sub> - sum(i=0..L-1, G(i)<sub>-</sub>)<a href="#section-4.10.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-5">The right verifier P+ will compute:<a href="#section-4.10.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-6">b<sub>+</sub> = t<sub>+</sub> - sum(i=0..L-1, G(i)<sub>+</sub>)<a href="#section-4.10.2-6" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-7">The two verifiers will reveal these values b<sub>-</sub> and b<sub>+</sub> to one another, so that each can reconstruct the full sum:<a href="#section-4.10.2-7" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-8">b = b<sub>-</sub> + b<sub>+</sub><a href="#section-4.10.2-8" class="pilcrow">¶</a></p>
-<p id="section-4.10.2-9">They will confirm that b = 0. If it does not, the parties abort and destroy their shares.<a href="#section-4.10.2-9" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-1">To check that <code>sum(i=0..L-1, G(i)) = t</code>, the left verifier (P<sub>-</sub>)
+computes:<a href="#section-4.10.2-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.2-2">
+<pre>
+b₋ = t₋ - sum(i=0..L-1, G(i)_-)
+</pre><a href="#section-4.10.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10.2-3">Similarly, the right verifier (P<sub>+</sub>) computes:<a href="#section-4.10.2-3" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.2-4">
+<pre>
+b₊ = t₊ - sum(i=0..L-1, G(i)_+)
+</pre><a href="#section-4.10.2-4" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10.2-5">The two verifiers will reveal these values <code>b₋</code> and <code>b₊</code> to one another, so
+that each can reconstruct the full sum, <code>b = b₋ + b₊</code>.<a href="#section-4.10.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-6">Each confirms that <code>b</code> is zero. If it is not, the parties abort and destroy
+their shares.<a href="#section-4.10.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="challenge">
 <section id="section-4.10.3">
-          <h4 id="name-generating-a-random-challen">
-<a href="#section-4.10.3" class="section-number selfRef">4.10.3. </a><a href="#name-generating-a-random-challen" class="section-name selfRef">Generating a random challenge</a>
+          <h4 id="name-random-challenge">
+<a href="#section-4.10.3" class="section-number selfRef">4.10.3. </a><a href="#name-random-challenge" class="section-name selfRef">Random Challenge</a>
           </h4>
 <p id="section-4.10.3-1">Now that the verifiers have confirmed that the proof says that there was no
 additive attack, they need to validate that this was indeed a legitimate
-zero-knowledge proof, and not a bogus one that is disconnected from the actual
-work the prover did.<a href="#section-4.10.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.10.3-2">To demonstrate that this zero knowledge proof is sound, it suffices to check
-that G(r) is correct, for a random field element r, chosen from the range [L,
-p). In other words, it cannot be in the range [0, L).<a href="#section-4.10.3-2" class="pilcrow">¶</a></p>
-<p id="section-4.10.3-3">To minimize the rounds of communication, instead of having the verifiers select
-this random point, we utilize the Fiat-Shamir transformation to produce a
-constant-round proof system.<a href="#section-4.10.3-3" class="pilcrow">¶</a></p>
-<p id="section-4.10.3-4">The Prover (P<sub>=</sub>) will hash the zero-knowledge proof shares it has generated onto a field element as follows:<a href="#section-4.10.3-4" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.10.3-5">
+zero-knowledge proof.  The prover knows the value of <code>t</code>, even if each verifier
+only has shares of <code>t</code> after the first round.  Therefore, it is trivial for a
+prover to falsify <code>G(x)</code>.<a href="#section-4.10.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.3-2">To demonstrate that the prover has provided a valid <code>G(x)</code>, a random field
+element, <code>r</code>, is chosen from the range <code>[L, p)</code> (that is, a value that is not
+part of the proof).  The prover then has to show that the value of <code>G(r)</code>
+matches what the verifiers hold.  The verifiers could jointly compute this value
+using the values of <code>pᵢ(x)</code> and <code>qᵢ(x)</code>.<a href="#section-4.10.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.10.3-3">The key requirement in choosing <code>r</code> is that the prover cannot influence the
+choice.<a href="#section-4.10.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="fiat-shamir-challenge-selection">
+<section id="section-4.10.4">
+          <h4 id="name-fiat-shamir-challenge-selec">
+<a href="#section-4.10.4" class="section-number selfRef">4.10.4. </a><a href="#name-fiat-shamir-challenge-selec" class="section-name selfRef">Fiat-Shamir Challenge Selection</a>
+          </h4>
+<p id="section-4.10.4-1">To minimize the rounds of communication, instead of having the verifiers select
+this random point, we utilize the Fiat-Shamir transform to produce a
+constant-round proof system.<a href="#section-4.10.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.4-2">The Prover (P<sub>=</sub>) hashes the zero-knowledge proof shares it has
+generated onto a field element as follows:<a href="#section-4.10.4-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.4-3">
 <pre>
 commitment = SHA256(
   concat(
-    SHA256([G(x)]₋),
-    SHA256([G(x)]₊)
+    SHA256([G(x)]_-),
+    SHA256([G(x)]_+)
   )
 )
 r = (bytes2int(commitment[..16]) % (prime - L)) + L
-</pre><a href="#section-4.10.3-5" class="pilcrow">¶</a>
+</pre><a href="#section-4.10.4-3" class="pilcrow">¶</a>
 </div>
-<p id="section-4.10.3-6">This computation does not use the entire output of the hash function, just enough to ensure that the value of r has minimal bias. For SHA-256 and a prime field modulo 2<sup>61</sup>-1, the bias is in the order of 2<sup>-67</sup>, which is negligible.<a href="#section-4.10.3-6" class="pilcrow">¶</a></p>
-<p id="section-4.10.3-7">The verifiers generate the same point r independently. Each verifier only has access to one set of shares from G(x) so they each compute a hash of the shares they have. They then send that hash to each other, after which they can compute the full hash value.<a href="#section-4.10.3-7" class="pilcrow">¶</a></p>
-<p id="section-4.10.3-8">Note that one verifier does not need to receive their shares of G(x) from the prover, so they are able to compute their hash before even starting any computation.<a href="#section-4.10.3-8" class="pilcrow">¶</a></p>
-<p id="section-4.10.3-9">Consequently, though each round depends on communication, the total latency is two rounds. In the first, the prover sends shares of G(x) to the first verifier. Concurrently, the second verifier sends a hash of their shares to the first verifier. In the second round, the first verifier sends a hash of their shares to the second verifier.<a href="#section-4.10.3-9" class="pilcrow">¶</a></p>
+<p id="section-4.10.4-4">This computation does not use the entire output of the hash function, just
+enough to ensure that the value of r has minimal bias. For SHA-256 and a prime
+field modulo 2<sup>61</sup>-1, the bias is in the order of 2<sup>-67</sup>,
+which is negligible.<a href="#section-4.10.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.10.4-5">The verifiers generate the same point r independently. Each verifier only has
+access to one set of shares from <code>G(x)</code> so they each compute a hash of the shares
+they have. They then send that hash to each other, after which they can compute
+the full hash value.<a href="#section-4.10.4-5" class="pilcrow">¶</a></p>
+<p id="section-4.10.4-6">Note that one verifier does not need to receive their shares of <code>G(x)</code> from the
+prover, so they are able to compute their hash before even starting any
+computation.<a href="#section-4.10.4-6" class="pilcrow">¶</a></p>
+<p id="section-4.10.4-7">Consequently, though each round depends on communication, the total latency is two rounds. In the first, the prover sends shares of G(x) to the first verifier. Concurrently, the second verifier sends a hash of their shares to the first verifier. In the second round, the first verifier sends a hash of their shares to the second verifier.<a href="#section-4.10.4-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="recursive-proof">
-<section id="section-4.10.4">
+<section id="section-4.10.5">
           <h4 id="name-recursive-proof">
-<a href="#section-4.10.4" class="section-number selfRef">4.10.4. </a><a href="#name-recursive-proof" class="section-name selfRef">Recursive Proof</a>
+<a href="#section-4.10.5" class="section-number selfRef">4.10.5. </a><a href="#name-recursive-proof" class="section-name selfRef">Recursive Proof</a>
           </h4>
-<p id="section-4.10.4-1">So the prover has to prove that <code>G(r)</code> is correct for this random challenge.<a href="#section-4.10.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.10.4-2">Recall the definition of G(x):<a href="#section-4.10.4-2" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.10.4-3">
+<p id="section-4.10.5-1">So the prover has to prove that <code>G(r)</code> is correct for this random challenge.<a href="#section-4.10.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.5-2">Recall the definition of G(x):<a href="#section-4.10.5-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.5-3">
 <pre>
 G(x) = sum(i=0..s, pᵢ(x) · qᵢ(x))
-</pre><a href="#section-4.10.4-3" class="pilcrow">¶</a>
+</pre><a href="#section-4.10.5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-4.10.4-4">So this amounts to proving that:<a href="#section-4.10.4-4" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.10.4-5">
+<p id="section-4.10.5-4">So this amounts to proving that:<a href="#section-4.10.5-4" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.5-5">
 <pre>
 u’ · v’ = G(r)
-</pre><a href="#section-4.10.4-5" class="pilcrow">¶</a>
+</pre><a href="#section-4.10.5-5" class="pilcrow">¶</a>
 </div>
-<p id="section-4.10.4-6">Where:<a href="#section-4.10.4-6" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.10.4-7">
+<p id="section-4.10.5-6">Where:<a href="#section-4.10.5-6" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.5-7">
 <pre>
 u’ = &lt;p₀(r), p₁(r), …&gt;
 v’ = &lt;q₀(r), q₁(r), …&gt;
-</pre><a href="#section-4.10.4-7" class="pilcrow">¶</a>
+</pre><a href="#section-4.10.5-7" class="pilcrow">¶</a>
 </div>
-<p id="section-4.10.4-8">Note that this is a problem of exactly the same form as the original problem,
+<p id="section-4.10.5-8">Note that this is a problem of exactly the same form as the original problem,
 except that the length of u’ and v’ is now a factor of L shorter than the
-original length of u and v.<a href="#section-4.10.4-8" class="pilcrow">¶</a></p>
-<p id="section-4.10.4-9">The Prover (P<sub>=</sub>) and verifier P<sub>-</sub> use Lagrange
+original length of u and v.<a href="#section-4.10.5-8" class="pilcrow">¶</a></p>
+<p id="section-4.10.5-9">The Prover (P<sub>=</sub>) and verifier P<sub>-</sub> use Lagrange
 interpolation to compute the value of p<sub>i</sub>(r) for all (i) in the range
-0..s and set this as the new vector u’.<a href="#section-4.10.4-9" class="pilcrow">¶</a></p>
-<p id="section-4.10.4-10">Similarly, the Prover (P<sub>=</sub>) and verifier P<sub>+</sub> use Lagrange
+0..s and set this as the new vector u’.<a href="#section-4.10.5-9" class="pilcrow">¶</a></p>
+<p id="section-4.10.5-10">Similarly, the Prover (P<sub>=</sub>) and verifier P<sub>+</sub> use Lagrange
 interpolation to compute the value of q<sub>i</sub>(r) for all (i) in the range
-0..s and set this as the new vector v’.<a href="#section-4.10.4-10" class="pilcrow">¶</a></p>
+0..s and set this as the new vector v’.<a href="#section-4.10.5-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="final-iteration">
-<section id="section-4.10.5">
+<section id="section-4.10.6">
           <h4 id="name-the-final-iteration">
-<a href="#section-4.10.5" class="section-number selfRef">4.10.5. </a><a href="#name-the-final-iteration" class="section-name selfRef">The Final Iteration</a>
+<a href="#section-4.10.6" class="section-number selfRef">4.10.6. </a><a href="#name-the-final-iteration" class="section-name selfRef">The Final Iteration</a>
           </h4>
-<p id="section-4.10.5-1">The proof proceeds recursively until the length of the vectors u and v are
-strictly less than the compression factor L.<a href="#section-4.10.5-1" class="pilcrow">¶</a></p>
-<p id="section-4.10.5-2">Next, the Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> will generate
+<p id="section-4.10.6-1">The proof proceeds recursively until the length of the vectors u and v are
+strictly less than the compression factor L.<a href="#section-4.10.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.6-2">Next, the Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> will generate
 a random field value p<sub>mask</sub> using PRSS. Similarly, the Prover
 (P<sub>=</sub>) and right verifier P<sub>+</sub> will generate a random field
-value q<sub>mask</sub> using PRSS.<a href="#section-4.10.5-2" class="pilcrow">¶</a></p>
-<p id="section-4.10.5-3">The Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> move u<sub>0</sub>
+value q<sub>mask</sub> using PRSS.<a href="#section-4.10.6-2" class="pilcrow">¶</a></p>
+<p id="section-4.10.6-3">The Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> move u<sub>0</sub>
 to index L - 1. No data will be lost as the length of u is strictly less than
-L. Then they place the value p<sub>mask</sub> at index 0.<a href="#section-4.10.5-3" class="pilcrow">¶</a></p>
-<p id="section-4.10.5-4">The Prover (P<sub>=</sub>) and right verifier P<sub>+</sub> move v<sub>0</sub>
-to index L - 1 and place the value q<sub>mask</sub> at index 0.<a href="#section-4.10.5-4" class="pilcrow">¶</a></p>
-<p id="section-4.10.5-5">The Prover will still generate a zero knowledge proof exactly as before, but the
-validation of soundness of this proof will proceed differently.<a href="#section-4.10.5-5" class="pilcrow">¶</a></p>
-<p id="section-4.10.5-6">Firstly, when the verifiers compute their shares of b, they must skip the random
-weights.<a href="#section-4.10.5-6" class="pilcrow">¶</a></p>
-<p id="section-4.10.5-7">So in the final iteration the left verifier P<sub>-</sub> computes:<a href="#section-4.10.5-7" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.10.5-8">
+L. Then they place the value p<sub>mask</sub> at index 0.<a href="#section-4.10.6-3" class="pilcrow">¶</a></p>
+<p id="section-4.10.6-4">The Prover (P<sub>=</sub>) and right verifier P<sub>+</sub> move v<sub>0</sub>
+to index L - 1 and place the value q<sub>mask</sub> at index 0.<a href="#section-4.10.6-4" class="pilcrow">¶</a></p>
+<p id="section-4.10.6-5">The Prover will still generate a zero knowledge proof exactly as before, but the
+validation of soundness of this proof will proceed differently.<a href="#section-4.10.6-5" class="pilcrow">¶</a></p>
+<p id="section-4.10.6-6">Firstly, when the verifiers compute their shares of b, they must skip the random
+weights.<a href="#section-4.10.6-6" class="pilcrow">¶</a></p>
+<p id="section-4.10.6-7">So in the final iteration the left verifier P<sub>-</sub> computes:<a href="#section-4.10.6-7" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.6-8">
 <pre>
-b₋ = t₋ - sum(i=1..L-1, G(i)₋)
-</pre><a href="#section-4.10.5-8" class="pilcrow">¶</a>
+b₋ = t₋ - sum(i=1..L-1, G(i)_-)
+</pre><a href="#section-4.10.6-8" class="pilcrow">¶</a>
 </div>
-<p id="section-4.10.5-9">And the right verifier P<sub>+</sub> computes:<a href="#section-4.10.5-9" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.10.5-10">
+<p id="section-4.10.6-9">And the right verifier P<sub>+</sub> computes:<a href="#section-4.10.6-9" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.6-10">
 <pre>
-b₊ = t₊ - sum(i=1,L-1, G(i)₊)
-</pre><a href="#section-4.10.5-10" class="pilcrow">¶</a>
+b₊ = t₊ - sum(i=1,L-1, G(i)_+)
+</pre><a href="#section-4.10.6-10" class="pilcrow">¶</a>
 </div>
-<p id="section-4.10.5-11">The second difference is the way the verifiers validate the soundness of the
+<p id="section-4.10.6-11">The second difference is the way the verifiers validate the soundness of the
 zero knowledge proof. In the final iteration the verifier P<sub>-</sub>
-computes p<sub>0</sub>(r) and G(r)<sub>-</sub>, while verifier P<sub>+</sub>
-computes q<sub>0</sub>(r) and G(r)<sub>+</sub>. Then the verifiers reveal all of
-these values to one another, so that they can both directly check that:<a href="#section-4.10.5-11" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.10.5-12">
+computes p<sub>0</sub>(r) and G(r)<em>-, while verifier P</em>+
+computes q<sub>0</sub>(r) and G(r)_+. Then the verifiers reveal all of
+these values to one another, so that they can both directly check that:<a href="#section-4.10.6-11" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.10.6-12">
 <pre>
-G(r)&lt;sub&gt;-&lt;/sub&gt; + G(r)&lt;sub&gt;+&lt;/sub&gt; = p&lt;sub&gt;0&lt;/sub&gt;(r) · q&lt;sub&gt;0&lt;/sub&gt;(r)
-</pre><a href="#section-4.10.5-12" class="pilcrow">¶</a>
+G(r)_- + G(r)_+ = p&lt;sub&gt;0&lt;/sub&gt;(r) · q&lt;sub&gt;0&lt;/sub&gt;(r)
+</pre><a href="#section-4.10.6-12" class="pilcrow">¶</a>
 </div>
-<p id="section-4.10.5-13">This is why the random masks were necessary in the final iteration. Those ensure
-that none of the values p<sub>0</sub>(r), q<sub>0</sub>(r), G(r)<sub>-</sub>,
-or G(r)<sub>+</sub> reveal any private information.<a href="#section-4.10.5-13" class="pilcrow">¶</a></p>
+<p id="section-4.10.6-13">This is why the random masks were necessary in the final iteration. Those ensure
+that none of the values p<sub>0</sub>(r), q<sub>0</sub>(r), <code>G(r)_-</code>,
+or G(r)_+ reveal any private information.<a href="#section-4.10.6-13" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
