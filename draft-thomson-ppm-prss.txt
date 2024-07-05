@@ -543,14 +543,14 @@ Table of Contents
    the range can produce outputs with negligible bias.
 
    For example, an application goal might seek to produce values in the
-   prime field p = 2^61 - 1.  Using the AES PRF, where Mo is 2^128, and
+   prime field p = 2₆₁ - 1.  Using the AES PRF, where Mo is 2^128, and
    reducing its output modulo p results in a bias that causes the first
    64 values of the field to be chosen with a probability of about 2^-67
    more than other values.  This degree of bias might be acceptable in
    some applications.
 
    To avoid excessive bias, applications SHOULD NOT use oversampling
-   where the output is less than 2^48 times smaller than Mo.  The output
+   where the output is less than 2₄₈ times smaller than Mo.  The output
    of multiple PRF invocations could be combined to reduce bias.
 
 9.  Security Considerations

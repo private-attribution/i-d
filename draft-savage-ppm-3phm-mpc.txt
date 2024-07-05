@@ -225,27 +225,24 @@ Table of Contents
 
 2.3.  Secret Sharing
 
-   Each input value (x) is split into three shares (x<sub>1</sub>,
-   x<sub>2</sub>, x<sub>3</sub>), such that x = x<sub>1</sub> +
-   x<sub>2</sub> + x<sub>3</sub>.  Any method can be used, but the
-   following process is typical:
+   Each input value (x) is split into three shares (x₁, x₂, x₃), such
+   that x = x₁ + x₂ + x₃. Any method can be used, but the following
+   process is typical:
 
    x₁ = random()
    x₂ = random()
    x₃ = x - x₁ - x₂
 
    Then, each party in the MPC receives a different set of two values.
-   This document adopts the convention that P_1 receives (x<sub>1</sub>,
-   x<sub>2</sub>), P_2 receives (x<sub>2</sub>, x<sub>3</sub>), and P_3
-   receives (x<sub>3</sub>, x<sub>1</sub>).  From this sharing, no
+   This document adopts the convention that P_1 receives (x₁, x₂), P_2
+   receives (x₂, x₃), and P_3 receives (x₃, x₁).  From this sharing, no
    single party is able to construct the original value (x), but the
    values from any two parties include all three shares and can be used
    to reconstruct the original value.
 
    Some protocols might require that the parties construct a sharing of
    a value which is known to all the parties.  In that case, the value
-   of x<sub>1</sub> is set to the known value, with x<sub>2</sub> and
-   x<sub>3</sub> both set to zero.
+   of x₁ is set to the known value, with x₂ and x₃ both set to zero.
 
 2.4.  Identifying Shares and Parties
 
@@ -253,8 +250,8 @@ Table of Contents
    are identified as P_1, P_2, and P_3.  The first, or left share, value
    held by each party is identified with the same subscript.  The other
    share, or right share, held by each is the next highest-numbered
-   share (with x<sub>1</sub> being the next highest after
-   x<sub>3</sub>).  This is illustrated in Figure 1:
+   share (with x₁ being the next highest after x₃).  This is illustrated
+   in Figure 1:
 
            x₂  .----.  x₁
           .---|  P₁  |---.
@@ -557,7 +554,7 @@ Table of Contents
    In the setting where the Prover (P_(=)) and the left verifier (P_(-))
    both are in possession of the n-vector u, the Prover (P_(=)) and the
    other verifier (P_(+)) are in possession of the n-vector v, and the
-   verifiers P_(-) and P_(+) hold t_(-) and t_(+) respectively and
+   verifiers P_(-) and P_(+) hold t_(-) and t₊ respectively and
    t<sub>\-</sub> + t<sub>+</sub> = t.
 
    However, the security of this protocol requires the vector elements u
@@ -633,7 +630,7 @@ Table of Contents
 
    sum(i=1..4, gᵢ · hᵢ) = -½
 
-   Where P_(=) and P_(+) both compute h<sub>i</sub> as follows:
+   Where P₌ and P₊ both compute h<sub>i</sub> as follows:
 
    h₁ = y₊·x₊·(1 - 2·r₊)
    h₂ = x₊·(1 - 2·r₊)
@@ -662,11 +659,11 @@ Table of Contents
 
    The Prover P_(=) and verifier P_(-) both compute the vector u
 
-   u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, …, g₁<sup>(m)</sup>, g₂<sup>(m)</sup>, g₃<sup>(m)</sup>, g₄<sup>(m)</sup>)
+   u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, …, g₁⁽ᵐ⁾, g₂⁽ᵐ⁾, g₃⁽ᵐ⁾, g₄⁽ᵐ⁾)
 
    The Prover P_(=) and verifier P_(+) both compute the vector v
 
-   v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, …, h₁<sup>(m)</sup>, h₂<sup>(m)</sup>, h₃<sup>(m)</sup>, h₄<sup>(m)</sup>)
+   v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, …, h₁⁽ᵐ⁾, h₂⁽ᵐ⁾, h₃⁽ᵐ⁾, h₄⁽ᵐ⁾)
 
    If no additive attacks were applied, the dot product of these two
    vectors should be:
