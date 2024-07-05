@@ -326,7 +326,7 @@ Table of Contents
    A randomness context is produced by invoking the Expand() function of
    the chosen KDF, passing the shared entropy generated in Section 5.1
    as the prk input, the byte sequence that identifies the context
-   (ctx_id) as the info input, and the PRF parameter Nk as the L input
+   (ctxᵢd) as the info input, and the PRF parameter Nk as the L input
    (see Section 6), as follows:
 
    def context = Context.new(kdf, prf, extracted, ctxᵢd):
@@ -543,14 +543,14 @@ Table of Contents
    the range can produce outputs with negligible bias.
 
    For example, an application goal might seek to produce values in the
-   prime field p = 2₆₁ - 1.  Using the AES PRF, where Mo is 2^128, and
+   prime field p = 2^61 - 1.  Using the AES PRF, where Mo is 2^128, and
    reducing its output modulo p results in a bias that causes the first
    64 values of the field to be chosen with a probability of about 2^-67
    more than other values.  This degree of bias might be acceptable in
    some applications.
 
    To avoid excessive bias, applications SHOULD NOT use oversampling
-   where the output is less than 2₄₈ times smaller than Mo.  The output
+   where the output is less than 2^48 times smaller than Mo.  The output
    of multiple PRF invocations could be combined to reduce bias.
 
 9.  Security Considerations
@@ -566,7 +566,7 @@ Table of Contents
    remains small.  Theorem 4 of [GKWY20] shows that advantage comprises
    two components:
 
-   *  a computational limit of q^2/(2*2^k) that is based solely on
+   *  a computational limit of q²/(2*2^k) that is based solely on
       attacker work (q) and the key size (k) of the permutation
 
    *  a usage limit of 2pq/2^b that provides advantage proportional to

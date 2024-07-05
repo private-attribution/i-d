@@ -393,7 +393,7 @@ Table of Contents
                      Figure 3: Multiplication by Party
 
    The result is a non-replicated sharing of the result z =
-   z<sub>1</sub> + z<sub>2</sub> + z<sub>3</sub>.
+   z<sub>1</sub> + z₂ + z₃.
 
    To reach the desired state where parties each have replicated shares
    of z, each party needs to send its share, z_(-), to the party to its
@@ -545,11 +545,11 @@ Table of Contents
 
    sum(i=0..n, uᵢ · vᵢ) = t
 
-   In the setting where the Prover (P_(=)) and the left verifier (P₋)
+   In the setting where the Prover (P_(=)) and the left verifier (P_(-))
    both are in possession of the n-vector u, the Prover (P_(=)) and the
    other verifier (P_(+)) are in possession of the n-vector v, and the
-   verifiers P_(-) and P_(+) hold t₋ and t₊ respectively and
-   t<sub>-</sub> + t<sub>+</sub> = t.
+   verifiers P_(-) and P_(+) hold t_(-) and t_(+) respectively and
+   t<sub>-</sub> + t₊ = t.
 
    However, the security of this protocol requires the vector elements u
    and v to be members of a large field.  So the first step of the
@@ -624,14 +624,14 @@ Table of Contents
 
    sum(i=1..4, gᵢ·hᵢ) = -½
 
-   Where P₌ and P₊ both compute h_i as follows:
+   Where P_(=) and P_(+) both compute hᵢ as follows:
 
    h₁ = y₊·x₊·(1 - 2·r₊)
    h₂ = x₊·(1 - 2·r₊)
    h₃ = y₊·(1 - 2·r₊)
    h₄ = 1 − 2·r₊
 
-   And P₌ and P₋ both compute g_i as follows:
+   And P_(=) and P_(-) both compute gᵢ as follows:
 
    g₁ = -2·x₋·y₋·(1 - 2·e₋ )
    g₂ = y₋·(1 - 2·e₋ )
@@ -683,13 +683,12 @@ Table of Contents
    2.  Chunk the vectors u and v into s segments of length L.
 
        1.  Each chunk of u uniquely defines a polynomial of degree L - 1
-           which are named p<sub>i</sub>(x), indexed by i∊[0..s).
+           which are named pᵢ(x), indexed by i∊[0..s).
 
        2.  Each chunk of v uniquely defines a polynomial of degree L - 1
-           which are named q<sub>i</sub>(x), indexed by i.
+           which are named qᵢ(x), indexed by i.
 
-   3.  The polynomial G(x) is defined as: sum(i=0..s, p<sub>i</sub>(x) ·
-       q<sub>i</sub>(x))
+   3.  The polynomial G(x) is defined as: sum(i=0..s, pᵢ(x) · qᵢ(x))
 
        This polynomial G(x) is equivalent to u · v so the goal becomes
        proving that sum(i=0..L-1, G(i)) = t.
@@ -702,25 +701,23 @@ Table of Contents
            the minimal number required to uniquely define it.
 
        2.  These 2L - 1 points are split into two additive secret-shares
-           G(x)<sub>-</sub> and G(x)<sub>+</sub> and sent to the
-           verifiers P_(-) and P_(+), respectively.  These shares form
-           the distributed zero-knowledge proof.
+           G(x)₋ and G(x)₊ and sent to the verifiers P_(-) and P_(+),
+           respectively.  These shares form the distributed zero-
+           knowledge proof.
 
        3.  The verifiers verify the proposition using their shares by
-           computing b<sub>-</sub> = t<sub>-</sub> - sum(i=0..L-1,
-           G(x)<sub>-</sub>) and b<sub>+</sub> = t<sub>+</sub> -
-           sum(i=0..L-1, G(x)<sub>+</sub>).  They send each other the
-           value they compute and confirm that b<sub>-</sub> +
-           b<sub>+</sub> = 0.  If this test fails, the entire protocol
-           is aborted.
+           computing b₋ = t₋ - sum(i=0..L-1, G(x)₋) and b₊ = t₊ -
+           sum(i=0..L-1, G(x)₊).  They send each other the value they
+           compute and confirm that b<sub>-</sub> + b₊ = 0.  If this
+           test fails, the entire protocol is aborted.
 
    4.  At this point, the prover could have produced values for
        G(0..L-1) that pass this test even if they had performed an
        additive attack.  The proof needs to be validated by confirming
-       that G(r) = sum(i=0..s, p<sub>i</sub>(r) · q<sub>i</sub>(r)) for
-       a randomly selected challenge point r.  As long as the prover
-       cannot control the choice of r, the likelihood that the prover is
-       dishonest is inversely proportional to the field size.
+       that G(r) = sum(i=0..s, p<sub>i</sub>(r) · qᵢ(r)) for a randomly
+       selected challenge point r.  As long as the prover cannot control
+       the choice of r, the likelihood that the prover is dishonest is
+       inversely proportional to the field size.
 
        1.  If we define two new vectors u’ = <p<sub>0</sub>(r), …,
            p<sub>s-1</sub>(r)>, and v’ = <q<sub>0</sub>(r), …,

@@ -1564,7 +1564,7 @@ Participants with the same shared entropy and the same randomness context
 identifier will produce the same randomness.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">A randomness context is produced by invoking the <code>Expand()</code> function of the
 chosen KDF, passing the shared entropy generated in <a href="#extract" class="auto internal xref">Section 5.1</a> as the <code>prk</code>
-input, the byte sequence that identifies the context (<code>ctx_id</code>) as the <code>info</code>
+input, the byte sequence that identifies the context (<code>ctxᵢd</code>) as the <code>info</code>
 input, and the PRF parameter <code>Nk</code> as the <code>L</code> input (see <a href="#prf" class="auto internal xref">Section 6</a>), as follows:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-5.2-3">
 <pre>
@@ -1846,12 +1846,12 @@ of PRF invocations.<a href="#section-8.3-3" class="pilcrow">¶</a></p>
 PRF, reducing the PRF output modulo the maximum in the range can produce outputs
 with negligible bias.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
 <p id="section-8.4-2">For example, an application goal might seek to produce values in the prime field
-<code>p</code> = 2₆₁ - 1.  Using the AES PRF, where <code>Mo</code> is 2<sup>128</sup>, and
+<code>p</code> = 2<sup>61</sup> - 1.  Using the AES PRF, where <code>Mo</code> is 2<sup>128</sup>, and
 reducing its output modulo <code>p</code> results in a bias that causes the first 64 values
 of the field to be chosen with a probability of about 2<sup>-67</sup> more than
 other values. This degree of bias might be acceptable in some applications.<a href="#section-8.4-2" class="pilcrow">¶</a></p>
 <p id="section-8.4-3">To avoid excessive bias, applications <span class="bcp14">SHOULD NOT</span> use oversampling where the
-output is less than 2₄₈ times smaller than <code>Mo</code>.  The output of
+output is less than 2<sup>48</sup> times smaller than <code>Mo</code>.  The output of
 multiple PRF invocations could be combined to reduce bias.<a href="#section-8.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1875,7 +1875,7 @@ more general analysis of these mechanisms.<a href="#section-9-1" class="pilcrow"
 Theorem 4 of <span>[<a href="#GKWY20" class="cite xref">GKWY20</a>]</span> shows that advantage comprises two components:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.1-2.1">
-            <p id="section-9.1-2.1.1">a computational limit of <code>q^2/(2*2^k)</code> that is based solely on attacker work
+            <p id="section-9.1-2.1.1">a computational limit of <code>q²/(2*2^k)</code> that is based solely on attacker work
 (<code>q</code>) and the key size (<code>k</code>) of the permutation<a href="#section-9.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.1-2.2">
