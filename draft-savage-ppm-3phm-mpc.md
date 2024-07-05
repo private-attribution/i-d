@@ -297,8 +297,8 @@ all parties, negation, and subtraction.
 
 The product of two shared values, x and y, is computed using the following process.
 
-Since x = x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub> and y = y<sub>1</sub> +
-y<sub>2</sub> + y<sub>3</sub> the product z = x \* y can be expanded as:
+Since `x = x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub>` and `y = y<sub>1</sub> +
+y<sub>2</sub> + y<sub>3</sub>` the product `z = x \* y` can be expanded as:
 
 ~~~ pseudocode
 z = (x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub>) \* (y<sub>1</sub> + y<sub>2</sub> + y<sub>3</sub>)
@@ -707,7 +707,7 @@ p<sub>i</sub>(1), …, p<sub>i</sub>(L-1) }`.
 The prover (P<sub>=</sub>) and verifier (P<sub>-</sub>) can find the value of
 `p<sub>i</sub>(x)` for any other value of `x` using Lagrange interpolation.
 
-The prover will use Lagrange interpolation to compute the values `{
+The prover uses Lagrange interpolation to compute the values `{
 p<sub>i</sub>(L), p<sub>i</sub>(L+1), …, p<sub>i</sub>(2L-2) }`.
 
 The same process is applied for the vector `v` with a verifier, P<sub>+</sub>.
@@ -723,8 +723,8 @@ into `s` chunks of length `L`.
 As before, if the length of `v` is not a multiple of `L`, the final chunk will
 be padded with zeros.
 
-They will interpret each chunk as L points lying on a polynomial and compute the
-values `{ q<sub>i</sub>(L), q<sub>i</sub>(L+1), …, q<sub>i</sub>(2L-2) }`
+Each chunk is interpreted as `L` points on a polynomial. From this the values `{
+q<sub>i</sub>(L), q<sub>i</sub>(L+1), …, q<sub>i</sub>(2L-2) }` are found using
 using Lagrange interpolation.
 
 ## Producing the Zero Knowledge Proof
@@ -758,7 +758,7 @@ The prover (P<sub>=</sub>) and the right verifier (P<sub>+</sub>) generate one
 share using their shared randomness, which means that no communication is
 needed.  This share is denoted `G(x)_+`.
 
-The prover (P<sub>=</sub>) computes the other share via subtraction.  That is
+The prover (P<sub>=</sub>) computes the other share via subtraction.  That is,
 `G_-(x) = G(x) - G_+(x)`.  This value is sent to the left verifier
 (P<sub>-</sub>). Transmitting this share `G(x)_-` involves sending `2L-1` field
 values.
@@ -840,87 +840,89 @@ Consequently, though each round depends on communication, the total latency is t
 
 ### Recursive Proof
 
-So the prover has to prove that `G(r)` is correct for this random challenge.
+At the end of each round, the prover is left with the task of proving that
+`G(r)` is correct based on the random challenge. `r`.
 
-Recall the definition of G(x):
-
-~~~ pseudocode
-G(x) = sum(i=0..s, p<sub>i</sub>(x) · q<sub>i</sub>(x))
-~~~
-
-So this amounts to proving that:
+Recall the definition of `G(x)`:
 
 ~~~ pseudocode
-u’ · v’ = G(r)
+G(x) = sum(i=0..s, p<sub>i</sub>(x)·q<sub>i</sub>(x))
 ~~~
 
-Where:
+This is equivalent to providing that `u’ · v’ = G(r)`, where:
 
 ~~~ pseudocode
 u’ = <p<sub>0</sub>(r), p<sub>1</sub>(r), …>
 v’ = <q<sub>0</sub>(r), q<sub>1</sub>(r), …>
 ~~~
 
-Note that this is a problem of exactly the same form as the original problem,
-except that the length of u’ and v’ is now a factor of L shorter than the
-original length of u and v.
+This is a problem of exactly the same form as the original problem, except that
+the length of `u’` and `v’` is now a factor of `L` shorter than the original
+length of `u` and `v`.
 
-The Prover (P<sub>=</sub>) and verifier P<sub>-</sub> use Lagrange
-interpolation to compute the value of p<sub>i</sub>(r) for all (i) in the range
-0..s and set this as the new vector u’.
+The prover (P<sub>=</sub>) and verifier P<sub>-</sub> use Lagrange interpolation
+to compute the value of `p<sub>i</sub>(r)` for all chunks in the range `0..s`
+and set this as the new vector `u`.
 
 Similarly, the Prover (P<sub>=</sub>) and verifier P<sub>+</sub> use Lagrange
-interpolation to compute the value of q<sub>i</sub>(r) for all (i) in the range
-0..s and set this as the new vector v’.
+interpolation to compute the value of `q<sub>i</sub>(r)` and set this as the new
+vector `v`.
+
+The target value `t` is set to `G(r)`.  The two verifiers do not learn `G(r)`.
+Instead, each uses Lagrange interpolation to compute a share of `G(r)`.  That
+is:
+
+~~~ pseudocode
+t_- = lagrange_interpolate(r, [G_-(0), G_-(1), ..., G_-(2L-2)])
+t_+ = lagrange_interpolate(r, [G_+(0), G_+(1), ..., G_+(2L-2)])
+~~~
+
 
 ### The Final Iteration {#final-iteration}
 
-The proof proceeds recursively until the length of the vectors u and v are
-strictly less than the compression factor L.
+The proof proceeds recursively until the length of the vectors `u` and `v` are
+strictly less than the compression factor `L`.
 
-Next, the Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> will generate
-a random field value p<sub>mask</sub> using PRSS. Similarly, the Prover
-(P<sub>=</sub>) and right verifier P<sub>+</sub> will generate a random field
-value q<sub>mask</sub> using PRSS.
+Next, the prover (P<sub>=</sub>) and left verifier P<sub>-</sub> jointly
+generate a random field value `p_m` using shared secrets. Similarly, the prover
+(P<sub>=</sub>) and right verifier P<sub>+</sub> generate a random field value
+`q_m` using shared secrets.
 
-The Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> move u<sub>0</sub>
-to index L - 1. No data will be lost as the length of u is strictly less than
-L. Then they place the value p<sub>mask</sub> at index 0.
+The prover (P<sub>=</sub>) and left verifier P<sub>-</sub> move `u_0` to index
+`L-1`. No data will be lost as this replaces a zero value; the length of `u` is
+strictly less than `L`.  The value at index 0 is replaced with `p_m`.
 
-The Prover (P<sub>=</sub>) and right verifier P<sub>+</sub> move v<sub>0</sub>
-to index L - 1 and place the value q<sub>mask</sub> at index 0.
+The prover (P<sub>=</sub>) and right verifier P<sub>+</sub> move `v_0`
+to index `L-1` and place the value `q_m` at index 0.
 
-The Prover will still generate a zero knowledge proof exactly as before, but the
-validation of soundness of this proof will proceed differently.
+The prover generates a zero knowledge proof from these polynomials exactly as
+before, sending each verifier `2L-1` shares of `G(x)`.  The process of
+validation then proceeds differently.
 
-Firstly, when the verifiers compute their shares of b, they must skip the random
-weights.
-
-So in the final iteration the left verifier P<sub>-</sub> computes:
+Firstly, when the verifiers compute their shares of `b`, they ignore the random
+value at index 0 of `G(x)`.  That is:
 
 ~~~ pseudocode
 b_- = t_- - sum(i=1..L-1, G(i)_-)
+b_+ = t_+ - sum(i=1..L-1, G(i)_+)
 ~~~
 
-And the right verifier P<sub>+</sub> computes:
+Verifiers confirm that `b_- + b_+` is zero by exchanging their shares of `b`.
+
+Finally, the verifier P<sub>-</sub>
+computes both `p<sub>0</sub>(r)` and `G(r)_-`, verifier P<sub>+</sub>
+computes `q<sub>0</sub>(r)` and `G(r)_+`, and then the verifiers reveal all of
+these values to each other.  They then both verify that:
 
 ~~~ pseudocode
-b_+ = t_+ - sum(i=1,L-1, G(i)_+)
-~~~
-
-The second difference is the way the verifiers validate the soundness of the
-zero knowledge proof. In the final iteration the verifier P<sub>-</sub>
-computes p<sub>0</sub>(r) and G(r)_-, while verifier P_+
-computes q<sub>0</sub>(r) and G(r)_+. Then the verifiers reveal all of
-these values to one another, so that they can both directly check that:
-
-~~~
 G(r)_- + G(r)_+ = p<sub>0</sub>(r) · q<sub>0</sub>(r)
 ~~~
 
-This is why the random masks were necessary in the final iteration. Those ensure
-that none of the values p<sub>0</sub>(r), q<sub>0</sub>(r), `G(r)_-`,
-or G(r)_+ reveal any private information.
+The addition of random masks (`p_m` and `q_m`) ensure that revealing `G(r)` in
+this way does not reveal anything about the value of the polynomials held by the
+other party.  Revealing `q_0(r)`, which was computed from the random values,
+only confirms that the prover did not cheat.
+
 
 # Conditions of Usage
 
