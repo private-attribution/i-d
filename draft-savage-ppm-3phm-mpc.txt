@@ -583,11 +583,11 @@ Table of Contents
 
    (x₋·y₊ ⊕ e₋ ) ⊕ (x₊·y₋ ⊕ r₊) = 0
 
-   Using: x ⊕ y = x*(1 - 2*y) + y
+   Using: x ⊕ y = x·(1 - 2·y) + y
 
    (x₋·y₊·(1 - 2e₋) + e₋) ⊕ (x₊·y₋·(1 - 2r₊) + r₊) = 0
 
-   Using: x ⊕ y = x + y - 2_x_y
+   Using: x ⊕ y = x + y - 2·x·y
 
    (x₋·y₊·(1 - 2e₋) + e₋)
    + (x₊·y₋·(1 - 2r₊) + r₊)
