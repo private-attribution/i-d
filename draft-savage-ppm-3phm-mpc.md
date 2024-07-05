@@ -671,8 +671,8 @@ At each iteration:
    verifier `P_+` sets their share `t_+` to zero. In subsequent iterations the
    target value will not be known to both verifiers.
 
-    1. The prover will compute the value of `2L - 1` points on `G(x)`, the
-       minimal number required to uniquely define it.
+    1. The prover will compute the value of `G(0)`, `G(1)`, ... , `G(2L - 2)`,
+       the minimal number of points required to uniquely define it.
 
     2. These `2L - 1` points are split into two additive secret-shares
        `G(x)_-` and `G(x)_+` and sent to the verifiers
