@@ -326,7 +326,7 @@ Table of Contents
    A randomness context is produced by invoking the Expand() function of
    the chosen KDF, passing the shared entropy generated in Section 5.1
    as the prk input, the byte sequence that identifies the context
-   (ctx_id) as the info input, and the PRF parameter Nk as the L input
+   (ctxᵢd) as the info input, and the PRF parameter Nk as the L input
    (see Section 6), as follows:
 
    def context = Context.new(kdf, prf, extracted, ctxᵢd):
@@ -566,7 +566,7 @@ Table of Contents
    remains small.  Theorem 4 of [GKWY20] shows that advantage comprises
    two components:
 
-   *  a computational limit of q^2/(2*2^k) that is based solely on
+   *  a computational limit of q²/(2*2^k) that is based solely on
       attacker work (q) and the key size (k) of the permutation
 
    *  a usage limit of 2pq/2^b that provides advantage proportional to

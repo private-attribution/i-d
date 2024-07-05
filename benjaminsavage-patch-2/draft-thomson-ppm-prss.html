@@ -1564,7 +1564,7 @@ Participants with the same shared entropy and the same randomness context
 identifier will produce the same randomness.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">A randomness context is produced by invoking the <code>Expand()</code> function of the
 chosen KDF, passing the shared entropy generated in <a href="#extract" class="auto internal xref">Section 5.1</a> as the <code>prk</code>
-input, the byte sequence that identifies the context (<code>ctx_id</code>) as the <code>info</code>
+input, the byte sequence that identifies the context (<code>ctxᵢd</code>) as the <code>info</code>
 input, and the PRF parameter <code>Nk</code> as the <code>L</code> input (see <a href="#prf" class="auto internal xref">Section 6</a>), as follows:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-5.2-3">
 <pre>
@@ -1875,7 +1875,7 @@ more general analysis of these mechanisms.<a href="#section-9-1" class="pilcrow"
 Theorem 4 of <span>[<a href="#GKWY20" class="cite xref">GKWY20</a>]</span> shows that advantage comprises two components:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.1-2.1">
-            <p id="section-9.1-2.1.1">a computational limit of <code>q^2/(2*2^k)</code> that is based solely on attacker work
+            <p id="section-9.1-2.1.1">a computational limit of <code>q²/(2*2^k)</code> that is based solely on attacker work
 (<code>q</code>) and the key size (<code>k</code>) of the permutation<a href="#section-9.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.1-2.2">
