@@ -679,11 +679,16 @@ At each iteration:
        P<sub>-</sub> and P<sub>+</sub>, respectively. These shares form the
        distributed zero-knowledge proof.
 
-    3. The verifiers verify the proposition using their shares by computing
-       `b_- = t_- - sum(i=0..L-1, G(x)_-)` and
-       `b_+ = t_+ - sum(i=0..L-1, G(x)_+)`. They
-       send each other the value they compute and confirm that `b_- +
-       b_+ = 0`. If this test fails, the entire protocol is aborted.
+    3. The verifiers each sum together the first `L - 1` points they were given:
+       `P_-` computes `sum_-` = sum(i=0..L-1, G(i)_-)`
+       `P_+` computes `sum_+` = sum(i=0..L-1, G(i)_+)`
+       where `sum_- + sum_+ = sum(0..L-1, G(i)`.
+
+    4. Now the verifiers verify the proposition `sum(i=0..L-1, G(i)) = t` by having
+       `P_-` compute `b_- = t_- - sum_-` and
+       `P_+` compute `b_+ = t_+ - sum_+`.
+       They send each other these values and confirm that
+       `b_- + b_+ = 0`. If this test fails, the entire protocol is aborted.
 
 4. At this point, the prover could have produced values for `G(0..L-1)` that
    pass this test even if they had performed an additive attack. The proof needs
