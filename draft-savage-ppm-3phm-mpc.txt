@@ -80,7 +80,7 @@ Table of Contents
    4.  Validation Protocol
      4.1.  Additive Attack
      4.2.  Malicious Security
-     4.3.  Overview of the validation protocol
+     4.3.  Overview of the Validation Protocol
      4.4.  Distributed Zero-Knowledge Proofs
      4.5.  Distributed Zero Knowledge Proofs
      4.6.  Transforming into a large prime field
@@ -397,52 +397,50 @@ Table of Contents
    z₃.
 
    To reach the desired state where parties each have replicated shares
-   of z, each party needs to send its share, z_-, to the party to its
+   of z, each party needs to send its share, z₋, to the party to its
    left.
 
    Unfortunately, each party cannot simply send this value to another
    party, as this would allow the recipient to reconstruct the full
-   input values, x and y, using z_-. To prevent this, the value of z_-
-   is masked with a uniformly distributed random mask that is unknown to
+   input values, x and y, using z₋. To prevent this, the value of z₋ is
+   masked with a uniformly distributed random mask that is unknown to
    party P_(-).
 
    Using a source of shared randomness (such as [PRSS]), each pair of
    helpers generates a uniformly distributed random value known only to
-   the two of them.  Let r_- denote the left value (known to P_(-)) and
-   r_+ be the right value (known to P_(+)).
+   the two of them.  Let r₋ denote the left value (known to P_(-)) and
+   r₊ be the right value (known to P_(+)).
 
-   Each party uses r_- and r_+ to create a masked value of z_- as
-   follows:
+   Each party uses r₋ and r₊ to create a masked value of z₋ as follows:
 
    z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋ + r₋ - r₊
 
    These three mask values sum to zero, so this masking does not alter
-   the result.  Importantly, the value of r_+ is not known to P_(-),
-   which ensures that z_- cannot be used by P_(-) to recover x or y.
-   Thus, z_- is safe to send to P_(-).
+   the result.  Importantly, the value of r₊ is not known to P_(-),
+   which ensures that z₋ cannot be used by P_(-) to recover x or y.
+   Thus, z₋ is safe to send to P_(-).
 
-   Upon receiving a value from its right — which the recipient names z_+
-   — each helper is now in possession of two-of-three shares, (z_-,
-   z_+), which is a replicated secret sharing of the product of x and y.
+   Upon receiving a value from its right -- which the recipient names z₊
+   — each helper is now in possession of two-of-three shares, (z₋, z₊),
+   which is a replicated secret sharing of the product of x and y.
 
 4.  Validation Protocol
 
    The basic multiplication protocol in Section 3 only offers "semi-
    honest security".  It is "secure up to an additive attack".
-   Validating multiplications allows any additive attack to be detected,
+   Validating multiplications allows an additive attack to be detected,
    ensuring that a protocol is aborted before any result is produced
    that might compromise the confidentiality of inputs.
 
 4.1.  Additive Attack
 
-   By "additive attack", we mean that instead of sending the value z_-,
-   a corrupted party could instead send z_- + a.  In the context of
-   boolean circuits, the only possible additive attack is to add 1.
+   By "additive attack", we mean that instead of sending the value z₋, a
+   corrupted party could instead send z₋ + a.  In the context of boolean
+   circuits, the only possible additive attack is to add 1.
 
    The multiplication protocol described does not prevent this.  Since
-   the value z_- is randomly distributed, the party (P_(-)) that
-   receives this value cannot tell if an additive attack has been
-   applied.
+   the value z₋ is randomly distributed, the party (P_(-)) that receives
+   this value cannot tell if an additive attack has been applied.
 
    While an additive attack does not result in information about the
    inputs being revealed, it corrupts the results.  If a protocol
@@ -473,37 +471,40 @@ Table of Contents
    If this validation protocol fails, the parties abort the protocol and
    no values are revealed.  All parties destroy the shares they hold.
 
-4.3.  Overview of the validation protocol
+4.3.  Overview of the Validation Protocol
 
-   Each of the parties, P_(=), produces a "Zero Knowledge Proof" (ZKP)
-   that proves all of the multiplications it performed were done
-   correctly.  The other two parties, P_(-) and P_(+), act as
-   "verifiers" and validate this zero knowledge proof.
+   Each of the parties produces a "Zero Knowledge Proof" (ZKP) that
+   proves to the two other parties (P_(-) and P_(+)) that all of the
+   multiplications it performed were done correctly.  The two other
+   parties act as "verifiers" and validate this zero knowledge proof.
+
+   The validation protocol is therefore executed three times, with each
+   party acting as a prover.  Each validation can occur concurrently.
 
    When operating in a boolean field, if P_(=) followed the protocol
-   correctly, this is how they would compute z_-
+   correctly, this is how they would compute z₋:
 
    z₋ = x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊
 
-   So the expression:
+   This can be restated as:
 
    x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 
-   will hold true if the protocol was followed correctly, but will equal
-   *_one_* if there was an additive attack.
+   This statement is true if the protocol was followed correctly, but
+   the value will be non-zero if there was an additive attack.
 
-   By computing this quantity in a large prime field (not a boolean
-   field), and then summing across all of the multiplications in a
-   batch, we can compute the total number of times an additive attack
-   was applied.  So long as the number of multiplication in a validation
-   batch is smaller than the size of the prime field, this approach will
-   detect any deviation from the protocol.
+   Validation is made more efficient by validating multiple
+   multiplications at the same time.  The above formula is computed in
+   large prime field (not the original binary field), with the sum
+   across all of the multiplications being a count of how much error was
+   introduced by an additive attack (or, for a binary field, the number
+   of additive attacks).  Provided that the number of multiplications
+   included in the validation batch is smaller than the size of the
+   prime field, this approach will detect any deviation from the
+   protocol with high probability.
 
    For this protocol, the parties will use the field of integers mod p,
-   where p is the Mersenne prime 2^61-1.  Other primes could be used,
-   but this value provides good security margins for a large number of
-   multiplications.  It also provides several opportunities for
-   optimization on 64-bit hardware.
+   where p is a large prime.
 
 4.4.  Distributed Zero-Knowledge Proofs
 
@@ -1014,10 +1015,11 @@ Table of Contents
    used for PRSS and AES-128 as the PRP.
 
    For validation, the prime field used is modulo the Mersenne prime
-   2^61-1 validation.  Any sufficiently large prime can be used; see
-   TODO/below for an analysis of the batch size requirements and
-   security properties that can be obtained by using this particular
-   prime.
+   2^61-1 validation.  Any sufficiently large prime can be used, but
+   this value provides both good performance on 64-bit hardware and
+   useful security margins for typical batch sizes; see TODO/below for
+   an analysis of the batch size requirements and security properties
+   that can be obtained by using this particular prime.
 
    The Fiat-Shamir transform Section 4.10.3 used in the validation
    proofs can use SHA-256.  However, any preimage and collision-
