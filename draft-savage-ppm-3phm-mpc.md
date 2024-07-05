@@ -537,7 +537,7 @@ Factoring allows this to be written as an expression with four terms, each with 
 Renaming terms as new variables, the result is the dot product of two four dimensional vectors, g and h:
 
 ~~~ pseudocode
-g<sub>1</sub>·h<sub>1</sub> + g<sub>2</sub>·h<sub>2</sub> + g<sub>3</sub>·h<sub>3</sub> + g<sub>4</sub>·h<sub>4</sub> = -½
+g_1·h_1 + g_2·h_2 + g_3·h_3 + g_4·h_4 = -½
 ~~~
 
 Or alternatively:
@@ -549,19 +549,19 @@ sum(i=1..4, g<sub>i</sub> · h<sub>i</sub>) = -½
 Where P<sub>=</sub> and P<sub>+</sub> both compute `h<sub>i</sub>` as follows:
 
 ~~~ pseudocode
-h<sub>1</sub> = y<sub>+</sub>·x<sub>+</sub>·(1 - 2·r<sub>+</sub>)
-h<sub>2</sub> = x<sub>+</sub>·(1 - 2·r<sub>+</sub>)
-h<sub>3</sub> = y<sub>+</sub>·(1 - 2·r<sub>+</sub>)
-h<sub>4</sub> = 1 − 2·r<sub>+</sub>
+h_1 = y<sub>+</sub>·x<sub>+</sub>·(1 - 2·r<sub>+</sub>)
+h_2 = x<sub>+</sub>·(1 - 2·r<sub>+</sub>)
+h_3 = y<sub>+</sub>·(1 - 2·r<sub>+</sub>)
+h_4 = 1 − 2·r<sub>+</sub>
 ~~~
 
 And P<sub>=</sub> and P<sub>-</sub> both compute g<sub>i</sub> as follows:
 
 ~~~ pseudocode
-g<sub>1</sub> = -2·x<sub>-</sub>·y<sub>-</sub>·(1 - 2·e<sub>-</sub> )
-g<sub>2</sub> = y<sub>-</sub>·(1 - 2·e<sub>-</sub> )
-g<sub>3</sub> = x<sub>-</sub>·(1 - 2·e<sub>-</sub> )
-g<sub>4</sub> = -½(1 - 2·e<sub>-</sub>)
+g_1 = -2·x<sub>-</sub>·y<sub>-</sub>·(1 - 2·e<sub>-</sub> )
+g_2 = y<sub>-</sub>·(1 - 2·e<sub>-</sub> )
+g_3 = x<sub>-</sub>·(1 - 2·e<sub>-</sub> )
+g_4 = -½(1 - 2·e<sub>-</sub>)
 ~~~
 
 And where:
@@ -579,13 +579,13 @@ Each multiplication therefore produces two vectors of length 4. To validate a ba
 The Prover P<sub>=</sub> and verifier P<sub>-</sub> both compute the vector u
 
 ~~~ pseudocode
-u = (g<sub>1</sub><sup>(1)</sup>, g<sub>2</sub><sup>(1)</sup>, g<sub>3</sub><sup>(1)</sup>, g<sub>4</sub><sup>(1)</sup>, …, g<sub>1</sub><sup>(m)</sup>, g<sub>2</sub><sup>(m)</sup>, g<sub>3</sub><sup>(m)</sup>, g<sub>4</sub><sup>(m)</sup>)
+u = (g_1<sup>(1)</sup>, g_2<sup>(1)</sup>, g_3<sup>(1)</sup>, g_4<sup>(1)</sup>, …, g_1<sup>(m)</sup>, g_2<sup>(m)</sup>, g_3<sup>(m)</sup>, g_4<sup>(m)</sup>)
 ~~~
 
 The Prover P<sub>=</sub> and verifier P<sub>+</sub> both compute the vector v
 
 ~~~ pseudocode
-v = (h<sub>1</sub><sup>(1)</sup>, h<sub>2</sub><sup>(1)</sup>, h<sub>3</sub><sup>(1)</sup>, h<sub>4</sub><sup>(1)</sup>, …, h<sub>1</sub><sup>(m)</sup>, h<sub>2</sub><sup>(m)</sup>, h<sub>3</sub><sup>(m)</sup>, h<sub>4</sub><sup>(m)</sup>)
+v = (h_1<sup>(1)</sup>, h_2<sup>(1)</sup>, h_3<sup>(1)</sup>, h_4<sup>(1)</sup>, …, h_1<sup>(m)</sup>, h_2<sup>(m)</sup>, h_3<sup>(m)</sup>, h_4<sup>(m)</sup>)
 ~~~
 
 If no additive attacks were applied, the dot product of these two vectors should be:
