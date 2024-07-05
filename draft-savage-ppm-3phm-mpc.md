@@ -579,13 +579,13 @@ Each multiplication therefore produces two vectors of length 4. To validate a ba
 The Prover P<sub>=</sub> and verifier P<sub>-</sub> both compute the vector u
 
 ~~~ pseudocode
-u = (g_1<sup>(1)</sup>, g_2<sup>(1)</sup>, g_3<sup>(1)</sup>, g_4<sup>(1)</sup>, …, g_1<sup>(m)</sup>, g_2<sup>(m)</sup>, g_3<sup>(m)</sup>, g_4<sup>(m)</sup>)
+u = (g_1<sup>(1)</sup>, g_2<sup>(1)</sup>, g_3<sup>(1)</sup>, g_4<sup>(1)</sup>, … , g_1<sup>(m)</sup>, g_2<sup>(m)</sup>, g_3<sup>(m)</sup>, g_4<sup>(m)</sup>)
 ~~~
 
 The Prover P<sub>=</sub> and verifier P<sub>+</sub> both compute the vector v
 
 ~~~ pseudocode
-v = (h_1<sup>(1)</sup>, h_2<sup>(1)</sup>, h_3<sup>(1)</sup>, h_4<sup>(1)</sup>, …, h_1<sup>(m)</sup>, h_2<sup>(m)</sup>, h_3<sup>(m)</sup>, h_4<sup>(m)</sup>)
+v = (h_1<sup>(1)</sup>, h_2<sup>(1)</sup>, h_3<sup>(1)</sup>, h_4<sup>(1)</sup>, … , h_1<sup>(m)</sup>, h_2<sup>(m)</sup>, h_3<sup>(m)</sup>, h_4<sup>(m)</sup>)
 ~~~
 
 If no additive attacks were applied, the dot product of these two vectors should be:
