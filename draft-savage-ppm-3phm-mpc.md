@@ -250,7 +250,7 @@ entity that will receive the final result. This entity can validate the
 consistency of the values it receives by ensuring that the replicated values it
 receives are identical. That is, the value of x<sub>1</sub> received from
 P<sub>1</sub> is the same as the value of x<sub>1</sub> it receives from
-P<sub>2</sub> and so forth. If the value of shares are inconsistent, the
+P<sub>3</sub> and so forth. If the value of shares are inconsistent, the
 protocol fails. After discarding these duplicated values, the revealed value is
 the sum of the shares that it receives.
 
