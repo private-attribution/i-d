@@ -663,10 +663,13 @@ At each iteration:
 
 3. The polynomial `G(x)` is defined as: `sum(i=0..s, p<sub>i</sub>(x) · q<sub>i</sub>(x))`
 
-   This polynomial `G(x)` is equivalent to `u · v` so the goal becomes proving that `sum(i=0..L-1, G(i)) = t`.
+   For `x ∊ [0..L-1)`, this polynomial `G(x)` computes the inner product of a
+   portion of `u` and `v`. So the goal becomes proving that `sum(i=0..L-1, G(i)) = t`.
 
    In the first iteration, the target value `t` is known by all parties to be
-   `-m/2`. In subsequent iterations the target value will be different.
+   `-m/2`, so verifier `P_-` sets their share `t_-` to `-m/2` and the right
+   verifier `P_+` sets their share `t_+` to zero. In subsequent iterations the
+   target value will not be known to both verifiers.
 
     1. The prover will compute the value of `2L - 1` points on `G(x)`, the
        minimal number required to uniquely define it.
