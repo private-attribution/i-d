@@ -334,7 +334,7 @@ To visualize this, {{fig-mul}} shows cells labeled with the party responsible fo
   x₂ |                    |
      +------+      +------|
   x₃ |  P₃  |      |  P₃  |
-     +------+-------------+
+     +------+------+------+
 ~~~
 {: #fig-mul title="Multiplication by Party"}
 
