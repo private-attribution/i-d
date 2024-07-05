@@ -3,19 +3,20 @@
 import fileinput
 import re
 
+chars = "-+=()0123456789i"
+subtr = "₋₊₌₍₎₀₁₂₃₄₅₆₇₈₉ᵢ"
+suptr = "⁻⁺⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ⁱ"
+
 pseudocode = re.compile(r"^(~~~~*) *pseudocode$")
-sub = re.compile(r"<sub>([^<]+)</sub>")
-sup = re.compile(r"<sup>([^<]+)</sup>")
-chars = "0123456789+-=()i"
-subtr = "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ᵢ"
-suptr = "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ⁱ"
+sub = re.compile(r"(?:<sub>([" + chars + r"]+)</sub>|(?<=\w)_([" + chars + r"]))")
+sup = re.compile(r"(?:<sup>([" + chars + r"]+)</sup>|(?<=\w)\^([" + chars + r"]))")
 
 def tr(line, pattern, target):
     result = ""
     lastend = 0
     for m in pattern.finditer(line):
         result += line[lastend:m.start()]
-        for c in m[1]:
+        for c in (m[1] or m[2]):
             i = chars.find(c)
             result += target[i]
         lastend = m.end()
