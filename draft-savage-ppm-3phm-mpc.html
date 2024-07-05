@@ -1758,7 +1758,7 @@ party needs to send its share, z<sub>-</sub>, to the party to its left.<a href="
 <p id="section-3-14">Each party uses r<sub>-</sub> and r<sub>+</sub> to create a masked value of z<sub>-</sub> as follows:<a href="#section-3-14" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-3-15">
 <pre>
-z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt; + x&lt;sub&gt;\-&lt;/sub&gt;·y₊ + x₊·y&lt;sub&gt;\-&lt;/sub&gt; + r&lt;sub&gt;\-&lt;/sub&gt; - r₊
+z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋ + r₋ - r₊
 </pre><a href="#section-3-15" class="pilcrow">¶</a>
 </div>
 <p id="section-3-16">These three mask values sum to zero, so this masking does not alter the result. Importantly, the value of r<sub>+</sub> is not known to P<sub>-</sub>, which ensures that z<sub>-</sub> cannot be used by P<sub>-</sub> to recover x or y. Thus, z<sub>-</sub> is safe to send to P<sub>-</sub>.<a href="#section-3-16" class="pilcrow">¶</a></p>
@@ -1834,7 +1834,7 @@ x₋∧y₋ ⊕ x₋∧y₊ ⊕ x₊∧y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 <p id="section-4.4-3">The verifier on the left, P<sub>-</sub>, knows the values of:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-4.1">
-            <p id="section-4.4-4.1.1">y<sub>-</sub><a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.4-4.1.1"><code>y&lt;sub&gt;-&lt;/sub&gt;</code><a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.4-4.2">
             <p id="section-4.4-4.2.1">x<sub>-</sub><a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
@@ -1875,10 +1875,10 @@ sum(i=0..n, uᵢ · vᵢ) = t
 </pre><a href="#section-4.5-2" class="pilcrow">¶</a>
 </div>
 <p id="section-4.5-3">In the setting where the Prover (P<sub>=</sub>) and the left verifier
-(P<sub>-</sub>) both are in possession of the n-vector <code>u</code>, the Prover
+(P₋) both are in possession of the n-vector <code>u</code>, the Prover
 (P<sub>=</sub>) and the other verifier (P<sub>+</sub>) are in possession of the
 n-vector <code>v</code>, and the verifiers P<sub>-</sub> and P<sub>+</sub> hold
-t<sub>-</sub> and t₊ respectively and <code>t&lt;sub&gt;\-&lt;/sub&gt; +
+t₋ and t₊ respectively and <code>t&lt;sub&gt;-&lt;/sub&gt; +
 t&lt;sub&gt;+&lt;/sub&gt; = t</code>.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
 <p id="section-4.5-4">However, the security of this protocol requires the vector elements <code>u</code> and <code>v</code>
 to be members of a large field. So the first step of the validation protocol is
@@ -2312,7 +2312,7 @@ weights.<a href="#section-4.10.5-6" class="pilcrow">¶</a></p>
 <p id="section-4.10.5-7">So in the final iteration the left verifier P<sub>-</sub> computes:<a href="#section-4.10.5-7" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.10.5-8">
 <pre>
-b&lt;sub&gt;\-&lt;/sub&gt; = t&lt;sub&gt;\-&lt;/sub&gt; - sum(i=1..L-1, G(i)&lt;sub&gt;\-&lt;/sub&gt;)
+b₋ = t₋ - sum(i=1..L-1, G(i)₋)
 </pre><a href="#section-4.10.5-8" class="pilcrow">¶</a>
 </div>
 <p id="section-4.10.5-9">And the right verifier P<sub>+</sub> computes:<a href="#section-4.10.5-9" class="pilcrow">¶</a></p>
@@ -2328,7 +2328,7 @@ computes q<sub>0</sub>(r) and G(r)<sub>+</sub>. Then the verifiers reveal all of
 these values to one another, so that they can both directly check that:<a href="#section-4.10.5-11" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.10.5-12">
 <pre>
-G(r)&lt;sub&gt;\-&lt;/sub&gt; + G(r)&lt;sub&gt;+&lt;/sub&gt; = p&lt;sub&gt;0&lt;/sub&gt;(r) · q&lt;sub&gt;0&lt;/sub&gt;(r)
+G(r)&lt;sub&gt;-&lt;/sub&gt; + G(r)&lt;sub&gt;+&lt;/sub&gt; = p&lt;sub&gt;0&lt;/sub&gt;(r) · q&lt;sub&gt;0&lt;/sub&gt;(r)
 </pre><a href="#section-4.10.5-12" class="pilcrow">¶</a>
 </div>
 <p id="section-4.10.5-13">This is why the random masks were necessary in the final iteration. Those ensure

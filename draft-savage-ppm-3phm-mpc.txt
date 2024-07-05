@@ -413,7 +413,7 @@ Table of Contents
    Each party uses r_(-) and r_(+) to create a masked value of z_(-) as
    follows:
 
-   z<sub>\-</sub> = x<sub>\-</sub>·y<sub>\-</sub> + x<sub>\-</sub>·y₊ + x₊·y<sub>\-</sub> + r<sub>\-</sub> - r₊
+   z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋ + r₋ - r₊
 
    These three mask values sum to zero, so this masking does not alter
    the result.  Importantly, the value of r_(+) is not known to P_(-),
@@ -519,7 +519,7 @@ Table of Contents
 
    The verifier on the left, P_(-), knows the values of:
 
-   *  y_(-)
+   *  y<sub>-</sub>
 
    *  x_(-)
 
@@ -550,11 +550,11 @@ Table of Contents
 
    sum(i=0..n, uᵢ · vᵢ) = t
 
-   In the setting where the Prover (P_(=)) and the left verifier (P_(-))
+   In the setting where the Prover (P_(=)) and the left verifier (P₋)
    both are in possession of the n-vector u, the Prover (P_(=)) and the
    other verifier (P_(+)) are in possession of the n-vector v, and the
-   verifiers P_(-) and P_(+) hold t_(-) and t₊ respectively and
-   t<sub>\-</sub> + t<sub>+</sub> = t.
+   verifiers P_(-) and P_(+) hold t₋ and t₊ respectively and
+   t<sub>-</sub> + t<sub>+</sub> = t.
 
    However, the security of this protocol requires the vector elements u
    and v to be members of a large field.  So the first step of the
@@ -981,7 +981,7 @@ Table of Contents
 
    So in the final iteration the left verifier P_(-) computes:
 
-   b<sub>\-</sub> = t<sub>\-</sub> - sum(i=1..L-1, G(i)<sub>\-</sub>)
+   b₋ = t₋ - sum(i=1..L-1, G(i)₋)
 
    And the right verifier P_(+) computes:
 
@@ -993,7 +993,7 @@ Table of Contents
    q_0(r) and G(r)_(+).  Then the verifiers reveal all of these values
    to one another, so that they can both directly check that:
 
-G(r)<sub>\-</sub> + G(r)<sub>+</sub> = p<sub>0</sub>(r) · q<sub>0</sub>(r)
+G(r)<sub>-</sub> + G(r)<sub>+</sub> = p<sub>0</sub>(r) · q<sub>0</sub>(r)
 
    This is why the random masks were necessary in the final iteration.
    Those ensure that none of the values p_0(r), q_0(r), G(r)_(-), or
