@@ -653,11 +653,11 @@ Table of Contents
 
    The Prover P_(=) and verifier P_(-) both compute the vector u
 
-   u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, …, g₁⁽ᵐ⁾, g₂⁽ᵐ⁾, g₃⁽ᵐ⁾, g₄⁽ᵐ⁾)
+   u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, … , g₁⁽ᵐ⁾, g₂⁽ᵐ⁾, g₃⁽ᵐ⁾, g₄⁽ᵐ⁾)
 
    The Prover P_(=) and verifier P_(+) both compute the vector v
 
-   v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, …, h₁⁽ᵐ⁾, h₂⁽ᵐ⁾, h₃⁽ᵐ⁾, h₄⁽ᵐ⁾)
+   v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, … , h₁⁽ᵐ⁾, h₂⁽ᵐ⁾, h₃⁽ᵐ⁾, h₄⁽ᵐ⁾)
 
    If no additive attacks were applied, the dot product of these two
    vectors should be:
