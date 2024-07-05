@@ -1,0 +1,2544 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC Setting</title>
+<meta content="Ben Savage" name="author">
+<meta content="Martin Thomson" name="author">
+<meta content="
+       TODO 
+    " name="description">
+<meta content="xml2rfc 3.22.0" name="generator">
+<meta content="arithmetic" name="keyword">
+<meta content="polynomial" name="keyword">
+<meta content="vector" name="keyword">
+<meta content="draft-savage-ppm-3phm-mpc-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.22.0
+    Python 3.12.3
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.0
+    intervaltree 3.1.0
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
+    pycountry 22.3.5
+    PyYAML 6.0.1
+    requests 2.32.3
+    setuptools 69.5.1
+    wcwidth 0.2.13
+-->
+<link href="draft-savage-ppm-3phm-mpc.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+}
+:is(ol, ul) :is(ol, ul) {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  line-height: 1;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+}
+dl.olPercent {
+  --indent: 5ch;
+}
+dl > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+dl.olPercent > dt {
+  min-width: calc(var(--indent) - 2ch);
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:first-child, .break:first-child + *) {
+  margin-top: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:last-child) {
+  margin-bottom: 0;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    overflow-x: auto;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+}
+a.pilcrow[href] { color: var(--pilcrow-weak); }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  min-width: var(--identifier-width);
+  clear: left;
+  float: left;
+  text-align: right;
+  margin-right: 1ch;
+}
+#identifiers dd {
+  margin: 0;
+  margin-left: calc(1em + var(--identifier-width)) !important;
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 2px 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 10ch;
+  margin-right: 1.5ch;
+}
+.references dt:target::before {
+  content: "⇒";
+  width: 15px;
+  margin: 0 10px 0 -25px;
+}
+.references dd {
+  margin-left: 12ch !important;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul :is(p, li) {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+  .toplink {
+    display: none;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">3 Party MPC</td>
+<td class="right">July 2024</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Savage &amp; Thomson</td>
+<td class="center">Expires 6 January 2025</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Privacy Preserving Measurement</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-savage-ppm-3phm-mpc-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2024-07-05" class="published">5 July 2024</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2025-01-06">6 January 2025</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">B. Savage</div>
+<div class="org">Meta</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Thomson</div>
+<div class="org">Mozilla</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC Setting</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">TODO<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://private-attribution.github.io/i-d/draft-savage-ppm-3phm-mpc.html">https://private-attribution.github.io/i-d/draft-savage-ppm-3phm-mpc.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-savage-ppm-3phm-mpc/">https://datatracker.ietf.org/doc/draft-savage-ppm-3phm-mpc/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        Privacy Preserving Measurement Working Group mailing list (<span><a href="mailto:ppm@ietf.org">mailto:ppm@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/ppm/">https://mailarchive.ietf.org/arch/browse/ppm/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/ppm/">https://www.ietf.org/mailman/listinfo/ppm/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/private-attribution/i-d">https://github.com/private-attribution/i-d</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 6 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2024 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-mpc-protocols-in-binary-fie" class="internal xref">MPC Protocols in Binary Fields</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-three-party-honest-majority" class="internal xref">Three-Party Honest Majority MPC</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-mpc-protocol-prerequisites" class="internal xref">MPC Protocol Prerequisites</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-fields-and-rings" class="internal xref">Fields and Rings</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-secret-sharing" class="internal xref">Secret Sharing</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-identifying-shares-and-part" class="internal xref">Identifying Shares and Parties</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5">
+                <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="auto internal xref">2.5</a>.  <a href="#name-reveal-protocol" class="internal xref">Reveal Protocol</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.6">
+                <p id="section-toc.1-1.2.2.6.1"><a href="#section-2.6" class="auto internal xref">2.6</a>.  <a href="#name-addition" class="internal xref">Addition</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-multiplication-protocol" class="internal xref">Multiplication Protocol</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-validation-protocol" class="internal xref">Validation Protocol</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-additive-attack" class="internal xref">Additive Attack</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-malicious-security" class="internal xref">Malicious Security</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-overview-of-the-validation-" class="internal xref">Overview of the validation protocol</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-distributed-zero-knowledge-" class="internal xref">Distributed Zero-Knowledge Proofs</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-distributed-zero-knowledge-p" class="internal xref">Distributed Zero Knowledge Proofs</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-transforming-into-a-large-p" class="internal xref">Transforming into a large prime field</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-validating-a-batch-of-multi" class="internal xref">Validating a batch of multiplications</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.8">
+                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="auto internal xref">4.8</a>.  <a href="#name-overview-of-recursive-proof" class="internal xref">Overview of Recursive Proof Compression</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.9">
+                <p id="section-toc.1-1.4.2.9.1"><a href="#section-4.9" class="auto internal xref">4.9</a>.  <a href="#name-detailed-validation-algorit" class="internal xref">Detailed Validation Algorithm</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.9.2.1">
+                    <p id="section-toc.1-1.4.2.9.2.1.1"><a href="#section-4.9.1" class="auto internal xref">4.9.1</a>.  <a href="#name-selecting-the-compression-f" class="internal xref">Selecting the Compression Factor</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.9.2.2">
+                    <p id="section-toc.1-1.4.2.9.2.2.1"><a href="#section-4.9.2" class="auto internal xref">4.9.2</a>.  <a href="#name-producing-polynomials-px-an" class="internal xref">Producing Polynomials <code>p(x)</code> and <code>q(x)</code></a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10">
+                <p id="section-toc.1-1.4.2.10.1"><a href="#section-4.10" class="auto internal xref">4.10</a>. <a href="#name-producing-the-zero-knowledg" class="internal xref">Producing the zero knowledge proof</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.1">
+                    <p id="section-toc.1-1.4.2.10.2.1.1"><a href="#section-4.10.1" class="auto internal xref">4.10.1</a>.  <a href="#name-masking-the-zero-knowledge-" class="internal xref">Masking the zero-knowledge proof</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.2">
+                    <p id="section-toc.1-1.4.2.10.2.2.1"><a href="#section-4.10.2" class="auto internal xref">4.10.2</a>.  <a href="#name-checking-that-the-proof-say" class="internal xref">Checking that the proof says the right thing</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.3">
+                    <p id="section-toc.1-1.4.2.10.2.3.1"><a href="#section-4.10.3" class="auto internal xref">4.10.3</a>.  <a href="#name-generating-a-random-challen" class="internal xref">Generating a random challenge</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.4">
+                    <p id="section-toc.1-1.4.2.10.2.4.1"><a href="#section-4.10.4" class="auto internal xref">4.10.4</a>.  <a href="#name-recursive-proof" class="internal xref">Recursive Proof</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10.2.5">
+                    <p id="section-toc.1-1.4.2.10.2.5.1"><a href="#section-4.10.5" class="auto internal xref">4.10.5</a>.  <a href="#name-the-final-iteration" class="internal xref">The Final Iteration</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-conditions-of-usage" class="internal xref">Conditions of Usage</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-recommended-parameters" class="internal xref">Recommended Parameters</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-performance-characteristics" class="internal xref">Performance Characteristics</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">Multiparty Computation (MPC) can perform generic computations over inputs that
+are never revealed to any single entity. MPC executes an agreed function,
+revealing only the output of that function.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">This makes MPC well-suited to handling data that is sensitive or private. MPC in
+a three-party honest majority setting, is broadly recognized as being extremely
+efficient:<a href="#section-1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-3.1">
+          <p id="section-1-3.1.1">Addition and subtraction have zero communication cost and negligible
+computation cost.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-3.2">
+          <p id="section-1-3.2.1">Multiplication is possible with low communication and computation complexity.<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-3.3">
+          <p id="section-1-3.3.1">Strong guarantees can be made about correctness and confidentiality, relying
+on only information-theoretic assumptions.<a href="#section-1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-1-4">This document describes the basic elements required to compute basic MPC
+circuits in this setting. This includes the basic elements of the replicated
+secret sharing scheme that is used: generating shares, share addition, and
+revealing shared values.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">The bulk of the document describes a protocol for multiplication over a binary
+field. The basic multiplication protocol scales linearly and involves 1 bit of
+communication per party.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">This basic multiplication protocol does not prevent an additive attack. To deal
+with the additive attack, a batched validation protocol is used, which adds a
+sub-linear overhead. This protocol comes with significant memory costs and
+slightly increased computational costs, but adds negligible communication
+overhead and latency when there are many multiplications to validate.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<div id="mpc-protocols-in-binary-fields">
+<section id="section-1.1">
+        <h3 id="name-mpc-protocols-in-binary-fie">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-mpc-protocols-in-binary-fie" class="section-name selfRef">MPC Protocols in Binary Fields</a>
+        </h3>
+<p id="section-1.1-1">This document describes a multiplication protocol that is specialized for use
+with binary fields; see <a href="#fields" class="auto internal xref">Section 2.2</a>.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">Composing binary operations into a complete MPC system has proven to be more
+efficient than alternatives using prime fields in a number of applications. Some
+of the components in this document can be applied to rings or larger prime
+fields, but the validation process used here has been specialized for use with
+binary values.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="three-party-honest-majority-mpc">
+<section id="section-2">
+      <h2 id="name-three-party-honest-majority">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-three-party-honest-majority" class="section-name selfRef">Three-Party Honest Majority MPC</a>
+      </h2>
+<p id="section-2-1">A three-party honest majority MPC system performs computations on secret-shared
+values using a replicated scheme where each party receives two out of three
+additive shares of input values. Strong guarantees are provided regarding the
+confidentiality of inputs provided that no pair of parties reveals their shares
+to either of the other parties.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">The protocols described in this document depend on having three MPC parties
+execute them. The protocols described here are secure with abort, even when one
+party is not honest.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">Concretely, this means that a single dishonest party cannot cause the value of
+inputs to be revealed. Also, a single dishonest party cannot alter the output of
+any operation without detection. The protocol is aborted if honest parties
+detect an error that might indicate the actions of a dishonest party. This means
+that a dishonest party can disrupt the protocol<a href="#section-2-3" class="pilcrow">¶</a></p>
+<div id="mpc-protocol-prerequisites">
+<section id="section-2.1">
+        <h3 id="name-mpc-protocol-prerequisites">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-mpc-protocol-prerequisites" class="section-name selfRef">MPC Protocol Prerequisites</a>
+        </h3>
+<p id="section-2.1-1">MPC parties require channels to each of the other parties that provide
+confidentiality, integrity and peer authentication. Mutually-authenticated TLS
+<span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span> provides the necessary capabilities, however, this document does
+not define how to arrange communication between parties; protocols that use
+these mechanisms need to define how communication between parties is
+established.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">The multiplication protocol described depends on shared randomness for
+efficiency. The protocol depends on having a way for parties to pairwise agree
+on random values. MPC parties can execute a coin toss protocol using the
+communication channel, however it is considerably more efficient to use
+pseudorandom secret sharing <span>[<a href="#PRSS" class="cite xref">PRSS</a>]</span> when there are a large number of
+multiplications.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-3">This section describes basic operations of secret sharing (<a href="#sharing" class="auto internal xref">Section 2.3</a>), reveal
+protocol (<a href="#reveal" class="auto internal xref">Section 2.5</a>), and addition (<a href="#addition" class="auto internal xref">Section 2.6</a>). Multiplication is more
+involved and is the subject of subsequent sections (<a href="#multiplication" class="auto internal xref">Section 3</a>,
+<a href="#validation" class="auto internal xref">Section 4</a>).<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="fields">
+<section id="section-2.2">
+        <h3 id="name-fields-and-rings">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-fields-and-rings" class="section-name selfRef">Fields and Rings</a>
+        </h3>
+<p id="section-2.2-1">The basic multiplication protocol described in <a href="#multiplication" class="auto internal xref">Section 3</a> operates in
+any commutative ring, which will be referred to as simply a "ring". A ring is a
+group that defines addition and multiplication operations that are both
+associative and commutative. A ring has an additive inverse for every element,
+which enables subtraction. A ring contains a "zero" element that is an additive
+identity plus a "one" element that is a multiplicative identity.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">A simple realization of a ring is formed of integers modulo a chosen integer
+that is greater than 1.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.2-3">The validation protocol described in this document (see <a href="#validation" class="auto internal xref">Section 4</a>) uses a
+modulo 2 ring. This ring is referred to throughput as a binary field as it is
+also a field and it contains two values: 0 and 1. Addition and multiplication in
+a binary field correspond to Boolean operations. Addition in a binary field is
+equivalent to the Boolean exclusive OR (XOR) operation. Multiplication in a
+binary field is equivalent to the Boolean AND operation.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.2-4">The security properties of the validation protocol depend on the use of a prime
+field of sufficient size. Fields support the same operations as rings, adding
+multiplicative inversion of elements, which enables a division operation. A
+prime field can be realized from integers modulo any prime. The validation
+protocol integrates the projection of values in a binary field to a larger prime
+field, rather than requiring a separate conversion step.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sharing">
+<section id="section-2.3">
+        <h3 id="name-secret-sharing">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-secret-sharing" class="section-name selfRef">Secret Sharing</a>
+        </h3>
+<p id="section-2.3-1">Each input value (<code>x</code>) is split into three shares (<code>x&lt;sub&gt;1&lt;/sub&gt;</code>, <code>x&lt;sub&gt;2&lt;/sub&gt;</code>,
+<code>x&lt;sub&gt;3&lt;/sub&gt;</code>), such that <code>x = x&lt;sub&gt;1&lt;/sub&gt; + x&lt;sub&gt;2&lt;/sub&gt; + x&lt;sub&gt;3&lt;/sub&gt;</code>. Any
+method can be used, but the following process is typical:<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-2.3-2">
+<pre>
+x₁ = random()
+x₂ = random()
+x₃ = x - x₁ - x₂
+</pre><a href="#section-2.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.3-3">Then, each party in the MPC receives a different set of two values. This
+document adopts the convention that P<sub>1</sub> receives (<code>x&lt;sub&gt;1&lt;/sub&gt;</code>,
+<code>x&lt;sub&gt;2&lt;/sub&gt;</code>), P<sub>2</sub> receives (<code>x&lt;sub&gt;2&lt;/sub&gt;</code>, <code>x&lt;sub&gt;3&lt;/sub&gt;</code>), and
+P<sub>3</sub> receives (<code>x&lt;sub&gt;3&lt;/sub&gt;</code>, <code>x&lt;sub&gt;1&lt;/sub&gt;</code>). From this sharing, no
+single party is able to construct the original value (<code>x</code>), but the values from
+any two parties include all three shares and can be used to reconstruct the
+original value.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
+<p id="section-2.3-4">Some protocols might require that the parties construct a sharing of a value
+which is known to all the parties. In that case, the value of <code>x&lt;sub&gt;1&lt;/sub&gt;</code> is
+set to the known value, with <code>x&lt;sub&gt;2&lt;/sub&gt;</code> and <code>x&lt;sub&gt;3&lt;/sub&gt;</code> both set to zero.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="identifying-shares-and-parties">
+<section id="section-2.4">
+        <h3 id="name-identifying-shares-and-part">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-identifying-shares-and-part" class="section-name selfRef">Identifying Shares and Parties</a>
+        </h3>
+<p id="section-2.4-1">This document identifies shares and parties by number. Three parties are
+identified as P<sub>1</sub>, P<sub>2</sub>, and P<sub>3</sub>. The first, or
+left share, value held by each party is identified with the same subscript.  The
+other share, or right share, held by each is the next highest-numbered share
+(with <code>x&lt;sub&gt;1&lt;/sub&gt;</code> being the next highest after <code>x&lt;sub&gt;3&lt;/sub&gt;</code>). This is
+illustrated in <a href="#fig-shares-parties" class="auto internal xref">Figure 1</a>:<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<span id="name-parties-and-shares"></span><div id="fig-shares-parties">
+<figure id="figure-1">
+          <div id="section-2.4-2.1">
+            <div class="alignLeft art-svg artwork" id="section-2.4-2.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="144" width="248" viewBox="0 0 248 144" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 112,32 L 136,32" fill="none" stroke="black"></path>
+                <path d="M 64,48 L 88,48" fill="none" stroke="black"></path>
+                <path d="M 160,48 L 184,48" fill="none" stroke="black"></path>
+                <path d="M 112,64 L 136,64" fill="none" stroke="black"></path>
+                <path d="M 24,96 L 48,96" fill="none" stroke="black"></path>
+                <path d="M 200,96 L 224,96" fill="none" stroke="black"></path>
+                <path d="M 72,112 L 176,112" fill="none" stroke="black"></path>
+                <path d="M 24,128 L 48,128" fill="none" stroke="black"></path>
+                <path d="M 200,128 L 224,128" fill="none" stroke="black"></path>
+                <path d="M 184,48 L 204,88" fill="none" stroke="black"></path>
+                <path d="M 44,88 L 64,48" fill="none" stroke="black"></path>
+                <path d="M 112,32 C 103.16936,32 96,39.16936 96,48" fill="none" stroke="black"></path>
+                <path d="M 136,32 C 144.83064,32 152,39.16936 152,48" fill="none" stroke="black"></path>
+                <path d="M 112,64 C 103.16936,64 96,56.83064 96,48" fill="none" stroke="black"></path>
+                <path d="M 136,64 C 144.83064,64 152,56.83064 152,48" fill="none" stroke="black"></path>
+                <path d="M 24,96 C 15.16936,96 8,103.16936 8,112" fill="none" stroke="black"></path>
+                <path d="M 48,96 C 56.83064,96 64,103.16936 64,112" fill="none" stroke="black"></path>
+                <path d="M 200,96 C 191.16936,96 184,103.16936 184,112" fill="none" stroke="black"></path>
+                <path d="M 224,96 C 232.83064,96 240,103.16936 240,112" fill="none" stroke="black"></path>
+                <path d="M 24,128 C 15.16936,128 8,120.83064 8,112" fill="none" stroke="black"></path>
+                <path d="M 48,128 C 56.83064,128 64,120.83064 64,112" fill="none" stroke="black"></path>
+                <path d="M 200,128 C 191.16936,128 184,120.83064 184,112" fill="none" stroke="black"></path>
+                <path d="M 224,128 C 232.83064,128 240,120.83064 240,112" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="76" y="36">x₂</text>
+                  <text x="172" y="36">x₁</text>
+                  <text x="124" y="52">P₁</text>
+                  <text x="20" y="84">x₂</text>
+                  <text x="228" y="84">x₁</text>
+                  <text x="36" y="116">P₂</text>
+                  <text x="212" y="116">P₃</text>
+                  <text x="84" y="132">x₃</text>
+                  <text x="164" y="132">x₃</text>
+                </g>
+              </svg><a href="#section-2.4-2.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-parties-and-shares" class="selfRef">Parties and Shares</a>
+          </figcaption></figure>
+</div>
+<p id="section-2.4-3">Three parties are identified as P<sub>1</sub>, P<sub>2</sub>, and P<sub>3</sub>.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
+<p id="section-2.4-4">The three parties are logically placed in a ring, with higher numbered parties
+to the right of lower-numbered parties. P<sub>3</sub> is placed to the left of
+P<sub>1</sub>. This means that if a protocol involves sending a value to the
+left, P<sub>1</sub> sends the value to P<sub>3</sub>, P<sub>2</sub> sends to
+P<sub>1</sub>, and P<sub>3</sub> sends to P<sub>2</sub>. The sending directions
+are illustrated in <a href="#fig-send-direction" class="auto internal xref">Figure 2</a>.<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+<span id="name-parties-and-sending-directi"></span><div id="fig-send-direction">
+<figure id="figure-2">
+          <div id="section-2.4-5.1">
+            <div class="alignLeft art-svg artwork" id="section-2.4-5.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="160" width="528" viewBox="0 0 528 160" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 112,48 L 136,48" fill="none" stroke="black"></path>
+                <path d="M 392,48 L 416,48" fill="none" stroke="black"></path>
+                <path d="M 64,64 L 88,64" fill="none" stroke="black"></path>
+                <path d="M 160,64 L 184,64" fill="none" stroke="black"></path>
+                <path d="M 344,64 L 368,64" fill="none" stroke="black"></path>
+                <path d="M 440,64 L 464,64" fill="none" stroke="black"></path>
+                <path d="M 112,80 L 136,80" fill="none" stroke="black"></path>
+                <path d="M 392,80 L 416,80" fill="none" stroke="black"></path>
+                <path d="M 24,112 L 48,112" fill="none" stroke="black"></path>
+                <path d="M 200,112 L 224,112" fill="none" stroke="black"></path>
+                <path d="M 304,112 L 328,112" fill="none" stroke="black"></path>
+                <path d="M 480,112 L 504,112" fill="none" stroke="black"></path>
+                <path d="M 72,128 L 176,128" fill="none" stroke="black"></path>
+                <path d="M 352,128 L 456,128" fill="none" stroke="black"></path>
+                <path d="M 24,144 L 48,144" fill="none" stroke="black"></path>
+                <path d="M 200,144 L 224,144" fill="none" stroke="black"></path>
+                <path d="M 304,144 L 328,144" fill="none" stroke="black"></path>
+                <path d="M 480,144 L 504,144" fill="none" stroke="black"></path>
+                <path d="M 184,64 L 204,104" fill="none" stroke="black"></path>
+                <path d="M 464,64 L 484,104" fill="none" stroke="black"></path>
+                <path d="M 44,104 L 64,64" fill="none" stroke="black"></path>
+                <path d="M 324,104 L 344,64" fill="none" stroke="black"></path>
+                <path d="M 112,48 C 103.16936,48 96,55.16936 96,64" fill="none" stroke="black"></path>
+                <path d="M 136,48 C 144.83064,48 152,55.16936 152,64" fill="none" stroke="black"></path>
+                <path d="M 392,48 C 383.16936,48 376,55.16936 376,64" fill="none" stroke="black"></path>
+                <path d="M 416,48 C 424.83064,48 432,55.16936 432,64" fill="none" stroke="black"></path>
+                <path d="M 112,80 C 103.16936,80 96,72.83064 96,64" fill="none" stroke="black"></path>
+                <path d="M 136,80 C 144.83064,80 152,72.83064 152,64" fill="none" stroke="black"></path>
+                <path d="M 392,80 C 383.16936,80 376,72.83064 376,64" fill="none" stroke="black"></path>
+                <path d="M 416,80 C 424.83064,80 432,72.83064 432,64" fill="none" stroke="black"></path>
+                <path d="M 24,112 C 15.16936,112 8,119.16936 8,128" fill="none" stroke="black"></path>
+                <path d="M 48,112 C 56.83064,112 64,119.16936 64,128" fill="none" stroke="black"></path>
+                <path d="M 200,112 C 191.16936,112 184,119.16936 184,128" fill="none" stroke="black"></path>
+                <path d="M 224,112 C 232.83064,112 240,119.16936 240,128" fill="none" stroke="black"></path>
+                <path d="M 304,112 C 295.16936,112 288,119.16936 288,128" fill="none" stroke="black"></path>
+                <path d="M 328,112 C 336.83064,112 344,119.16936 344,128" fill="none" stroke="black"></path>
+                <path d="M 480,112 C 471.16936,112 464,119.16936 464,128" fill="none" stroke="black"></path>
+                <path d="M 504,112 C 512.83064,112 520,119.16936 520,128" fill="none" stroke="black"></path>
+                <path d="M 24,144 C 15.16936,144 8,136.83064 8,128" fill="none" stroke="black"></path>
+                <path d="M 48,144 C 56.83064,144 64,136.83064 64,128" fill="none" stroke="black"></path>
+                <path d="M 200,144 C 191.16936,144 184,136.83064 184,128" fill="none" stroke="black"></path>
+                <path d="M 224,144 C 232.83064,144 240,136.83064 240,128" fill="none" stroke="black"></path>
+                <path d="M 304,144 C 295.16936,144 288,136.83064 288,128" fill="none" stroke="black"></path>
+                <path d="M 328,144 C 336.83064,144 344,136.83064 344,128" fill="none" stroke="black"></path>
+                <path d="M 480,144 C 471.16936,144 464,136.83064 464,128" fill="none" stroke="black"></path>
+                <path d="M 504,144 C 512.83064,144 520,136.83064 520,128" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="464,128 452,122.4 452,133.6" fill="black" transform="rotate(0,456,128)"></polygon>
+                <polygon class="arrowhead" points="448,64 436,58.4 436,69.6" fill="black" transform="rotate(180,440,64)"></polygon>
+                <polygon class="arrowhead" points="332,104 320,98.4 320,109.6" fill="black" transform="rotate(116.56505117707799,324,104)"></polygon>
+                <polygon class="arrowhead" points="212,104 200,98.4 200,109.6" fill="black" transform="rotate(63.43494882292201,204,104)"></polygon>
+                <polygon class="arrowhead" points="96,64 84,58.4 84,69.6" fill="black" transform="rotate(0,88,64)"></polygon>
+                <polygon class="arrowhead" points="80,128 68,122.4 68,133.6" fill="black" transform="rotate(180,72,128)"></polygon>
+                <g class="text">
+                  <text x="20" y="36">send</text>
+                  <text x="300" y="36">send</text>
+                  <text x="24" y="52">left:</text>
+                  <text x="308" y="52">right:</text>
+                  <text x="124" y="68">P₁</text>
+                  <text x="404" y="68">P₁</text>
+                  <text x="36" y="132">P₂</text>
+                  <text x="212" y="132">P₃</text>
+                  <text x="316" y="132">P₂</text>
+                  <text x="492" y="132">P₃</text>
+                </g>
+              </svg><a href="#section-2.4-5.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-parties-and-sending-directi" class="selfRef">Parties and Sending Directions</a>
+          </figcaption></figure>
+</div>
+<p id="section-2.4-6">Protocols are often described in terms of the actions of a single party. The
+party to the left of that party is P<sub>-</sub> and the party to the right is
+P<sub>+</sub>. Where necessary, the current party is identified as
+P<sub>=</sub>.<a href="#section-2.4-6" class="pilcrow">¶</a></p>
+<p id="section-2.4-7">The two shares that each party holds are referred to as "left" and "right"
+shares. The "left" share is identified with a subscript of "-" (e.g.,
+x<sub>-</sub>); the numeric identifier for the left share at each party matches
+the identifier for that party, so the left share of x that P<sub>1</sub> holds
+is named x<sub>1</sub>. The right share is designated with a subscript of "+"
+(e.g., y<sub>+</sub>); the numeric identifier for the right share is one higher
+than the identifier for the party, so the right share at P<sub>3</sub> is (also)
+x<sub>1</sub>.<a href="#section-2.4-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="reveal">
+<section id="section-2.5">
+        <h3 id="name-reveal-protocol">
+<a href="#section-2.5" class="section-number selfRef">2.5. </a><a href="#name-reveal-protocol" class="section-name selfRef">Reveal Protocol</a>
+        </h3>
+<p id="section-2.5-1">The output of a protocol can be revealed by sending all share values to the
+entity that will receive the final result. This entity can validate the
+consistency of the values it receives by ensuring that the replicated values it
+receives are identical. That is, the value of x<sub>1</sub> received from
+P<sub>1</sub> is the same as the value of x<sub>1</sub> it receives from
+P<sub>3</sub> and so forth. If the value of shares are inconsistent, the
+protocol fails. After discarding these duplicated values, the revealed value is
+the sum of the shares that it receives.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
+<p id="section-2.5-2">A value can be revealed by sending adjacent parties the one share value they do
+not have. That is, P<sub>1</sub> sends x<sub>1</sub> to P<sub>2</sub> and
+x<sub>2</sub> to P<sub>3</sub>; P<sub>2</sub> sends x<sub>2</sub> to
+P<sub>3</sub> and x<sub>3</sub> to P<sub>1;</sub> P<sub>3</sub> sends
+x<sub>3</sub> to P<sub>1</sub> and x<sub>1</sub> to P<sub>2</sub>. Each party
+verifies that they receive the same value twice, and aborts if they do not.<a href="#section-2.5-2" class="pilcrow">¶</a></p>
+<p id="section-2.5-3">If the protocol is executed correctly, each party learns the revealed value,
+which is the sum of the two shares it holds, plus the share that was received.<a href="#section-2.5-3" class="pilcrow">¶</a></p>
+<p id="section-2.5-4">This basic reveal protocol requires that each party send and receive two
+elements. More efficient protocols are possible, but these are not defined in
+this document.<a href="#section-2.5-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="addition">
+<section id="section-2.6">
+        <h3 id="name-addition">
+<a href="#section-2.6" class="section-number selfRef">2.6. </a><a href="#name-addition" class="section-name selfRef">Addition</a>
+        </h3>
+<p id="section-2.6-1">Addition of two values in this setting is trivial and requires no communication
+between parties. To add x to y, each party adds their shares. That is, to
+compute z = x + y, each party separately computes the sum of the shares they
+hold:<a href="#section-2.6-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-2.6-2">
+<pre>
+z₋ = x₋ + y₋
+z₊ = x₊ + y₊
+</pre><a href="#section-2.6-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.6-3">This produces shares of the sum without requiring communication.<a href="#section-2.6-3" class="pilcrow">¶</a></p>
+<p id="section-2.6-4">A similar process can be used for multiplication with a value that is known to
+all parties, negation, and subtraction.<a href="#section-2.6-4" class="pilcrow">¶</a></p>
+<aside id="section-2.6-5">
+          <p id="section-2.6-5.1">Note: Addition in a binary field is the same as subtraction and both are
+equivalent to the XOR operation.<a href="#section-2.6-5.1" class="pilcrow">¶</a></p>
+</aside>
+</section>
+</div>
+</section>
+</div>
+<div id="multiplication">
+<section id="section-3">
+      <h2 id="name-multiplication-protocol">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-multiplication-protocol" class="section-name selfRef">Multiplication Protocol</a>
+      </h2>
+<p id="section-3-1">The product of two shared values, x and y, is computed using the following process.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">Since x = x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub> and y = y<sub>1</sub> +
+y<sub>2</sub> + y<sub>3</sub> the product z = x * y can be expanded as:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3-3">
+<pre>
+z = (x₁ + x₂ + x₃) \* (y₁ + y₂ + y₃)
+</pre><a href="#section-3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3-4">This can be illustrated with a 3 by 3 table (<a href="#tab-mul" class="auto internal xref">Table 1</a>):<a href="#section-3-4" class="pilcrow">¶</a></p>
+<span id="name-multiplication-by-parts"></span><div id="tab-mul">
+<table class="center" id="table-1">
+        <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-multiplication-by-parts" class="selfRef">Multiplication by Parts</a>
+        </caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1"> </th>
+            <th class="text-left" rowspan="1" colspan="1">y₁</th>
+            <th class="text-left" rowspan="1" colspan="1">y₂</th>
+            <th class="text-left" rowspan="1" colspan="1">y₃</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>1</sub>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>1</sub>*y<sub>1</sub>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>1</sub>*y<sub>2</sub>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>1</sub>*y<sub>3</sub>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>2</sub>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>2</sub>*y<sub>1</sub>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>2</sub>*y<sub>2</sub>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>2</sub>*y<sub>3</sub>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>3</sub>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>3</sub>*y<sub>1</sub>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>3</sub>*y<sub>2</sub>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">x<sub>3</sub>*y<sub>3</sub>
+</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<p id="section-3-6">To compute the product, each party locally computes the sum of three products as follows:<a href="#section-3-6" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3-7">
+<pre>
+z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋
+</pre><a href="#section-3-7" class="pilcrow">¶</a>
+</div>
+<p id="section-3-8">To visualize this, <a href="#fig-mul" class="auto internal xref">Figure 3</a> shows cells labeled with the party responsible for computing that partial product:<a href="#section-3-8" class="pilcrow">¶</a></p>
+<span id="name-multiplication-by-party"></span><div id="fig-mul">
+<figure id="figure-3">
+        <div id="section-3-9.1">
+          <div class="alignLeft art-svg artwork" id="section-3-9.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="320" width="432" viewBox="0 0 432 320" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 32,48 L 32,144" fill="none" stroke="black"></path>
+              <path d="M 32,192 L 32,288" fill="none" stroke="black"></path>
+              <path d="M 88,80 L 88,112" fill="none" stroke="black"></path>
+              <path d="M 88,256 L 88,288" fill="none" stroke="black"></path>
+              <path d="M 144,48 L 144,80" fill="none" stroke="black"></path>
+              <path d="M 144,192 L 144,224" fill="none" stroke="black"></path>
+              <path d="M 144,256 L 144,288" fill="none" stroke="black"></path>
+              <path d="M 200,48 L 200,144" fill="none" stroke="black"></path>
+              <path d="M 200,192 L 200,288" fill="none" stroke="black"></path>
+              <path d="M 256,48 L 256,144" fill="none" stroke="black"></path>
+              <path d="M 312,80 L 312,144" fill="none" stroke="black"></path>
+              <path d="M 368,112 L 368,144" fill="none" stroke="black"></path>
+              <path d="M 424,48 L 424,144" fill="none" stroke="black"></path>
+              <path d="M 32,48 L 200,48" fill="none" stroke="black"></path>
+              <path d="M 256,48 L 424,48" fill="none" stroke="black"></path>
+              <path d="M 88,80 L 144,80" fill="none" stroke="black"></path>
+              <path d="M 312,80 L 424,80" fill="none" stroke="black"></path>
+              <path d="M 32,112 L 88,112" fill="none" stroke="black"></path>
+              <path d="M 368,112 L 424,112" fill="none" stroke="black"></path>
+              <path d="M 32,144 L 200,144" fill="none" stroke="black"></path>
+              <path d="M 256,144 L 424,144" fill="none" stroke="black"></path>
+              <path d="M 32,192 L 200,192" fill="none" stroke="black"></path>
+              <path d="M 144,224 L 200,224" fill="none" stroke="black"></path>
+              <path d="M 32,256 L 88,256" fill="none" stroke="black"></path>
+              <path d="M 144,256 L 200,256" fill="none" stroke="black"></path>
+              <path d="M 32,288 L 200,288" fill="none" stroke="black"></path>
+              <g class="text">
+                <text x="60" y="36">y₁</text>
+                <text x="116" y="36">y₂</text>
+                <text x="172" y="36">y₃</text>
+                <text x="284" y="36">y₁</text>
+                <text x="340" y="36">y₂</text>
+                <text x="396" y="36">y₃</text>
+                <text x="12" y="68">x₁</text>
+                <text x="60" y="68">P₁</text>
+                <text x="236" y="68">x₁</text>
+                <text x="12" y="100">x₂</text>
+                <text x="236" y="100">x₂</text>
+                <text x="340" y="100">P₂</text>
+                <text x="12" y="132">x₃</text>
+                <text x="236" y="132">x₃</text>
+                <text x="44" y="180">y₁</text>
+                <text x="100" y="180">y₂</text>
+                <text x="156" y="180">y₃</text>
+                <text x="12" y="212">x₁</text>
+                <text x="172" y="212">P₃</text>
+                <text x="12" y="244">x₂</text>
+                <text x="12" y="276">x₃</text>
+                <text x="60" y="276">P₃</text>
+                <text x="172" y="276">P₃</text>
+              </g>
+            </svg><a href="#section-3-9.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<a href="#name-multiplication-by-party" class="selfRef">Multiplication by Party</a>
+        </figcaption></figure>
+</div>
+<p id="section-3-10">The result is a non-replicated sharing of the result <code>z = z&lt;sub&gt;1&lt;/sub&gt; +
+z&lt;sub&gt;2&lt;/sub&gt; + z&lt;sub&gt;3&lt;/sub&gt;</code>.<a href="#section-3-10" class="pilcrow">¶</a></p>
+<p id="section-3-11">To reach the desired state where parties each have replicated shares of z, each
+party needs to send its share, z<sub>-</sub>, to the party to its left.<a href="#section-3-11" class="pilcrow">¶</a></p>
+<p id="section-3-12">Unfortunately, each party cannot simply send this value to another party, as this would allow the recipient to reconstruct the full input values, x and y, using z<sub>-</sub>. To prevent this, the value of z<sub>-</sub> is masked with a uniformly distributed random mask that is unknown to party P<sub>-</sub>.<a href="#section-3-12" class="pilcrow">¶</a></p>
+<p id="section-3-13">Using a source of shared randomness (such as <span>[<a href="#PRSS" class="cite xref">PRSS</a>]</span>), each pair of helpers generates a uniformly distributed random value known only to the two of them. Let r<sub>-</sub> denote the left value (known to P<sub>-</sub>) and r<sub>+</sub> be the right value (known to P<sub>+</sub>).<a href="#section-3-13" class="pilcrow">¶</a></p>
+<p id="section-3-14">Each party uses r<sub>-</sub> and r<sub>+</sub> to create a masked value of z<sub>-</sub> as follows:<a href="#section-3-14" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3-15">
+<pre>
+z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt; + x&lt;sub&gt;\-&lt;/sub&gt;·y₊ + x₊·y&lt;sub&gt;\-&lt;/sub&gt; + r&lt;sub&gt;\-&lt;/sub&gt; - r₊
+</pre><a href="#section-3-15" class="pilcrow">¶</a>
+</div>
+<p id="section-3-16">These three mask values sum to zero, so this masking does not alter the result. Importantly, the value of r<sub>+</sub> is not known to P<sub>-</sub>, which ensures that z<sub>-</sub> cannot be used by P<sub>-</sub> to recover x or y. Thus, z<sub>-</sub> is safe to send to P<sub>-</sub>.<a href="#section-3-16" class="pilcrow">¶</a></p>
+<p id="section-3-17">Upon receiving a value from its right — which the recipient names z<sub>+</sub> — each helper is now in possession of two-of-three shares, (z<sub>-</sub>, z<sub>+</sub>), which is a replicated secret sharing of the product of x and y.<a href="#section-3-17" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="validation">
+<section id="section-4">
+      <h2 id="name-validation-protocol">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-validation-protocol" class="section-name selfRef">Validation Protocol</a>
+      </h2>
+<p id="section-4-1">The basic multiplication protocol in <a href="#multiplication" class="auto internal xref">Section 3</a> only offers "semi-honest security". It is "secure up to an additive attack". Validating multiplications allows any additive attack to be detected, ensuring that a protocol is aborted before any result is produced that might compromise the confidentiality of inputs.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="additive-attack">
+<section id="section-4.1">
+        <h3 id="name-additive-attack">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-additive-attack" class="section-name selfRef">Additive Attack</a>
+        </h3>
+<p id="section-4.1-1">By "additive attack", we mean that instead of sending the value z<sub>-</sub>, a corrupted party could instead send z<sub>-</sub> + a. In the context of boolean circuits, the only possible additive attack is to add 1.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">The multiplication protocol described does not prevent this. Since the value z<sub>-</sub> is randomly distributed, the party (P<sub>-</sub>) that receives this value cannot tell if an additive attack has been applied.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">While an additive attack does not result in information about the inputs being revealed, it corrupts the results. If a protocol depends on revealing certain values, this sort of corruption could be used to reveal information that might not otherwise be revealed.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">For example, if the parties were computing a function that erases a value unless it has reached some minimum such as:<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1-5">if total_count &gt; 1000 {<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">reveal(total_count);<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-7">} else {<a href="#section-4.1-7" class="pilcrow">¶</a></p>
+<p id="section-4.1-8">reveal(0);<a href="#section-4.1-8" class="pilcrow">¶</a></p>
+<p id="section-4.1-9">}<a href="#section-4.1-9" class="pilcrow">¶</a></p>
+<p id="section-4.1-10">If a corrupted helper wanted to reveal a total_count that was less than 1000, it could add 1 to the final multiplication used to compute the condition total_count &gt; 1000. The result is that values below the minimum are revealed (and values above the minimum are erased), violating the conditions on the protocol.<a href="#section-4.1-10" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="malicious-security">
+<section id="section-4.2">
+        <h3 id="name-malicious-security">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-malicious-security" class="section-name selfRef">Malicious Security</a>
+        </h3>
+<p id="section-4.2-1">Before any values are revealed, the parties perform a validation protocol. This protocol confirms that all of the multiplications performed were performed correctly. That is, that no additive attack was applied by any party.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">If this validation protocol fails, the parties abort the protocol and no values are revealed. All parties destroy the shares they hold.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="overview-of-the-validation-protocol">
+<section id="section-4.3">
+        <h3 id="name-overview-of-the-validation-">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-overview-of-the-validation-" class="section-name selfRef">Overview of the validation protocol</a>
+        </h3>
+<p id="section-4.3-1">Each of the parties, P<sub>=</sub>, produces a "Zero Knowledge Proof" (ZKP) that proves all of the multiplications it performed were done correctly. The other two parties, P<sub>-</sub> and P<sub>+</sub>, act as "verifiers" and validate this zero knowledge proof.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">When operating in a boolean field, if P<sub>=</sub> followed the protocol correctly, this is how they would compute z<sub>-</sub><a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.3-3">
+<pre>
+z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ x&lt;sub&gt;\-&lt;/sub&gt;∧y₊ ⊕ x&lt;sub&gt;\+&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;\-&lt;/sub&gt; ⊕ r₊
+</pre><a href="#section-4.3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-4.3-4">So the expression:<a href="#section-4.3-4" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.3-5">
+<pre>
+x&lt;sub&gt;\-&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ x&lt;sub&gt;\-&lt;/sub&gt;∧y₊ ⊕ x&lt;sub&gt;\+&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;\-&lt;/sub&gt; ⊕ r₊ ⊕ z&lt;sub&gt;\-&lt;/sub&gt; = 0
+</pre><a href="#section-4.3-5" class="pilcrow">¶</a>
+</div>
+<p id="section-4.3-6">will hold true if the protocol was followed correctly, but will equal <strong><em>one</em></strong> if there was an additive attack.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
+<p id="section-4.3-7">By computing this quantity in a large prime field (not a boolean field), and then summing across all of the multiplications in a batch, we can compute the total number of times an additive attack was applied. So long as the number of multiplication in a validation batch is smaller than the size of the prime field, this approach will detect any deviation from the protocol.<a href="#section-4.3-7" class="pilcrow">¶</a></p>
+<p id="section-4.3-8">For this protocol, the parties will use the field of integers mod p, where p is the Mersenne prime 2<sup>61</sup>-1. Other primes could be used, but this value provides good security margins for a large number of multiplications. It also provides several opportunities for optimization on 64-bit hardware.<a href="#section-4.3-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="distributed-zero-knowledge-proofs">
+<section id="section-4.4">
+        <h3 id="name-distributed-zero-knowledge-">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-distributed-zero-knowledge-" class="section-name selfRef">Distributed Zero-Knowledge Proofs</a>
+        </h3>
+<p id="section-4.4-1">The prover needs to prove that for each multiplication in a batch:<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">x<sub>-</sub> ∧ y<sub>-</sub> ⊕ x<sub>-</sub> ∧ y<sub>+</sub> ⊕ x<sub>+</sub> ∧ y<sub>-</sub> ⊕ r<sub>-</sub> ⊕ r<sub>+</sub> ⊕ z<sub>-</sub> = 0<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">The verifier on the left, P<sub>-</sub>, knows the values of:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.4-4.1">
+            <p id="section-4.4-4.1.1">y<sub>-</sub><a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.4-4.2">
+            <p id="section-4.4-4.2.1">x<sub>-</sub><a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.4-4.3">
+            <p id="section-4.4-4.3.1">r<sub>-</sub><a href="#section-4.4-4.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.4-4.4">
+            <p id="section-4.4-4.4.1">z<sub>-</sub><a href="#section-4.4-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-4.4-5">The verifier on the right, P<sub>+</sub>, knows the values of:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.4-6.1">
+            <p id="section-4.4-6.1.1">x<sub>+</sub><a href="#section-4.4-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.4-6.2">
+            <p id="section-4.4-6.2.1">y<sub>+</sub><a href="#section-4.4-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.4-6.3">
+            <p id="section-4.4-6.3.1">r<sub>+</sub><a href="#section-4.4-6.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-4.4-7">This means that the "prover", P<sub>=</sub>, does not need to send any of these values to the verifiers. Verifiers use information they already have to validate the proof.<a href="#section-4.4-7" class="pilcrow">¶</a></p>
+<p id="section-4.4-8">Since the two verifiers possess all of this information distributed amongst themselves, this approach is referred to as "Distributed Zero Knowledge Proofs".<a href="#section-4.4-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="distributed-zero-knowledge-proofs-1">
+<section id="section-4.5">
+        <h3 id="name-distributed-zero-knowledge-p">
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-distributed-zero-knowledge-p" class="section-name selfRef">Distributed Zero Knowledge Proofs</a>
+        </h3>
+<p id="section-4.5-1"><span>[<a href="#FLPCP" class="cite xref">FLPCP</a>]</span> introduces an elegant tool, which only
+requires O(logN) communication, for proving expressions of the form:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.5-2">
+<pre>
+sum(i=0..n, uᵢ · vᵢ) = t
+</pre><a href="#section-4.5-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.5-3">In the setting where the Prover (P<sub>=</sub>) and the left verifier
+(P<sub>-</sub>) both are in possession of the n-vector <code>u</code>, the Prover
+(P<sub>=</sub>) and the other verifier (P<sub>+</sub>) are in possession of the
+n-vector <code>v</code>, and the verifiers P<sub>-</sub> and P<sub>+</sub> hold
+t<sub>-</sub> and t<sub>+</sub> respectively and <code>t&lt;sub&gt;\-&lt;/sub&gt; +
+t&lt;sub&gt;+&lt;/sub&gt; = t</code>.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-4">However, the security of this protocol requires the vector elements <code>u</code> and <code>v</code>
+to be members of a large field. So the first step of the validation protocol is
+to take a batch of multiplications, and convert them into a dot product of
+vectors with elements in a large field.<a href="#section-4.5-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="transforming-into-a-large-prime-field">
+<section id="section-4.6">
+        <h3 id="name-transforming-into-a-large-p">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-transforming-into-a-large-p" class="section-name selfRef">Transforming into a large prime field</a>
+        </h3>
+<p id="section-4.6-1"><span>[<a href="#BINARY" class="cite xref">BINARY</a>]</span> describes how to apply <span>[<a href="#FLPCP" class="cite xref">FLPCP</a>]</span>
+efficiently for binary fields.  When binary values are directly lifted into a
+large field, the XOR operation can be computed with the expression:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-2">
+<pre>
+f(x, y) = x ⊕ y
+        = x + y - 2*x*y
+        = x*(1 - 2*y) + y
+</pre><a href="#section-4.6-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-3">Using this relation, the expression that must be proven can be converted into a
+dot-product of two vectors, one of which is known to both P<sub>=</sub> and
+P<sub>-</sub>, the other being known to both P<sub>=</sub> and P<sub>+</sub>.<a href="#section-4.6-3" class="pilcrow">¶</a></p>
+<p id="section-4.6-4">Rearranging terms:<a href="#section-4.6-4" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-5">
+<pre>
+x₋ ∧ y₊ ⊕ (x₋ ∧ y₋ ⊕ z₋ ⊕ r₋ ) ⊕ x₊ ∧ y₋ ⊕ r₊ = 0
+</pre><a href="#section-4.6-5" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-6">Define:<a href="#section-4.6-6" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-7">
+<pre>
+e₋ = x₋ ∧ y₋ ⊕ z₋ ⊕ r₋
+</pre><a href="#section-4.6-7" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-8">Then:<a href="#section-4.6-8" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-9">
+<pre>
+(x₋ ∧ y₊ ⊕ e₋ ) ⊕ (x₊ ∧ y₋ ⊕ r₊) = 0
+</pre><a href="#section-4.6-9" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-10">Using: <code>x ⊕ y = x*(1 - 2*y) + y</code><a href="#section-4.6-10" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-11">
+<pre>
+(x₋·y₊·(1 - 2e₋) + e₋) ⊕ (x₊·y₋·(1 - 2r₊) + r₊) = 0
+</pre><a href="#section-4.6-11" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-12">Using: x ⊕ y = x + y - 2<em>x</em>y<a href="#section-4.6-12" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-13">
+<pre>
+(x₋·y₊·(1 - 2e₋) + e₋)
++ (x₊·y₋·(1 - 2r₊) + r₊)
+- 2(x₋·y₊·(1 - 2e₋) + e₋)(x₊·y₋·(1 - 2r₊) + r₊) = 0
+</pre><a href="#section-4.6-13" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-14">Distributing Terms:<a href="#section-4.6-14" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-15">
+<pre>
+x₋·(1 - 2e₋)·y₊ + e₋
++ y₋·x₊·(1 - 2r₊) + r₊
+- 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊) - 2x₋·(1 - 2e₋)·y₊·r₊ - 2e₋·y₋·x₊·(1 - 2r₊) - 2e₋·r₊ = 0
+</pre><a href="#section-4.6-15" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-16">Rearranging terms, and subtracting 1/2 from both sides:<a href="#section-4.6-16" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-17">
+<pre>
+- 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊)
++ y₋·x₊·(1 - 2r₊) - 2e₋·y₋·x₊·(1 - 2r₊)
++ x₋·(1 - 2e₋)·y₊ - 2x₋·(1 - 2e₋)·y₊·r₊
++ e₋ - 2e₋·r₊ + r₊ - ½ = - ½
+</pre><a href="#section-4.6-17" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-18">Factoring allows this to be written as an expression with four terms, each with a component taken from the left (which we will label g) and a component from the right (which we will label h):<a href="#section-4.6-18" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-19">
+<pre>
+[-2x₋·y₋·(1 - 2e₋)] · [y₊·x₊·(1 - 2r₊)]
++ [y₋(1 - 2e₋)] · [x₊·(1 - 2r₊)]
++ [x₋·(1 - 2e₋)] · [y₊(1 - 2r₊)]
++ [-½(1 - 2e₋)] · [(1 - 2r₊)] = -½
+</pre><a href="#section-4.6-19" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-20">Renaming terms as new variables, the result is the dot product of two four dimensional vectors, g and h:<a href="#section-4.6-20" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-21">
+<pre>
+g₁·h₁ + g₂·h₂ + g₃·h₃ + g₄·h₄ = -½
+</pre><a href="#section-4.6-21" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-22">Or alternatively:<a href="#section-4.6-22" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-23">
+<pre>
+sum(i=1..4, gᵢ · hᵢ) = -½
+</pre><a href="#section-4.6-23" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-24">Where P<sub>=</sub> and P<sub>+</sub> both compute <code>h&lt;sub&gt;i&lt;/sub&gt;</code> as follows:<a href="#section-4.6-24" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-25">
+<pre>
+h₁ = y₊·x₊·(1 - 2·r₊)
+h₂ = x₊·(1 - 2·r₊)
+h₃ = y₊·(1 - 2·r₊)
+h₄ = 1 − 2·r₊
+</pre><a href="#section-4.6-25" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-26">And P<sub>=</sub> and P<sub>-</sub> both compute g<sub>i</sub> as follows:<a href="#section-4.6-26" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-27">
+<pre>
+g₁ = -2·x₋·y₋·(1 - 2·e₋ )
+g₂ = y₋·(1 - 2·e₋ )
+g₃ = x₋·(1 - 2·e₋ )
+g₄ = -½(1 - 2·e₋)
+</pre><a href="#section-4.6-27" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-28">And where:<a href="#section-4.6-28" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-29">
+<pre>
+e₋ = x₋ ∧ y₋ ⊕ z₋ ⊕ r₋
+</pre><a href="#section-4.6-29" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-30">In this field, the negative inverse of two (-½) is 1,152,921,504,606,846,975.<a href="#section-4.6-30" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="initial-uv">
+<section id="section-4.7">
+        <h3 id="name-validating-a-batch-of-multi">
+<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-validating-a-batch-of-multi" class="section-name selfRef">Validating a batch of multiplications</a>
+        </h3>
+<p id="section-4.7-1">Each multiplication therefore produces two vectors of length 4. To validate a batch of m multiplications, the Prover (P<sub>=</sub>), uses this approach to produce two vectors of length 4m.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
+<p id="section-4.7-2">The Prover P<sub>=</sub> and verifier P<sub>-</sub> both compute the vector u<a href="#section-4.7-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.7-3">
+<pre>
+u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, …, g₁&lt;sup&gt;(m)&lt;/sup&gt;, g₂&lt;sup&gt;(m)&lt;/sup&gt;, g₃&lt;sup&gt;(m)&lt;/sup&gt;, g₄&lt;sup&gt;(m)&lt;/sup&gt;)
+</pre><a href="#section-4.7-3" class="pilcrow">¶</a>
+</div>
+<p id="section-4.7-4">The Prover P<sub>=</sub> and verifier P<sub>+</sub> both compute the vector v<a href="#section-4.7-4" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.7-5">
+<pre>
+v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, …, h₁&lt;sup&gt;(m)&lt;/sup&gt;, h₂&lt;sup&gt;(m)&lt;/sup&gt;, h₃&lt;sup&gt;(m)&lt;/sup&gt;, h₄&lt;sup&gt;(m)&lt;/sup&gt;)
+</pre><a href="#section-4.7-5" class="pilcrow">¶</a>
+</div>
+<p id="section-4.7-6">If no additive attacks were applied, the dot product of these two vectors should be:<a href="#section-4.7-6" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.7-7">
+<pre>
+u · v = -m/2
+</pre><a href="#section-4.7-7" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="overview-of-recursive-proof-compression">
+<section id="section-4.8">
+        <h3 id="name-overview-of-recursive-proof">
+<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-overview-of-recursive-proof" class="section-name selfRef">Overview of Recursive Proof Compression</a>
+        </h3>
+<p id="section-4.8-1">Now that we have expressed the work of the prover as a simple dot product of two
+vectors of large field elements, we can use a recursive approach to prove this
+expression with O(logN) communication.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
+<p id="section-4.8-2">The process is iterative, where at each stage there is a pair of vectors, <code>u</code>
+and <code>v</code>, and a target, <code>t</code>, where the goal is to prove that <code>u · v = t</code>. The
+values of <code>u</code> and <code>v</code> start as described in <a href="#initial-uv" class="auto internal xref">Section 4.7</a>; with <code>t</code> initially
+set to a value of <code>-m/2</code>.<a href="#section-4.8-2" class="pilcrow">¶</a></p>
+<p id="section-4.8-3">At each iteration:<a href="#section-4.8-3" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.8-4">
+<li id="section-4.8-4.1">
+            <p id="section-4.8-4.1.1">Select a compression factor <code>L</code>.<a href="#section-4.8-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="section-4.8-4.2">
+            <p id="section-4.8-4.2.1">Chunk the vectors <code>u</code> and <code>v</code> into <code>s</code> segments of length <code>L</code>.<a href="#section-4.8-4.2.1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.8-4.2.2">
+<li id="section-4.8-4.2.2.1">
+                <p id="section-4.8-4.2.2.1.1">Each chunk of <code>u</code> uniquely defines a polynomial of degree <code>L - 1</code> which
+are named <code>p&lt;sub&gt;i&lt;/sub&gt;(x)</code>, indexed by <code>i∊[0..s)</code>.<a href="#section-4.8-4.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-4.8-4.2.2.2">
+                <p id="section-4.8-4.2.2.2.1">Each chunk of <code>v</code> uniquely defines a polynomial of degree <code>L - 1</code> which
+are named <code>q&lt;sub&gt;i&lt;/sub&gt;(x)</code>, indexed by <code>i</code>.<a href="#section-4.8-4.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ol>
+</li>
+          <li id="section-4.8-4.3">
+            <p id="section-4.8-4.3.1">The polynomial <code>G(x)</code> is defined as: <code>sum(i=0..s, p&lt;sub&gt;i&lt;/sub&gt;(x) · q&lt;sub&gt;i&lt;/sub&gt;(x))</code><a href="#section-4.8-4.3.1" class="pilcrow">¶</a></p>
+<p id="section-4.8-4.3.2">
+This polynomial <code>G(x)</code> is equivalent to <code>u · v</code> so the goal becomes proving that <code>sum(i=0..L-1, G(i)) = t</code>.<a href="#section-4.8-4.3.2" class="pilcrow">¶</a></p>
+<p id="section-4.8-4.3.3">
+In the first iteration, the target value <code>t</code> is known by all parties to be
+<code>-m/2</code>. In subsequent iterations the target value will be different.<a href="#section-4.8-4.3.3" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.8-4.3.4">
+<li id="section-4.8-4.3.4.1">
+                <p id="section-4.8-4.3.4.1.1">The prover will compute the value of <code>2L - 1</code> points on <code>G(x)</code>, the
+minimal number required to uniquely define it.<a href="#section-4.8-4.3.4.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-4.8-4.3.4.2">
+                <p id="section-4.8-4.3.4.2.1">These <code>2L - 1</code> points are split into two additive secret-shares
+<code>G(x)&lt;sub&gt;-&lt;/sub&gt;</code> and <code>G(x)&lt;sub&gt;+&lt;/sub&gt;</code> and sent to the verifiers
+P<sub>-</sub> and P<sub>+</sub>, respectively. These shares form the
+distributed zero-knowledge proof.<a href="#section-4.8-4.3.4.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-4.8-4.3.4.3">
+                <p id="section-4.8-4.3.4.3.1">The verifiers verify the proposition using their shares by computing
+<code>b&lt;sub&gt;-&lt;/sub&gt; = t&lt;sub&gt;-&lt;/sub&gt; - sum(i=0..L-1, G(x)&lt;sub&gt;-&lt;/sub&gt;)</code> and
+<code>b&lt;sub&gt;+&lt;/sub&gt; = t&lt;sub&gt;+&lt;/sub&gt; - sum(i=0..L-1, G(x)&lt;sub&gt;+&lt;/sub&gt;)</code>. They
+send each other the value they compute and confirm that <code>b&lt;sub&gt;-&lt;/sub&gt; +
+b&lt;sub&gt;+&lt;/sub&gt; = 0</code>. If this test fails, the entire protocol is aborted.<a href="#section-4.8-4.3.4.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ol>
+</li>
+          <li id="section-4.8-4.4">
+            <p id="section-4.8-4.4.1">At this point, the prover could have produced values for <code>G(0..L-1)</code> that
+pass this test even if they had performed an additive attack. The proof needs
+to be validated by confirming that <code>G(r) = sum(i=0..s, p&lt;sub&gt;i&lt;/sub&gt;(r) ·
+q&lt;sub&gt;i&lt;/sub&gt;(r))</code> for a randomly selected challenge point <code>r</code>. As long as
+the prover cannot control the choice of <code>r</code>, the likelihood that the prover
+is dishonest is inversely proportional to the field size.<a href="#section-4.8-4.4.1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.8-4.4.2">
+<li id="section-4.8-4.4.2.1">
+                <p id="section-4.8-4.4.2.1.1">If we define two new vectors <code>u’ = &lt;p&lt;sub&gt;0&lt;/sub&gt;(r), …,
+p&lt;sub&gt;s-1&lt;/sub&gt;(r)&gt;</code>, and <code>v’ = &lt;q&lt;sub&gt;0&lt;/sub&gt;(r), …,
+q&lt;sub&gt;s-1&lt;/sub&gt;(r)&gt;</code>, then we can rewrite the statement that needs to be
+proven as: <code>u’ · v’ = G(r)</code>. This is of the same form as the original
+statement, but with the new vectors <code>u’</code> and <code>v’</code> having length <code>L</code> times
+shorter than the original vectors.<a href="#section-4.8-4.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-4.8-4.4.2.2">
+                <p id="section-4.8-4.4.2.2.1">Each of the verifiers can use the values of G(x) that they have received
+to compute a share of G(r) using Lagrange interpolation. These shares
+become their share of a new value for t.<a href="#section-4.8-4.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li id="section-4.8-4.4.2.3">
+                <p id="section-4.8-4.4.2.3.1">The Fiat-Shamir heuristic can be used to generate <code>r</code> by hashing the
+distributed zero knowledge proof. This transforms this protocol from a
+multi-round interactive protocol into a constant round protocol.<a href="#section-4.8-4.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+            </ol>
+</li>
+          <li id="section-4.8-4.5">
+            <p id="section-4.8-4.5.1">The vectors <code>u</code> and <code>v</code> are replaced by <code>u’</code> and <code>v’</code>, the value of <code>t</code> is
+set to <code>G(r)</code>, and the next iteration is started.<a href="#section-4.8-4.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ol>
+<p id="section-4.8-5">The recursion ends when the vectors <code>u</code> and <code>v</code> have length less than <code>L</code>.  The
+verifiers validate the soundness of the final iteration of the proof in a
+simpler, more direct way; see <a href="#final-iteration" class="auto internal xref">Section 4.10.5</a>.<a href="#section-4.8-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="detailed-validation-algorithm">
+<section id="section-4.9">
+        <h3 id="name-detailed-validation-algorit">
+<a href="#section-4.9" class="section-number selfRef">4.9. </a><a href="#name-detailed-validation-algorit" class="section-name selfRef">Detailed Validation Algorithm</a>
+        </h3>
+<div id="selecting-the-compression-factor">
+<section id="section-4.9.1">
+          <h4 id="name-selecting-the-compression-f">
+<a href="#section-4.9.1" class="section-number selfRef">4.9.1. </a><a href="#name-selecting-the-compression-f" class="section-name selfRef">Selecting the Compression Factor</a>
+          </h4>
+<p id="section-4.9.1-1">For the first iteration, the parties will use a compression factor (<code>L</code>) of 32. In
+all subsequent rounds they will use a compression factor of 8.<a href="#section-4.9.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.9.1-2">Note: A larger value for <code>L</code> increases the compression factor, which reduces the
+overall communication cost. However, because the computation of the proof
+requires Lagrange interpolation (which is O(L<sup>2</sup>) computation), a
+larger compression factor quickly becomes expensive. A slightly larger
+compression factor on the first round is possible because there are only a small
+number of possible input values, so the work can be reduced with the use of
+lookup tables if necessary.<a href="#section-4.9.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="producing-polynomials-px-and-qx">
+<section id="section-4.9.2">
+          <h4 id="name-producing-polynomials-px-an">
+<a href="#section-4.9.2" class="section-number selfRef">4.9.2. </a><a href="#name-producing-polynomials-px-an" class="section-name selfRef">Producing Polynomials <code>p(x)</code> and <code>q(x)</code></a>
+          </h4>
+<p id="section-4.9.2-1">The prover (P<sub>=</sub>) and the verifier P<sub>-</sub>, chunk the vector
+<code>u</code> into <code>s</code> chunks of length <code>L</code>.<a href="#section-4.9.2-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.9.2-2">
+<pre>
+chunk 0: &lt;u₀, u₁, …, u&lt;sub&gt;L-1&lt;/sub&gt;&gt;
+chunk 1: &lt;u&lt;sub&gt;L&lt;/sub&gt;, u&lt;sub&gt;L+1&lt;/sub&gt;, …, u&lt;sub&gt;2L-1&lt;/sub&gt;&gt;
+…
+chunk s-1: &lt;u&lt;sub&gt;(s-1)L&lt;/sub&gt;, u&lt;sub&gt;(s-1)L+1&lt;/sub&gt;, …, u&lt;sub&gt;sL-1&lt;/sub&gt;&gt;
+</pre><a href="#section-4.9.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.9.2-3">If the length of <code>u</code> is not divisible by <code>L</code>, then the final chunk will be
+padded with zeros.<a href="#section-4.9.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-4">In the first iteration there will be <code>s = ceil(4m / L)</code> chunks, as the original
+vectors <code>u</code> and <code>v</code> have length <code>4m</code>. In subsequent iterations there will be
+fewer chunks.<a href="#section-4.9.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-5">They will interpret each chunk (i) as L points lying on a polynomial, p<sub>i</sub>(x) of degree L - 1, corresponding to the x coordinates 0, 1, …, L-1, that is to say they will interpret them as p<sub>i</sub>(0), p<sub>i</sub>(1), …, p<sub>i</sub>(L-1).<a href="#section-4.9.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-6">The Prover (P<sub>=</sub>) and verifier (P<sub>-</sub>) can find the value of p<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.<a href="#section-4.9.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-7">The Prover will use Lagrange interpolation to compute the value of p<sub>i</sub>(L), p<sub>i</sub>(L+1), …, p<sub>i</sub>(2L-2).<a href="#section-4.9.2-7" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-8">The same process is applied for the vector v.<a href="#section-4.9.2-8" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-9">The Prover (P<sub>=</sub>) and the verifier P<sub>+</sub>, will chunk the vector v into s chunks of length L.<a href="#section-4.9.2-9" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.9.2-10">
+<pre>
+chunk 0: &lt;v₀, v₁, …, v&lt;sub&gt;L-1&lt;/sub&gt;&gt;
+chunk 1: &lt;v&lt;sub&gt;L&lt;/sub&gt;, v&lt;sub&gt;L+1&lt;/sub&gt;, …, v&lt;sub&gt;2L-1&lt;/sub&gt;&gt;
+…
+chunk s-1: &lt;v&lt;sub&gt;(s-1)L&lt;/sub&gt;, v&lt;sub&gt;(s-1)L+1&lt;/sub&gt;, …, v&lt;sub&gt;sL-1&lt;/sub&gt;&gt;
+</pre><a href="#section-4.9.2-10" class="pilcrow">¶</a>
+</div>
+<p id="section-4.9.2-11">As before, if the length of v is not a multiple of L, the final chunk will be padded with zeros.<a href="#section-4.9.2-11" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-12">They will interpret each chunk as L points lying on a polynomial, q<sub>i</sub>(x), having degree L - 1. Where the x coordinates are 0, 1, …, L-1, which is to say they will interpret these points as q<sub>i</sub>(0), q<sub>i</sub>(1), …, q<sub>i</sub>(L-1).<a href="#section-4.9.2-12" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-13">The Prover (P<sub>=</sub>) and verifier P<sub>+</sub> can find the value of q<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.<a href="#section-4.9.2-13" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-14">The Prover will use Lagrange interpolation to compute the value of q<sub>i</sub>(L), q<sub>i</sub>(L+1), …, q<sub>i</sub>(2L-2).<a href="#section-4.9.2-14" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="producing-the-zero-knowledge-proof">
+<section id="section-4.10">
+        <h3 id="name-producing-the-zero-knowledg">
+<a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-producing-the-zero-knowledg" class="section-name selfRef">Producing the zero knowledge proof</a>
+        </h3>
+<p id="section-4.10-1">In order to prove that u · v = t, the prover will compute the value of 2L - 1 points on the polynomial G(x), which is defined as:<a href="#section-4.10-1" class="pilcrow">¶</a></p>
+<p id="section-4.10-2">G(x) = sum(i=1..s, p<sub>i</sub>(x) · q<sub>i</sub>(x))<a href="#section-4.10-2" class="pilcrow">¶</a></p>
+<p id="section-4.10-3">The prover computes the values of G(0), G(1), …, G(2L-2) by incrementally aggregating the products of p<sub>i</sub>(0), p<sub>i</sub>(1), …, p<sub>i</sub>(2L-21) and q<sub>i</sub>(L), q<sub>i</sub>(L+1), …, q<sub>i</sub>(2L-2), it computes for each chunk (i).<a href="#section-4.10-3" class="pilcrow">¶</a></p>
+<p id="section-4.10-4">These 2L - 1 points on the polynomial G(x) constitute the zero-knowledge proof that u · v = t.<a href="#section-4.10-4" class="pilcrow">¶</a></p>
+<p id="section-4.10-5">An equivalent method of proving u · v = t, is to show that sum(i=0..L-1, G(i)) = t<a href="#section-4.10-5" class="pilcrow">¶</a></p>
+<div id="masking-the-zero-knowledge-proof">
+<section id="section-4.10.1">
+          <h4 id="name-masking-the-zero-knowledge-">
+<a href="#section-4.10.1" class="section-number selfRef">4.10.1. </a><a href="#name-masking-the-zero-knowledge-" class="section-name selfRef">Masking the zero-knowledge proof</a>
+          </h4>
+<p id="section-4.10.1-1">The Prover (P<sub>=</sub>), cannot simply send this zero-knowledge proof to the verifiers, as doing so would release private information. Instead, the prover can produce a two-part additive secret-sharing of these 2L - 1 points, sending one share to each verifier.<a href="#section-4.10.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.1-2">The Prover (P<sub>=</sub>) and the right verifier (P<sub>+</sub>) will generate one share using their shared randomness. We will denote this share G(x)<sub>+</sub>. This requires no communication.<a href="#section-4.10.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.10.1-3">The Prover (P<sub>=</sub>) will compute the other share via subtraction, and will send it to the left verifier (P<sub>-</sub>). Transmitting this share G(x)<sub>-</sub>, will require sending 2L - 1 field values, which will require 8 bytes per field value as we are using Mersenne prime 2<sup>61</sup>-1 for our prime field.<a href="#section-4.10.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="checking-that-the-proof-says-the-right-thing">
+<section id="section-4.10.2">
+          <h4 id="name-checking-that-the-proof-say">
+<a href="#section-4.10.2" class="section-number selfRef">4.10.2. </a><a href="#name-checking-that-the-proof-say" class="section-name selfRef">Checking that the proof says the right thing</a>
+          </h4>
+<p id="section-4.10.2-1">To check that:<a href="#section-4.10.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-2">sum(i=0..L-1, G(i)) = t<a href="#section-4.10.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-3">The left verifier P<sub>-</sub> will compute:<a href="#section-4.10.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-4">b<sub>-</sub> = t<sub>-</sub> - sum(i=0..L-1, G(i)<sub>-</sub>)<a href="#section-4.10.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-5">The right verifier P+ will compute:<a href="#section-4.10.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-6">b<sub>+</sub> = t<sub>+</sub> - sum(i=0..L-1, G(i)<sub>+</sub>)<a href="#section-4.10.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-7">The two verifiers will reveal these values b<sub>-</sub> and b<sub>+</sub> to one another, so that each can reconstruct the full sum:<a href="#section-4.10.2-7" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-8">b = b<sub>-</sub> + b<sub>+</sub><a href="#section-4.10.2-8" class="pilcrow">¶</a></p>
+<p id="section-4.10.2-9">They will confirm that b = 0. If it does not, the parties abort and destroy their shares.<a href="#section-4.10.2-9" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="challenge">
+<section id="section-4.10.3">
+          <h4 id="name-generating-a-random-challen">
+<a href="#section-4.10.3" class="section-number selfRef">4.10.3. </a><a href="#name-generating-a-random-challen" class="section-name selfRef">Generating a random challenge</a>
+          </h4>
+<p id="section-4.10.3-1">Now that the verifiers have confirmed that the proof says that there was no
+additive attack, they need to validate that this was indeed a legitimate
+zero-knowledge proof, and not a bogus one that is disconnected from the actual
+work the prover did.<a href="#section-4.10.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.3-2">To demonstrate that this zero knowledge proof is sound, it suffices to check
+that G(r) is correct, for a random field element r, chosen from the range [L,
+p). In other words, it cannot be in the range [0, L).<a href="#section-4.10.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.10.3-3">To minimize the rounds of communication, instead of having the verifiers select
+this random point, we utilize the Fiat-Shamir transformation to produce a
+constant-round proof system.<a href="#section-4.10.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.10.3-4">The Prover (P<sub>=</sub>) will hash the zero-knowledge proof shares it has generated onto a field element as follows:<a href="#section-4.10.3-4" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.3-5">
+<pre>
+commitment = SHA256(
+  concat(
+    SHA256([G(x)]₋),
+    SHA256([G(x)]₊)
+  )
+)
+r = (bytes2int(commitment[..16]) % (prime - L)) + L
+</pre><a href="#section-4.10.3-5" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10.3-6">This computation does not use the entire output of the hash function, just enough to ensure that the value of r has minimal bias. For SHA-256 and a prime field modulo 2<sup>61</sup>-1, the bias is in the order of 2<sup>-67</sup>, which is negligible.<a href="#section-4.10.3-6" class="pilcrow">¶</a></p>
+<p id="section-4.10.3-7">The verifiers generate the same point r independently. Each verifier only has access to one set of shares from G(x) so they each compute a hash of the shares they have. They then send that hash to each other, after which they can compute the full hash value.<a href="#section-4.10.3-7" class="pilcrow">¶</a></p>
+<p id="section-4.10.3-8">Note that one verifier does not need to receive their shares of G(x) from the prover, so they are able to compute their hash before even starting any computation.<a href="#section-4.10.3-8" class="pilcrow">¶</a></p>
+<p id="section-4.10.3-9">Consequently, though each round depends on communication, the total latency is two rounds. In the first, the prover sends shares of G(x) to the first verifier. Concurrently, the second verifier sends a hash of their shares to the first verifier. In the second round, the first verifier sends a hash of their shares to the second verifier.<a href="#section-4.10.3-9" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="recursive-proof">
+<section id="section-4.10.4">
+          <h4 id="name-recursive-proof">
+<a href="#section-4.10.4" class="section-number selfRef">4.10.4. </a><a href="#name-recursive-proof" class="section-name selfRef">Recursive Proof</a>
+          </h4>
+<p id="section-4.10.4-1">So the prover has to prove that <code>G(r)</code> is correct for this random challenge.<a href="#section-4.10.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.4-2">Recall the definition of G(x):<a href="#section-4.10.4-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.4-3">
+<pre>
+G(x) = sum(i=0..s, pᵢ(x) · qᵢ(x))
+</pre><a href="#section-4.10.4-3" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10.4-4">So this amounts to proving that:<a href="#section-4.10.4-4" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.4-5">
+<pre>
+u’ · v’ = G(r)
+</pre><a href="#section-4.10.4-5" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10.4-6">Where:<a href="#section-4.10.4-6" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.4-7">
+<pre>
+u’ = &lt;p₀(r), p₁(r), …&gt;
+v’ = &lt;q₀(r), q₁(r), …&gt;
+</pre><a href="#section-4.10.4-7" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10.4-8">Note that this is a problem of exactly the same form as the original problem,
+except that the length of u’ and v’ is now a factor of L shorter than the
+original length of u and v.<a href="#section-4.10.4-8" class="pilcrow">¶</a></p>
+<p id="section-4.10.4-9">The Prover (P<sub>=</sub>) and verifier P<sub>-</sub> use Lagrange
+interpolation to compute the value of p<sub>i</sub>(r) for all (i) in the range
+0..s and set this as the new vector u’.<a href="#section-4.10.4-9" class="pilcrow">¶</a></p>
+<p id="section-4.10.4-10">Similarly, the Prover (P<sub>=</sub>) and verifier P<sub>+</sub> use Lagrange
+interpolation to compute the value of q<sub>i</sub>(r) for all (i) in the range
+0..s and set this as the new vector v’.<a href="#section-4.10.4-10" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="final-iteration">
+<section id="section-4.10.5">
+          <h4 id="name-the-final-iteration">
+<a href="#section-4.10.5" class="section-number selfRef">4.10.5. </a><a href="#name-the-final-iteration" class="section-name selfRef">The Final Iteration</a>
+          </h4>
+<p id="section-4.10.5-1">The proof proceeds recursively until the length of the vectors u and v are
+strictly less than the compression factor L.<a href="#section-4.10.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.10.5-2">Next, the Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> will generate
+a random field value p<sub>mask</sub> using PRSS. Similarly, the Prover
+(P<sub>=</sub>) and right verifier P<sub>+</sub> will generate a random field
+value q<sub>mask</sub> using PRSS.<a href="#section-4.10.5-2" class="pilcrow">¶</a></p>
+<p id="section-4.10.5-3">The Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> move u<sub>0</sub>
+to index L - 1. No data will be lost as the length of u is strictly less than
+L. Then they place the value p<sub>mask</sub> at index 0.<a href="#section-4.10.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.10.5-4">The Prover (P<sub>=</sub>) and right verifier P<sub>+</sub> move v<sub>0</sub>
+to index L - 1 and place the value q<sub>mask</sub> at index 0.<a href="#section-4.10.5-4" class="pilcrow">¶</a></p>
+<p id="section-4.10.5-5">The Prover will still generate a zero knowledge proof exactly as before, but the
+validation of soundness of this proof will proceed differently.<a href="#section-4.10.5-5" class="pilcrow">¶</a></p>
+<p id="section-4.10.5-6">Firstly, when the verifiers compute their shares of b, they must skip the random
+weights.<a href="#section-4.10.5-6" class="pilcrow">¶</a></p>
+<p id="section-4.10.5-7">So in the final iteration the left verifier P<sub>-</sub> computes:<a href="#section-4.10.5-7" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.5-8">
+<pre>
+b&lt;sub&gt;\-&lt;/sub&gt; = t&lt;sub&gt;\-&lt;/sub&gt; - sum(i=1..L-1, G(i)&lt;sub&gt;\-&lt;/sub&gt;)
+</pre><a href="#section-4.10.5-8" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10.5-9">And the right verifier P<sub>+</sub> computes:<a href="#section-4.10.5-9" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.10.5-10">
+<pre>
+b₊ = t₊ - sum(i=1,L-1, G(i)₊)
+</pre><a href="#section-4.10.5-10" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10.5-11">The second difference is the way the verifiers validate the soundness of the
+zero knowledge proof. In the final iteration the verifier P<sub>-</sub>
+computes p<sub>0</sub>(r) and G(r)<sub>-</sub>, while verifier P<sub>+</sub>
+computes q<sub>0</sub>(r) and G(r)<sub>+</sub>. Then the verifiers reveal all of
+these values to one another, so that they can both directly check that:<a href="#section-4.10.5-11" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.10.5-12">
+<pre>
+G(r)&lt;sub&gt;\-&lt;/sub&gt; + G(r)&lt;sub&gt;+&lt;/sub&gt; = p&lt;sub&gt;0&lt;/sub&gt;(r) · q&lt;sub&gt;0&lt;/sub&gt;(r)
+</pre><a href="#section-4.10.5-12" class="pilcrow">¶</a>
+</div>
+<p id="section-4.10.5-13">This is why the random masks were necessary in the final iteration. Those ensure
+that none of the values p<sub>0</sub>(r), q<sub>0</sub>(r), G(r)<sub>-</sub>,
+or G(r)<sub>+</sub> reveal any private information.<a href="#section-4.10.5-13" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="conditions-of-usage">
+<section id="section-5">
+      <h2 id="name-conditions-of-usage">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-conditions-of-usage" class="section-name selfRef">Conditions of Usage</a>
+      </h2>
+<p id="section-5-1">This protocol requires integration into a larger protocol, which will need to:<a href="#section-5-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5-2.1">
+          <p id="section-5-2.1.1">set or negotiate parameters,<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.2">
+          <p id="section-5-2.2.1">provide communication channels,<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.3">
+          <p id="section-5-2.3.1">agree on shared secrets, and<a href="#section-5-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.4">
+          <p id="section-5-2.4.1">arrange the multiplications that are to be validated into batches.<a href="#section-5-2.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<div id="recommended-parameters">
+<section id="section-5.1">
+        <h3 id="name-recommended-parameters">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-recommended-parameters" class="section-name selfRef">Recommended Parameters</a>
+        </h3>
+<p id="section-5.1-1">This document recommends several parameters, which are used in the security
+analysis.  Alternative parameters can be used, provided that they meet the
+stated requirements.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">For shared secrets, pseudorandom secret sharing <span>[<a href="#PRSS" class="cite xref">PRSS</a>]</span> is used.  For PRSS
+parameters, HPKE <span>[<a href="#RFC9180" class="cite xref">RFC9180</a>]</span> with DHKEM(X25519, HKDF-SHA256), HKDF-SHA256, and
+AES-128-GCM is RECOMMENDED, with the same KDF being used for PRSS and AES-128 as
+the PRP.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">For validation, the prime field used is modulo the Mersenne prime
+2<sup>61</sup>-1 validation.  Any sufficiently large prime can be used; see
+TODO/below for an analysis of the batch size requirements and security
+properties that can be obtained by using this particular prime.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-4">The Fiat-Shamir transform <a href="#challenge" class="auto internal xref">Section 4.10.3</a> used in the validation proofs can use
+SHA-256.  However, any preimage and collision-resistant hash function can be
+used provided that it has a enough output entropy to avoid bias in the selected
+field value.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="performance-characteristics">
+<section id="section-6">
+      <h2 id="name-performance-characteristics">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-performance-characteristics" class="section-name selfRef">Performance Characteristics</a>
+      </h2>
+<p id="section-6-1">TODO<a href="#section-6-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-2.1">
+          <p id="section-6-2.1.1">Communication - number of bits sent/received<a href="#section-6-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-6-2.2">
+          <p id="section-6-2.2.1">Computation - how many times you invoke PRSS<a href="#section-6-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-6-2.3">
+          <p id="section-6-2.3.1">Vectorization - why it is useful and good<a href="#section-6-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-6-2.4">
+          <p id="section-6-2.4.1">How to multiply in parallel - sending and receiving, stalling, etc…<a href="#section-6-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-6-2.5">
+          <p id="section-6-2.5.1">Memory requirements<a href="#section-6-2.5.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-2.5.2.1">
+              <p id="section-6-2.5.2.1.1">Compression factor and choice<a href="#section-6-2.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-6-2.5.2.2">
+              <p id="section-6-2.5.2.2.1">Trade-offs - time/memory (factor of 64 during generation of r, for Fiat-Shamir version)<a href="#section-6-2.5.2.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="section-6-2.6">
+          <p id="section-6-2.6.1">Multiple rounds or Fiat-Shamir<a href="#section-6-2.6.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-7">
+      <h2 id="name-security-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-7-1">TODO<a href="#section-7-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-2.1">
+          <p id="section-7-2.1.1">Parameter choice and security margins<a href="#section-7-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-2.1.2.1">
+              <p id="section-7-2.1.2.1.1">Talk about trade-off between attack success probability and prime size.<a href="#section-7-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-7-2.1.2.2">
+              <p id="section-7-2.1.2.2.1">Show equation for how many bits of security you get when validating N multiplications<a href="#section-7-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="section-7-2.2">
+          <p id="section-7-2.2.1">You can’t just use the multiplication protocol without the validation protocol due to the additive attack (explain why)<a href="#section-7-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-2.3">
+          <p id="section-7-2.3.1">Communication security (authentication)<a href="#section-7-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-2.4">
+          <p id="section-7-2.4.1">Constant time and implications thereof<a href="#section-7-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-2.5">
+          <p id="section-7-2.5.1">Fiat-Shamir vs more rounds<a href="#section-7-2.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-8">
+      <h2 id="name-iana-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-8-1">This document has no IANA considerations.<a href="#section-8-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-9">
+      <h2 id="name-references">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-9.1">
+        <h3 id="name-normative-references">
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="PRSS">[PRSS]</dt>
+      <dd>
+<span class="refAuthor">Thomson, M.</span> and <span class="refAuthor">B. Savage</span>, <span class="refTitle">"High Performance Pseudorandom Secret Sharing (PRSS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-thomson-ppm-prss</span>, <time datetime="2024-07" class="refDate">July 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-thomson-ppm-prss">https://datatracker.ietf.org/doc/html/draft-thomson-ppm-prss</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-9.2">
+        <h3 id="name-informative-references">
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="BINARY">[BINARY]</dt>
+        <dd>
+<span class="refAuthor">Li, Y.</span>, <span class="refAuthor">Duan, Y.</span>, <span class="refAuthor">Huang, Z.</span>, <span class="refAuthor">Hong, C.</span>, <span class="refAuthor">Zhang, C.</span>, and <span class="refAuthor">Y. Song</span>, <span class="refTitle">"Efficient 3PC for binary circuits with application to maliciously-secure DNN inference"</span>, <span class="refContent">USENIX Association</span>, <span class="seriesInfo">Proceedings of the 32nd USENIX Conference on Security Symposium pp. 5377–5394</span>, <span class="seriesInfo">ISBN 978-1-939133-37-3</span>, <time datetime="2023-08" class="refDate">August 2023</time>. </dd>
+<dd class="break"></dd>
+<dt id="FLPCP">[FLPCP]</dt>
+        <dd>
+<span class="refAuthor">Boneh, D.</span>, <span class="refAuthor">Boyle, E.</span>, <span class="refAuthor">Corrigan-Gibbs, H.</span>, <span class="refAuthor">Gilboa, N.</span>, and <span class="refAuthor">Y. Ishai</span>, <span class="refTitle">"Zero-Knowledge Proofs on Secret-Shared Data via Fully Linear PCPs"</span>, <span class="refContent">Springer International Publishing</span>, <span class="seriesInfo">Advances in Cryptology – CRYPTO 2019 pp. 67-97</span>, <span class="seriesInfo">DOI 10.1007/978-3-030-26954-8_3</span>, <span class="seriesInfo">ISBN ["9783030269531", "9783030269548"]</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-030-26954-8_3">https://doi.org/10.1007/978-3-030-26954-8_3</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9180">[RFC9180]</dt>
+      <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Bhargavan, K.</span>, <span class="refAuthor">Lipp, B.</span>, and <span class="refAuthor">C. Wood</span>, <span class="refTitle">"Hybrid Public Key Encryption"</span>, <span class="seriesInfo">RFC 9180</span>, <span class="seriesInfo">DOI 10.17487/RFC9180</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9180">https://www.rfc-editor.org/rfc/rfc9180</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+<div id="acknowledgments">
+<section id="appendix-A">
+      <h2 id="name-acknowledgments">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-A-1">This work is a direct implementation of the protocols described in <span>[<a href="#BINARY" class="cite xref">BINARY</a>]</span>,
+which builds on a lot of prior academic work on MPC.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-B">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Ben Savage</span></div>
+<div dir="auto" class="left"><span class="org">Meta</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:btsavage@meta.com" class="email">btsavage@meta.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Martin Thomson</span></div>
+<div dir="auto" class="left"><span class="org">Mozilla</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:mt@lowentropy.net" class="email">mt@lowentropy.net</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
