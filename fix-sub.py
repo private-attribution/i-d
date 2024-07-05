@@ -25,8 +25,9 @@ def tr_once(line, pattern, target):
     return result
 
 def tr(line):
-    result = tr_once(line, sub, subtr)
-    return tr_once(result, sup, suptr)
+    line = line.replace("\\*", "·").replace("\\+", "⊕")
+    line = tr_once(line, sub, subtr)
+    return tr_once(line, sup, suptr)
 
 def trcode(line, code):
     result = ""
@@ -40,7 +41,7 @@ def trcode(line, code):
         result += span + "`"
         lastend = m.end()
 
-    result += line[lastend:]
+    result += tr(line[lastend:]) if code else line[lastend:]
     return (result, code)
 
 end = None
