@@ -424,7 +424,7 @@ x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 
 The verifier on the left, P<sub>-</sub>, knows the values of:
 
-- `y<sub>-</sub>`
+- y<sub>-</sub>
 - x<sub>-</sub>
 - r<sub>-</sub>
 - z<sub>-</sub>
