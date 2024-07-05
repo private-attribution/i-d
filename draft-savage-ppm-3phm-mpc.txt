@@ -960,8 +960,8 @@ Table of Contents
    G(r).  Instead, each uses Lagrange interpolation to compute a share
    of G(r).  That is:
 
-   t₋ = lagrangeᵢnterpolate(r, [G₋(0), G₋(1), …, G₋(2L-2)])
-   t₊ = lagrangeᵢnterpolate(r, [G₊(0), G₊(1), …, G₊(2L-2)])
+   t₋ = lagrange\_interpolate(r, [G₋(0), G₋(1), …, G₋(2L-2)])
+   t₊ = lagrange\_interpolate(r, [G₊(0), G₊(1), …, G₊(2L-2)])
 
 4.10.6.  The Final Iteration
 
