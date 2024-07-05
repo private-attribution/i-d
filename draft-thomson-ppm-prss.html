@@ -1568,8 +1568,8 @@ input, the byte sequence that identifies the context (<code>ctx_id</code>) as th
 input, and the PRF parameter <code>Nk</code> as the <code>L</code> input (see <a href="#prf" class="auto internal xref">Section 6</a>), as follows:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-5.2-3">
 <pre>
-def context = Context.new(kdf, prf, extracted, ctx_id):
-    context = kdf.Expand(prk = extracted, info = ctx_id, L = prf.Nk)
+def context = Context.new(kdf, prf, extracted, ctxᵢd):
+    context = kdf.Expand(prk = extracted, info = ctxᵢd, L = prf.Nk)
 </pre><a href="#section-5.2-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.2-4">The expanded entropy produced by this process is the only information that is

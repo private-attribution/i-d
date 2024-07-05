@@ -163,8 +163,8 @@ Table of Contents
    the other parties.
 
    The protocols described in this document depend on having three MPC
-   parties execute them.  The protocols described here are three parties
-   that are secure with abort, even when one party is not honest.
+   parties execute them.  The protocols described here are secure with
+   abort, even when one party is not honest.
 
    Concretely, this means that a single dishonest party cannot cause the
    value of inputs to be revealed.  Also, a single dishonest party
@@ -242,9 +242,10 @@ Table of Contents
    values from any two parties include all three shares and can be used
    to reconstruct the original value.
 
-   Some protocols might require that values known to all parties be
-   shared.  In that case, the value of x<sub>1</sub> is set to the known
-   value, with x<sub>2</sub> and x<sub>3</sub> both set to zero.
+   Some protocols might require that the parties construct a sharing of
+   a value which is known to all the parties.  In that case, the value
+   of x<sub>1</sub> is set to the known value, with x<sub>2</sub> and
+   x<sub>3</sub> both set to zero.
 
 2.4.  Identifying Shares and Parties
 
@@ -306,7 +307,7 @@ Table of Contents
    validate the consistency of the values it receives by ensuring that
    the replicated values it receives are identical.  That is, the value
    of x_1 received from P_1 is the same as the value of x_1 it receives
-   from P_2 and so forth.  If the value of shares are inconsistent, the
+   from P_3 and so forth.  If the value of shares are inconsistent, the
    protocol fails.  After discarding these duplicated values, the
    revealed value is the sum of the shares that it receives.
 
@@ -331,16 +332,16 @@ Table of Contents
    shares.  That is, to compute z = x + y, each party separately
    computes the sum of the shares they hold:
 
-   z<sub>\-</sub> = x<sub>\-</sub> + y<sub>\-</sub>
-   z<sub>+</sub> = x<sub>+</sub> + y<sub>+</sub>
+   z₋ = x₋ + y₋
+   z₊ = x₊ + y₊
 
    This produces shares of the sum without requiring communication.
 
    A similar process can be used for multiplication with a value that is
    known to all parties, negation, and subtraction.
 
-   Note: In a binary field addition is the same as subtraction, so both
-   are equivalent to the XOR operation.
+      |  Note: Addition in a binary field is the same as subtraction and
+      |  both are equivalent to the XOR operation.
 
 3.  Multiplication Protocol
 
@@ -350,12 +351,12 @@ Table of Contents
    Since x = x_1 + x_2 + x_3 and y = y_1 + y_2 + y_3 the product z = x *
    y can be expanded as:
 
-   z = (x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub>) \* (y<sub>1</sub> + y<sub>2</sub> + y<sub>3</sub>)
+   z = (x₁ + x₂ + x₃) \* (y₁ + y₂ + y₃)
 
-   This can be illustrated with a 3 by 3 table:
+   This can be illustrated with a 3 by 3 table (Table 1):
 
                    +=====+=========+=========+=========+
-                   |     | y1      | y2      | y3      |
+                   |     | y₁      | y₂      | y₃      |
                    +=====+=========+=========+=========+
                    | x_1 | x_1*y_1 | x_1*y_2 | x_1*y_3 |
                    +-----+---------+---------+---------+
@@ -364,33 +365,33 @@ Table of Contents
                    | x_3 | x_3*y_1 | x_3*y_2 | x_3*y_3 |
                    +-----+---------+---------+---------+
 
-                                  Table 1
+                      Table 1: Multiplication by Parts
 
    To compute the product, each party locally computes the sum of three
    products as follows:
 
-   z<sub>\-</sub> = x<sub>\-</sub>\*y<sub>\-</sub> + x<sub>\-</sub>\*y<sub>+</sub> + x<sub>\-</sub>\*y<sub>+</sub>
+   z<sub>\-</sub> = x<sub>\-</sub>\*y<sub>\-</sub> + x<sub>\-</sub>\*y₊ + x<sub>\+</sub>\*y₋
 
    To visualize this, Figure 3 shows cells labeled with the party
    responsible for computing that partial product:
 
-           y₁     y₂     y₃
-        +------+------+------+
-     x₁ |  P₁  |      |  P₁  |
-        +------+      +------+
-     x₂ |                    |
-        +------+             |
-     x₃ |  P₁  |             |
-        +------+-------------+
-
            y₁     y₂     y₃            y₁     y₂     y₃
-        +------+------+------+      +------+------+------+
-     x₁ |      |      |      |   x₁ |                    |
-        +------+      |      |      +             +------+
-     x₂ |      P₂     |      |   x₂ |             |      |
-        +-------------+      |      +      +------+      |
-     x₃ |                    |   x₃ |      |      P₃     |
-        +--------------------+      +------+-------------+
+        +-------------+------+      +--------------------+
+     x₁ |  P₁         |      |   x₁ |                    |
+        |      +------+      |      |      +-------------+
+     x₂ |      |             |   x₂ |      |  P₂         |
+        +------+             |      |      |      +------+
+     x₃ |                    |   x₃ |      |      |      |
+        +--------------------+      +------+------+------+
+
+         y₁     y₂     y₃
+        +-------------+------+
+     x₁ |             |  P₃  |
+        |             +------+
+     x₂ |                    |
+        +------+      +------|
+     x₃ |  P₃  |      |  P₃  |
+        +------+------+------+
 
                      Figure 3: Multiplication by Party
 
@@ -552,7 +553,7 @@ Table of Contents
    [FLPCP] introduces an elegant tool, which only requires O(logN)
    communication, for proving expressions of the form:
 
-   sum(i=0..n-1, u<sub>i</sub> · v<sub>i</sub>) = t
+   sum(i=0..n, uᵢ · vᵢ) = t
 
    In the setting where the Prover (P_(=)) and the left verifier (P_(-))
    both are in possession of the n-vector u, the Prover (P_(=)) and the
@@ -582,74 +583,74 @@ Table of Contents
 
    Rearranging terms:
 
-   x<sub>\-</sub> ∧ y<sub>+</sub> ⊕ (x<sub>\-</sub> ∧ y<sub>\-</sub> ⊕ z<sub>\-</sub> ⊕ r<sub>\-</sub> ) ⊕ x<sub>\+</sub> ∧ y<sub>\-</sub> ⊕ r<sub>+</sub> = 0
+   x₋ ∧ y₊ ⊕ (x₋ ∧ y₋ ⊕ z₋ ⊕ r₋ ) ⊕ x₊ ∧ y₋ ⊕ r₊ = 0
 
    Define:
 
-   e<sub>\-</sub> = x<sub>\-</sub> ∧ y<sub>\-</sub> ⊕ z<sub>\-</sub> ⊕ r<sub>\-</sub>
+   e₋ = x₋ ∧ y₋ ⊕ z₋ ⊕ r₋
 
    Then:
 
-   (x<sub>\-</sub> ∧ y<sub>+</sub> ⊕ e<sub>\-</sub> ) ⊕ (x<sub>\+</sub> ∧ y<sub>\-</sub> ⊕ r<sub>+</sub>) = 0
+   (x₋ ∧ y₊ ⊕ e₋ ) ⊕ (x₊ ∧ y₋ ⊕ r₊) = 0
 
    Using: x ⊕ y = x*(1 - 2*y) + y
 
-   (x<sub>\-</sub>·y<sub>+</sub>·(1 - 2e<sub>\-</sub>) + e<sub>\-</sub>) ⊕ (x<sub>+</sub>·y<sub>\-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>) = 0
+   (x₋·y₊·(1 - 2e₋) + e₋) ⊕ (x₊·y₋·(1 - 2r₊) + r₊) = 0
 
-   Using: x ⊕ y = x + y - 2*x*y
+   Using: x ⊕ y = x + y - 2_x_y
 
-   (x<sub>\-</sub>·y<sub>+</sub>·(1 - 2e<sub>\-</sub>) + e<sub>\-</sub>)
-   \+ (x<sub>+</sub>·y<sub>\-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>)
-   \- 2(x<sub>\-</sub>·y<sub>+</sub>·(1 - 2e<sub>\-</sub>) + e<sub>\-</sub>)(x<sub>+</sub>·y<sub>\-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>) = 0
+   (x₋·y₊·(1 - 2e₋) + e₋)
+   + (x₊·y₋·(1 - 2r₊) + r₊)
+   - 2(x₋·y₊·(1 - 2e₋) + e₋)(x₊·y₋·(1 - 2r₊) + r₊) = 0
 
    Distributing Terms:
 
-   x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub> + e<sub>\-</sub>
-   \+ y<sub>\-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>
-   \- 2x<sub>\-</sub>·y<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub>·r<sub>+</sub> - 2e<sub>\-</sub>·y<sub>\-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2e<sub>\-</sub>·r<sub>+</sub> = 0
+   x₋·(1 - 2e₋)·y₊ + e₋
+   + y₋·x₊·(1 - 2r₊) + r₊
+   - 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊) - 2x₋·(1 - 2e₋)·y₊·r₊ - 2e₋·y₋·x₊·(1 - 2r₊) - 2e₋·r₊ = 0
 
    Rearranging terms, and subtracting 1/2 from both sides:
 
-   \- 2x<sub>\-</sub>·y<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)
-   \+ y<sub>\-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2e<sub>\-</sub>·y<sub>\-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)
-   \+ x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub> - 2x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub>·r<sub>+</sub>
-   \+ e<sub>\-</sub> - 2e<sub>\-</sub>·r<sub>+</sub> + r<sub>+</sub> - ½ = - ½
+   - 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊)
+   + y₋·x₊·(1 - 2r₊) - 2e₋·y₋·x₊·(1 - 2r₊)
+   + x₋·(1 - 2e₋)·y₊ - 2x₋·(1 - 2e₋)·y₊·r₊
+   + e₋ - 2e₋·r₊ + r₊ - ½ = - ½
 
    Factoring allows this to be written as an expression with four terms,
    each with a component taken from the left (which we will label g) and
    a component from the right (which we will label h):
 
-   \[-2x<sub>\-</sub>·y<sub>\-</sub>·(1 - 2e<sub>\-</sub>)\] · \[y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)\]
-   \+ \[y<sub>\-</sub>(1 - 2e<sub>\-</sub>)\] · \[x<sub>+</sub>·(1 - 2r<sub>+</sub>)\]
-   \+ \[x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)\] · \[y<sub>+</sub>(1 - 2r<sub>+</sub>)\]
-   \+ \[-½(1 - 2e<sub>\-</sub>)\] · \[(1 - 2r<sub>+</sub>)\] = -½
+   [-2x₋·y₋·(1 - 2e₋)] · [y₊·x₊·(1 - 2r₊)]
+   + [y₋(1 - 2e₋)] · [x₊·(1 - 2r₊)]
+   + [x₋·(1 - 2e₋)] · [y₊(1 - 2r₊)]
+   + [-½(1 - 2e₋)] · [(1 - 2r₊)] = -½
 
    Renaming terms as new variables, the result is the dot product of two
    four dimensional vectors, g and h:
 
-   g<sub>1</sub>·h<sub>1</sub> + g<sub>2</sub>·h<sub>2</sub> + g<sub>3</sub>·h<sub>3</sub> + g<sub>4</sub>·h<sub>4</sub> = -½
+   g₁·h₁ + g₂·h₂ + g₃·h₃ + g₄·h₄ = -½
 
    Or alternatively:
 
-   sum(i=1..4, g<sub>i</sub> · h<sub>i</sub>) = -½
+   sum(i=1..4, gᵢ · hᵢ) = -½
 
    Where P_(=) and P_(+) both compute h<sub>i</sub> as follows:
 
-   h<sub>1</sub> = y<sub>+</sub>·x<sub>+</sub>·(1 - 2·r<sub>+</sub>)
-   h<sub>2</sub> = x<sub>+</sub>·(1 - 2·r<sub>+</sub>)
-   h<sub>3</sub> = y<sub>+</sub>·(1 - 2·r<sub>+</sub>)
-   h<sub>4</sub> = 1 − 2·r<sub>+</sub>
+   h₁ = y₊·x₊·(1 - 2·r₊)
+   h₂ = x₊·(1 - 2·r₊)
+   h₃ = y₊·(1 - 2·r₊)
+   h₄ = 1 − 2·r₊
 
    And P_(=) and P_(-) both compute g_i as follows:
 
-   g<sub>1</sub> = -2·x<sub>\-</sub>·y<sub>\-</sub>·(1 - 2·e<sub>\-</sub> )
-   g<sub>2</sub> = y<sub>\-</sub>·(1 - 2·e<sub>\-</sub> )
-   g<sub>3</sub> = x<sub>\-</sub>·(1 - 2·e<sub>\-</sub> )
-   g<sub>4</sub> = -½(1 - 2·e<sub>\-</sub>)
+   g₁ = -2·x₋·y₋·(1 - 2·e₋ )
+   g₂ = y₋·(1 - 2·e₋ )
+   g₃ = x₋·(1 - 2·e₋ )
+   g₄ = -½(1 - 2·e₋)
 
    And where:
 
-   e<sub>\-</sub> = x<sub>\-</sub> ∧ y<sub>\-</sub> ⊕ z<sub>\-</sub> ⊕ r<sub>\-</sub>
+   e₋ = x₋ ∧ y₋ ⊕ z₋ ⊕ r₋
 
    In this field, the negative inverse of two (-½) is
    1,152,921,504,606,846,975.
@@ -662,11 +663,11 @@ Table of Contents
 
    The Prover P_(=) and verifier P_(-) both compute the vector u
 
-   u = (g<sub>1</sub><sup>(1)</sup>, g<sub>2</sub><sup>(1)</sup>, g<sub>3</sub><sup>(1)</sup>, g<sub>4</sub><sup>(1)</sup>, …, g<sub>1</sub><sup>(m)</sup>, g<sub>2</sub><sup>(m)</sup>, g<sub>3</sub><sup>(m)</sup>, g<sub>4</sub><sup>(m)</sup>)
+   u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, …, g₁<sup>(m)</sup>, g₂<sup>(m)</sup>, g₃<sup>(m)</sup>, g₄<sup>(m)</sup>)
 
    The Prover P_(=) and verifier P_(+) both compute the vector v
 
-   v = (h<sub>1</sub><sup>(1)</sup>, h<sub>2</sub><sup>(1)</sup>, h<sub>3</sub><sup>(1)</sup>, h<sub>4</sub><sup>(1)</sup>, …, h<sub>1</sub><sup>(m)</sup>, h<sub>2</sub><sup>(m)</sup>, h<sub>3</sub><sup>(m)</sup>, h<sub>4</sub><sup>(m)</sup>)
+   v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, …, h₁<sup>(m)</sup>, h₂<sup>(m)</sup>, h₃<sup>(m)</sup>, h₄<sup>(m)</sup>)
 
    If no additive attacks were applied, the dot product of these two
    vectors should be:
@@ -711,15 +712,15 @@ Table of Contents
            the minimal number required to uniquely define it.
 
        2.  These 2L - 1 points are split into two additive secret-shares
-           G(x)<sub>\-</sub> and G(x)<sub>+</sub> and sent to the
+           G(x)<sub>-</sub> and G(x)<sub>+</sub> and sent to the
            verifiers P_(-) and P_(+), respectively.  These shares form
            the distributed zero-knowledge proof.
 
        3.  The verifiers verify the proposition using their shares by
-           computing b<sub>\-</sub> = t<sub>\-</sub> - sum(i=0..L-1,
-           G(x)<sub>\-</sub>) and b<sub>+</sub> = t<sub>+</sub> -
+           computing b<sub>-</sub> = t<sub>-</sub> - sum(i=0..L-1,
+           G(x)<sub>-</sub>) and b<sub>+</sub> = t<sub>+</sub> -
            sum(i=0..L-1, G(x)<sub>+</sub>).  They send each other the
-           value they compute and confirm that b<sub>\-</sub> +
+           value they compute and confirm that b<sub>-</sub> +
            b<sub>+</sub> = 0.  If this test fails, the entire protocol
            is aborted.
 
@@ -778,10 +779,10 @@ Table of Contents
    The prover (P_(=)) and the verifier P_(-), chunk the vector u into s
    chunks of length L.
 
-   chunk 0: <u<sub>0</sub>, u<sub>1</sub>, …, u<sub>L-1</sub>\>
-   chunk 1: <u<sub>L</sub>, u<sub>L+1</sub>, …, u<sub>2L-1</sub>\>
+   chunk 0: <u₀, u₁, …, u<sub>L-1</sub>>
+   chunk 1: <u<sub>L</sub>, u<sub>L+1</sub>, …, u<sub>2L-1</sub>>
    …
-   chunk s-1: <u<sub>(s-1)L</sub>, u<sub>(s-1)L+1</sub>, …, u<sub>sL-1</sub>\>
+   chunk s-1: <u<sub>(s-1)L</sub>, u<sub>(s-1)L+1</sub>, …, u<sub>sL-1</sub>>
 
    If the length of u is not divisible by L, then the final chunk will
    be padded with zeros.
@@ -806,13 +807,10 @@ Table of Contents
    The Prover (P_(=)) and the verifier P_(+), will chunk the vector v
    into s chunks of length L.
 
-   chunk 1: <v_0, v_1, …, v_(L-1)>
-
-   chunk 2: <v_L, v_(L+1), …, v_(2L-1)>
-
+   chunk 0: <v₀, v₁, …, v<sub>L-1</sub>>
+   chunk 1: <v<sub>L</sub>, v<sub>L+1</sub>, …, v<sub>2L-1</sub>>
    …
-
-   chunk s-1: <v_((s-1)L), v_((s-1)L+1), …, v_(sL-1)>
+   chunk s-1: <v<sub>(s-1)L</sub>, v<sub>(s-1)L+1</sub>, …, v<sub>sL-1</sub>>
 
    As before, if the length of v is not a multiple of L, the final chunk
    will be padded with zeros.
@@ -906,11 +904,11 @@ Table of Contents
 
    commitment = SHA256(
      concat(
-       SHA256(\[G(x)\]<sub>\-</sub>),
-       SHA256(\[G(x)\]<sub>+</sub>)
+       SHA256([G(x)]₋),
+       SHA256([G(x)]₊)
      )
    )
-   r = (bytes2int(commitment\[..16\]) % (prime - L)) + L
+   r = (bytes2int(commitment[..16]) % (prime - L)) + L
 
    This computation does not use the entire output of the hash function,
    just enough to ensure that the value of r has minimal bias.  For
@@ -939,7 +937,7 @@ Table of Contents
 
    Recall the definition of G(x):
 
-   G(x) = sum(i=0..s, p<sub>i</sub>(x) · q<sub>i</sub>(x))
+   G(x) = sum(i=0..s, pᵢ(x) · qᵢ(x))
 
    So this amounts to proving that:
 
@@ -947,8 +945,8 @@ Table of Contents
 
    Where:
 
-   u’ = <p<sub>0</sub>(r), p<sub>1</sub>(r), …>
-   v’ = <q<sub>0</sub>(r), q<sub>1</sub>(r), …>
+   u’ = <p₀(r), p₁(r), …>
+   v’ = <q₀(r), q₁(r), …>
 
    Note that this is a problem of exactly the same form as the original
    problem, except that the length of u’ and v’ is now a factor of L
@@ -992,7 +990,7 @@ Table of Contents
 
    And the right verifier P_(+) computes:
 
-   b<sub>+</sub> = t<sub>+</sub> - sum(i=1,L-1, G(i)<sub>+</sub>)
+   b₊ = t₊ - sum(i=1,L-1, G(i)₊)
 
    The second difference is the way the verifiers validate the soundness
    of the zero knowledge proof.  In the final iteration the verifier

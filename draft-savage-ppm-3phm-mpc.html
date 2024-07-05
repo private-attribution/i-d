@@ -1327,8 +1327,8 @@ additive shares of input values. Strong guarantees are provided regarding the
 confidentiality of inputs provided that no pair of parties reveals their shares
 to either of the other parties.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">The protocols described in this document depend on having three MPC parties
-execute them. The protocols described here are three parties that are secure
-with abort, even when one party is not honest.<a href="#section-2-2" class="pilcrow">¶</a></p>
+execute them. The protocols described here are secure with abort, even when one
+party is not honest.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">Concretely, this means that a single dishonest party cannot cause the value of
 inputs to be revealed. Also, a single dishonest party cannot alter the output of
 any operation without detection. The protocol is aborted if honest parties
@@ -1406,9 +1406,9 @@ P<sub>3</sub> receives (<code>x&lt;sub&gt;3&lt;/sub&gt;</code>, <code>x&lt;sub&g
 single party is able to construct the original value (<code>x</code>), but the values from
 any two parties include all three shares and can be used to reconstruct the
 original value.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
-<p id="section-2.3-4">Some protocols might require that values known to all parties be shared. In that
-case, the value of <code>x&lt;sub&gt;1&lt;/sub&gt;</code> is set to the known value, with
-<code>x&lt;sub&gt;2&lt;/sub&gt;</code> and <code>x&lt;sub&gt;3&lt;/sub&gt;</code> both set to zero.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
+<p id="section-2.3-4">Some protocols might require that the parties construct a sharing of a value
+which is known to all the parties. In that case, the value of <code>x&lt;sub&gt;1&lt;/sub&gt;</code> is
+set to the known value, with <code>x&lt;sub&gt;2&lt;/sub&gt;</code> and <code>x&lt;sub&gt;3&lt;/sub&gt;</code> both set to zero.<a href="#section-2.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="identifying-shares-and-parties">
@@ -1469,7 +1469,12 @@ illustrated in <a href="#fig-shares-parties" class="auto internal xref">Figure 1
           </figcaption></figure>
 </div>
 <p id="section-2.4-3">Three parties are identified as P<sub>1</sub>, P<sub>2</sub>, and P<sub>3</sub>.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
-<p id="section-2.4-4">The three parties are logically placed in a ring, with higher numbered parties to the right of lower-numbered parties. P<sub>3</sub> is placed to the left of P<sub>1</sub>. This means that if a protocol involves sending a value to the left, P<sub>1</sub> sends the value to P<sub>3</sub>, P<sub>2</sub> sends to P<sub>1</sub>, and P<sub>3</sub> sends to P<sub>2</sub>. The sending directions are illustrated in <a href="#fig-send-direction" class="auto internal xref">Figure 2</a>.<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+<p id="section-2.4-4">The three parties are logically placed in a ring, with higher numbered parties
+to the right of lower-numbered parties. P<sub>3</sub> is placed to the left of
+P<sub>1</sub>. This means that if a protocol involves sending a value to the
+left, P<sub>1</sub> sends the value to P<sub>3</sub>, P<sub>2</sub> sends to
+P<sub>1</sub>, and P<sub>3</sub> sends to P<sub>2</sub>. The sending directions
+are illustrated in <a href="#fig-send-direction" class="auto internal xref">Figure 2</a>.<a href="#section-2.4-4" class="pilcrow">¶</a></p>
 <span id="name-parties-and-sending-directi"></span><div id="fig-send-direction">
 <figure id="figure-2">
           <div id="section-2.4-5.1">
@@ -1570,7 +1575,7 @@ entity that will receive the final result. This entity can validate the
 consistency of the values it receives by ensuring that the replicated values it
 receives are identical. That is, the value of x<sub>1</sub> received from
 P<sub>1</sub> is the same as the value of x<sub>1</sub> it receives from
-P<sub>2</sub> and so forth. If the value of shares are inconsistent, the
+P<sub>3</sub> and so forth. If the value of shares are inconsistent, the
 protocol fails. After discarding these duplicated values, the revealed value is
 the sum of the shares that it receives.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
 <p id="section-2.5-2">A value can be revealed by sending adjacent parties the one share value they do
@@ -1597,13 +1602,17 @@ compute z = x + y, each party separately computes the sum of the shares they
 hold:<a href="#section-2.6-1" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-2.6-2">
 <pre>
-z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt; + y&lt;sub&gt;\-&lt;/sub&gt;
-z&lt;sub&gt;+&lt;/sub&gt; = x&lt;sub&gt;+&lt;/sub&gt; + y&lt;sub&gt;+&lt;/sub&gt;
+z₋ = x₋ + y₋
+z₊ = x₊ + y₊
 </pre><a href="#section-2.6-2" class="pilcrow">¶</a>
 </div>
 <p id="section-2.6-3">This produces shares of the sum without requiring communication.<a href="#section-2.6-3" class="pilcrow">¶</a></p>
-<p id="section-2.6-4">A similar process can be used for multiplication with a value that is known to all parties, negation, and subtraction.<a href="#section-2.6-4" class="pilcrow">¶</a></p>
-<p id="section-2.6-5">Note: In a binary field addition is the same as subtraction, so both are equivalent to the XOR operation.<a href="#section-2.6-5" class="pilcrow">¶</a></p>
+<p id="section-2.6-4">A similar process can be used for multiplication with a value that is known to
+all parties, negation, and subtraction.<a href="#section-2.6-4" class="pilcrow">¶</a></p>
+<aside id="section-2.6-5">
+          <p id="section-2.6-5.1">Note: Addition in a binary field is the same as subtraction and both are
+equivalent to the XOR operation.<a href="#section-2.6-5.1" class="pilcrow">¶</a></p>
+</aside>
 </section>
 </div>
 </section>
@@ -1618,18 +1627,22 @@ z&lt;sub&gt;+&lt;/sub&gt; = x&lt;sub&gt;+&lt;/sub&gt; + y&lt;sub&gt;+&lt;/sub&gt
 y<sub>2</sub> + y<sub>3</sub> the product z = x * y can be expanded as:<a href="#section-3-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-3-3">
 <pre>
-z = (x&lt;sub&gt;1&lt;/sub&gt; + x&lt;sub&gt;2&lt;/sub&gt; + x&lt;sub&gt;3&lt;/sub&gt;) \* (y&lt;sub&gt;1&lt;/sub&gt; + y&lt;sub&gt;2&lt;/sub&gt; + y&lt;sub&gt;3&lt;/sub&gt;)
+z = (x₁ + x₂ + x₃) \* (y₁ + y₂ + y₃)
 </pre><a href="#section-3-3" class="pilcrow">¶</a>
 </div>
-<p id="section-3-4">This can be illustrated with a 3 by 3 table:<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-4">This can be illustrated with a 3 by 3 table (<a href="#tab-mul" class="auto internal xref">Table 1</a>):<a href="#section-3-4" class="pilcrow">¶</a></p>
+<span id="name-multiplication-by-parts"></span><div id="tab-mul">
 <table class="center" id="table-1">
-        <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+        <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-multiplication-by-parts" class="selfRef">Multiplication by Parts</a>
+        </caption>
 <thead>
           <tr>
             <th class="text-left" rowspan="1" colspan="1"> </th>
-            <th class="text-left" rowspan="1" colspan="1">y1</th>
-            <th class="text-left" rowspan="1" colspan="1">y2</th>
-            <th class="text-left" rowspan="1" colspan="1">y3</th>
+            <th class="text-left" rowspan="1" colspan="1">y₁</th>
+            <th class="text-left" rowspan="1" colspan="1">y₂</th>
+            <th class="text-left" rowspan="1" colspan="1">y₃</th>
           </tr>
         </thead>
         <tbody>
@@ -1665,10 +1678,11 @@ z = (x&lt;sub&gt;1&lt;/sub&gt; + x&lt;sub&gt;2&lt;/sub&gt; + x&lt;sub&gt;3&lt;/s
           </tr>
         </tbody>
       </table>
+</div>
 <p id="section-3-6">To compute the product, each party locally computes the sum of three products as follows:<a href="#section-3-6" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-3-7">
 <pre>
-z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;\*y&lt;sub&gt;\-&lt;/sub&gt; + x&lt;sub&gt;\-&lt;/sub&gt;\*y&lt;sub&gt;+&lt;/sub&gt; + x&lt;sub&gt;\-&lt;/sub&gt;\*y&lt;sub&gt;+&lt;/sub&gt;
+z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;\*y&lt;sub&gt;\-&lt;/sub&gt; + x&lt;sub&gt;\-&lt;/sub&gt;\*y₊ + x&lt;sub&gt;\+&lt;/sub&gt;\*y₋
 </pre><a href="#section-3-7" class="pilcrow">¶</a>
 </div>
 <p id="section-3-8">To visualize this, <a href="#fig-mul" class="auto internal xref">Figure 3</a> shows cells labeled with the party responsible for computing that partial product:<a href="#section-3-8" class="pilcrow">¶</a></p>
@@ -1679,54 +1693,54 @@ z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;\*y&lt;sub&gt;\-&lt;/sub&
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="320" width="432" viewBox="0 0 432 320" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
               <path d="M 32,48 L 32,144" fill="none" stroke="black"></path>
               <path d="M 32,192 L 32,288" fill="none" stroke="black"></path>
-              <path d="M 88,48 L 88,80" fill="none" stroke="black"></path>
-              <path d="M 88,112 L 88,144" fill="none" stroke="black"></path>
-              <path d="M 88,192 L 88,224" fill="none" stroke="black"></path>
+              <path d="M 88,80 L 88,112" fill="none" stroke="black"></path>
+              <path d="M 88,256 L 88,288" fill="none" stroke="black"></path>
               <path d="M 144,48 L 144,80" fill="none" stroke="black"></path>
-              <path d="M 144,192 L 144,256" fill="none" stroke="black"></path>
+              <path d="M 144,192 L 144,224" fill="none" stroke="black"></path>
+              <path d="M 144,256 L 144,288" fill="none" stroke="black"></path>
               <path d="M 200,48 L 200,144" fill="none" stroke="black"></path>
               <path d="M 200,192 L 200,288" fill="none" stroke="black"></path>
-              <path d="M 256,192 L 256,288" fill="none" stroke="black"></path>
-              <path d="M 312,256 L 312,288" fill="none" stroke="black"></path>
-              <path d="M 368,224 L 368,256" fill="none" stroke="black"></path>
-              <path d="M 424,192 L 424,288" fill="none" stroke="black"></path>
+              <path d="M 256,48 L 256,144" fill="none" stroke="black"></path>
+              <path d="M 312,80 L 312,144" fill="none" stroke="black"></path>
+              <path d="M 368,112 L 368,144" fill="none" stroke="black"></path>
+              <path d="M 424,48 L 424,144" fill="none" stroke="black"></path>
               <path d="M 32,48 L 200,48" fill="none" stroke="black"></path>
-              <path d="M 32,80 L 88,80" fill="none" stroke="black"></path>
-              <path d="M 144,80 L 200,80" fill="none" stroke="black"></path>
+              <path d="M 256,48 L 424,48" fill="none" stroke="black"></path>
+              <path d="M 88,80 L 144,80" fill="none" stroke="black"></path>
+              <path d="M 312,80 L 424,80" fill="none" stroke="black"></path>
               <path d="M 32,112 L 88,112" fill="none" stroke="black"></path>
+              <path d="M 368,112 L 424,112" fill="none" stroke="black"></path>
               <path d="M 32,144 L 200,144" fill="none" stroke="black"></path>
+              <path d="M 256,144 L 424,144" fill="none" stroke="black"></path>
               <path d="M 32,192 L 200,192" fill="none" stroke="black"></path>
-              <path d="M 256,192 L 424,192" fill="none" stroke="black"></path>
-              <path d="M 32,224 L 88,224" fill="none" stroke="black"></path>
-              <path d="M 368,224 L 424,224" fill="none" stroke="black"></path>
-              <path d="M 32,256 L 144,256" fill="none" stroke="black"></path>
-              <path d="M 312,256 L 368,256" fill="none" stroke="black"></path>
+              <path d="M 144,224 L 200,224" fill="none" stroke="black"></path>
+              <path d="M 32,256 L 88,256" fill="none" stroke="black"></path>
+              <path d="M 144,256 L 192,256" fill="none" stroke="black"></path>
               <path d="M 32,288 L 200,288" fill="none" stroke="black"></path>
-              <path d="M 256,288 L 424,288" fill="none" stroke="black"></path>
               <g class="text">
                 <text x="60" y="36">y₁</text>
                 <text x="116" y="36">y₂</text>
                 <text x="172" y="36">y₃</text>
+                <text x="284" y="36">y₁</text>
+                <text x="340" y="36">y₂</text>
+                <text x="396" y="36">y₃</text>
                 <text x="12" y="68">x₁</text>
                 <text x="60" y="68">P₁</text>
-                <text x="172" y="68">P₁</text>
+                <text x="236" y="68">x₁</text>
                 <text x="12" y="100">x₂</text>
+                <text x="236" y="100">x₂</text>
+                <text x="340" y="100">P₂</text>
                 <text x="12" y="132">x₃</text>
-                <text x="60" y="132">P₁</text>
-                <text x="60" y="180">y₁</text>
-                <text x="116" y="180">y₂</text>
-                <text x="172" y="180">y₃</text>
-                <text x="284" y="180">y₁</text>
-                <text x="340" y="180">y₂</text>
-                <text x="396" y="180">y₃</text>
+                <text x="236" y="132">x₃</text>
+                <text x="44" y="180">y₁</text>
+                <text x="100" y="180">y₂</text>
+                <text x="156" y="180">y₃</text>
                 <text x="12" y="212">x₁</text>
-                <text x="236" y="212">x₁</text>
+                <text x="172" y="212">P₃</text>
                 <text x="12" y="244">x₂</text>
-                <text x="92" y="244">P₂</text>
-                <text x="236" y="244">x₂</text>
                 <text x="12" y="276">x₃</text>
-                <text x="236" y="276">x₃</text>
-                <text x="372" y="276">P₃</text>
+                <text x="60" y="276">P₃</text>
+                <text x="172" y="276">P₃</text>
               </g>
             </svg><a href="#section-3-9.1.1" class="pilcrow">¶</a>
 </div>
@@ -1841,7 +1855,7 @@ party needs to send its share, z<sub>-</sub>, to the party to its left.<a href="
 requires O(logN) communication, for proving expressions of the form:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.5-2">
 <pre>
-sum(i=0..n-1, u&lt;sub&gt;i&lt;/sub&gt; · v&lt;sub&gt;i&lt;/sub&gt;) = t
+sum(i=0..n, uᵢ · vᵢ) = t
 </pre><a href="#section-4.5-2" class="pilcrow">¶</a>
 </div>
 <p id="section-4.5-3">In the setting where the Prover (P<sub>=</sub>) and the left verifier
@@ -1877,95 +1891,95 @@ P<sub>-</sub>, the other being known to both P<sub>=</sub> and P<sub>+</sub>.<a 
 <p id="section-4.6-4">Rearranging terms:<a href="#section-4.6-4" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-5">
 <pre>
-x&lt;sub&gt;\-&lt;/sub&gt; ∧ y&lt;sub&gt;+&lt;/sub&gt; ⊕ (x&lt;sub&gt;\-&lt;/sub&gt; ∧ y&lt;sub&gt;\-&lt;/sub&gt; ⊕ z&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;\-&lt;/sub&gt; ) ⊕ x&lt;sub&gt;\+&lt;/sub&gt; ∧ y&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;+&lt;/sub&gt; = 0
+x₋ ∧ y₊ ⊕ (x₋ ∧ y₋ ⊕ z₋ ⊕ r₋ ) ⊕ x₊ ∧ y₋ ⊕ r₊ = 0
 </pre><a href="#section-4.6-5" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-6">Define:<a href="#section-4.6-6" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-7">
 <pre>
-e&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt; ∧ y&lt;sub&gt;\-&lt;/sub&gt; ⊕ z&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;\-&lt;/sub&gt;
+e₋ = x₋ ∧ y₋ ⊕ z₋ ⊕ r₋
 </pre><a href="#section-4.6-7" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-8">Then:<a href="#section-4.6-8" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-9">
 <pre>
-(x&lt;sub&gt;\-&lt;/sub&gt; ∧ y&lt;sub&gt;+&lt;/sub&gt; ⊕ e&lt;sub&gt;\-&lt;/sub&gt; ) ⊕ (x&lt;sub&gt;\+&lt;/sub&gt; ∧ y&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;+&lt;/sub&gt;) = 0
+(x₋ ∧ y₊ ⊕ e₋ ) ⊕ (x₊ ∧ y₋ ⊕ r₊) = 0
 </pre><a href="#section-4.6-9" class="pilcrow">¶</a>
 </div>
-<p id="section-4.6-10">Using: x ⊕ y = x*(1 - 2*y) + y<a href="#section-4.6-10" class="pilcrow">¶</a></p>
+<p id="section-4.6-10">Using: <code>x ⊕ y = x*(1 - 2*y) + y</code><a href="#section-4.6-10" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-11">
 <pre>
-(x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;+&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;) + e&lt;sub&gt;\-&lt;/sub&gt;) ⊕ (x&lt;sub&gt;+&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;) + r&lt;sub&gt;+&lt;/sub&gt;) = 0
+(x₋·y₊·(1 - 2e₋) + e₋) ⊕ (x₊·y₋·(1 - 2r₊) + r₊) = 0
 </pre><a href="#section-4.6-11" class="pilcrow">¶</a>
 </div>
-<p id="section-4.6-12">Using: x ⊕ y = x + y - 2*x*y<a href="#section-4.6-12" class="pilcrow">¶</a></p>
+<p id="section-4.6-12">Using: x ⊕ y = x + y - 2<em>x</em>y<a href="#section-4.6-12" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-13">
 <pre>
-(x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;+&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;) + e&lt;sub&gt;\-&lt;/sub&gt;)
-\+ (x&lt;sub&gt;+&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;) + r&lt;sub&gt;+&lt;/sub&gt;)
-\- 2(x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;+&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;) + e&lt;sub&gt;\-&lt;/sub&gt;)(x&lt;sub&gt;+&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;) + r&lt;sub&gt;+&lt;/sub&gt;) = 0
+(x₋·y₊·(1 - 2e₋) + e₋)
++ (x₊·y₋·(1 - 2r₊) + r₊)
+- 2(x₋·y₊·(1 - 2e₋) + e₋)(x₊·y₋·(1 - 2r₊) + r₊) = 0
 </pre><a href="#section-4.6-13" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-14">Distributing Terms:<a href="#section-4.6-14" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-15">
 <pre>
-x&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)·y&lt;sub&gt;+&lt;/sub&gt; + e&lt;sub&gt;\-&lt;/sub&gt;
-\+ y&lt;sub&gt;\-&lt;/sub&gt;·x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;) + r&lt;sub&gt;+&lt;/sub&gt;
-\- 2x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)·y&lt;sub&gt;+&lt;/sub&gt;·x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;) - 2x&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)·y&lt;sub&gt;+&lt;/sub&gt;·r&lt;sub&gt;+&lt;/sub&gt; - 2e&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt;·x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;) - 2e&lt;sub&gt;\-&lt;/sub&gt;·r&lt;sub&gt;+&lt;/sub&gt; = 0
+x₋·(1 - 2e₋)·y₊ + e₋
++ y₋·x₊·(1 - 2r₊) + r₊
+- 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊) - 2x₋·(1 - 2e₋)·y₊·r₊ - 2e₋·y₋·x₊·(1 - 2r₊) - 2e₋·r₊ = 0
 </pre><a href="#section-4.6-15" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-16">Rearranging terms, and subtracting 1/2 from both sides:<a href="#section-4.6-16" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-17">
 <pre>
-\- 2x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)·y&lt;sub&gt;+&lt;/sub&gt;·x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;)
-\+ y&lt;sub&gt;\-&lt;/sub&gt;·x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;) - 2e&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt;·x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;)
-\+ x&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)·y&lt;sub&gt;+&lt;/sub&gt; - 2x&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)·y&lt;sub&gt;+&lt;/sub&gt;·r&lt;sub&gt;+&lt;/sub&gt;
-\+ e&lt;sub&gt;\-&lt;/sub&gt; - 2e&lt;sub&gt;\-&lt;/sub&gt;·r&lt;sub&gt;+&lt;/sub&gt; + r&lt;sub&gt;+&lt;/sub&gt; - ½ = - ½
+- 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊)
++ y₋·x₊·(1 - 2r₊) - 2e₋·y₋·x₊·(1 - 2r₊)
++ x₋·(1 - 2e₋)·y₊ - 2x₋·(1 - 2e₋)·y₊·r₊
++ e₋ - 2e₋·r₊ + r₊ - ½ = - ½
 </pre><a href="#section-4.6-17" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-18">Factoring allows this to be written as an expression with four terms, each with a component taken from the left (which we will label g) and a component from the right (which we will label h):<a href="#section-4.6-18" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-19">
 <pre>
-\[-2x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)\] · \[y&lt;sub&gt;+&lt;/sub&gt;·x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;)\]
-\+ \[y&lt;sub&gt;\-&lt;/sub&gt;(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)\] · \[x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2r&lt;sub&gt;+&lt;/sub&gt;)\]
-\+ \[x&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)\] · \[y&lt;sub&gt;+&lt;/sub&gt;(1 - 2r&lt;sub&gt;+&lt;/sub&gt;)\]
-\+ \[-½(1 - 2e&lt;sub&gt;\-&lt;/sub&gt;)\] · \[(1 - 2r&lt;sub&gt;+&lt;/sub&gt;)\] = -½
+[-2x₋·y₋·(1 - 2e₋)] · [y₊·x₊·(1 - 2r₊)]
++ [y₋(1 - 2e₋)] · [x₊·(1 - 2r₊)]
++ [x₋·(1 - 2e₋)] · [y₊(1 - 2r₊)]
++ [-½(1 - 2e₋)] · [(1 - 2r₊)] = -½
 </pre><a href="#section-4.6-19" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-20">Renaming terms as new variables, the result is the dot product of two four dimensional vectors, g and h:<a href="#section-4.6-20" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-21">
 <pre>
-g&lt;sub&gt;1&lt;/sub&gt;·h&lt;sub&gt;1&lt;/sub&gt; + g&lt;sub&gt;2&lt;/sub&gt;·h&lt;sub&gt;2&lt;/sub&gt; + g&lt;sub&gt;3&lt;/sub&gt;·h&lt;sub&gt;3&lt;/sub&gt; + g&lt;sub&gt;4&lt;/sub&gt;·h&lt;sub&gt;4&lt;/sub&gt; = -½
+g₁·h₁ + g₂·h₂ + g₃·h₃ + g₄·h₄ = -½
 </pre><a href="#section-4.6-21" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-22">Or alternatively:<a href="#section-4.6-22" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-23">
 <pre>
-sum(i=1..4, g&lt;sub&gt;i&lt;/sub&gt; · h&lt;sub&gt;i&lt;/sub&gt;) = -½
+sum(i=1..4, gᵢ · hᵢ) = -½
 </pre><a href="#section-4.6-23" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-24">Where P<sub>=</sub> and P<sub>+</sub> both compute <code>h&lt;sub&gt;i&lt;/sub&gt;</code> as follows:<a href="#section-4.6-24" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-25">
 <pre>
-h&lt;sub&gt;1&lt;/sub&gt; = y&lt;sub&gt;+&lt;/sub&gt;·x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2·r&lt;sub&gt;+&lt;/sub&gt;)
-h&lt;sub&gt;2&lt;/sub&gt; = x&lt;sub&gt;+&lt;/sub&gt;·(1 - 2·r&lt;sub&gt;+&lt;/sub&gt;)
-h&lt;sub&gt;3&lt;/sub&gt; = y&lt;sub&gt;+&lt;/sub&gt;·(1 - 2·r&lt;sub&gt;+&lt;/sub&gt;)
-h&lt;sub&gt;4&lt;/sub&gt; = 1 − 2·r&lt;sub&gt;+&lt;/sub&gt;
+h₁ = y₊·x₊·(1 - 2·r₊)
+h₂ = x₊·(1 - 2·r₊)
+h₃ = y₊·(1 - 2·r₊)
+h₄ = 1 − 2·r₊
 </pre><a href="#section-4.6-25" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-26">And P<sub>=</sub> and P<sub>-</sub> both compute g<sub>i</sub> as follows:<a href="#section-4.6-26" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-27">
 <pre>
-g&lt;sub&gt;1&lt;/sub&gt; = -2·x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2·e&lt;sub&gt;\-&lt;/sub&gt; )
-g&lt;sub&gt;2&lt;/sub&gt; = y&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2·e&lt;sub&gt;\-&lt;/sub&gt; )
-g&lt;sub&gt;3&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;·(1 - 2·e&lt;sub&gt;\-&lt;/sub&gt; )
-g&lt;sub&gt;4&lt;/sub&gt; = -½(1 - 2·e&lt;sub&gt;\-&lt;/sub&gt;)
+g₁ = -2·x₋·y₋·(1 - 2·e₋ )
+g₂ = y₋·(1 - 2·e₋ )
+g₃ = x₋·(1 - 2·e₋ )
+g₄ = -½(1 - 2·e₋)
 </pre><a href="#section-4.6-27" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-28">And where:<a href="#section-4.6-28" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-29">
 <pre>
-e&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt; ∧ y&lt;sub&gt;\-&lt;/sub&gt; ⊕ z&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;\-&lt;/sub&gt;
+e₋ = x₋ ∧ y₋ ⊕ z₋ ⊕ r₋
 </pre><a href="#section-4.6-29" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-30">In this field, the negative inverse of two (-½) is 1,152,921,504,606,846,975.<a href="#section-4.6-30" class="pilcrow">¶</a></p>
@@ -1980,13 +1994,13 @@ e&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt; ∧ y&lt;sub&gt;\-&lt;/s
 <p id="section-4.7-2">The Prover P<sub>=</sub> and verifier P<sub>-</sub> both compute the vector u<a href="#section-4.7-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.7-3">
 <pre>
-u = (g&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;(1)&lt;/sup&gt;, g&lt;sub&gt;2&lt;/sub&gt;&lt;sup&gt;(1)&lt;/sup&gt;, g&lt;sub&gt;3&lt;/sub&gt;&lt;sup&gt;(1)&lt;/sup&gt;, g&lt;sub&gt;4&lt;/sub&gt;&lt;sup&gt;(1)&lt;/sup&gt;, …, g&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;(m)&lt;/sup&gt;, g&lt;sub&gt;2&lt;/sub&gt;&lt;sup&gt;(m)&lt;/sup&gt;, g&lt;sub&gt;3&lt;/sub&gt;&lt;sup&gt;(m)&lt;/sup&gt;, g&lt;sub&gt;4&lt;/sub&gt;&lt;sup&gt;(m)&lt;/sup&gt;)
+u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, …, g₁&lt;sup&gt;(m)&lt;/sup&gt;, g₂&lt;sup&gt;(m)&lt;/sup&gt;, g₃&lt;sup&gt;(m)&lt;/sup&gt;, g₄&lt;sup&gt;(m)&lt;/sup&gt;)
 </pre><a href="#section-4.7-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.7-4">The Prover P<sub>=</sub> and verifier P<sub>+</sub> both compute the vector v<a href="#section-4.7-4" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.7-5">
 <pre>
-v = (h&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;(1)&lt;/sup&gt;, h&lt;sub&gt;2&lt;/sub&gt;&lt;sup&gt;(1)&lt;/sup&gt;, h&lt;sub&gt;3&lt;/sub&gt;&lt;sup&gt;(1)&lt;/sup&gt;, h&lt;sub&gt;4&lt;/sub&gt;&lt;sup&gt;(1)&lt;/sup&gt;, …, h&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;(m)&lt;/sup&gt;, h&lt;sub&gt;2&lt;/sub&gt;&lt;sup&gt;(m)&lt;/sup&gt;, h&lt;sub&gt;3&lt;/sub&gt;&lt;sup&gt;(m)&lt;/sup&gt;, h&lt;sub&gt;4&lt;/sub&gt;&lt;sup&gt;(m)&lt;/sup&gt;)
+v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, …, h₁&lt;sup&gt;(m)&lt;/sup&gt;, h₂&lt;sup&gt;(m)&lt;/sup&gt;, h₃&lt;sup&gt;(m)&lt;/sup&gt;, h₄&lt;sup&gt;(m)&lt;/sup&gt;)
 </pre><a href="#section-4.7-5" class="pilcrow">¶</a>
 </div>
 <p id="section-4.7-6">If no additive attacks were applied, the dot product of these two vectors should be:<a href="#section-4.7-6" class="pilcrow">¶</a></p>
@@ -2041,15 +2055,15 @@ minimal number required to uniquely define it.<a href="#section-4.8-4.3.4.1.1" c
 </li>
               <li id="section-4.8-4.3.4.2">
                 <p id="section-4.8-4.3.4.2.1">These <code>2L - 1</code> points are split into two additive secret-shares
-<code>G(x)&lt;sub&gt;\-&lt;/sub&gt;</code> and <code>G(x)&lt;sub&gt;+&lt;/sub&gt;</code> and sent to the verifiers
+<code>G(x)&lt;sub&gt;-&lt;/sub&gt;</code> and <code>G(x)&lt;sub&gt;+&lt;/sub&gt;</code> and sent to the verifiers
 P<sub>-</sub> and P<sub>+</sub>, respectively. These shares form the
 distributed zero-knowledge proof.<a href="#section-4.8-4.3.4.2.1" class="pilcrow">¶</a></p>
 </li>
               <li id="section-4.8-4.3.4.3">
                 <p id="section-4.8-4.3.4.3.1">The verifiers verify the proposition using their shares by computing
-<code>b&lt;sub&gt;\-&lt;/sub&gt; = t&lt;sub&gt;\-&lt;/sub&gt; - sum(i=0..L-1, G(x)&lt;sub&gt;\-&lt;/sub&gt;)</code> and
+<code>b&lt;sub&gt;-&lt;/sub&gt; = t&lt;sub&gt;-&lt;/sub&gt; - sum(i=0..L-1, G(x)&lt;sub&gt;-&lt;/sub&gt;)</code> and
 <code>b&lt;sub&gt;+&lt;/sub&gt; = t&lt;sub&gt;+&lt;/sub&gt; - sum(i=0..L-1, G(x)&lt;sub&gt;+&lt;/sub&gt;)</code>. They
-send each other the value they compute and confirm that <code>b&lt;sub&gt;\-&lt;/sub&gt; +
+send each other the value they compute and confirm that <code>b&lt;sub&gt;-&lt;/sub&gt; +
 b&lt;sub&gt;+&lt;/sub&gt; = 0</code>. If this test fails, the entire protocol is aborted.<a href="#section-4.8-4.3.4.3.1" class="pilcrow">¶</a></p>
 </li>
             </ol>
@@ -2122,10 +2136,10 @@ lookup tables if necessary.<a href="#section-4.9.1-2" class="pilcrow">¶</a></p>
 <code>u</code> into <code>s</code> chunks of length <code>L</code>.<a href="#section-4.9.2-1" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.9.2-2">
 <pre>
-chunk 0: &lt;u&lt;sub&gt;0&lt;/sub&gt;, u&lt;sub&gt;1&lt;/sub&gt;, …, u&lt;sub&gt;L-1&lt;/sub&gt;\&gt;
-chunk 1: &lt;u&lt;sub&gt;L&lt;/sub&gt;, u&lt;sub&gt;L+1&lt;/sub&gt;, …, u&lt;sub&gt;2L-1&lt;/sub&gt;\&gt;
+chunk 0: &lt;u₀, u₁, …, u&lt;sub&gt;L-1&lt;/sub&gt;&gt;
+chunk 1: &lt;u&lt;sub&gt;L&lt;/sub&gt;, u&lt;sub&gt;L+1&lt;/sub&gt;, …, u&lt;sub&gt;2L-1&lt;/sub&gt;&gt;
 …
-chunk s-1: &lt;u&lt;sub&gt;(s-1)L&lt;/sub&gt;, u&lt;sub&gt;(s-1)L+1&lt;/sub&gt;, …, u&lt;sub&gt;sL-1&lt;/sub&gt;\&gt;
+chunk s-1: &lt;u&lt;sub&gt;(s-1)L&lt;/sub&gt;, u&lt;sub&gt;(s-1)L+1&lt;/sub&gt;, …, u&lt;sub&gt;sL-1&lt;/sub&gt;&gt;
 </pre><a href="#section-4.9.2-2" class="pilcrow">¶</a>
 </div>
 <p id="section-4.9.2-3">If the length of <code>u</code> is not divisible by <code>L</code>, then the final chunk will be
@@ -2138,14 +2152,18 @@ fewer chunks.<a href="#section-4.9.2-4" class="pilcrow">¶</a></p>
 <p id="section-4.9.2-7">The Prover will use Lagrange interpolation to compute the value of p<sub>i</sub>(L), p<sub>i</sub>(L+1), …, p<sub>i</sub>(2L-2).<a href="#section-4.9.2-7" class="pilcrow">¶</a></p>
 <p id="section-4.9.2-8">The same process is applied for the vector v.<a href="#section-4.9.2-8" class="pilcrow">¶</a></p>
 <p id="section-4.9.2-9">The Prover (P<sub>=</sub>) and the verifier P<sub>+</sub>, will chunk the vector v into s chunks of length L.<a href="#section-4.9.2-9" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-10">chunk 1: &lt;v<sub>0</sub>, v<sub>1</sub>, …, v<sub>L-1</sub>&gt;<a href="#section-4.9.2-10" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-11">chunk 2: &lt;v<sub>L</sub>, v<sub>L+1</sub>, …, v<sub>2L-1</sub>&gt;<a href="#section-4.9.2-11" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-12">…<a href="#section-4.9.2-12" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-13">chunk s-1: &lt;v<sub>(s-1)L</sub>, v<sub>(s-1)L+1</sub>, …, v<sub>sL-1</sub>&gt;<a href="#section-4.9.2-13" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-14">As before, if the length of v is not a multiple of L, the final chunk will be padded with zeros.<a href="#section-4.9.2-14" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-15">They will interpret each chunk as L points lying on a polynomial, q<sub>i</sub>(x), having degree L - 1. Where the x coordinates are 0, 1, …, L-1, which is to say they will interpret these points as q<sub>i</sub>(0), q<sub>i</sub>(1), …, q<sub>i</sub>(L-1).<a href="#section-4.9.2-15" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-16">The Prover (P<sub>=</sub>) and verifier P<sub>+</sub> can find the value of q<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.<a href="#section-4.9.2-16" class="pilcrow">¶</a></p>
-<p id="section-4.9.2-17">The Prover will use Lagrange interpolation to compute the value of q<sub>i</sub>(L), q<sub>i</sub>(L+1), …, q<sub>i</sub>(2L-2).<a href="#section-4.9.2-17" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.9.2-10">
+<pre>
+chunk 0: &lt;v₀, v₁, …, v&lt;sub&gt;L-1&lt;/sub&gt;&gt;
+chunk 1: &lt;v&lt;sub&gt;L&lt;/sub&gt;, v&lt;sub&gt;L+1&lt;/sub&gt;, …, v&lt;sub&gt;2L-1&lt;/sub&gt;&gt;
+…
+chunk s-1: &lt;v&lt;sub&gt;(s-1)L&lt;/sub&gt;, v&lt;sub&gt;(s-1)L+1&lt;/sub&gt;, …, v&lt;sub&gt;sL-1&lt;/sub&gt;&gt;
+</pre><a href="#section-4.9.2-10" class="pilcrow">¶</a>
+</div>
+<p id="section-4.9.2-11">As before, if the length of v is not a multiple of L, the final chunk will be padded with zeros.<a href="#section-4.9.2-11" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-12">They will interpret each chunk as L points lying on a polynomial, q<sub>i</sub>(x), having degree L - 1. Where the x coordinates are 0, 1, …, L-1, which is to say they will interpret these points as q<sub>i</sub>(0), q<sub>i</sub>(1), …, q<sub>i</sub>(L-1).<a href="#section-4.9.2-12" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-13">The Prover (P<sub>=</sub>) and verifier P<sub>+</sub> can find the value of q<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.<a href="#section-4.9.2-13" class="pilcrow">¶</a></p>
+<p id="section-4.9.2-14">The Prover will use Lagrange interpolation to compute the value of q<sub>i</sub>(L), q<sub>i</sub>(L+1), …, q<sub>i</sub>(2L-2).<a href="#section-4.9.2-14" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2206,11 +2224,11 @@ constant-round proof system.<a href="#section-4.10.3-3" class="pilcrow">¶</a></
 <pre>
 commitment = SHA256(
   concat(
-    SHA256(\[G(x)\]&lt;sub&gt;\-&lt;/sub&gt;),
-    SHA256(\[G(x)\]&lt;sub&gt;+&lt;/sub&gt;)
+    SHA256([G(x)]₋),
+    SHA256([G(x)]₊)
   )
 )
-r = (bytes2int(commitment\[..16\]) % (prime - L)) + L
+r = (bytes2int(commitment[..16]) % (prime - L)) + L
 </pre><a href="#section-4.10.3-5" class="pilcrow">¶</a>
 </div>
 <p id="section-4.10.3-6">This computation does not use the entire output of the hash function, just enough to ensure that the value of r has minimal bias. For SHA-256 and a prime field modulo 2<sup>61</sup>-1, the bias is in the order of 2<sup>-67</sup>, which is negligible.<a href="#section-4.10.3-6" class="pilcrow">¶</a></p>
@@ -2228,7 +2246,7 @@ r = (bytes2int(commitment\[..16\]) % (prime - L)) + L
 <p id="section-4.10.4-2">Recall the definition of G(x):<a href="#section-4.10.4-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.10.4-3">
 <pre>
-G(x) = sum(i=0..s, p&lt;sub&gt;i&lt;/sub&gt;(x) · q&lt;sub&gt;i&lt;/sub&gt;(x))
+G(x) = sum(i=0..s, pᵢ(x) · qᵢ(x))
 </pre><a href="#section-4.10.4-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.10.4-4">So this amounts to proving that:<a href="#section-4.10.4-4" class="pilcrow">¶</a></p>
@@ -2240,8 +2258,8 @@ u’ · v’ = G(r)
 <p id="section-4.10.4-6">Where:<a href="#section-4.10.4-6" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.10.4-7">
 <pre>
-u’ = &lt;p&lt;sub&gt;0&lt;/sub&gt;(r), p&lt;sub&gt;1&lt;/sub&gt;(r), …&gt;
-v’ = &lt;q&lt;sub&gt;0&lt;/sub&gt;(r), q&lt;sub&gt;1&lt;/sub&gt;(r), …&gt;
+u’ = &lt;p₀(r), p₁(r), …&gt;
+v’ = &lt;q₀(r), q₁(r), …&gt;
 </pre><a href="#section-4.10.4-7" class="pilcrow">¶</a>
 </div>
 <p id="section-4.10.4-8">Note that this is a problem of exactly the same form as the original problem,
@@ -2284,7 +2302,7 @@ b&lt;sub&gt;\-&lt;/sub&gt; = t&lt;sub&gt;\-&lt;/sub&gt; - sum(i=1..L-1, G(i)&lt;
 <p id="section-4.10.5-9">And the right verifier P<sub>+</sub> computes:<a href="#section-4.10.5-9" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.10.5-10">
 <pre>
-b&lt;sub&gt;+&lt;/sub&gt; = t&lt;sub&gt;+&lt;/sub&gt; - sum(i=1,L-1, G(i)&lt;sub&gt;+&lt;/sub&gt;)
+b₊ = t₊ - sum(i=1,L-1, G(i)₊)
 </pre><a href="#section-4.10.5-10" class="pilcrow">¶</a>
 </div>
 <p id="section-4.10.5-11">The second difference is the way the verifiers validate the soundness of the

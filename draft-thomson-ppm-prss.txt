@@ -329,8 +329,8 @@ Table of Contents
    (ctx_id) as the info input, and the PRF parameter Nk as the L input
    (see Section 6), as follows:
 
-   def context = Context.new(kdf, prf, extracted, ctx_id):
-       context = kdf.Expand(prk = extracted, info = ctx_id, L = prf.Nk)
+   def context = Context.new(kdf, prf, extracted, ctxᵢd):
+       context = kdf.Expand(prk = extracted, info = ctxᵢd, L = prf.Nk)
 
    The expanded entropy produced by this process is the only information
    that is essential for a randomness context, though a real
