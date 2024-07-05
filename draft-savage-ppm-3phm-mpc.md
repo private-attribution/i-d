@@ -552,18 +552,8 @@ Using: `x ⊕ y = x + y - 2·x·y`
 - 2(x_-·y_+·(1 - 2e_-) + e_-)(x_+·y_-·(1 - 2r_+) + r_+) = 0
 ~~~
 
-Distributing Terms:
-
-~~~ pseudocode
-x_-·(1 - 2e_-)·y_+ + e_-
-+ y_-·x_+·(1 - 2r_+) + r_+
-- 2x_-·y_-·(1 - 2e_-)·y_+·x_+·(1 - 2r_+)
-- 2x_-·(1 - 2e_-)·y_+·r_+
-- 2e_-·y_-·x_+·(1 - 2r_+)
-- 2e_-·r_+ = 0
-~~~
-
-Rearranging terms, and subtracting 1/2 from both sides:
+Distributing and rearranging terms, plus subtracting 1/2 from both sides,
+produces:
 
 ~~~ pseudocode
 - 2x_-·y_-·(1 - 2e_-)·y_+·x_+·(1 - 2r_+)
