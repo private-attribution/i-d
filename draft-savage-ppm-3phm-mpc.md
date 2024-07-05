@@ -337,7 +337,7 @@ To visualize this, {{fig-mul}} shows cells labeled with the party responsible fo
   x₁ |             |  P₃  |
      |             +------+
   x₂ |                    |
-     +------+      +------|
+     +------+      +------+
   x₃ |  P₃  |      |  P₃  |
      +------+------+------+
 ~~~
