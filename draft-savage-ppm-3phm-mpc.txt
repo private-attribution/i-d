@@ -346,8 +346,8 @@ Table of Contents
    The product of two shared values, x and y, is computed using the
    following process.
 
-   Since x = x_1 + x_2 + x_3 and y = y_1 + y_2 + y_3 the product z = x *
-   y can be expanded as:
+   Since x = x₁ + x₂ + x₃ and y = y₁ + y₂ + y₃ the product z = x · y can
+   be expanded as:
 
    z = (x₁ + x₂ + x₃) · (y₁ + y₂ + y₃)
 
@@ -787,8 +787,8 @@ Table of Contents
    The prover (P_(=)) and verifier (P_(-)) can find the value of pᵢ(x)
    for any other value of x using Lagrange interpolation.
 
-   The prover will use Lagrange interpolation to compute the values {
-   pᵢ(L), pᵢ(L+1), …, pᵢ(2L-2) }.
+   The prover uses Lagrange interpolation to compute the values { pᵢ(L),
+   pᵢ(L+1), …, pᵢ(2L-2) }.
 
    The same process is applied for the vector v with a verifier, P_(+).
 
@@ -806,8 +806,8 @@ Table of Contents
    As before, if the length of v is not a multiple of L, the final chunk
    will be padded with zeros.
 
-   They will interpret each chunk as L points lying on a polynomial and
-   compute the values { qᵢ(L), qᵢ(L+1), …, qᵢ(2L-2) } using Lagrange
+   Each chunk is interpreted as L points on a polynomial.  From this the
+   values { qᵢ(L), qᵢ(L+1), …, qᵢ(2L-2) } are found using using Lagrange
    interpolation.
 
 4.10.  Producing the Zero Knowledge Proof
@@ -838,8 +838,8 @@ Table of Contents
    using their shared randomness, which means that no communication is
    needed.  This share is denoted G(x)_+.
 
-   The prover (P_(=)) computes the other share via subtraction.  That is
-   G₋(x) = G(x) - G₊(x).  This value is sent to the left verifier
+   The prover (P_(=)) computes the other share via subtraction.  That
+   is, G₋(x) = G(x) - G₊(x).  This value is sent to the left verifier
    (P_(-)).  Transmitting this share G(x)_- involves sending 2L-1 field
    values.
 
@@ -916,77 +916,78 @@ Table of Contents
 
 4.10.5.  Recursive Proof
 
-   So the prover has to prove that G(r) is correct for this random
-   challenge.
+   At the end of each round, the prover is left with the task of proving
+   that G(r) is correct based on the random challenge. r.
 
    Recall the definition of G(x):
 
-   G(x) = sum(i=0..s, pᵢ(x) · qᵢ(x))
+   G(x) = sum(i=0..s, pᵢ(x)·qᵢ(x))
 
-   So this amounts to proving that:
-
-   u’ · v’ = G(r)
-
-   Where:
+   This is equivalent to providing that u’ · v’ = G(r), where:
 
    u’ = <p₀(r), p₁(r), …>
    v’ = <q₀(r), q₁(r), …>
 
-   Note that this is a problem of exactly the same form as the original
-   problem, except that the length of u’ and v’ is now a factor of L
-   shorter than the original length of u and v.
+   This is a problem of exactly the same form as the original problem,
+   except that the length of u’ and v’ is now a factor of L shorter than
+   the original length of u and v.
 
-   The Prover (P_(=)) and verifier P_(-) use Lagrange interpolation to
-   compute the value of p_i(r) for all (i) in the range 0..s and set
-   this as the new vector u’.
+   The prover (P_(=)) and verifier P_(-) use Lagrange interpolation to
+   compute the value of pᵢ(r) for all chunks in the range 0..s and set
+   this as the new vector u.
 
    Similarly, the Prover (P_(=)) and verifier P_(+) use Lagrange
-   interpolation to compute the value of q_i(r) for all (i) in the range
-   0..s and set this as the new vector v’.
+   interpolation to compute the value of qᵢ(r) and set this as the new
+   vector v.
+
+   The target value t is set to G(r).  The two verifiers do not learn
+   G(r).  Instead, each uses Lagrange interpolation to compute a share
+   of G(r).  That is:
+
+   t₋ = lagrangeᵢnterpolate(r, [G₋(0), G₋(1), …, G₋(2L-2)])
+   t₊ = lagrangeᵢnterpolate(r, [G₊(0), G₊(1), …, G₊(2L-2)])
 
 4.10.6.  The Final Iteration
 
    The proof proceeds recursively until the length of the vectors u and
    v are strictly less than the compression factor L.
 
-   Next, the Prover (P_(=)) and left verifier P_(-) will generate a
-   random field value p_mask using PRSS.  Similarly, the Prover (P_(=))
-   and right verifier P_(+) will generate a random field value q_mask
-   using PRSS.
+   Next, the prover (P_(=)) and left verifier P_(-) jointly generate a
+   random field value pₘ using shared secrets.  Similarly, the prover
+   (P_(=)) and right verifier P_(+) generate a random field value qₘ
+   using shared secrets.
 
-   The Prover (P_(=)) and left verifier P_(-) move u_0 to index L - 1.
-   No data will be lost as the length of u is strictly less than L.
-   Then they place the value p_mask at index 0.
+   The prover (P_(=)) and left verifier P_(-) move u₀ to index L-1.  No
+   data will be lost as this replaces a zero value; the length of u is
+   strictly less than L.  The value at index 0 is replaced with pₘ.
 
-   The Prover (P_(=)) and right verifier P_(+) move v_0 to index L - 1
-   and place the value q_mask at index 0.
+   The prover (P_(=)) and right verifier P_(+) move v₀ to index L-1 and
+   place the value qₘ at index 0.
 
-   The Prover will still generate a zero knowledge proof exactly as
-   before, but the validation of soundness of this proof will proceed
-   differently.
+   The prover generates a zero knowledge proof from these polynomials
+   exactly as before, sending each verifier 2L-1 shares of G(x).  The
+   process of validation then proceeds differently.
 
-   Firstly, when the verifiers compute their shares of b, they must skip
-   the random weights.
-
-   So in the final iteration the left verifier P_(-) computes:
+   Firstly, when the verifiers compute their shares of b, they ignore
+   the random value at index 0 of G(x).  That is:
 
    b₋ = t₋ - sum(i=1..L-1, G(i)_-)
+   b₊ = t₊ - sum(i=1..L-1, G(i)_+)
 
-   And the right verifier P_(+) computes:
+   Verifiers confirm that b₋ + b₊ is zero by exchanging their shares of
+   b.
 
-   b₊ = t₊ - sum(i=1,L-1, G(i)_+)
+   Finally, the verifier P_(-) computes both p₀(r) and G(r)_-, verifier
+   P_(+) computes q₀(r) and G(r)_+, and then the verifiers reveal all of
+   these values to each other.  They then both verify that:
 
-   The second difference is the way the verifiers validate the soundness
-   of the zero knowledge proof.  In the final iteration the verifier
-   P_(-) computes p_0(r) and G(r)_-, while verifier P_+ computes q_0(r)
-   and G(r)_+. Then the verifiers reveal all of these values to one
-   another, so that they can both directly check that:
+   G(r)_- + G(r)_+ = p₀(r) · q₀(r)
 
-   G(r)_- + G(r)_+ = p<sub>0</sub>(r) · q<sub>0</sub>(r)
-
-   This is why the random masks were necessary in the final iteration.
-   Those ensure that none of the values p_0(r), q_0(r), G(r)_-, or
-   G(r)_+ reveal any private information.
+   The addition of random masks (pₘ and qₘ) ensure that revealing G(r)
+   in this way does not reveal anything about the value of the
+   polynomials held by the other party.  Revealing q₀(r), which was
+   computed from the random values, only confirms that the prover did
+   not cheat.
 
 5.  Conditions of Usage
 
