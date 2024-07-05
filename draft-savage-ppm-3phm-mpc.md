@@ -401,11 +401,15 @@ Each of the parties, P<sub>\=</sub>, produces a "Zero Knowledge Proof" (ZKP) tha
 
 When operating in a boolean field, if P<sub>\=</sub> followed the protocol correctly, this is how they would compute z<sub>\-</sub>
 
-z<sub>\-</sub> = x<sub>\-</sub> ∧ y<sub>\-</sub> ⊕ x<sub>\-</sub> ∧ y<sub>+</sub> ⊕ x<sub>\+</sub> ∧ y<sub>\-</sub> ⊕ r<sub>\-</sub> ⊕ r<sub>+</sub>
+~~~ pseudocode
+z<sub>\-</sub> = x<sub>\-</sub>∧y<sub>\-</sub> ⊕ x<sub>\-</sub>∧y<sub>+</sub> ⊕ x<sub>\+</sub>∧y<sub>\-</sub> ⊕ r<sub>\-</sub> ⊕ r<sub>+</sub>
+~~~
 
 So the expression:
 
-x<sub>\-</sub> ∧ y<sub>\-</sub> ⊕ x<sub>\-</sub> ∧ y<sub>+</sub> ⊕ x<sub>\+</sub> ∧ y<sub>\-</sub> ⊕ r<sub>\-</sub> ⊕ r<sub>+</sub> ⊕ z<sub>\-</sub> = 0
+~~~ pseudocode
+x<sub>\-</sub>∧y<sub>\-</sub> ⊕ x<sub>\-</sub>∧y<sub>+</sub> ⊕ x<sub>\+</sub>∧y<sub>\-</sub> ⊕ r<sub>\-</sub> ⊕ r<sub>+</sub> ⊕ z<sub>\-</sub> = 0
+~~~
 
 will hold true if the protocol was followed correctly, but will equal **_one_** if there was an additive attack.
 
