@@ -514,7 +514,7 @@ Table of Contents
 
    The verifier on the left, P_(-), knows the values of:
 
-   *  y<sub>-</sub>
+   *  y_(-)
 
    *  x_(-)
 
