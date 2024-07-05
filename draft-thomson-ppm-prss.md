@@ -24,11 +24,11 @@ venue:
 
 author:
  -
-    fullname: Martin Thomson
+    name: Martin Thomson
     organization: Mozilla
     email: mt@lowentropy.net
  -
-    fullname: Ben Savage
+    name: Ben Savage
     organization: Meta
     email: btsavage@meta.com
 
