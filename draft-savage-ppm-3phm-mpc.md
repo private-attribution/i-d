@@ -174,9 +174,9 @@ method can be used, but the following process is typical:
 
 <!-- write a script to handle <sub> in code and pseudocode blocks -->
 ~~~ pseudocode
-x₁ = random()
-x₂ = random()
-x₃ = x - x₁ - x₂
+x_1 = random()
+x_2 = random()
+x_3 = x - x_1 - x_2
 ~~~
 
 Then, each party in the MPC receives a different set of two values. This
@@ -435,7 +435,7 @@ Since the two verifiers possess all of this information distributed amongst them
 requires O(logN) communication, for proving expressions of the form:
 
 ~~~ pseudocode
-sum(i=0..n-1, u<sub>i</sub> · v<sub>i</sub>) = t
+sum(i=0..n, u<sub>i</sub> · v<sub>i</sub>) = t
 ~~~
 
 In the setting where the Prover (P<sub>\=</sub>) and the left verifier
@@ -469,59 +469,59 @@ P<sub>\-</sub>, the other being known to both P<sub>\=</sub> and P<sub>+</sub>.
 Rearranging terms:
 
 ~~~ pseudocode
-x<sub>\-</sub> ∧ y<sub>+</sub> ⊕ (x<sub>\-</sub> ∧ y<sub>\-</sub> ⊕ z<sub>\-</sub> ⊕ r<sub>\-</sub> ) ⊕ x<sub>\+</sub> ∧ y<sub>\-</sub> ⊕ r<sub>+</sub> = 0
+x<sub>-</sub> ∧ y<sub>+</sub> ⊕ (x<sub>-</sub> ∧ y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub> ) ⊕ x<sub>+</sub> ∧ y<sub>-</sub> ⊕ r<sub>+</sub> = 0
 ~~~
 
 Define:
 
 ~~~ pseudocode
-e<sub>\-</sub> = x<sub>\-</sub> ∧ y<sub>\-</sub> ⊕ z<sub>\-</sub> ⊕ r<sub>\-</sub>
+e<sub>-</sub> = x<sub>-</sub> ∧ y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub>
 ~~~
 
 Then:
 
 ~~~ pseudocode
-(x<sub>\-</sub> ∧ y<sub>+</sub> ⊕ e<sub>\-</sub> ) ⊕ (x<sub>\+</sub> ∧ y<sub>\-</sub> ⊕ r<sub>+</sub>) = 0
+(x<sub>-</sub> ∧ y<sub>+</sub> ⊕ e<sub>-</sub> ) ⊕ (x<sub>+</sub> ∧ y<sub>-</sub> ⊕ r<sub>+</sub>) = 0
 ~~~
 
-Using: x ⊕ y = x\*(1 - 2\*y) + y
+Using: `x ⊕ y = x*(1 - 2*y) + y`
 
 ~~~ pseudocode
-(x<sub>\-</sub>·y<sub>+</sub>·(1 - 2e<sub>\-</sub>) + e<sub>\-</sub>) ⊕ (x<sub>+</sub>·y<sub>\-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>) = 0
+(x<sub>-</sub>·y<sub>+</sub>·(1 - 2e<sub>-</sub>) + e<sub>-</sub>) ⊕ (x<sub>+</sub>·y<sub>-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>) = 0
 ~~~
 
-Using: x ⊕ y = x + y - 2\*x\*y
+Using: x ⊕ y = x + y - 2*x*y
 
 ~~~ pseudocode
-(x<sub>\-</sub>·y<sub>+</sub>·(1 - 2e<sub>\-</sub>) + e<sub>\-</sub>)
-\+ (x<sub>+</sub>·y<sub>\-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>)
-\- 2(x<sub>\-</sub>·y<sub>+</sub>·(1 - 2e<sub>\-</sub>) + e<sub>\-</sub>)(x<sub>+</sub>·y<sub>\-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>) = 0
+(x<sub>-</sub>·y<sub>+</sub>·(1 - 2e<sub>-</sub>) + e<sub>-</sub>)
++ (x<sub>+</sub>·y<sub>-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>)
+- 2(x<sub>-</sub>·y<sub>+</sub>·(1 - 2e<sub>-</sub>) + e<sub>-</sub>)(x<sub>+</sub>·y<sub>-</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>) = 0
 ~~~
 
 Distributing Terms:
 
 ~~~ pseudocode
-x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub> + e<sub>\-</sub>
-\+ y<sub>\-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>
-\- 2x<sub>\-</sub>·y<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub>·r<sub>+</sub> - 2e<sub>\-</sub>·y<sub>\-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2e<sub>\-</sub>·r<sub>+</sub> = 0
+x<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub> + e<sub>-</sub>
++ y<sub>-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) + r<sub>+</sub>
+- 2x<sub>-</sub>·y<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2x<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub>·r<sub>+</sub> - 2e<sub>-</sub>·y<sub>-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2e<sub>-</sub>·r<sub>+</sub> = 0
 ~~~
 
 Rearranging terms, and subtracting 1/2 from both sides:
 
 ~~~ pseudocode
-\- 2x<sub>\-</sub>·y<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)
-\+ y<sub>\-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2e<sub>\-</sub>·y<sub>\-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)
-\+ x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub> - 2x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)·y<sub>+</sub>·r<sub>+</sub>
-\+ e<sub>\-</sub> - 2e<sub>\-</sub>·r<sub>+</sub> + r<sub>+</sub> - ½ = - ½
+- 2x<sub>-</sub>·y<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)
++ y<sub>-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>) - 2e<sub>-</sub>·y<sub>-</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)
++ x<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub> - 2x<sub>-</sub>·(1 - 2e<sub>-</sub>)·y<sub>+</sub>·r<sub>+</sub>
++ e<sub>-</sub> - 2e<sub>-</sub>·r<sub>+</sub> + r<sub>+</sub> - ½ = - ½
 ~~~
 
 Factoring allows this to be written as an expression with four terms, each with a component taken from the left (which we will label g) and a component from the right (which we will label h):
 
 ~~~ pseudocode
-\[-2x<sub>\-</sub>·y<sub>\-</sub>·(1 - 2e<sub>\-</sub>)\] · \[y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)\]
-\+ \[y<sub>\-</sub>(1 - 2e<sub>\-</sub>)\] · \[x<sub>+</sub>·(1 - 2r<sub>+</sub>)\]
-\+ \[x<sub>\-</sub>·(1 - 2e<sub>\-</sub>)\] · \[y<sub>+</sub>(1 - 2r<sub>+</sub>)\]
-\+ \[-½(1 - 2e<sub>\-</sub>)\] · \[(1 - 2r<sub>+</sub>)\] = -½
+[-2x<sub>-</sub>·y<sub>-</sub>·(1 - 2e<sub>-</sub>)] · [y<sub>+</sub>·x<sub>+</sub>·(1 - 2r<sub>+</sub>)]
++ [y<sub>-</sub>(1 - 2e<sub>-</sub>)] · [x<sub>+</sub>·(1 - 2r<sub>+</sub>)]
++ [x<sub>-</sub>·(1 - 2e<sub>-</sub>)] · [y<sub>+</sub>(1 - 2r<sub>+</sub>)]
++ [-½(1 - 2e<sub>-</sub>)] · [(1 - 2r<sub>+</sub>)] = -½
 ~~~
 
 Renaming terms as new variables, the result is the dot product of two four dimensional vectors, g and h:
@@ -536,7 +536,7 @@ Or alternatively:
 sum(i=1..4, g<sub>i</sub> · h<sub>i</sub>) = -½
 ~~~
 
-Where P<sub>\=</sub> and P<sub>+</sub> both compute `h<sub>i</sub>` as follows:
+Where P<sub>=</sub> and P<sub>+</sub> both compute `h<sub>i</sub>` as follows:
 
 ~~~ pseudocode
 h<sub>1</sub> = y<sub>+</sub>·x<sub>+</sub>·(1 - 2·r<sub>+</sub>)
@@ -545,34 +545,34 @@ h<sub>3</sub> = y<sub>+</sub>·(1 - 2·r<sub>+</sub>)
 h<sub>4</sub> = 1 − 2·r<sub>+</sub>
 ~~~
 
-And P<sub>\=</sub> and P<sub>\-</sub> both compute g<sub>i</sub> as follows:
+And P<sub>=</sub> and P<sub>-</sub> both compute g<sub>i</sub> as follows:
 
 ~~~ pseudocode
-g<sub>1</sub> = -2·x<sub>\-</sub>·y<sub>\-</sub>·(1 - 2·e<sub>\-</sub> )
-g<sub>2</sub> = y<sub>\-</sub>·(1 - 2·e<sub>\-</sub> )
-g<sub>3</sub> = x<sub>\-</sub>·(1 - 2·e<sub>\-</sub> )
-g<sub>4</sub> = -½(1 - 2·e<sub>\-</sub>)
+g<sub>1</sub> = -2·x<sub>-</sub>·y<sub>-</sub>·(1 - 2·e<sub>-</sub> )
+g<sub>2</sub> = y<sub>-</sub>·(1 - 2·e<sub>-</sub> )
+g<sub>3</sub> = x<sub>-</sub>·(1 - 2·e<sub>-</sub> )
+g<sub>4</sub> = -½(1 - 2·e<sub>-</sub>)
 ~~~
 
 And where:
 
 ~~~ pseudocode
-e<sub>\-</sub> = x<sub>\-</sub> ∧ y<sub>\-</sub> ⊕ z<sub>\-</sub> ⊕ r<sub>\-</sub>
+e<sub>-</sub> = x<sub>-</sub> ∧ y<sub>-</sub> ⊕ z<sub>-</sub> ⊕ r<sub>-</sub>
 ~~~
 
 In this field, the negative inverse of two (-½) is 1,152,921,504,606,846,975.
 
 ## Validating a batch of multiplications {#initial-uv}
 
-Each multiplication therefore produces two vectors of length 4. To validate a batch of m multiplications, the Prover (P<sub>\=</sub>), uses this approach to produce two vectors of length 4m.
+Each multiplication therefore produces two vectors of length 4. To validate a batch of m multiplications, the Prover (P<sub>=</sub>), uses this approach to produce two vectors of length 4m.
 
-The Prover P<sub>\=</sub> and verifier P<sub>\-</sub> both compute the vector u
+The Prover P<sub>=</sub> and verifier P<sub>-</sub> both compute the vector u
 
 ~~~ pseudocode
 u = (g<sub>1</sub><sup>(1)</sup>, g<sub>2</sub><sup>(1)</sup>, g<sub>3</sub><sup>(1)</sup>, g<sub>4</sub><sup>(1)</sup>, …, g<sub>1</sub><sup>(m)</sup>, g<sub>2</sub><sup>(m)</sup>, g<sub>3</sub><sup>(m)</sup>, g<sub>4</sub><sup>(m)</sup>)
 ~~~
 
-The Prover P<sub>\=</sub> and verifier P<sub>+</sub> both compute the vector v
+The Prover P<sub>=</sub> and verifier P<sub>+</sub> both compute the vector v
 
 ~~~ pseudocode
 v = (h<sub>1</sub><sup>(1)</sup>, h<sub>2</sub><sup>(1)</sup>, h<sub>3</sub><sup>(1)</sup>, h<sub>4</sub><sup>(1)</sup>, …, h<sub>1</sub><sup>(m)</sup>, h<sub>2</sub><sup>(m)</sup>, h<sub>3</sub><sup>(m)</sup>, h<sub>4</sub><sup>(m)</sup>)
@@ -618,14 +618,14 @@ At each iteration:
        minimal number required to uniquely define it.
 
     2. These `2L - 1` points are split into two additive secret-shares
-       `G(x)<sub>\-</sub>` and `G(x)<sub>+</sub>` and sent to the verifiers
-       P<sub>\-</sub> and P<sub>+</sub>, respectively. These shares form the
+       `G(x)<sub>-</sub>` and `G(x)<sub>+</sub>` and sent to the verifiers
+       P<sub>-</sub> and P<sub>+</sub>, respectively. These shares form the
        distributed zero-knowledge proof.
 
     3. The verifiers verify the proposition using their shares by computing
-       `b<sub>\-</sub> = t<sub>\-</sub> - sum(i=0..L-1, G(x)<sub>\-</sub>)` and
+       `b<sub>-</sub> = t<sub>-</sub> - sum(i=0..L-1, G(x)<sub>-</sub>)` and
        `b<sub>+</sub> = t<sub>+</sub> - sum(i=0..L-1, G(x)<sub>+</sub>)`. They
-       send each other the value they compute and confirm that `b<sub>\-</sub> +
+       send each other the value they compute and confirm that `b<sub>-</sub> +
        b<sub>+</sub> = 0`. If this test fails, the entire protocol is aborted.
 
 4. At this point, the prover could have produced values for `G(0..L-1)` that
@@ -674,14 +674,14 @@ lookup tables if necessary.
 
 ### Producing Polynomials `p(x)` and `q(x)`
 
-The prover (P<sub>\=</sub>) and the verifier P<sub>\-</sub>, chunk the vector
+The prover (P<sub>=</sub>) and the verifier P<sub>-</sub>, chunk the vector
 `u` into `s` chunks of length `L`.
 
 ~~~ pseudocode
-chunk 0: <u<sub>0</sub>, u<sub>1</sub>, …, u<sub>L-1</sub>\>
-chunk 1: <u<sub>L</sub>, u<sub>L+1</sub>, …, u<sub>2L-1</sub>\>
+chunk 0: <u<sub>0</sub>, u<sub>1</sub>, …, u<sub>L-1</sub>>
+chunk 1: <u<sub>L</sub>, u<sub>L+1</sub>, …, u<sub>2L-1</sub>>
 …
-chunk s-1: <u<sub>(s-1)L</sub>, u<sub>(s-1)L+1</sub>, …, u<sub>sL-1</sub>\>
+chunk s-1: <u<sub>(s-1)L</sub>, u<sub>(s-1)L+1</sub>, …, u<sub>sL-1</sub>>
 ~~~
 
 If the length of `u` is not divisible by `L`, then the final chunk will be
@@ -693,21 +693,20 @@ fewer chunks.
 
 They will interpret each chunk (i) as L points lying on a polynomial, p<sub>i</sub>(x) of degree L - 1, corresponding to the x coordinates 0, 1, …, L-1, that is to say they will interpret them as p<sub>i</sub>(0), p<sub>i</sub>(1), …, p<sub>i</sub>(L-1).
 
-The Prover (P<sub>\=</sub>) and verifier (P<sub>\-</sub>) can find the value of p<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.
+The Prover (P<sub>\=</sub>) and verifier (P<sub>-</sub>) can find the value of p<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.
 
 The Prover will use Lagrange interpolation to compute the value of p<sub>i</sub>(L), p<sub>i</sub>(L+1), …, p<sub>i</sub>(2L-2).
 
 The same process is applied for the vector v.
 
-The Prover (P<sub>\=</sub>) and the verifier P<sub>+</sub>, will chunk the vector v into s chunks of length L.
+The Prover (P<sub>=</sub>) and the verifier P<sub>+</sub>, will chunk the vector v into s chunks of length L.
 
-chunk 1: <v<sub>0</sub>, v<sub>1</sub>, …, v<sub>L-1</sub>\>
-
-chunk 2: <v<sub>L</sub>, v<sub>L+1</sub>, …, v<sub>2L-1</sub>\>
-
+~~~ pseudocode
+chunk 0: <v<sub>0</sub>, v<sub>1</sub>, …, v<sub>L-1</sub>>
+chunk 1: <v<sub>L</sub>, v<sub>L+1</sub>, …, v<sub>2L-1</sub>>
 …
-
-chunk s-1: <v<sub>(s-1)L</sub>, v<sub>(s-1)L+1</sub>, …, v<sub>sL-1</sub>\>
+chunk s-1: <v<sub>(s-1)L</sub>, v<sub>(s-1)L+1</sub>, …, v<sub>sL-1</sub>>
+~~~
 
 As before, if the length of v is not a multiple of L, the final chunk will be padded with zeros.
 
@@ -731,11 +730,11 @@ An equivalent method of proving u · v = t, is to show that sum(i=0..L-1, G(i)) 
 
 ### Masking the zero-knowledge proof
 
-The Prover (P<sub>\=</sub>), cannot simply send this zero-knowledge proof to the verifiers, as doing so would release private information. Instead, the prover can produce a two-part additive secret-sharing of these 2L - 1 points, sending one share to each verifier.
+The Prover (P<sub>=</sub>), cannot simply send this zero-knowledge proof to the verifiers, as doing so would release private information. Instead, the prover can produce a two-part additive secret-sharing of these 2L - 1 points, sending one share to each verifier.
 
-The Prover (P<sub>\=</sub>) and the right verifier (P<sub>+</sub>) will generate one share using their shared randomness. We will denote this share G(x)<sub>+</sub>. This requires no communication.
+The Prover (P<sub>=</sub>) and the right verifier (P<sub>+</sub>) will generate one share using their shared randomness. We will denote this share G(x)<sub>+</sub>. This requires no communication.
 
-The Prover (P<sub>\=</sub>) will compute the other share via subtraction, and will send it to the left verifier (P<sub>\-</sub>). Transmitting this share G(x)<sub>\-</sub>, will require sending 2L - 1 field values, which will require 8 bytes per field value as we are using Mersenne prime 2<sup>61</sup>\-1 for our prime field.
+The Prover (P<sub>=</sub>) will compute the other share via subtraction, and will send it to the left verifier (P<sub>-</sub>). Transmitting this share G(x)<sub>-</sub>, will require sending 2L - 1 field values, which will require 8 bytes per field value as we are using Mersenne prime 2<sup>61</sup>-1 for our prime field.
 
 ### Checking that the proof says the right thing
 
@@ -743,17 +742,17 @@ To check that:
 
 sum(i=0..L-1, G(i)) = t
 
-The left verifier P<sub>\-</sub> will compute:
+The left verifier P<sub>-</sub> will compute:
 
-b<sub>\-</sub> = t<sub>\-</sub> - sum(i=0..L-1, G(i)<sub>\-</sub>)
+b<sub>-</sub> = t<sub>-</sub> - sum(i=0..L-1, G(i)<sub>-</sub>)
 
 The right verifier P+ will compute:
 
 b<sub>+</sub> = t<sub>+</sub> - sum(i=0..L-1, G(i)<sub>+</sub>)
 
-The two verifiers will reveal these values b<sub>\-</sub> and b<sub>+</sub> to one another, so that each can reconstruct the full sum:
+The two verifiers will reveal these values b<sub>-</sub> and b<sub>+</sub> to one another, so that each can reconstruct the full sum:
 
-b = b<sub>\-</sub> + b<sub>+</sub>
+b = b<sub>-</sub> + b<sub>+</sub>
 
 They will confirm that b = 0. If it does not, the parties abort and destroy their shares.
 
@@ -772,19 +771,19 @@ To minimize the rounds of communication, instead of having the verifiers select
 this random point, we utilize the Fiat-Shamir transformation to produce a
 constant-round proof system.
 
-The Prover (P<sub>\=</sub>) will hash the zero-knowledge proof shares it has generated onto a field element as follows:
+The Prover (P<sub>=</sub>) will hash the zero-knowledge proof shares it has generated onto a field element as follows:
 
 ~~~ pseudocode
 commitment = SHA256(
   concat(
-    SHA256(\[G(x)\]<sub>\-</sub>),
-    SHA256(\[G(x)\]<sub>+</sub>)
+    SHA256([G(x)]<sub>-</sub>),
+    SHA256([G(x)]<sub>+</sub>)
   )
 )
-r = (bytes2int(commitment\[..16\]) % (prime - L)) + L
+r = (bytes2int(commitment[..16]) % (prime - L)) + L
 ~~~
 
-This computation does not use the entire output of the hash function, just enough to ensure that the value of r has minimal bias. For SHA-256 and a prime field modulo 2<sup>61</sup>\-1, the bias is in the order of 2<sup>\-67</sup>, which is negligible.
+This computation does not use the entire output of the hash function, just enough to ensure that the value of r has minimal bias. For SHA-256 and a prime field modulo 2<sup>61</sup>-1, the bias is in the order of 2<sup>-67</sup>, which is negligible.
 
 The verifiers generate the same point r independently. Each verifier only has access to one set of shares from G(x) so they each compute a hash of the shares they have. They then send that hash to each other, after which they can compute the full hash value.
 
@@ -821,11 +820,11 @@ Note that this is a problem of exactly the same form as the original problem,
 except that the length of u’ and v’ is now a factor of L shorter than the
 original length of u and v.
 
-The Prover (P<sub>\=</sub>) and verifier P<sub>\-</sub> use Lagrange
+The Prover (P<sub>=</sub>) and verifier P<sub>-</sub> use Lagrange
 interpolation to compute the value of p<sub>i</sub>(r) for all (i) in the range
 0..s and set this as the new vector u’.
 
-Similarly, the Prover (P<sub>\=</sub>) and verifier P<sub>+</sub> use Lagrange
+Similarly, the Prover (P<sub>=</sub>) and verifier P<sub>+</sub> use Lagrange
 interpolation to compute the value of q<sub>i</sub>(r) for all (i) in the range
 0..s and set this as the new vector v’.
 
