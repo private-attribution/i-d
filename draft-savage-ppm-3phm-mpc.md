@@ -656,10 +656,10 @@ At each iteration:
 2. Chunk the vectors `u` and `v` into `s` segments of length `L`.
 
     1. Each chunk of `u` uniquely defines a polynomial of degree `L - 1` which
-       are named `p<sub>i</sub>(x)`, indexed by `i∊[0..s)`.
+       are named `p<sub>i</sub>(x)`, indexed by `i ∊ [0..s)`.
 
     2. Each chunk of `v` uniquely defines a polynomial of degree `L - 1` which
-       are named `q<sub>i</sub>(x)`, indexed by `i`.
+       are named `q<sub>i</sub>(x)`, indexed by `i ∊ [0..s)`.
 
 3. The polynomial `G(x)` is defined as: `sum(i=0..s, p<sub>i</sub>(x) · q<sub>i</sub>(x))`
 
