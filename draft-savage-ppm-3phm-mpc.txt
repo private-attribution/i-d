@@ -683,10 +683,10 @@ Table of Contents
    2.  Chunk the vectors u and v into s segments of length L.
 
        1.  Each chunk of u uniquely defines a polynomial of degree L - 1
-           which are named pᵢ(x), indexed by i∊[0..s).
+           which are named pᵢ(x), indexed by i ∊ [0..s).
 
        2.  Each chunk of v uniquely defines a polynomial of degree L - 1
-           which are named qᵢ(x), indexed by i.
+           which are named qᵢ(x), indexed by i ∊ [0..s).
 
    3.  The polynomial G(x) is defined as: sum(i=0..s, pᵢ(x) · qᵢ(x))
 
