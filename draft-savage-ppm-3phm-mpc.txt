@@ -736,12 +736,17 @@ Table of Contents
            statement, but with the new vectors u’ and v’ having length L
            times shorter than the original vectors.
 
-       2.  Each of the verifiers can use the 2L - 1 points they received
+       2.  u’ and v’ need not be communicated, since the prover and
+           verifier P₋ can both compute each value pᵢ(r) using Lagrange
+           interpolation, just as the prover and verifier P₊ can compute
+           each value qᵢ(r).
+
+       3.  Each of the verifiers can use the 2L - 1 points they received
            (their share of G(x)) to compute a share of G(r) using
            Lagrange interpolation.  These shares become their share of a
            new value for t.
 
-       3.  The Fiat-Shamir heuristic can be used to generate r by
+       4.  The Fiat-Shamir heuristic can be used to generate r by
            hashing the distributed zero knowledge proof.  This
            transforms this protocol from a multi-round interactive
            protocol into a constant round protocol.
