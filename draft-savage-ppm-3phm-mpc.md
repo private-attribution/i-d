@@ -234,13 +234,13 @@ left:       .----.                 right:      .----.
 
 
 Protocols are often described in terms of the actions of a single party. The
-party to the left of that party is P<sub>\-</sub> and the party to the right is
+party to the left of that party is P<sub>-</sub> and the party to the right is
 P<sub>+</sub>. Where necessary, the current party is identified as
-P<sub>\=</sub>.
+P<sub>=</sub>.
 
 The two shares that each party holds are referred to as "left" and "right"
 shares. The "left" share is identified with a subscript of "-" (e.g.,
-x<sub>\-</sub>); the numeric identifier for the left share at each party matches
+x<sub>-</sub>); the numeric identifier for the left share at each party matches
 the identifier for that party, so the left share of x that P<sub>1</sub> holds
 is named x<sub>1</sub>. The right share is designated with a subscript of "+"
 (e.g., y<sub>+</sub>); the numeric identifier for the right share is one higher
@@ -347,21 +347,21 @@ The result is a non-replicated sharing of the result `z = z<sub>1</sub> +
 z<sub>2</sub> + z<sub>3</sub>`.
 
 To reach the desired state where parties each have replicated shares of z, each
-party needs to send its share, z<sub>\-</sub>, to the party to its left.
+party needs to send its share, z<sub>-</sub>, to the party to its left.
 
-Unfortunately, each party cannot simply send this value to another party, as this would allow the recipient to reconstruct the full input values, x and y, using z<sub>\-</sub>. To prevent this, the value of z<sub>\-</sub> is masked with a uniformly distributed random mask that is unknown to party P<sub>\-</sub>.
+Unfortunately, each party cannot simply send this value to another party, as this would allow the recipient to reconstruct the full input values, x and y, using z<sub>-</sub>. To prevent this, the value of z<sub>-</sub> is masked with a uniformly distributed random mask that is unknown to party P<sub>-</sub>.
 
-Using a source of shared randomness (such as {{PRSS}}), each pair of helpers generates a uniformly distributed random value known only to the two of them. Let r<sub>\-</sub> denote the left value (known to P<sub>\-</sub>) and r<sub>+</sub> be the right value (known to P<sub>+</sub>).
+Using a source of shared randomness (such as {{PRSS}}), each pair of helpers generates a uniformly distributed random value known only to the two of them. Let r<sub>-</sub> denote the left value (known to P<sub>-</sub>) and r<sub>+</sub> be the right value (known to P<sub>+</sub>).
 
-Each party uses r<sub>\-</sub> and r<sub>+</sub> to create a masked value of z<sub>\-</sub> as follows:
+Each party uses r<sub>-</sub> and r<sub>+</sub> to create a masked value of z<sub>-</sub> as follows:
 
 ~~~ pseudocode
-z<sub>\-</sub> = x<sub>\-</sub>·y<sub>\-</sub> + x<sub>\-</sub>·y<sub>+</sub> + x<sub>+</sub>·y<sub>\-</sub> + r<sub>\-</sub> - r<sub>+</sub>
+z<sub>-</sub> = x<sub>-</sub>·y<sub>-</sub> + x<sub>-</sub>·y<sub>+</sub> + x<sub>+</sub>·y<sub>-</sub> + r<sub>-</sub> - r<sub>+</sub>
 ~~~
 
-These three mask values sum to zero, so this masking does not alter the result. Importantly, the value of r<sub>+</sub> is not known to P<sub>\-</sub>, which ensures that z<sub>\-</sub> cannot be used by P<sub>\-</sub> to recover x or y. Thus, z<sub>\-</sub> is safe to send to P<sub>\-</sub>.
+These three mask values sum to zero, so this masking does not alter the result. Importantly, the value of r<sub>+</sub> is not known to P<sub>-</sub>, which ensures that z<sub>-</sub> cannot be used by P<sub>-</sub> to recover x or y. Thus, z<sub>-</sub> is safe to send to P<sub>-</sub>.
 
-Upon receiving a value from its right — which the recipient names z<sub>+</sub> — each helper is now in possession of two-of-three shares, (z<sub>\-</sub>, z<sub>+</sub>), which is a replicated secret sharing of the product of x and y.
+Upon receiving a value from its right — which the recipient names z<sub>+</sub> — each helper is now in possession of two-of-three shares, (z<sub>-</sub>, z<sub>+</sub>), which is a replicated secret sharing of the product of x and y.
 
 # Validation Protocol {#validation}
 
@@ -369,9 +369,9 @@ The basic multiplication protocol in {{multiplication}} only offers "semi-honest
 
 ## Additive Attack
 
-By "additive attack", we mean that instead of sending the value z<sub>\-</sub>, a corrupted party could instead send z<sub>\-</sub> + a. In the context of boolean circuits, the only possible additive attack is to add 1.
+By "additive attack", we mean that instead of sending the value z<sub>-</sub>, a corrupted party could instead send z<sub>-</sub> + a. In the context of boolean circuits, the only possible additive attack is to add 1.
 
-The multiplication protocol described does not prevent this. Since the value z<sub>\-</sub> is randomly distributed, the party (P<sub>\-</sub>) that receives this value cannot tell if an additive attack has been applied.
+The multiplication protocol described does not prevent this. Since the value z<sub>-</sub> is randomly distributed, the party (P<sub>-</sub>) that receives this value cannot tell if an additive attack has been applied.
 
 While an additive attack does not result in information about the inputs being revealed, it corrupts the results. If a protocol depends on revealing certain values, this sort of corruption could be used to reveal information that might not otherwise be revealed.
 
@@ -397,9 +397,9 @@ If this validation protocol fails, the parties abort the protocol and no values 
 
 ## Overview of the validation protocol
 
-Each of the parties, P<sub>\=</sub>, produces a "Zero Knowledge Proof" (ZKP) that proves all of the multiplications it performed were done correctly. The other two parties, P<sub>\-</sub> and P<sub>+</sub>, act as "verifiers" and validate this zero knowledge proof.
+Each of the parties, P<sub>=</sub>, produces a "Zero Knowledge Proof" (ZKP) that proves all of the multiplications it performed were done correctly. The other two parties, P<sub>-</sub> and P<sub>+</sub>, act as "verifiers" and validate this zero knowledge proof.
 
-When operating in a boolean field, if P<sub>\=</sub> followed the protocol correctly, this is how they would compute z<sub>\-</sub>
+When operating in a boolean field, if P<sub>=</sub> followed the protocol correctly, this is how they would compute z<sub>-</sub>
 
 ~~~ pseudocode
 z_- = x_-∧y_- ⊕ x_-∧y_+ ⊕ x_+∧y_- ⊕ r_- ⊕ r_+
@@ -425,12 +425,12 @@ The prover needs to prove that for each multiplication in a batch:
 x_-∧y_- ⊕ x_-∧y_+ ⊕ x_+∧y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
-The verifier on the left, P<sub>\-</sub>, knows the values of:
+The verifier on the left, P<sub>-</sub>, knows the values of:
 
-- y<sub>\-</sub>
-- x<sub>\-</sub>
-- r<sub>\-</sub>
-- z<sub>\-</sub>
+- `y<sub>-</sub>`
+- x<sub>-</sub>
+- r<sub>-</sub>
+- z<sub>-</sub>
 
 The verifier on the right, P<sub>+</sub>, knows the values of:
 
@@ -438,7 +438,7 @@ The verifier on the right, P<sub>+</sub>, knows the values of:
 - y<sub>+</sub>
 - r<sub>+</sub>
 
-This means that the "prover", P<sub>\=</sub>, does not need to send any of these values to the verifiers. Verifiers use information they already have to validate the proof.
+This means that the "prover", P<sub>=</sub>, does not need to send any of these values to the verifiers. Verifiers use information they already have to validate the proof.
 
 Since the two verifiers possess all of this information distributed amongst themselves, this approach is referred to as "Distributed Zero Knowledge Proofs".
 
@@ -451,11 +451,11 @@ requires O(logN) communication, for proving expressions of the form:
 sum(i=0..n, u<sub>i</sub> · v<sub>i</sub>) = t
 ~~~
 
-In the setting where the Prover (P<sub>\=</sub>) and the left verifier
-(P<sub>\-</sub>) both are in possession of the n-vector `u`, the Prover
-(P<sub>\=</sub>) and the other verifier (P<sub>+</sub>) are in possession of the
-n-vector `v`, and the verifiers P<sub>\-</sub> and P<sub>+</sub> hold
-t<sub>\-</sub> and t<sub>+</sub> respectively and `t<sub>\-</sub> +
+In the setting where the Prover (P<sub>=</sub>) and the left verifier
+(P<sub>-</sub>) both are in possession of the n-vector `u`, the Prover
+(P<sub>=</sub>) and the other verifier (P<sub>+</sub>) are in possession of the
+n-vector `v`, and the verifiers P<sub>-</sub> and P<sub>+</sub> hold
+t<sub>-</sub> and t<sub>+</sub> respectively and `t<sub>-</sub> +
 t<sub>+</sub> = t`.
 
 However, the security of this protocol requires the vector elements `u` and `v`
@@ -476,8 +476,8 @@ f(x, y) = x ⊕ y
 ~~~
 
 Using this relation, the expression that must be proven can be converted into a
-dot-product of two vectors, one of which is known to both P<sub>\=</sub> and
-P<sub>\-</sub>, the other being known to both P<sub>\=</sub> and P<sub>+</sub>.
+dot-product of two vectors, one of which is known to both P<sub>=</sub> and
+P<sub>-</sub>, the other being known to both P<sub>=</sub> and P<sub>+</sub>.
 
 Rearranging terms:
 
@@ -706,7 +706,7 @@ fewer chunks.
 
 They will interpret each chunk (i) as L points lying on a polynomial, p<sub>i</sub>(x) of degree L - 1, corresponding to the x coordinates 0, 1, …, L-1, that is to say they will interpret them as p<sub>i</sub>(0), p<sub>i</sub>(1), …, p<sub>i</sub>(L-1).
 
-The Prover (P<sub>\=</sub>) and verifier (P<sub>-</sub>) can find the value of p<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.
+The Prover (P<sub>=</sub>) and verifier (P<sub>-</sub>) can find the value of p<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.
 
 The Prover will use Lagrange interpolation to compute the value of p<sub>i</sub>(L), p<sub>i</sub>(L+1), …, p<sub>i</sub>(2L-2).
 
@@ -725,7 +725,7 @@ As before, if the length of v is not a multiple of L, the final chunk will be pa
 
 They will interpret each chunk as L points lying on a polynomial, q<sub>i</sub>(x), having degree L - 1. Where the x coordinates are 0, 1, …, L-1, which is to say they will interpret these points as q<sub>i</sub>(0), q<sub>i</sub>(1), …, q<sub>i</sub>(L-1).
 
-The Prover (P<sub>\=</sub>) and verifier P<sub>+</sub> can find the value of q<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.
+The Prover (P<sub>=</sub>) and verifier P<sub>+</sub> can find the value of q<sub>i</sub>(x) for any other value of x by using Lagrange interpolation.
 
 The Prover will use Lagrange interpolation to compute the value of q<sub>i</sub>(L), q<sub>i</sub>(L+1), …, q<sub>i</sub>(2L-2).
 
@@ -846,16 +846,16 @@ interpolation to compute the value of q<sub>i</sub>(r) for all (i) in the range
 The proof proceeds recursively until the length of the vectors u and v are
 strictly less than the compression factor L.
 
-Next, the Prover (P<sub>\=</sub>) and left verifier P<sub>\-</sub> will generate
+Next, the Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> will generate
 a random field value p<sub>mask</sub> using PRSS. Similarly, the Prover
-(P<sub>\=</sub>) and right verifier P<sub>+</sub> will generate a random field
+(P<sub>=</sub>) and right verifier P<sub>+</sub> will generate a random field
 value q<sub>mask</sub> using PRSS.
 
-The Prover (P<sub>\=</sub>) and left verifier P<sub>\-</sub> move u<sub>0</sub>
+The Prover (P<sub>=</sub>) and left verifier P<sub>-</sub> move u<sub>0</sub>
 to index L - 1. No data will be lost as the length of u is strictly less than
 L. Then they place the value p<sub>mask</sub> at index 0.
 
-The Prover (P<sub>\=</sub>) and right verifier P<sub>+</sub> move v<sub>0</sub>
+The Prover (P<sub>=</sub>) and right verifier P<sub>+</sub> move v<sub>0</sub>
 to index L - 1 and place the value q<sub>mask</sub> at index 0.
 
 The Prover will still generate a zero knowledge proof exactly as before, but the
@@ -864,10 +864,10 @@ validation of soundness of this proof will proceed differently.
 Firstly, when the verifiers compute their shares of b, they must skip the random
 weights.
 
-So in the final iteration the left verifier P<sub>\-</sub> computes:
+So in the final iteration the left verifier P<sub>-</sub> computes:
 
 ~~~ pseudocode
-b<sub>\-</sub> = t<sub>\-</sub> - sum(i=1..L-1, G(i)<sub>\-</sub>)
+b<sub>-</sub> = t<sub>-</sub> - sum(i=1..L-1, G(i)<sub>-</sub>)
 ~~~
 
 And the right verifier P<sub>+</sub> computes:
@@ -877,17 +877,17 @@ b<sub>+</sub> = t<sub>+</sub> - sum(i=1,L-1, G(i)<sub>+</sub>)
 ~~~
 
 The second difference is the way the verifiers validate the soundness of the
-zero knowledge proof. In the final iteration the verifier P<sub>\-</sub>
-computes p<sub>0</sub>(r) and G(r)<sub>\-</sub>, while verifier P<sub>+</sub>
+zero knowledge proof. In the final iteration the verifier P<sub>-</sub>
+computes p<sub>0</sub>(r) and G(r)<sub>-</sub>, while verifier P<sub>+</sub>
 computes q<sub>0</sub>(r) and G(r)<sub>+</sub>. Then the verifiers reveal all of
 these values to one another, so that they can both directly check that:
 
 ~~~
-G(r)<sub>\-</sub> + G(r)<sub>+</sub> = p<sub>0</sub>(r) · q<sub>0</sub>(r)
+G(r)<sub>-</sub> + G(r)<sub>+</sub> = p<sub>0</sub>(r) · q<sub>0</sub>(r)
 ~~~
 
 This is why the random masks were necessary in the final iteration. Those ensure
-that none of the values p<sub>0</sub>(r), q<sub>0</sub>(r), G(r)<sub>\-</sub>,
+that none of the values p<sub>0</sub>(r), q<sub>0</sub>(r), G(r)<sub>-</sub>,
 or G(r)<sub>+</sub> reveal any private information.
 
 # Conditions of Usage
