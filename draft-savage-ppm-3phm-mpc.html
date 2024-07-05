@@ -2108,10 +2108,13 @@ are named <code>qᵢ(x)</code>, indexed by <code>i ∊ [0..s)</code>.<a href="#s
           <li id="section-4.8-4.3">
             <p id="section-4.8-4.3.1">The polynomial <code>G(x)</code> is defined as: <code>sum(i=0..s, pᵢ(x) · qᵢ(x))</code><a href="#section-4.8-4.3.1" class="pilcrow">¶</a></p>
 <p id="section-4.8-4.3.2">
-This polynomial <code>G(x)</code> is equivalent to <code>u · v</code> so the goal becomes proving that <code>sum(i=0..L-1, G(i)) = t</code>.<a href="#section-4.8-4.3.2" class="pilcrow">¶</a></p>
+For <code>x ∊ [0..L-1)</code>, this polynomial <code>G(x)</code> computes the inner product of a
+portion of <code>u</code> and <code>v</code>. So the goal becomes proving that <code>sum(i=0..L-1, G(i)) = t</code>.<a href="#section-4.8-4.3.2" class="pilcrow">¶</a></p>
 <p id="section-4.8-4.3.3">
 In the first iteration, the target value <code>t</code> is known by all parties to be
-<code>-m/2</code>. In subsequent iterations the target value will be different.<a href="#section-4.8-4.3.3" class="pilcrow">¶</a></p>
+<code>-m/2</code>, so verifier <code>P₋</code> sets their share <code>t₋</code> to <code>-m/2</code> and the right
+verifier <code>P₊</code> sets their share <code>t₊</code> to zero. In subsequent iterations the
+target value will not be known to both verifiers.<a href="#section-4.8-4.3.3" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-4.8-4.3.4">
 <li id="section-4.8-4.3.4.1">
                 <p id="section-4.8-4.3.4.1.1">The prover will compute the value of <code>2L - 1</code> points on <code>G(x)</code>, the
