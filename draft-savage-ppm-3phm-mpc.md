@@ -311,29 +311,30 @@ This can be illustrated with a 3 by 3 table:
 To compute the product, each party locally computes the sum of three products as follows:
 
 ~~~ pseudocode
-z<sub>\-</sub> = x<sub>\-</sub>\*y<sub>\-</sub> + x<sub>\-</sub>\*y<sub>+</sub> + x<sub>\-</sub>\*y<sub>+</sub>
+z<sub>\-</sub> = x<sub>\-</sub>\*y<sub>\-</sub> + x<sub>\-</sub>\*y<sub>+</sub> + x<sub>\+</sub>\*y<sub>-</sub>
 ~~~
 
 To visualize this, {{fig-mul}} shows cells labeled with the party responsible for computing that partial product:
 
 ~~~ aasvg
-        y₁     y₂     y₃
-     +------+------+------+
-  x₁ |  P₁  |      |  P₁  |
-     +------+      +------+
-  x₂ |                    |
-     +------+             |
-  x₃ |  P₁  |             |
-     +------+-------------+
 
         y₁     y₂     y₃            y₁     y₂     y₃
-     +------+------+------+      +------+------+------+
-  x₁ |      |      |      |   x₁ |                    |
-     +------+      |      |      +             +------+
-  x₂ |      P₂     |      |   x₂ |             |      |
-     +-------------+      |      +      +------+      |
-  x₃ |                    |   x₃ |      |      P₃     |
-     +--------------------+      +------+-------------+
+     +-------------+------+      +--------------------+
+  x₁ |  P₁         |      |   x₁ |                    |
+     |      +------+      |      |      +-------------+
+  x₂ |      |             |   x₂ |      |  P₂         |
+     +------+             |      |      |      +------+
+  x₃ |                    |   x₃ |      |      |      |
+     +--------------------+      +------+------+------+
+
+      y₁     y₂     y₃
+     +-------------+------+
+  x₁ |             |  P₃  |
+     |             +------+
+  x₂ |                    |
+     +------+      +------|
+  x₃ |  P₃  |      |  P₃  |
+     +------+-------------+
 ~~~
 {: #fig-mul title="Multiplication by Party"}
 
