@@ -964,19 +964,19 @@ Firstly, when the verifiers compute their shares of `b`, they ignore the random
 value at index 0 of `G(x)`.  That is:
 
 ~~~ pseudocode
-b_- = t_- - sum(i=1..L-1, G(i)_-)
-b_+ = t_+ - sum(i=1..L-1, G(i)_+)
+b_- = t_- - sum(i=1..L-1, G_-(i))
+b_+ = t_+ - sum(i=1..L-1, G_+(i))
 ~~~
 
 Verifiers confirm that `b_- + b_+` is zero by exchanging their shares of `b`.
 
 Finally, the verifier P<sub>-</sub>
-computes both `p<sub>0</sub>(r)` and `G(r)_-`, verifier P<sub>+</sub>
-computes `q<sub>0</sub>(r)` and `G(r)_+`, and then the verifiers reveal all of
+computes both `p_0(r)` and `G_-(r)`, verifier P<sub>+</sub>
+computes `q_0(r)` and `G_+(r)`, and then the verifiers reveal all of
 these values to each other.  They then both verify that:
 
 ~~~ pseudocode
-G(r)_- + G(r)_+ = p<sub>0</sub>(r) · q<sub>0</sub>(r)
+G_-(r) + G_+(r) = p_0(r) · q_0(r)
 ~~~
 
 The addition of random masks (`p_m` and `q_m`) ensure that revealing `G(r)` in
