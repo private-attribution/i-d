@@ -622,16 +622,16 @@ Table of Contents
 
    Or alternatively:
 
-   sum(i=1..4, gᵢ · hᵢ) = -½
+   sum(i=1..4, gᵢ·hᵢ) = -½
 
-   Where P₌ and P₊ both compute h<sub>i</sub> as follows:
+   Where P₌ and P₊ both compute h_i as follows:
 
    h₁ = y₊·x₊·(1 - 2·r₊)
    h₂ = x₊·(1 - 2·r₊)
    h₃ = y₊·(1 - 2·r₊)
    h₄ = 1 − 2·r₊
 
-   And P_(=) and P_(-) both compute g_i as follows:
+   And P₌ and P₋ both compute g_i as follows:
 
    g₁ = -2·x₋·y₋·(1 - 2·e₋ )
    g₂ = y₋·(1 - 2·e₋ )
