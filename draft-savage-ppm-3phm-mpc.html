@@ -2432,18 +2432,18 @@ validation then proceeds differently.<a href="#section-4.10.6-5" class="pilcrow"
 value at index 0 of <code>G(x)</code>.  That is:<a href="#section-4.10.6-6" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.10.6-7">
 <pre>
-b₋ = t₋ - sum(i=1..L-1, G(i)_-)
-b₊ = t₊ - sum(i=1..L-1, G(i)_+)
+b₋ = t₋ - sum(i=1..L-1, G₋(i))
+b₊ = t₊ - sum(i=1..L-1, G₊(i))
 </pre><a href="#section-4.10.6-7" class="pilcrow">¶</a>
 </div>
 <p id="section-4.10.6-8">Verifiers confirm that <code>b₋ + b₊</code> is zero by exchanging their shares of <code>b</code>.<a href="#section-4.10.6-8" class="pilcrow">¶</a></p>
 <p id="section-4.10.6-9">Finally, the verifier P<sub>-</sub>
-computes both <code>p₀(r)</code> and <code>G(r)_-</code>, verifier P<sub>+</sub>
-computes <code>q₀(r)</code> and <code>G(r)_+</code>, and then the verifiers reveal all of
+computes both <code>p₀(r)</code> and <code>G₋(r)</code>, verifier P<sub>+</sub>
+computes <code>q₀(r)</code> and <code>G₊(r)</code>, and then the verifiers reveal all of
 these values to each other.  They then both verify that:<a href="#section-4.10.6-9" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.10.6-10">
 <pre>
-G(r)_- + G(r)_+ = p₀(r) · q₀(r)
+G₋(r) + G₊(r) = p₀(r) · q₀(r)
 </pre><a href="#section-4.10.6-10" class="pilcrow">¶</a>
 </div>
 <p id="section-4.10.6-11">The addition of random masks (<code>pₘ</code> and <code>qₘ</code>) ensure that revealing <code>G(r)</code> in

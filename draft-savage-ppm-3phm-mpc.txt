@@ -979,17 +979,17 @@ Table of Contents
    Firstly, when the verifiers compute their shares of b, they ignore
    the random value at index 0 of G(x).  That is:
 
-   b₋ = t₋ - sum(i=1..L-1, G(i)_-)
-   b₊ = t₊ - sum(i=1..L-1, G(i)_+)
+   b₋ = t₋ - sum(i=1..L-1, G₋(i))
+   b₊ = t₊ - sum(i=1..L-1, G₊(i))
 
    Verifiers confirm that b₋ + b₊ is zero by exchanging their shares of
    b.
 
-   Finally, the verifier P_(-) computes both p₀(r) and G(r)_-, verifier
-   P_(+) computes q₀(r) and G(r)_+, and then the verifiers reveal all of
+   Finally, the verifier P_(-) computes both p₀(r) and G₋(r), verifier
+   P_(+) computes q₀(r) and G₊(r), and then the verifiers reveal all of
    these values to each other.  They then both verify that:
 
-   G(r)_- + G(r)_+ = p₀(r) · q₀(r)
+   G₋(r) + G₊(r) = p₀(r) · q₀(r)
 
    The addition of random masks (pₘ and qₘ) ensure that revealing G(r)
    in this way does not reveal anything about the value of the
