@@ -500,7 +500,7 @@ Using: `x ⊕ y = x·(1 - 2·y) + y`
 (x_-·y_+·(1 - 2e_-) + e_-) ⊕ (x_+·y_-·(1 - 2r_+) + r_+) = 0
 ~~~
 
-Using: x ⊕ y = x + y - 2·x·y
+Using: `x ⊕ y = x + y - 2·x·y`
 
 ~~~ pseudocode
 (x_-·y_+·(1 - 2e_-) + e_-)
