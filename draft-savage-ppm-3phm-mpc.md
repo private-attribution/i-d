@@ -108,8 +108,8 @@ confidentiality of inputs provided that no pair of parties reveals their shares
 to either of the other parties.
 
 The protocols described in this document depend on having three MPC parties
-execute them. The protocols described here are three parties that are secure
-with abort, even when one party is not honest.
+execute them. The protocols described here are secure with abort, even when one 
+party is not honest.
 
 Concretely, this means that a single dishonest party cannot cause the value of
 inputs to be revealed. Also, a single dishonest party cannot alter the output of
