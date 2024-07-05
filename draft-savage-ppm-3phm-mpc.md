@@ -944,8 +944,8 @@ Instead, each uses Lagrange interpolation to compute a share of `G(r)`.  That
 is:
 
 ~~~ pseudocode
-t_- = lagrange_interpolate(r, [G_-(0), G_-(1), ..., G_-(2L-2)])
-t_+ = lagrange_interpolate(r, [G_+(0), G_+(1), ..., G_+(2L-2)])
+t_- = lagrange\_interpolate(r, [G_-(0), G_-(1), ..., G_-(2L-2)])
+t_+ = lagrange\_interpolate(r, [G_+(0), G_+(1), ..., G_+(2L-2)])
 ~~~
 
 
