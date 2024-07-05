@@ -1185,7 +1185,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-distributed-zero-knowledge-p" class="internal xref">Distributed Zero Knowledge Proofs</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
-                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-transforming-into-a-large-p" class="internal xref">Transforming into a large prime field</a></p>
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-transforming-into-a-large-p" class="internal xref">Transforming into a Large Prime Field</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
                 <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-validating-a-batch-of-multi" class="internal xref">Validating a batch of multiplications</a></p>
@@ -1879,35 +1879,15 @@ this approach will detect any deviation from the protocol with high probability.
 x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 </pre><a href="#section-4.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-4.4-3">The verifier on the left, P<sub>-</sub>, knows the values of:<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.4-4.1">
-            <p id="section-4.4-4.1.1">y_-<a href="#section-4.4-4.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.4-4.2">
-            <p id="section-4.4-4.2.1">x_-<a href="#section-4.4-4.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.4-4.3">
-            <p id="section-4.4-4.3.1">r_-<a href="#section-4.4-4.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.4-4.4">
-            <p id="section-4.4-4.4.1">z_-<a href="#section-4.4-4.4.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-4.4-5">The verifier on the right, P<sub>+</sub>, knows the values of:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.4-6.1">
-            <p id="section-4.4-6.1.1">x_+<a href="#section-4.4-6.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.4-6.2">
-            <p id="section-4.4-6.2.1">y_+<a href="#section-4.4-6.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.4-6.3">
-            <p id="section-4.4-6.3.1">r_+<a href="#section-4.4-6.3.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-4.4-7">This means that the "prover", P<sub>=</sub>, does not need to send any of these values to the verifiers. Verifiers use information they already have to validate the proof.<a href="#section-4.4-7" class="pilcrow">¶</a></p>
-<p id="section-4.4-8">Since the two verifiers possess all of this information distributed amongst themselves, this approach is referred to as "Distributed Zero Knowledge Proofs".<a href="#section-4.4-8" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">The verifier on the left, P<sub>-</sub>, knows the values of <code>y₋</code>, <code>x₋</code>,
+<code>r₋</code>, and <code>z₋</code>.  - z_-<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+<p id="section-4.4-4">The verifier on the right, P<sub>+</sub>, knows the values of <code>x₊</code>, <code>y₊</code>,
+<code>r₊</code>.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-5">This means that the "prover", P<sub>=</sub>, does not need to send any of these
+values to the verifiers. Verifiers use information they already have to validate
+the proof.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+<p id="section-4.4-6">Since the two verifiers possess all of this information distributed amongst
+themselves, this approach is referred to as "Distributed Zero Knowledge Proofs".<a href="#section-4.4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="distributed-zero-knowledge-proofs-1">
@@ -1915,19 +1895,23 @@ x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
         <h3 id="name-distributed-zero-knowledge-p">
 <a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-distributed-zero-knowledge-p" class="section-name selfRef">Distributed Zero Knowledge Proofs</a>
         </h3>
-<p id="section-4.5-1"><span>[<a href="#FLPCP" class="cite xref">FLPCP</a>]</span> introduces an elegant tool, which only
-requires O(logN) communication, for proving expressions of the form:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.5-1"><span>[<a href="#FLPCP" class="cite xref">FLPCP</a>]</span> describes a system of zero-knowledge
+proofs that rely on linear operations. This is expanded in
+<span>[<a href="#BOYLE" class="cite xref">BOYLE</a>]</span> to apply to three-party
+honest-majority MPC, requiring only O(logN) communication in total.  These
+proofs are able to validate the computation of an inner product, or expressions
+of the form:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.5-2">
 <pre>
 sum(i=0..n, uᵢ · vᵢ) = t
 </pre><a href="#section-4.5-2" class="pilcrow">¶</a>
 </div>
-<p id="section-4.5-3">In the setting where the Prover (P<sub>=</sub>) and the left verifier
-(P<sub>-</sub>) both are in possession of the n-vector <code>u</code>, the Prover
-(P<sub>=</sub>) and the other verifier (P<sub>+</sub>) are in possession of the
-n-vector <code>v</code>, and the verifiers P<sub>-</sub> and P<sub>+</sub> hold
-t_- and t_+ respectively and <code>t₋ +
-t₊ = t</code>.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-3">This depends on the prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>)
+both possessing the n-vector <code>u</code>, the Prover (P<sub>=</sub>) and the other
+verifier (P<sub>+</sub>) possessing the n-vector <code>v</code>, and the verifiers
+P<sub>-</sub> and P<sub>+</sub> jointly holding shares of the target value, <code>t</code>
+(that is, P<sub>-</sub> holds <code>t₋</code> and P<sub>-</sub> holds <code>t₊</code> such that <code>t₋
++ t₊ = t</code>).<a href="#section-4.5-3" class="pilcrow">¶</a></p>
 <p id="section-4.5-4">However, the security of this protocol requires the vector elements <code>u</code> and <code>v</code>
 to be members of a large field. So the first step of the validation protocol is
 to take a batch of multiplications, and convert them into a dot product of
@@ -1937,7 +1921,7 @@ vectors with elements in a large field.<a href="#section-4.5-4" class="pilcrow">
 <div id="transforming-into-a-large-prime-field">
 <section id="section-4.6">
         <h3 id="name-transforming-into-a-large-p">
-<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-transforming-into-a-large-p" class="section-name selfRef">Transforming into a large prime field</a>
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-transforming-into-a-large-p" class="section-name selfRef">Transforming into a Large Prime Field</a>
         </h3>
 <p id="section-4.6-1"><span>[<a href="#BINARY" class="cite xref">BINARY</a>]</span> describes how to apply <span>[<a href="#FLPCP" class="cite xref">FLPCP</a>]</span>
 efficiently for binary fields.  When binary values are directly lifted into a
@@ -1989,7 +1973,10 @@ e₋ = x₋·y₋ ⊕ z₋ ⊕ r₋
 <pre>
 x₋·(1 - 2e₋)·y₊ + e₋
 + y₋·x₊·(1 - 2r₊) + r₊
-- 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊) - 2x₋·(1 - 2e₋)·y₊·r₊ - 2e₋·y₋·x₊·(1 - 2r₊) - 2e₋·r₊ = 0
+- 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊)
+- 2x₋·(1 - 2e₋)·y₊·r₊
+- 2e₋·y₋·x₊·(1 - 2r₊)
+- 2e₋·r₊ = 0
 </pre><a href="#section-4.6-15" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-16">Rearranging terms, and subtracting 1/2 from both sides:<a href="#section-4.6-16" class="pilcrow">¶</a></p>
@@ -2001,7 +1988,9 @@ x₋·(1 - 2e₋)·y₊ + e₋
 + e₋ - 2e₋·r₊ + r₊ - ½ = - ½
 </pre><a href="#section-4.6-17" class="pilcrow">¶</a>
 </div>
-<p id="section-4.6-18">Factoring allows this to be written as an expression with four terms, each with a component taken from the left (which we will label g) and a component from the right (which we will label h):<a href="#section-4.6-18" class="pilcrow">¶</a></p>
+<p id="section-4.6-18">Factoring allows this to be written as an expression with four terms, each with
+a component taken from the left and a component from
+the right.<a href="#section-4.6-18" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-19">
 <pre>
 [-2x₋·y₋·(1 - 2e₋)] · [y₊·x₊·(1 - 2r₊)]
@@ -2010,43 +1999,50 @@ x₋·(1 - 2e₋)·y₊ + e₋
 + [-½(1 - 2e₋)] · [(1 - 2r₊)] = -½
 </pre><a href="#section-4.6-19" class="pilcrow">¶</a>
 </div>
-<p id="section-4.6-20">Renaming terms as new variables, the result is the dot product of two four dimensional vectors, g and h:<a href="#section-4.6-20" class="pilcrow">¶</a></p>
+<p id="section-4.6-20">Components on the left form a vector that can be named <code>g</code>, and components on
+the right form a vector, <code>h</code>. The result is the dot product of two four
+dimensional vectors:<a href="#section-4.6-20" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-21">
 <pre>
 g₁·h₁ + g₂·h₂ + g₃·h₃ + g₄·h₄ = -½
 </pre><a href="#section-4.6-21" class="pilcrow">¶</a>
 </div>
-<p id="section-4.6-22">Or alternatively:<a href="#section-4.6-22" class="pilcrow">¶</a></p>
+<p id="section-4.6-22">Alternatively:<a href="#section-4.6-22" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.6-23">
 <pre>
 sum(i=1..4, gᵢ·hᵢ) = -½
 </pre><a href="#section-4.6-23" class="pilcrow">¶</a>
 </div>
-<p id="section-4.6-24">Where P<sub>=</sub> and P<sub>+</sub> both compute <code>hᵢ</code> as follows:<a href="#section-4.6-24" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.6-25">
-<pre>
-h₁ = y₊·x₊·(1 - 2·r₊)
-h₂ = x₊·(1 - 2·r₊)
-h₃ = y₊·(1 - 2·r₊)
-h₄ = 1 − 2·r₊
-</pre><a href="#section-4.6-25" class="pilcrow">¶</a>
-</div>
-<p id="section-4.6-26">And P<sub>=</sub> and P<sub>-</sub> both compute <code>gᵢ</code> as follows:<a href="#section-4.6-26" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.6-27">
+<p id="section-4.6-24">From this point, each party can compute the vectors that they are able to.<a href="#section-4.6-24" class="pilcrow">¶</a></p>
+<p id="section-4.6-25">P<sub>=</sub> and P<sub>-</sub> both compute <code>gᵢ</code> as follows:<a href="#section-4.6-25" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-26">
 <pre>
 g₁ = -2·x₋·y₋·(1 - 2·e₋ )
 g₂ = y₋·(1 - 2·e₋ )
 g₃ = x₋·(1 - 2·e₋ )
 g₄ = -½(1 - 2·e₋)
-</pre><a href="#section-4.6-27" class="pilcrow">¶</a>
+</pre><a href="#section-4.6-26" class="pilcrow">¶</a>
 </div>
-<p id="section-4.6-28">And where:<a href="#section-4.6-28" class="pilcrow">¶</a></p>
-<div class="lang-pseudocode sourcecode" id="section-4.6-29">
+<p id="section-4.6-27">And where:<a href="#section-4.6-27" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-28">
 <pre>
 e₋ = x₋·y₋ ⊕ z₋ ⊕ r₋
-</pre><a href="#section-4.6-29" class="pilcrow">¶</a>
+</pre><a href="#section-4.6-28" class="pilcrow">¶</a>
 </div>
-<p id="section-4.6-30">In this field, the negative inverse of two (-½) is <code>1,152,921,504,606,846,975</code>.<a href="#section-4.6-30" class="pilcrow">¶</a></p>
+<p id="section-4.6-29">P<sub>=</sub> and P<sub>+</sub> both compute <code>hᵢ</code> as follows:<a href="#section-4.6-29" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.6-30">
+<pre>
+h₁ = y₊·x₊·(1 - 2·r₊)
+h₂ = x₊·(1 - 2·r₊)
+h₃ = y₊·(1 - 2·r₊)
+h₄ = 1 − 2·r₊
+</pre><a href="#section-4.6-30" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6-31">These vectors form the basis of later stages of the proof.<a href="#section-4.6-31" class="pilcrow">¶</a></p>
+<aside id="section-4.6-32">
+          <p id="section-4.6-32.1">In the prime field modulo 2<sup>61</sup>-1, the negative inverse of two (-½) is
+1,152,921,504,606,846,975.<a href="#section-4.6-32.1" class="pilcrow">¶</a></p>
+</aside>
 </section>
 </div>
 <div id="initial-uv">
@@ -2054,23 +2050,25 @@ e₋ = x₋·y₋ ⊕ z₋ ⊕ r₋
         <h3 id="name-validating-a-batch-of-multi">
 <a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-validating-a-batch-of-multi" class="section-name selfRef">Validating a batch of multiplications</a>
         </h3>
-<p id="section-4.7-1">Each multiplication therefore produces two vectors of length 4. To validate a batch of m multiplications, the Prover (P<sub>=</sub>), uses this approach to produce two vectors of length 4m.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
-<p id="section-4.7-2">The Prover P<sub>=</sub> and verifier P<sub>-</sub> both compute the vector u<a href="#section-4.7-2" class="pilcrow">¶</a></p>
+<p id="section-4.7-1">Each multiplication therefore produces two vectors, with each vector being
+length 4. To validate a batch of <code>m</code> multiplications, the prover
+(P<sub>=</sub>), forms two vectors of length <code>4m</code>.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
+<p id="section-4.7-2">The prover (P<sub>=</sub>), and verifier (P<sub>-</sub>) both produce the vector <code>u</code> by concatenating the vectors from all multiplications:<a href="#section-4.7-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.7-3">
 <pre>
 u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, … , g₁⁽ᵐ⁾, g₂⁽ᵐ⁾, g₃⁽ᵐ⁾, g₄⁽ᵐ⁾)
 </pre><a href="#section-4.7-3" class="pilcrow">¶</a>
 </div>
-<p id="section-4.7-4">The Prover P<sub>=</sub> and verifier P<sub>+</sub> both compute the vector v<a href="#section-4.7-4" class="pilcrow">¶</a></p>
+<p id="section-4.7-4">The prover (P<sub>=</sub>) and verifier P<sub>+</sub> both compute the vector <code>v</code> in the same way:<a href="#section-4.7-4" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.7-5">
 <pre>
 v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, … , h₁⁽ᵐ⁾, h₂⁽ᵐ⁾, h₃⁽ᵐ⁾, h₄⁽ᵐ⁾)
 </pre><a href="#section-4.7-5" class="pilcrow">¶</a>
 </div>
-<p id="section-4.7-6">If no additive attacks were applied, the dot product of these two vectors should be:<a href="#section-4.7-6" class="pilcrow">¶</a></p>
+<p id="section-4.7-6">If no additive attacks were applied by the prover, the dot product of these two vectors should be:<a href="#section-4.7-6" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4.7-7">
 <pre>
-u · v = -m/2
+u·v = -m/2
 </pre><a href="#section-4.7-7" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2084,7 +2082,7 @@ u · v = -m/2
 vectors of large field elements, we can use a recursive approach to prove this
 expression with O(logN) communication.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
 <p id="section-4.8-2">The process is iterative, where at each stage there is a pair of vectors, <code>u</code>
-and <code>v</code>, and a target, <code>t</code>, where the goal is to prove that <code>u · v = t</code>. The
+and <code>v</code>, and a target, <code>t</code>, where the goal is to prove that <code>u·v = t</code>. The
 values of <code>u</code> and <code>v</code> start as described in <a href="#initial-uv" class="auto internal xref">Section 4.7</a>; with <code>t</code> initially
 set to a value of <code>-m/2</code>.<a href="#section-4.8-2" class="pilcrow">¶</a></p>
 <p id="section-4.8-3">At each iteration:<a href="#section-4.8-3" class="pilcrow">¶</a></p>
@@ -2612,6 +2610,10 @@ field value.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 <dt id="BINARY">[BINARY]</dt>
         <dd>
 <span class="refAuthor">Li, Y.</span>, <span class="refAuthor">Duan, Y.</span>, <span class="refAuthor">Huang, Z.</span>, <span class="refAuthor">Hong, C.</span>, <span class="refAuthor">Zhang, C.</span>, and <span class="refAuthor">Y. Song</span>, <span class="refTitle">"Efficient 3PC for binary circuits with application to maliciously-secure DNN inference"</span>, <span class="refContent">USENIX Association</span>, <span class="seriesInfo">Proceedings of the 32nd USENIX Conference on Security Symposium pp. 5377–5394</span>, <span class="seriesInfo">ISBN 978-1-939133-37-3</span>, <time datetime="2023-08" class="refDate">August 2023</time>. </dd>
+<dd class="break"></dd>
+<dt id="BOYLE">[BOYLE]</dt>
+        <dd>
+<span class="refAuthor">Boyle, E.</span>, <span class="refAuthor">Gilboa, N.</span>, <span class="refAuthor">Ishai, Y.</span>, and <span class="refAuthor">A. Nof</span>, <span class="refTitle">"Efficient Fully Secure Computation via Distributed Zero-Knowledge Proofs"</span>, <span class="refContent">Springer International Publishing</span>, <span class="seriesInfo">Advances in Cryptology – ASIACRYPT 2020 pp. 244-276</span>, <span class="seriesInfo">DOI 10.1007/978-3-030-64840-4_9</span>, <span class="seriesInfo">ISBN ["9783030648398", "9783030648404"]</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-030-64840-4_9">https://doi.org/10.1007/978-3-030-64840-4_9</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="FLPCP">[FLPCP]</dt>
         <dd>

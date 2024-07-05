@@ -83,7 +83,7 @@ Table of Contents
      4.3.  Overview of the Validation Protocol
      4.4.  Distributed Zero-Knowledge Proofs
      4.5.  Distributed Zero Knowledge Proofs
-     4.6.  Transforming into a large prime field
+     4.6.  Transforming into a Large Prime Field
      4.7.  Validating a batch of multiplications
      4.8.  Overview of Recursive Proof Compression
      4.9.  Detailed Validation Algorithm
@@ -512,23 +512,10 @@ Table of Contents
 
    x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 
-   The verifier on the left, P_(-), knows the values of:
+   The verifier on the left, P_(-), knows the values of y₋, x₋, r₋, and
+   z₋.  - z_-
 
-   *  y_-
-
-   *  x_-
-
-   *  r_-
-
-   *  z_-
-
-   The verifier on the right, P_(+), knows the values of:
-
-   *  x_+
-
-   *  y_+
-
-   *  r_+
+   The verifier on the right, P_(+), knows the values of x₊, y₊, r₊.
 
    This means that the "prover", P_(=), does not need to send any of
    these values to the verifiers.  Verifiers use information they
@@ -540,16 +527,19 @@ Table of Contents
 
 4.5.  Distributed Zero Knowledge Proofs
 
-   [FLPCP] introduces an elegant tool, which only requires O(logN)
-   communication, for proving expressions of the form:
+   [FLPCP] describes a system of zero-knowledge proofs that rely on
+   linear operations.  This is expanded in [BOYLE] to apply to three-
+   party honest-majority MPC, requiring only O(logN) communication in
+   total.  These proofs are able to validate the computation of an inner
+   product, or expressions of the form:
 
    sum(i=0..n, uᵢ · vᵢ) = t
 
-   In the setting where the Prover (P_(=)) and the left verifier (P_(-))
-   both are in possession of the n-vector u, the Prover (P_(=)) and the
-   other verifier (P_(+)) are in possession of the n-vector v, and the
-   verifiers P_(-) and P_(+) hold t_- and t_+ respectively and t₋ + t₊ =
-   t.
+   This depends on the prover (P_(=)) and left verifier (P_(-)) both
+   possessing the n-vector u, the Prover (P_(=)) and the other verifier
+   (P_(+)) possessing the n-vector v, and the verifiers P_(-) and P_(+)
+   jointly holding shares of the target value, t (that is, P_(-) holds
+   t₋ and P_(-) holds t₊ such that t₋ + t₊ = t).
 
    However, the security of this protocol requires the vector elements u
    and v to be members of a large field.  So the first step of the
@@ -557,7 +547,7 @@ Table of Contents
    convert them into a dot product of vectors with elements in a large
    field.
 
-4.6.  Transforming into a large prime field
+4.6.  Transforming into a Large Prime Field
 
    [BINARY] describes how to apply [FLPCP] efficiently for binary
    fields.  When binary values are directly lifted into a large field,
@@ -597,7 +587,10 @@ Table of Contents
 
    x₋·(1 - 2e₋)·y₊ + e₋
    + y₋·x₊·(1 - 2r₊) + r₊
-   - 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊) - 2x₋·(1 - 2e₋)·y₊·r₊ - 2e₋·y₋·x₊·(1 - 2r₊) - 2e₋·r₊ = 0
+   - 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊)
+   - 2x₋·(1 - 2e₋)·y₊·r₊
+   - 2e₋·y₋·x₊·(1 - 2r₊)
+   - 2e₋·r₊ = 0
 
    Rearranging terms, and subtracting 1/2 from both sides:
 
@@ -607,31 +600,28 @@ Table of Contents
    + e₋ - 2e₋·r₊ + r₊ - ½ = - ½
 
    Factoring allows this to be written as an expression with four terms,
-   each with a component taken from the left (which we will label g) and
-   a component from the right (which we will label h):
+   each with a component taken from the left and a component from the
+   right.
 
    [-2x₋·y₋·(1 - 2e₋)] · [y₊·x₊·(1 - 2r₊)]
    + [y₋(1 - 2e₋)] · [x₊·(1 - 2r₊)]
    + [x₋·(1 - 2e₋)] · [y₊(1 - 2r₊)]
    + [-½(1 - 2e₋)] · [(1 - 2r₊)] = -½
 
-   Renaming terms as new variables, the result is the dot product of two
-   four dimensional vectors, g and h:
+   Components on the left form a vector that can be named g, and
+   components on the right form a vector, h.  The result is the dot
+   product of two four dimensional vectors:
 
    g₁·h₁ + g₂·h₂ + g₃·h₃ + g₄·h₄ = -½
 
-   Or alternatively:
+   Alternatively:
 
    sum(i=1..4, gᵢ·hᵢ) = -½
 
-   Where P_(=) and P_(+) both compute hᵢ as follows:
+   From this point, each party can compute the vectors that they are
+   able to.
 
-   h₁ = y₊·x₊·(1 - 2·r₊)
-   h₂ = x₊·(1 - 2·r₊)
-   h₃ = y₊·(1 - 2·r₊)
-   h₄ = 1 − 2·r₊
-
-   And P_(=) and P_(-) both compute gᵢ as follows:
+   P_(=) and P_(-) both compute gᵢ as follows:
 
    g₁ = -2·x₋·y₋·(1 - 2·e₋ )
    g₂ = y₋·(1 - 2·e₋ )
@@ -642,27 +632,38 @@ Table of Contents
 
    e₋ = x₋·y₋ ⊕ z₋ ⊕ r₋
 
-   In this field, the negative inverse of two (-½) is
-   1,152,921,504,606,846,975.
+   P_(=) and P_(+) both compute hᵢ as follows:
+
+   h₁ = y₊·x₊·(1 - 2·r₊)
+   h₂ = x₊·(1 - 2·r₊)
+   h₃ = y₊·(1 - 2·r₊)
+   h₄ = 1 − 2·r₊
+
+   These vectors form the basis of later stages of the proof.
+
+      |  In the prime field modulo 2^61-1, the negative inverse of two
+      |  (-½) is 1,152,921,504,606,846,975.
 
 4.7.  Validating a batch of multiplications
 
-   Each multiplication therefore produces two vectors of length 4.  To
-   validate a batch of m multiplications, the Prover (P_(=)), uses this
-   approach to produce two vectors of length 4m.
+   Each multiplication therefore produces two vectors, with each vector
+   being length 4.  To validate a batch of m multiplications, the prover
+   (P_(=)), forms two vectors of length 4m.
 
-   The Prover P_(=) and verifier P_(-) both compute the vector u
+   The prover (P_(=)), and verifier (P_(-)) both produce the vector u by
+   concatenating the vectors from all multiplications:
 
    u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, … , g₁⁽ᵐ⁾, g₂⁽ᵐ⁾, g₃⁽ᵐ⁾, g₄⁽ᵐ⁾)
 
-   The Prover P_(=) and verifier P_(+) both compute the vector v
+   The prover (P_(=)) and verifier P_(+) both compute the vector v in
+   the same way:
 
    v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, … , h₁⁽ᵐ⁾, h₂⁽ᵐ⁾, h₃⁽ᵐ⁾, h₄⁽ᵐ⁾)
 
-   If no additive attacks were applied, the dot product of these two
-   vectors should be:
+   If no additive attacks were applied by the prover, the dot product of
+   these two vectors should be:
 
-   u · v = -m/2
+   u·v = -m/2
 
 4.8.  Overview of Recursive Proof Compression
 
@@ -672,8 +673,8 @@ Table of Contents
    communication.
 
    The process is iterative, where at each stage there is a pair of
-   vectors, u and v, and a target, t, where the goal is to prove that u
-   · v = t.  The values of u and v start as described in Section 4.7;
+   vectors, u and v, and a target, t, where the goal is to prove that
+   u·v = t.  The values of u and v start as described in Section 4.7;
    with t initially set to a value of -m/2.
 
    At each iteration:
@@ -1100,6 +1101,14 @@ Table of Contents
               Proceedings of the 32nd USENIX Conference on Security
               Symposium pp. 5377–5394, ISBN 978-1-939133-37-3, August
               2023.
+
+   [BOYLE]    Boyle, E., Gilboa, N., Ishai, Y., and A. Nof, "Efficient
+              Fully Secure Computation via Distributed Zero-Knowledge
+              Proofs", Springer International Publishing, Advances in
+              Cryptology – ASIACRYPT 2020 pp. 244-276,
+              DOI 10.1007/978-3-030-64840-4_9, ISBN ["9783030648398",
+              "9783030648404"], 2020,
+              <https://doi.org/10.1007/978-3-030-64840-4_9>.
 
    [FLPCP]    Boneh, D., Boyle, E., Corrigan-Gibbs, H., Gilboa, N., and
               Y. Ishai, "Zero-Knowledge Proofs on Secret-Shared Data via
