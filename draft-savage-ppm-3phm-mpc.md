@@ -466,45 +466,45 @@ The prover needs to prove that for each multiplication in a batch:
 x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
-The verifier on the left, P<sub>-</sub>, knows the values of:
+The verifier on the left, P<sub>-</sub>, knows the values of `y_-`, `x_-`,
+`r_-`, and `z_-`.  - z_-
 
-- y_-
-- x_-
-- r_-
-- z_-
+The verifier on the right, P<sub>+</sub>, knows the values of `x_+`, `y_+`,
+`r_+`.
 
-The verifier on the right, P<sub>+</sub>, knows the values of:
+This means that the "prover", P<sub>=</sub>, does not need to send any of these
+values to the verifiers. Verifiers use information they already have to validate
+the proof.
 
-- x_+
-- y_+
-- r_+
-
-This means that the "prover", P<sub>=</sub>, does not need to send any of these values to the verifiers. Verifiers use information they already have to validate the proof.
-
-Since the two verifiers possess all of this information distributed amongst themselves, this approach is referred to as "Distributed Zero Knowledge Proofs".
+Since the two verifiers possess all of this information distributed amongst
+themselves, this approach is referred to as "Distributed Zero Knowledge Proofs".
 
 ## Distributed Zero Knowledge Proofs
 
-{{?FLPCP=DOI.10.1007/978-3-030-26954-8_3}} introduces an elegant tool, which only
-requires O(logN) communication, for proving expressions of the form:
+{{?FLPCP=DOI.10.1007/978-3-030-26954-8_3}} describes a system of zero-knowledge
+proofs that rely on linear operations. This is expanded in
+{{?BOYLE=DOI.10.1007/978-3-030-64840-4_9}} to apply to three-party
+honest-majority MPC, requiring only O(logN) communication in total.  These
+proofs are able to validate the computation of an inner product, or expressions
+of the form:
 
 ~~~ pseudocode
 sum(i=0..n, u<sub>i</sub> · v<sub>i</sub>) = t
 ~~~
 
-In the setting where the Prover (P<sub>=</sub>) and the left verifier
-(P<sub>-</sub>) both are in possession of the n-vector `u`, the Prover
-(P<sub>=</sub>) and the other verifier (P<sub>+</sub>) are in possession of the
-n-vector `v`, and the verifiers P<sub>-</sub> and P<sub>+</sub> hold
-t_- and t_+ respectively and `t_- +
-t_+ = t`.
+This depends on the prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>)
+both possessing the n-vector `u`, the Prover (P<sub>=</sub>) and the other
+verifier (P<sub>+</sub>) possessing the n-vector `v`, and the verifiers
+P<sub>-</sub> and P<sub>+</sub> jointly holding shares of the target value, `t`
+(that is, P<sub>-</sub> holds `t_-` and P<sub>-</sub> holds `t_+` such that `t_-
++ t_+ = t`).
 
 However, the security of this protocol requires the vector elements `u` and `v`
 to be members of a large field. So the first step of the validation protocol is
 to take a batch of multiplications, and convert them into a dot product of
 vectors with elements in a large field.
 
-## Transforming into a large prime field
+## Transforming into a Large Prime Field
 
 {{?BINARY=DOI.10.5555/3620237.3620538}} describes how to apply {{?FLPCP}}
 efficiently for binary fields.  When binary values are directly lifted into a
@@ -557,7 +557,10 @@ Distributing Terms:
 ~~~ pseudocode
 x_-·(1 - 2e_-)·y_+ + e_-
 + y_-·x_+·(1 - 2r_+) + r_+
-- 2x_-·y_-·(1 - 2e_-)·y_+·x_+·(1 - 2r_+) - 2x_-·(1 - 2e_-)·y_+·r_+ - 2e_-·y_-·x_+·(1 - 2r_+) - 2e_-·r_+ = 0
+- 2x_-·y_-·(1 - 2e_-)·y_+·x_+·(1 - 2r_+)
+- 2x_-·(1 - 2e_-)·y_+·r_+
+- 2e_-·y_-·x_+·(1 - 2r_+)
+- 2e_-·r_+ = 0
 ~~~
 
 Rearranging terms, and subtracting 1/2 from both sides:
@@ -569,7 +572,9 @@ Rearranging terms, and subtracting 1/2 from both sides:
 + e_- - 2e_-·r_+ + r_+ - ½ = - ½
 ~~~
 
-Factoring allows this to be written as an expression with four terms, each with a component taken from the left (which we will label g) and a component from the right (which we will label h):
+Factoring allows this to be written as an expression with four terms, each with
+a component taken from the left and a component from
+the right.
 
 ~~~ pseudocode
 [-2x_-·y_-·(1 - 2e_-)] · [y_+·x_+·(1 - 2r_+)]
@@ -578,28 +583,23 @@ Factoring allows this to be written as an expression with four terms, each with 
 + [-½(1 - 2e_-)] · [(1 - 2r_+)] = -½
 ~~~
 
-Renaming terms as new variables, the result is the dot product of two four dimensional vectors, g and h:
+Components on the left form a vector that can be named `g`, and components on
+the right form a vector, `h`. The result is the dot product of two four
+dimensional vectors:
 
 ~~~ pseudocode
 g_1·h_1 + g_2·h_2 + g_3·h_3 + g_4·h_4 = -½
 ~~~
 
-Or alternatively:
+Alternatively:
 
 ~~~ pseudocode
 sum(i=1..4, g_i·h_i) = -½
 ~~~
 
-Where P<sub>=</sub> and P<sub>+</sub> both compute `h_i` as follows:
+From this point, each party can compute the vectors that they are able to.
 
-~~~ pseudocode
-h_1 = y_+·x_+·(1 - 2·r_+)
-h_2 = x_+·(1 - 2·r_+)
-h_3 = y_+·(1 - 2·r_+)
-h_4 = 1 − 2·r_+
-~~~
-
-And P<sub>=</sub> and P<sub>-</sub> both compute `g_i` as follows:
+P<sub>=</sub> and P<sub>-</sub> both compute `g_i` as follows:
 
 ~~~ pseudocode
 g_1 = -2·x_-·y_-·(1 - 2·e_- )
@@ -614,28 +614,43 @@ And where:
 e_- = x_-·y_- ⊕ z_- ⊕ r_-
 ~~~
 
-In this field, the negative inverse of two (-½) is `1,152,921,504,606,846,975`.
+P<sub>=</sub> and P<sub>+</sub> both compute `h_i` as follows:
+
+~~~ pseudocode
+h_1 = y_+·x_+·(1 - 2·r_+)
+h_2 = x_+·(1 - 2·r_+)
+h_3 = y_+·(1 - 2·r_+)
+h_4 = 1 − 2·r_+
+~~~
+
+These vectors form the basis of later stages of the proof.
+
+{:aside}
+> In the prime field modulo 2<sup>61</sup>-1, the negative inverse of two (-½) is
+> 1,152,921,504,606,846,975.
 
 ## Validating a batch of multiplications {#initial-uv}
 
-Each multiplication therefore produces two vectors of length 4. To validate a batch of m multiplications, the Prover (P<sub>=</sub>), uses this approach to produce two vectors of length 4m.
+Each multiplication therefore produces two vectors, with each vector being
+length 4. To validate a batch of `m` multiplications, the prover
+(P<sub>=</sub>), forms two vectors of length `4m`.
 
-The Prover P<sub>=</sub> and verifier P<sub>-</sub> both compute the vector u
+The prover (P<sub>=</sub>), and verifier (P<sub>-</sub>) both produce the vector `u` by concatenating the vectors from all multiplications:
 
 ~~~ pseudocode
 u = (g_1<sup>(1)</sup>, g_2<sup>(1)</sup>, g_3<sup>(1)</sup>, g_4<sup>(1)</sup>, … , g_1<sup>(m)</sup>, g_2<sup>(m)</sup>, g_3<sup>(m)</sup>, g_4<sup>(m)</sup>)
 ~~~
 
-The Prover P<sub>=</sub> and verifier P<sub>+</sub> both compute the vector v
+The prover (P<sub>=</sub>) and verifier P<sub>+</sub> both compute the vector `v` in the same way:
 
 ~~~ pseudocode
 v = (h_1<sup>(1)</sup>, h_2<sup>(1)</sup>, h_3<sup>(1)</sup>, h_4<sup>(1)</sup>, … , h_1<sup>(m)</sup>, h_2<sup>(m)</sup>, h_3<sup>(m)</sup>, h_4<sup>(m)</sup>)
 ~~~
 
-If no additive attacks were applied, the dot product of these two vectors should be:
+If no additive attacks were applied by the prover, the dot product of these two vectors should be:
 
 ~~~ pseudocode
-u · v = -m/2
+u\*v = -m/2
 ~~~
 
 ## Overview of Recursive Proof Compression
@@ -645,7 +660,7 @@ vectors of large field elements, we can use a recursive approach to prove this
 expression with O(logN) communication.
 
 The process is iterative, where at each stage there is a pair of vectors, `u`
-and `v`, and a target, `t`, where the goal is to prove that `u · v = t`. The
+and `v`, and a target, `t`, where the goal is to prove that `u·v = t`. The
 values of `u` and `v` start as described in {{initial-uv}}; with `t` initially
 set to a value of `-m/2`.
 

@@ -2,6 +2,7 @@
 
 import fileinput
 import re
+import sys
 
 chars = "-+=()0123456789im"
 subtr = "₋₊₌₍₎₀₁₂₃₄₅₆₇₈₉ᵢₘ"
@@ -11,6 +12,14 @@ blockcode = re.compile(r"^(~~~~*) *(\w+)$")
 inlinecode = re.compile(r"(?:^|(?<=[^\\]))`")
 sub = re.compile(r"(?:<sub>([" + chars + r"]+)</sub>|(?<=\w)_([" + chars + r"]))")
 sup = re.compile(r"(?:<sup>([" + chars + r"]+)</sup>|(?<=\w)\^([" + chars + r"]))")
+
+def warn(msg, **kwargs):
+    print(msg, file=sys.stderr, **kwargs)
+
+def code_off(code, linenum):
+    if code:
+        warn(f"Warning: Unterminated inline code block detected on line {linenum}.")
+    return False
 
 def tr_once(line, pattern, target):
     result = ""
@@ -44,24 +53,25 @@ def trcode(line, code):
     result += tr(line[lastend:]) if code else line[lastend:]
     return (result, code)
 
-end = None
+linenum = 0
+blockend = None
 code = False
 pseudocode = False
 for line in fileinput.input():
-    if end is None:
+    linenum += 1
+    if blockend is None:
         m = blockcode.match(line)
         if m:
-            end = m[1]
+            code = code_off(code, linenum)
+            blockend = m[1]
             pseudocode = m[2] == "pseudocode"
-        elif line == "":
-            code = False
+        elif line.strip() == "":
+            code = code_off(code, linenum)
         else:
             (line, code) = trcode(line, code)
-    else:
-        if line.strip() != end:
-            if pseudocode:
-                line = tr(line)
-        else:
-            end = None
+    elif line.startswith(blockend):
+        blockend = None
+    elif pseudocode:
+        line = tr(line)
 
     print(line, end="")
