@@ -1434,8 +1434,8 @@ A confidential communications channel is not necessary, though the use of TLS
 in most cases.<a href="#section-4-2" class="pilcrow">¶</a></p>
 <p id="section-4-3">This document uses the system of describing, naming, and identifying KEMs
 defined in <span>[<a href="#HPKE" class="cite xref">HPKE</a>]</span>.  For use in PRSS, a KEM is first chosen for use.
-KEM identifiers from <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.1" class="relref">Section 7.1</a> of [<a href="#HPKE" class="cite xref">HPKE</a>]</span> <span class="bcp14">MAY</span> be used for identification or
-negotiation.<a href="#section-4-3" class="pilcrow">¶</a></p>
+KEM identifiers from <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.1" class="relref">Section 7.1</a> of [<a href="#HPKE" class="cite xref">HPKE</a>]</span> are used for identification and
+can be used in negotiation.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <p id="section-4-4">Once a KEM is chosen, one participant is assigned the "sender" role; the other
 participant becomes the "receiver".<a href="#section-4-4" class="pilcrow">¶</a></p>
 <p id="section-4-5">The receiver commences by generating a KEM key pair as follows:<a href="#section-4-5" class="pilcrow">¶</a></p>
@@ -1479,7 +1479,8 @@ Each context is identified by a unique string of bytes.  This string is passed
 to the KDF to produce a shared value that is unique to that context.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">This document uses the system of describing, naming, and identifying KEMs
 defined in <span>[<a href="#HPKE" class="cite xref">HPKE</a>]</span>.  A KDF is first chosen for use.  KDF identifiers
-from <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.2" class="relref">Section 7.2</a> of [<a href="#HPKE" class="cite xref">HPKE</a>]</span> <span class="bcp14">MAY</span> be used for identification or negotiation.<a href="#section-5-3" class="pilcrow">¶</a></p>
+from <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.2" class="relref">Section 7.2</a> of [<a href="#HPKE" class="cite xref">HPKE</a>]</span> are used for identification and can be used in
+negotiation.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <div id="extract">
 <section id="section-5.1">
         <h3 id="name-entropy-extraction">
@@ -1644,7 +1645,7 @@ information is summarized in <a href="#_table-prf" class="auto internal xref">Ta
               <td class="text-left" rowspan="1" colspan="1">PRF_AES_128</td>
               <td class="text-right" rowspan="1" colspan="1">0x0001</td>
               <td class="text-right" rowspan="1" colspan="1">16</td>
-              <td class="text-right" rowspan="1" colspan="1">2<sup>64</sup>
+              <td class="text-right" rowspan="1" colspan="1">2<sup>42</sup>
 </td>
               <td class="text-right" rowspan="1" colspan="1">2<sup>128</sup>
 </td>
@@ -1653,7 +1654,7 @@ information is summarized in <a href="#_table-prf" class="auto internal xref">Ta
               <td class="text-left" rowspan="1" colspan="1">PRF_AES_256</td>
               <td class="text-right" rowspan="1" colspan="1">0x0002</td>
               <td class="text-right" rowspan="1" colspan="1">32</td>
-              <td class="text-right" rowspan="1" colspan="1">2<sup>64</sup>
+              <td class="text-right" rowspan="1" colspan="1">2<sup>43</sup>
 </td>
               <td class="text-right" rowspan="1" colspan="1">2<sup>128</sup>
 </td>
@@ -1764,7 +1765,7 @@ simplest indexing scheme sets <code>M</code> to 1.<a href="#section-7.2-1" class
 <p id="section-7.2-2">Indexed usage is best suited to applications where individual records might be
 processed concurrently.  Using indices based on identifiers from an application,
 such as record indices, can ensure that the same PRF input is only used once and
-frees the randomness context from needing its own counter.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
+frees the randomness context from maintaining its own counter.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 <p id="section-7.2-3">Binary sampling (<a href="#binary" class="auto internal xref">Section 8.2</a>) or oversampling (<a href="#oversampling" class="auto internal xref">Section 8.4</a>) are best suited
 for use with indexed modes.  Rejection sampling (<a href="#rejection" class="auto internal xref">Section 8.3</a>) is likely to be
 unsuitable for an indexed mode because it requires an unpredictable number of
@@ -1831,10 +1832,10 @@ without bias.  However, rejection sampling can require an indefinite number of
 PRF invocations to produce a result.  Rejection is more likely -- and so the
 expected number of PRF invocations increases -- when <code>m</code> is closer to
 2<sup>n-1</sup> than 2<sup>n</sup>.  This can make rejection sampling unsuitable
-for use with indexed randomness (<a href="#indexed" class="auto internal xref">Section 7.2</a>).  Rejection sampling might be used
-a limited number of times before falling back to oversampling
-(<a href="#oversampling" class="auto internal xref">Section 8.4</a>), which can reduce oversampling bias while capping the number
-of PRF invocations.<a href="#section-8.3-3" class="pilcrow">¶</a></p>
+for use with indexed randomness (<a href="#indexed" class="auto internal xref">Section 7.2</a>).<a href="#section-8.3-3" class="pilcrow">¶</a></p>
+<p id="section-8.3-4">Rejection sampling might be used a limited number of times before falling back
+to oversampling (<a href="#oversampling" class="auto internal xref">Section 8.4</a>), which can reduce oversampling bias while
+capping the number of PRF invocations.<a href="#section-8.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="oversampling">
@@ -1872,7 +1873,8 @@ more general analysis of these mechanisms.<a href="#section-9-1" class="pilcrow"
 <a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-usage-limit-analysis" class="section-name selfRef">Usage Limit Analysis</a>
         </h3>
 <p id="section-9.1-1">The usage limits in <a href="#aes" class="auto internal xref">Section 6.1</a> ensure that attacker advantage remains small.
-Theorem 4 of <span>[<a href="#GKWY20" class="cite xref">GKWY20</a>]</span> shows that advantage comprises two components:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
+Theorem 4 of <span>[<a href="#GKWY20" class="cite xref">GKWY20</a>]</span> models the underlying permutation function as an ideal
+PRP and shows that attacker advantage comprises two components:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-9.1-2.1">
             <p id="section-9.1-2.1.1">a computational limit of <code>q²/(2*2^k)</code> that is based solely on attacker work
@@ -1884,18 +1886,30 @@ of uses of the PRF (<code>p</code>), with the entropy of the pseudorandom functi
 acting to counteract attacker advantage<a href="#section-9.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-9.1-3">This analysis will focus on the second component, as the first component is
-unaffected by usage of the PRF.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
-<p id="section-9.1-4">The first component applies to an idealized PRF.  This provides statistical
-security of 2<sup>-64</sup> for AES-128 based on the birthday bound.<a href="#section-9.1-4" class="pilcrow">¶</a></p>
-<p id="section-9.1-5">Consequently, there is no significant benefit to limiting the second component
-to be significantly smaller than 2<sup>-64</sup>.  This analysis assumes the
-same limit for AES-256 for simplicity.  AES uses the same block size for all
-variants, so the entropy (<code>b</code>) is the same at 128 bits.<a href="#section-9.1-5" class="pilcrow">¶</a></p>
-<p id="section-9.1-6">For an overall advantage of 2<sup>-63</sup>, the usage component is limited to
-2<sup>-64</sup>, leading to a limit of 2<sup>64</sup> uses of the PRF, as shown
-in <a href="#_table-prf" class="auto internal xref">Table 1</a>.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
-<p id="section-9.1-7">This assumes that AES is modeled as an ideal pseudorandom permutation.<a href="#section-9.1-7" class="pilcrow">¶</a></p>
+<p id="section-9.1-3">The number of uses (<code>p</code>) are only affected by the second component, as the first
+component is unaffected by usage of the permutation.  However, the first
+component guides our assumptions about the number of times the attacker might be
+willing to invoke the permutation (<code>q</code>). The result shows that statistical security is
+provided based on the birthday bound. For instance, <code>q</code> being 2<sup>64</sup>
+results in a disastrous advantage of 0.5 for the AES-128 key size of 128 bits.
+This first term therefore places an upper bound on the value that <code>q</code> can take
+before an attacker can rely solely on this computational limit.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
+<p id="section-9.1-4">We use this first component to bound the value of <code>q</code> for the second component.
+If advantage is equally divided between each component we can bound <code>q</code> to be at
+most <code>2⁽(k-a)/2)</code>, where <code>a</code> is the desired attacker advantage in bits (that
+is, advantage is at most 2<sup>-a</sup>).<a href="#section-9.1-4" class="pilcrow">¶</a></p>
+<p id="section-9.1-5">Using that value for <code>q</code> and an advantage of <code>(2^a)/2</code> for the second component
+leads to a limit for <code>p</code> of <code>2⁽b-(k+a)/2-2)</code>.  For example, to obtain 40 bits
+of security, the value of <code>p</code> for AES-128 is limited to 2<sup>42</sup>, which
+assumes a value of <code>q</code> no more than 2<sup>44</sup>.<a href="#section-9.1-5" class="pilcrow">¶</a></p>
+<p id="section-9.1-6">For AES-256, the larger key size means that the first component is negligible
+for any value of <code>q</code>, unless <code>p</code> and <code>a</code> are both very small.  This is due to
+AES-256 having the same 128-bit block size as AES-128.  Consequently, increasing
+<code>q</code> only reduces the value of <code>p</code>.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
+<p id="section-9.1-7">On this basis, the same <code>q</code> value can be used for AES-256 as for AES-128. The
+usage limit for AES-256 can be doubled to <code>2⁽b-(k+a)/2-1)</code> (2<sup>43</sup> for
+40 bits of security; the first component is a negligible 2<sup>-169</sup>).<a href="#section-9.1-7" class="pilcrow">¶</a></p>
+<p id="section-9.1-8">This analysis models AES as an ideal pseudorandom permutation.<a href="#section-9.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="formal-analysis">

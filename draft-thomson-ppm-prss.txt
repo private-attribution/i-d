@@ -212,8 +212,8 @@ Table of Contents
 
    This document uses the system of describing, naming, and identifying
    KEMs defined in [HPKE].  For use in PRSS, a KEM is first chosen for
-   use.  KEM identifiers from Section 7.1 of [HPKE] MAY be used for
-   identification or negotiation.
+   use.  KEM identifiers from Section 7.1 of [HPKE] are used for
+   identification and can be used in negotiation.
 
    Once a KEM is chosen, one participant is assigned the "sender" role;
    the other participant becomes the "receiver".
@@ -255,8 +255,8 @@ Table of Contents
 
    This document uses the system of describing, naming, and identifying
    KEMs defined in [HPKE].  A KDF is first chosen for use.  KDF
-   identifiers from Section 7.2 of [HPKE] MAY be used for identification
-   or negotiation.
+   identifiers from Section 7.2 of [HPKE] are used for identification
+   and can be used in negotiation.
 
 5.1.  Entropy Extraction
 
@@ -380,9 +380,9 @@ Table of Contents
              +=============+============+====+======+=======+
              | PRF Name    | Identifier | Nk |   Mi |    Mo |
              +=============+============+====+======+=======+
-             | PRF_AES_128 |     0x0001 | 16 | 2^64 | 2^128 |
+             | PRF_AES_128 |     0x0001 | 16 | 2^42 | 2^128 |
              +-------------+------------+----+------+-------+
-             | PRF_AES_256 |     0x0002 | 32 | 2^64 | 2^128 |
+             | PRF_AES_256 |     0x0002 | 32 | 2^43 | 2^128 |
              +-------------+------------+----+------+-------+
 
                   Table 1: Pseudorandom Function Summary
@@ -469,7 +469,7 @@ Table of Contents
    might be processed concurrently.  Using indices based on identifiers
    from an application, such as record indices, can ensure that the same
    PRF input is only used once and frees the randomness context from
-   needing its own counter.
+   maintaining its own counter.
 
    Binary sampling (Section 8.2) or oversampling (Section 8.4) are best
    suited for use with indexed modes.  Rejection sampling (Section 8.3)
@@ -532,9 +532,11 @@ Table of Contents
    is more likely -- and so the expected number of PRF invocations
    increases -- when m is closer to 2^(n-1) than 2^n.  This can make
    rejection sampling unsuitable for use with indexed randomness
-   (Section 7.2).  Rejection sampling might be used a limited number of
-   times before falling back to oversampling (Section 8.4), which can
-   reduce oversampling bias while capping the number of PRF invocations.
+   (Section 7.2).
+
+   Rejection sampling might be used a limited number of times before
+   falling back to oversampling (Section 8.4), which can reduce
+   oversampling bias while capping the number of PRF invocations.
 
 8.4.  Oversampling
 
@@ -563,8 +565,9 @@ Table of Contents
 9.1.  Usage Limit Analysis
 
    The usage limits in Section 6.1 ensure that attacker advantage
-   remains small.  Theorem 4 of [GKWY20] shows that advantage comprises
-   two components:
+   remains small.  Theorem 4 of [GKWY20] models the underlying
+   permutation function as an ideal PRP and shows that attacker
+   advantage comprises two components:
 
    *  a computational limit of q²/(2*2^k) that is based solely on
       attacker work (q) and the key size (k) of the permutation
@@ -573,25 +576,37 @@ Table of Contents
       the number of uses of the PRF (p), with the entropy of the
       pseudorandom function (b) acting to counteract attacker advantage
 
-   This analysis will focus on the second component, as the first
-   component is unaffected by usage of the PRF.
+   The number of uses (p) are only affected by the second component, as
+   the first component is unaffected by usage of the permutation.
+   However, the first component guides our assumptions about the number
+   of times the attacker might be willing to invoke the permutation (q).
+   The result shows that statistical security is provided based on the
+   birthday bound.  For instance, q being 2^64 results in a disastrous
+   advantage of 0.5 for the AES-128 key size of 128 bits.  This first
+   term therefore places an upper bound on the value that q can take
+   before an attacker can rely solely on this computational limit.
 
-   The first component applies to an idealized PRF.  This provides
-   statistical security of 2^-64 for AES-128 based on the birthday
-   bound.
+   We use this first component to bound the value of q for the second
+   component.  If advantage is equally divided between each component we
+   can bound q to be at most 2⁽(k-a)/2), where a is the desired attacker
+   advantage in bits (that is, advantage is at most 2^-a).
 
-   Consequently, there is no significant benefit to limiting the second
-   component to be significantly smaller than 2^-64.  This analysis
-   assumes the same limit for AES-256 for simplicity.  AES uses the same
-   block size for all variants, so the entropy (b) is the same at 128
-   bits.
+   Using that value for q and an advantage of (2^a)/2 for the second
+   component leads to a limit for p of 2⁽b-(k+a)/2-2).  For example, to
+   obtain 40 bits of security, the value of p for AES-128 is limited to
+   2^42, which assumes a value of q no more than 2^44.
 
-   For an overall advantage of 2^-63, the usage component is limited to
-   2^-64, leading to a limit of 2^64 uses of the PRF, as shown in
-   Table 1.
+   For AES-256, the larger key size means that the first component is
+   negligible for any value of q, unless p and a are both very small.
+   This is due to AES-256 having the same 128-bit block size as AES-128.
+   Consequently, increasing q only reduces the value of p.
 
-   This assumes that AES is modeled as an ideal pseudorandom
-   permutation.
+   On this basis, the same q value can be used for AES-256 as for AES-
+   128.  The usage limit for AES-256 can be doubled to 2⁽b-(k+a)/2-1)
+   (2^43 for 40 bits of security; the first component is a negligible
+   2^-169).
+
+   This analysis models AES as an ideal pseudorandom permutation.
 
 9.2.  Formal Analysis
 
