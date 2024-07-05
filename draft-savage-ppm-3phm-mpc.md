@@ -187,9 +187,9 @@ single party is able to construct the original value (`x`), but the values from
 any two parties include all three shares and can be used to reconstruct the
 original value.
 
-Some protocols might require that values known to all parties be shared. In that
-case, the value of `x<sub>1</sub>` is set to the known value, with
-`x<sub>2</sub>` and `x<sub>3</sub>` both set to zero.
+Some protocols might require that the parties construct a sharing of a value 
+which is known to all the parties. In that case, the value of `x<sub>1</sub>` is 
+set to the known value, with `x<sub>2</sub>` and `x<sub>3</sub>` both set to zero.
 
 ## Identifying Shares and Parties
 
