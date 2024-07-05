@@ -343,39 +343,62 @@ To visualize this, {{fig-mul}} shows cells labeled with the party responsible fo
 ~~~
 {: #fig-mul title="Multiplication by Party"}
 
-The result is a non-replicated sharing of the result `z = z_1 +
-z_2 + z_3`.
+The result is a non-replicated sharing of the result `z = z_1 + z_2 + z_3`.
 
-To reach the desired state where parties each have replicated shares of z, each
-party needs to send its share, z_-, to the party to its left.
+To reach the desired state where parties each have replicated shares of `z`, each
+party needs to send its share, `z_-`, to the party to its left.
 
-Unfortunately, each party cannot simply send this value to another party, as this would allow the recipient to reconstruct the full input values, x and y, using z_-. To prevent this, the value of z_- is masked with a uniformly distributed random mask that is unknown to party P<sub>-</sub>.
+Unfortunately, each party cannot simply send this value to another party, as
+this would allow the recipient to reconstruct the full input values, `x` and
+`y`, using `z_-`. To prevent this, the value of `z_-` is masked with a uniformly
+distributed random mask that is unknown to party P<sub>-</sub>.
 
-Using a source of shared randomness (such as {{PRSS}}), each pair of helpers generates a uniformly distributed random value known only to the two of them. Let r_- denote the left value (known to P<sub>-</sub>) and r_+ be the right value (known to P<sub>+</sub>).
+Using a source of shared randomness (such as {{PRSS}}), each pair of helpers
+generates a uniformly distributed random value known only to the two of
+them. Let `r_-` denote the left value (known to P<sub>-</sub>) and `r_+` be the
+right value (known to P<sub>+</sub>).
 
-Each party uses r_- and r_+ to create a masked value of z_- as follows:
+Each party uses `r_-` and `r_+` to create a masked value of `z_-` as follows:
 
 ~~~ pseudocode
 z_- = x_-·y_- + x_-·y_+ + x_+·y_- + r_- - r_+
 ~~~
 
-These three mask values sum to zero, so this masking does not alter the result. Importantly, the value of r_+ is not known to P<sub>-</sub>, which ensures that z_- cannot be used by P<sub>-</sub> to recover x or y. Thus, z_- is safe to send to P<sub>-</sub>.
+These three mask values sum to zero, so this masking does not alter the
+result. Importantly, the value of `r_+` is not known to P<sub>-</sub>, which
+ensures that `z_-` cannot be used by P<sub>-</sub> to recover `x` or `y`. Thus,
+`z_-` is safe to send to P<sub>-</sub>.
 
-Upon receiving a value from its right — which the recipient names z_+ — each helper is now in possession of two-of-three shares, (z_-, z_+), which is a replicated secret sharing of the product of x and y.
+Upon receiving a value from its right -- which the recipient names `z_+` — each
+helper is now in possession of two-of-three shares, (`z_-`, `z_+`), which is a
+replicated secret sharing of the product of `x` and `y`.
+
 
 # Validation Protocol {#validation}
 
-The basic multiplication protocol in {{multiplication}} only offers "semi-honest security". It is "secure up to an additive attack". Validating multiplications allows any additive attack to be detected, ensuring that a protocol is aborted before any result is produced that might compromise the confidentiality of inputs.
+The basic multiplication protocol in {{multiplication}} only offers "semi-honest
+security". It is "secure up to an additive attack". Validating multiplications
+allows an additive attack to be detected, ensuring that a protocol is aborted
+before any result is produced that might compromise the confidentiality of
+inputs.
 
 ## Additive Attack
 
-By "additive attack", we mean that instead of sending the value z_-, a corrupted party could instead send z_- + a. In the context of boolean circuits, the only possible additive attack is to add 1.
+By "additive attack", we mean that instead of sending the value `z_-`, a corrupted
+party could instead send `z_- + a`. In the context of boolean circuits, the only
+possible additive attack is to add 1.
 
-The multiplication protocol described does not prevent this. Since the value z_- is randomly distributed, the party (P<sub>-</sub>) that receives this value cannot tell if an additive attack has been applied.
+The multiplication protocol described does not prevent this. Since the value
+`z_-` is randomly distributed, the party (P<sub>-</sub>) that receives this
+value cannot tell if an additive attack has been applied.
 
-While an additive attack does not result in information about the inputs being revealed, it corrupts the results. If a protocol depends on revealing certain values, this sort of corruption could be used to reveal information that might not otherwise be revealed.
+While an additive attack does not result in information about the inputs being
+revealed, it corrupts the results. If a protocol depends on revealing certain
+values, this sort of corruption could be used to reveal information that might
+not otherwise be revealed.
 
-For example, if the parties were computing a function that erases a value unless it has reached some minimum such as:
+For example, if the parties were computing a function that erases a value unless
+it has reached some minimum such as:
 
 ~~~ python
 if total_count > 1000:
@@ -384,35 +407,56 @@ else:
     reveal(0)
 ~~~
 
-If a corrupted helper wanted to reveal a total_count that was less than 1000, it could add 1 to the final multiplication used to compute the condition total_count > 1000. The result is that values below the minimum are revealed (and values above the minimum are erased), violating the conditions on the protocol.
+If a corrupted helper wanted to reveal a total_count that was less than 1000, it
+could add 1 to the final multiplication used to compute the condition
+`total_count > 1000`. The result is that values below the minimum are revealed
+(and values above the minimum are erased), violating the conditions on the
+protocol.
 
 ## Malicious Security
 
-Before any values are revealed, the parties perform a validation protocol. This protocol confirms that all of the multiplications performed were performed correctly. That is, that no additive attack was applied by any party.
+Before any values are revealed, the parties perform a validation protocol. This
+protocol confirms that all of the multiplications performed were performed
+correctly. That is, that no additive attack was applied by any party.
 
-If this validation protocol fails, the parties abort the protocol and no values are revealed. All parties destroy the shares they hold.
+If this validation protocol fails, the parties abort the protocol and no values
+are revealed. All parties destroy the shares they hold.
 
-## Overview of the validation protocol
+## Overview of the Validation Protocol
 
-Each of the parties, P<sub>=</sub>, produces a "Zero Knowledge Proof" (ZKP) that proves all of the multiplications it performed were done correctly. The other two parties, P<sub>-</sub> and P<sub>+</sub>, act as "verifiers" and validate this zero knowledge proof.
+Each of the parties produces a "Zero Knowledge Proof" (ZKP) that proves to the
+two other parties (P<sub>-</sub> and P<sub>+</sub>) that all of the
+multiplications it performed were done correctly. The two other parties act as
+"verifiers" and validate this zero knowledge proof.
 
-When operating in a boolean field, if P<sub>=</sub> followed the protocol correctly, this is how they would compute z_-
+The validation protocol is therefore executed three times, with each party
+acting as a prover.  Each validation can occur concurrently.
+
+When operating in a boolean field, if P<sub>=</sub> followed the protocol
+correctly, this is how they would compute `z_-`:
 
 ~~~ pseudocode
 z_- = x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+
 ~~~
 
-So the expression:
+This can be restated as:
 
 ~~~ pseudocode
 x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
-will hold true if the protocol was followed correctly, but will equal **_one_** if there was an additive attack.
+This statement is true if the protocol was followed correctly, but the value
+will be non-zero if there was an additive attack.
 
-By computing this quantity in a large prime field (not a boolean field), and then summing across all of the multiplications in a batch, we can compute the total number of times an additive attack was applied. So long as the number of multiplication in a validation batch is smaller than the size of the prime field, this approach will detect any deviation from the protocol.
+Validation is made more efficient by validating multiple multiplications at the
+same time.  The above formula is computed in large prime field (not the original
+binary field), with the sum across all of the multiplications being a count of
+how much error was introduced by an additive attack (or, for a binary field, the
+number of additive attacks).  Provided that the number of multiplications
+included in the validation batch is smaller than the size of the prime field,
+this approach will detect any deviation from the protocol with high probability.
 
-For this protocol, the parties will use the field of integers mod p, where p is the Mersenne prime 2<sup>61</sup>\-1. Other primes could be used, but this value provides good security margins for a large number of multiplications. It also provides several opportunities for optimization on 64-bit hardware.
+For this protocol, the parties will use the field of integers mod `p`, where `p` is a large prime.
 
 ## Distributed Zero-Knowledge Proofs
 
@@ -945,9 +989,11 @@ AES-128-GCM is RECOMMENDED, with the same KDF being used for PRSS and AES-128 as
 the PRP.
 
 For validation, the prime field used is modulo the Mersenne prime
-2<sup>61</sup>-1 validation.  Any sufficiently large prime can be used; see
-TODO/below for an analysis of the batch size requirements and security
-properties that can be obtained by using this particular prime.
+2<sup>61</sup>-1 validation.  Any sufficiently large prime can be used, but this
+value provides both good performance on 64-bit hardware and useful security
+margins for typical batch sizes; see TODO/below for an analysis of the batch
+size requirements and security properties that can be obtained by using this
+particular prime.
 
 The Fiat-Shamir transform {{challenge}} used in the validation proofs can use
 SHA-256.  However, any preimage and collision-resistant hash function can be
