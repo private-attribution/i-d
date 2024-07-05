@@ -1804,9 +1804,17 @@ z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;·y&lt;sub&gt;\-&lt;/sub&
         </h3>
 <p id="section-4.3-1">Each of the parties, P<sub>=</sub>, produces a "Zero Knowledge Proof" (ZKP) that proves all of the multiplications it performed were done correctly. The other two parties, P<sub>-</sub> and P<sub>+</sub>, act as "verifiers" and validate this zero knowledge proof.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">When operating in a boolean field, if P<sub>=</sub> followed the protocol correctly, this is how they would compute z<sub>-</sub><a href="#section-4.3-2" class="pilcrow">¶</a></p>
-<p id="section-4.3-3">z<sub>-</sub> = x<sub>-</sub> ∧ y<sub>-</sub> ⊕ x<sub>-</sub> ∧ y<sub>+</sub> ⊕ x<sub>+</sub> ∧ y<sub>-</sub> ⊕ r<sub>-</sub> ⊕ r<sub>+</sub><a href="#section-4.3-3" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.3-3">
+<pre>
+z&lt;sub&gt;\-&lt;/sub&gt; = x&lt;sub&gt;\-&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ x&lt;sub&gt;\-&lt;/sub&gt;∧y₊ ⊕ x&lt;sub&gt;\+&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;\-&lt;/sub&gt; ⊕ r₊
+</pre><a href="#section-4.3-3" class="pilcrow">¶</a>
+</div>
 <p id="section-4.3-4">So the expression:<a href="#section-4.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.3-5">x<sub>-</sub> ∧ y<sub>-</sub> ⊕ x<sub>-</sub> ∧ y<sub>+</sub> ⊕ x<sub>+</sub> ∧ y<sub>-</sub> ⊕ r<sub>-</sub> ⊕ r<sub>+</sub> ⊕ z<sub>-</sub> = 0<a href="#section-4.3-5" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-4.3-5">
+<pre>
+x&lt;sub&gt;\-&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ x&lt;sub&gt;\-&lt;/sub&gt;∧y₊ ⊕ x&lt;sub&gt;\+&lt;/sub&gt;∧y&lt;sub&gt;\-&lt;/sub&gt; ⊕ r&lt;sub&gt;\-&lt;/sub&gt; ⊕ r₊ ⊕ z&lt;sub&gt;\-&lt;/sub&gt; = 0
+</pre><a href="#section-4.3-5" class="pilcrow">¶</a>
+</div>
 <p id="section-4.3-6">will hold true if the protocol was followed correctly, but will equal <strong><em>one</em></strong> if there was an additive attack.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
 <p id="section-4.3-7">By computing this quantity in a large prime field (not a boolean field), and then summing across all of the multiplications in a batch, we can compute the total number of times an additive attack was applied. So long as the number of multiplication in a validation batch is smaller than the size of the prime field, this approach will detect any deviation from the protocol.<a href="#section-4.3-7" class="pilcrow">¶</a></p>
 <p id="section-4.3-8">For this protocol, the parties will use the field of integers mod p, where p is the Mersenne prime 2<sup>61</sup>-1. Other primes could be used, but this value provides good security margins for a large number of multiplications. It also provides several opportunities for optimization on 64-bit hardware.<a href="#section-4.3-8" class="pilcrow">¶</a></p>
