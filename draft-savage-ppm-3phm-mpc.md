@@ -467,7 +467,7 @@ x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
 The verifier on the left, P<sub>-</sub>, knows the values of `y_-`, `x_-`,
-`r_-`, and `z_-`.  - z_-
+`r_-`, and `z_-`.
 
 The verifier on the right, P<sub>+</sub>, knows the values of `x_+`, `y_+`,
 `r_+`.
