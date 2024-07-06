@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                 B. Savage
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 6 January 2025                                          Mozilla
-                                                             5 July 2024
+Expires: 7 January 2025                                          Mozilla
+                                                             6 July 2024
 
 
 Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 January 2025.
+   This Internet-Draft will expire on 7 January 2025.
 
 Copyright Notice
 
@@ -513,7 +513,7 @@ Table of Contents
    x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 
    The verifier on the left, P_(-), knows the values of y₋, x₋, r₋, and
-   z₋.  - z_-
+   z₋.
 
    The verifier on the right, P_(+), knows the values of x₊, y₊, r₊.
 
