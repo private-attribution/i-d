@@ -445,16 +445,18 @@ This can be restated as:
 x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
-This statement is true if the protocol was followed correctly, but the value
-will be non-zero if there was an additive attack.
+The left hand side of this expression will equal zero if the protocol was followed 
+correctly, but it will equal one if there was an additive attack. 
 
 Validation is made more efficient by validating multiple multiplications at the
-same time.  The above formula is computed in large prime field (not the original
-binary field), with the sum across all of the multiplications being a count of
-how much error was introduced by an additive attack (or, for a binary field, the
-number of additive attacks).  Provided that the number of multiplications
-included in the validation batch is smaller than the size of the prime field,
-this approach will detect any deviation from the protocol with high probability.
+same time.
+
+The above statement can be transformed to yield the result (either zero or one)
+as a value in a large prime field {{prime_field_transformation}}. These values
+can be summed across all the multiplications in a large batch. The total sum will 
+be the count of additive attacks applied, which will be zero if the prover correctly
+followed the protocol. There will not be any wrapping around so long as the number
+of multiplications in the batch is smaller than the prime used to define the field.
 
 For this protocol, the parties will use the field of integers mod `p`, where `p` is a large prime.
 
@@ -504,7 +506,7 @@ to be members of a large field. So the first step of the validation protocol is
 to take a batch of multiplications, and convert them into a dot product of
 vectors with elements in a large field.
 
-## Transforming into a Large Prime Field
+## Transforming into a Large Prime Field {#prime_field_transformation}
 
 {{?BINARY=DOI.10.5555/3620237.3620538}} describes how to apply {{?FLPCP}}
 efficiently for binary fields.  When binary values are directly lifted into a
