@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-04T01:00:50.810884+00:00",
+  "timestamp": "2024-07-07T01:06:12.081778+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -49,7 +49,24 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 12,
+      "id": "I_kwDOJgF-t86OmZln",
+      "title": "Oops",
+      "url": "https://github.com/private-attribution/i-d/issues/12",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "![image](https://github.com/private-attribution/i-d/assets/67641/6fc44568-5708-4087-b8e9-8dfbba981bcd)\r\n\r\nLook into how that might be avoided.",
+      "createdAt": "2024-07-05T11:34:59Z",
+      "updatedAt": "2024-07-05T11:34:59Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": [
     {
       "number": 1,
@@ -112,24 +129,26 @@
       "id": "PR_kwDOJgF-t85zTiSF",
       "title": "Limit analysis",
       "url": "https://github.com/private-attribution/i-d/pull/3",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "I spent some time with this and concluded that our limits were not good in the first time around.  A more careful analysis shows that we are still OK, but the limits are closer than ideal.  We're assuming $2^{44}$ work for the adversary here for 40 bits of security, which is probably fine, though it is much weaker than the same analysis I've seen for cipher usage elsewhere.\r\n\r\nConcrete numbers: $2^{64}$ becomes $2^{42}$ for AES-128 (double that for AES-256).",
       "createdAt": "2024-06-24T02:53:04Z",
-      "updatedAt": "2024-06-28T04:37:35Z",
+      "updatedAt": "2024-07-05T11:44:12Z",
       "baseRepository": "private-attribution/i-d",
       "baseRefName": "main",
       "baseRefOid": "9adcc2d9fee4d94dee6455c09e256d2ba1971464",
       "headRepository": "private-attribution/i-d",
       "headRefName": "limit-analysis",
       "headRefOid": "d367e3aef469fffb206a9ca07897de101dc956f9",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-07-05T11:44:11Z",
+      "mergedAt": "2024-07-05T11:44:11Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "f787440bad254410fc01b7172620854b5bd61a17"
+      },
       "comments": [],
       "reviews": [
         {
@@ -198,7 +217,7 @@
             "abbreviatedOid": "88c7d1a"
           },
           "author": "akoshelev",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "How useful it is for us to model PRSS in the form of throughput, rather than number of invocations that is bound to 16 byte inputs? This may come down to the same question about vectorization - if we standardize it, it will become tricky to say how many invocations per input row we expect from PRSS. ",
           "createdAt": "2024-06-28T01:58:17Z",
@@ -237,6 +256,369 @@
               "updatedAt": "2024-06-28T04:53:44Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOJgF-t850fiIC",
+      "title": "Multiplication draft",
+      "url": "https://github.com/private-attribution/i-d/pull/4",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This will look like a complete mess.  But I wanted to get this out there now so that we can iterate on the details.\r\n\r\nI need to look into how we manage subscripts as a high priority item. There are a bunch of places where we should be tagging stuff as code or using pseudocode blocks, but I stopped doing the conversion for now until I sort out the subscript business.",
+      "createdAt": "2024-07-05T04:16:46Z",
+      "updatedAt": "2024-07-05T05:02:47Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "ded76d448d2e5e30cb875f209d31f696f99e65fc",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "mul",
+      "headRefOid": "866c6bebfb23ad3c68f3f7acb670da29744ea9ff",
+      "closedAt": "2024-07-05T05:02:47Z",
+      "mergedAt": "2024-07-05T05:02:47Z",
+      "mergedBy": "benjaminsavage",
+      "mergeCommit": {
+        "oid": "17fa96c47b4f085b5812c6d73adfe614af6a65c7"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86AvOcf",
+          "commit": {
+            "abbreviatedOid": "866c6be"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Lets go!",
+          "createdAt": "2024-07-05T05:02:42Z",
+          "updatedAt": "2024-07-05T05:02:42Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOJgF-t850f2TR",
+      "title": "Fix sub",
+      "url": "https://github.com/private-attribution/i-d/pull/5",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-07-05T05:28:23Z",
+      "updatedAt": "2024-07-05T05:33:45Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "5a9d5c6cfc6a2c681a5775389d9d3f65beb9971d",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "fix-sub",
+      "headRefOid": "70613d8c37faf89d8ea6dbbbd6c0840503369f23",
+      "closedAt": "2024-07-05T05:33:42Z",
+      "mergedAt": "2024-07-05T05:33:42Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "38b584258e18df851903acf25d7ed507bceb0e73"
+      },
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This should work for code blocks only for now.  Next step is a bit trickier, because matching on inline code is fiddly.",
+          "createdAt": "2024-07-05T05:28:58Z",
+          "updatedAt": "2024-07-05T05:28:58Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOJgF-t850f2jx",
+      "title": "Update draft-savage-ppm-3phm-mpc.md",
+      "url": "https://github.com/private-attribution/i-d/pull/6",
+      "state": "MERGED",
+      "author": "benjaminsavage",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I think the formula AND the diagram were incorrect",
+      "createdAt": "2024-07-05T05:29:01Z",
+      "updatedAt": "2024-07-05T05:32:48Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "5a9d5c6cfc6a2c681a5775389d9d3f65beb9971d",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "benjaminsavage-correct-multiplication-diagram",
+      "headRefOid": "db8ebefc1441bcd026e5c92cdec3a00589969511",
+      "closedAt": "2024-07-05T05:32:48Z",
+      "mergedAt": "2024-07-05T05:32:47Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "9a43e2c9618a210ca73c2ba8238e66b125b5f3f1"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86Avetn",
+          "commit": {
+            "abbreviatedOid": "323cd09"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Perfect.  If we're sending left, it's funny that we compute x-*y- when the left party knows that bit already, but that's fine.",
+          "createdAt": "2024-07-05T05:30:49Z",
+          "updatedAt": "2024-07-05T05:30:49Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJgF-t86AvfBS",
+          "commit": {
+            "abbreviatedOid": "323cd09"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-05T05:31:54Z",
+          "updatedAt": "2024-07-05T05:31:54Z",
+          "comments": [
+            {
+              "originalPosition": 43,
+              "body": "```suggestion\r\n     +------+------+------+\r\n```",
+              "createdAt": "2024-07-05T05:31:54Z",
+              "updatedAt": "2024-07-05T05:31:54Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOJgF-t850f5kw",
+      "title": "Update draft-savage-ppm-3phm-mpc.md",
+      "url": "https://github.com/private-attribution/i-d/pull/7",
+      "state": "MERGED",
+      "author": "benjaminsavage",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Let's use the same formatting for both, and not have too much space around the multiplications\r\n\r\nThis is ugly:\r\n<img width=\"424\" alt=\"ugly\" src=\"https://github.com/private-attribution/i-d/assets/52456851/5fbffee5-c70f-486e-a3c5-21f220415484\">\r\n",
+      "createdAt": "2024-07-05T05:42:37Z",
+      "updatedAt": "2024-07-05T08:17:29Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "de6e60f940f0a4954837e17c78f2439af2927f79",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "benjaminsavage-patch-mult-algo",
+      "headRefOid": "86292ea0f22152538af6d10f6ba7735faedb5b24",
+      "closedAt": "2024-07-05T05:44:18Z",
+      "mergedAt": "2024-07-05T05:44:18Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "af1ce5e792738fe2b37080d9f30bd23ccd78327a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86Avhtp",
+          "commit": {
+            "abbreviatedOid": "0b3d1aa"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-05T05:43:32Z",
+          "updatedAt": "2024-07-05T05:43:50Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "```suggestion\r\n~~~ pseudocode\r\nz<sub>-</sub> = x<sub>-</sub>\u00b7y<sub>-</sub> + x<sub>-</sub>\u00b7y<sub>+</sub> + x<sub>+</sub>\u00b7y<sub>-</sub>\r\n~~~\r\n```",
+              "createdAt": "2024-07-05T05:43:33Z",
+              "updatedAt": "2024-07-05T05:43:50Z"
+            },
+            {
+              "originalPosition": 16,
+              "body": "```suggestion\r\n~~~ pseudocode\r\nz<sub>\\-</sub> = x<sub>\\-</sub>\u00b7y<sub>\\-</sub> + x<sub>\\-</sub>\u00b7y<sub>+</sub> + x<sub>+</sub>\u00b7y<sub>\\-</sub> + r<sub>\\-</sub> - r<sub>+</sub>\r\n~~~\r\n```",
+              "createdAt": "2024-07-05T05:43:45Z",
+              "updatedAt": "2024-07-05T05:43:50Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "PR_kwDOJgF-t850f7NZ",
+      "title": "Update draft-savage-ppm-3phm-mpc.md",
+      "url": "https://github.com/private-attribution/i-d/pull/8",
+      "state": "MERGED",
+      "author": "benjaminsavage",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Looks like this now:\r\n![Uploading too much space.png\u2026]()\r\n",
+      "createdAt": "2024-07-05T05:50:06Z",
+      "updatedAt": "2024-07-05T05:52:51Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "e804ac6c6c2c4f251d52adef2e11a74107e70607",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "benjaminsavage-patch-1",
+      "headRefOid": "2e1122958fc8b2fc9578846ac92d16b789d9e484",
+      "closedAt": "2024-07-05T05:52:51Z",
+      "mergedAt": "2024-07-05T05:52:50Z",
+      "mergedBy": "benjaminsavage",
+      "mergeCommit": {
+        "oid": "52609f4e4eac571d591f54cca9943dcfe100a2df"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86Avj4q",
+          "commit": {
+            "abbreviatedOid": "2e11229"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-05T05:51:51Z",
+          "updatedAt": "2024-07-05T05:51:51Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOJgF-t850f9hF",
+      "title": "Update draft-savage-ppm-3phm-mpc.md",
+      "url": "https://github.com/private-attribution/i-d/pull/9",
+      "state": "MERGED",
+      "author": "benjaminsavage",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Like this?",
+      "createdAt": "2024-07-05T05:58:26Z",
+      "updatedAt": "2024-07-05T06:09:12Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "52609f4e4eac571d591f54cca9943dcfe100a2df",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "benjaminsavage-patch-2",
+      "headRefOid": "8e554d6ae26a37afd01cd0da8139f78635780b6a",
+      "closedAt": "2024-07-05T06:09:09Z",
+      "mergedAt": "2024-07-05T06:09:09Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "60c0e26282d53f2503087cf94aaa6294a55bb3da"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86AvprJ",
+          "commit": {
+            "abbreviatedOid": "8e554d6"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-05T06:09:05Z",
+          "updatedAt": "2024-07-05T06:09:05Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOJgF-t850hn8_",
+      "title": "Update draft-savage-ppm-3phm-mpc.md",
+      "url": "https://github.com/private-attribution/i-d/pull/10",
+      "state": "MERGED",
+      "author": "benjaminsavage",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Is this accurate?",
+      "createdAt": "2024-07-05T10:52:45Z",
+      "updatedAt": "2024-07-05T11:44:00Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "3b653da64333cb4abdbdc18204425aa4be387dd4",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "benjaminsavage-patch-2",
+      "headRefOid": "24c3a26bb9910023059e191bdf3b18af21f57c08",
+      "closedAt": "2024-07-05T11:43:56Z",
+      "mergedAt": "2024-07-05T11:43:56Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "415433c25814d9d8be80983a0946753563a372b9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86Ax3ZB",
+          "commit": {
+            "abbreviatedOid": "24c3a26"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-05T11:43:51Z",
+          "updatedAt": "2024-07-05T11:43:51Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDOJgF-t850h0Mf",
+      "title": "Remove some of the intermediate steps",
+      "url": "https://github.com/private-attribution/i-d/pull/11",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I think that we can skip this step.  It's a bit messy.",
+      "createdAt": "2024-07-05T11:29:17Z",
+      "updatedAt": "2024-07-05T11:30:33Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "2566801ef2fa8e6f3eaba33b54cc0b9d7b30c4d1",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "no-distrib",
+      "headRefOid": "32327f3077feec8493fdaf109e67415ea67b04e2",
+      "closedAt": "2024-07-05T11:30:32Z",
+      "mergedAt": "2024-07-05T11:30:32Z",
+      "mergedBy": "benjaminsavage",
+      "mergeCommit": {
+        "oid": "abc007271e42b3e77363c378ad71738eef138776"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86AxyUr",
+          "commit": {
+            "abbreviatedOid": "32327f3"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-05T11:30:25Z",
+          "updatedAt": "2024-07-05T11:30:25Z",
+          "comments": []
         }
       ]
     }
