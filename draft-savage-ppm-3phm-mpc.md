@@ -896,8 +896,8 @@ which is negligible.
 
 The verifiers generate the same point r independently. Each verifier only has
 access to one set of shares from `G(x)` so they each compute a hash of the shares
-they have. They then send that hash to each other, after which they can compute
-the full hash value.
+they have. They then send that hash to each other, after which they can concatenate
+the two hash values and compute commitment hash value.
 
 Note that one verifier does not need to receive their shares of `G(x)` from the
 prover, so they are able to compute their hash before even starting any
