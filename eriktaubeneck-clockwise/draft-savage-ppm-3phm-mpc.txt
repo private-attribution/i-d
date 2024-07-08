@@ -254,7 +254,7 @@ Table of Contents
    share (with x₁ being the next highest after x₃).  This is illustrated
    in Figure 1:
 
-        x₃ .----. x₁  x₁ .----. x₂  x₂ .----.  x₃
+        x₁ .----. x₂  x₂ .----.  x₃  x₃ .----. x₁
       .---+  P₁  +------+  P₂  +------+  P₃  +---.
        \   `----'        `----'        `----'   /
         '--------------------------------------'
