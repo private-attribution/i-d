@@ -365,7 +365,7 @@ in this document).  This produces a simple formula for determining the minimum
 value of `N`:
 
 ~~~ pseudocode
-N >= 4\*max(23\*ln(10\*d/delta), 2\*sensitivity_infty/s)
+N >= 4\*max(23\*ln(10\*d/delta), 2\*sensitivity\_infty/s)
 ~~~
 
 
