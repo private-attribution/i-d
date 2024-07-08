@@ -200,7 +200,7 @@ other share, or right share, held by each is the next highest-numbered share
 illustrated in {{fig-shares-parties}}:
 
 ~~~ aasvg
-     x₃ .----. x₁  x₁ .----. x₂  x₂ .----.  x₃
+     x₁ .----. x₂  x₂ .----.  x₃  x₃ .----. x₁
    .---+  P₁  +------+  P₂  +------+  P₃  +---.
     \   `----'        `----'        `----'   /
      '--------------------------------------'
