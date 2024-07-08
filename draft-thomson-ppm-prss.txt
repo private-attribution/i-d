@@ -730,9 +730,9 @@ Table of Contents
 
    [VDAF]     Barnes, R., Cook, D., Patton, C., and P. Schoppmann,
               "Verifiable Distributed Aggregation Functions", Work in
-              Progress, Internet-Draft, draft-irtf-cfrg-vdaf-09, 13 May
+              Progress, Internet-Draft, draft-irtf-cfrg-vdaf-10, 8 July
               2024, <https://datatracker.ietf.org/doc/html/draft-irtf-
-              cfrg-vdaf-09>.
+              cfrg-vdaf-10>.
 
 Appendix A.  Alternative Designs
 
