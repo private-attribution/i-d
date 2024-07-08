@@ -4,9 +4,9 @@ import fileinput
 import re
 import sys
 
-chars = "-+=()0123456789im"
-subtr = "₋₊₌₍₎₀₁₂₃₄₅₆₇₈₉ᵢₘ"
-suptr = "⁻⁺⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ⁱᵐ"
+chars = "-+=()0123456789imp"
+subtr = "₋₊₌₍₎₀₁₂₃₄₅₆₇₈₉ᵢₘₚ"
+suptr = "⁻⁺⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ⁱᵐᵖ"
 
 blockcode = re.compile(r"^(~~~~*) *(\w+)$")
 inlinecode = re.compile(r"(?:^|(?<=[^\\]))`")
@@ -36,7 +36,8 @@ def tr_once(line, pattern, target):
 def tr(line):
     line = line.replace("\\*", "·").replace("\\+", "⊕").replace("...", "…")
     line = tr_once(line, sub, subtr)
-    return tr_once(line, sup, suptr)
+    line = tr_once(line, sup, suptr)
+    return line.replace("\\_", "_").replace("\\^", "^")
 
 def trcode(line, code):
     result = ""
