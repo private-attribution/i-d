@@ -4,9 +4,9 @@ import fileinput
 import re
 import sys
 
-chars = "-+=()0123456789imp"
-subtr = "₋₊₌₍₎₀₁₂₃₄₅₆₇₈₉ᵢₘₚ"
-suptr = "⁻⁺⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ⁱᵐᵖ"
+chars = "-+=()0123456789imps"
+subtr = "₋₊₌₍₎₀₁₂₃₄₅₆₇₈₉ᵢₘₚₛ"
+suptr = "⁻⁺⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ⁱᵐᵖˢ"
 
 blockcode = re.compile(r"^(~~~~*) *(\w+)$")
 inlinecode = re.compile(r"(?:^|(?<=[^\\]))`")
