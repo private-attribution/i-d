@@ -627,7 +627,7 @@ Each multiplication therefore produces two vectors, with each vector being
 length 4. To validate a batch of `m` multiplications, the prover
 (P<sub>=</sub>), forms two vectors of length `4m`.
 
-The prover (P<sub>=</sub>), and verifier (P<sub>-</sub>) both produce the vector `u` by concatenating the vectors from all multiplications:
+The prover (P<sub>=</sub>), and left verifier (P<sub>-</sub>) both produce the vector `u` by concatenating the vectors from all multiplications:
 
 ~~~ pseudocode
 u = (g_1<sup>(1)</sup>, g_2<sup>(1)</sup>, g_3<sup>(1)</sup>, g_4<sup>(1)</sup>,
@@ -636,7 +636,7 @@ u = (g_1<sup>(1)</sup>, g_2<sup>(1)</sup>, g_3<sup>(1)</sup>, g_4<sup>(1)</sup>,
      g_1<sup>(m)</sup>, g_2<sup>(m)</sup>, g_3<sup>(m)</sup>, g_4<sup>(m)</sup>)
 ~~~
 
-The prover (P<sub>=</sub>) and verifier P<sub>+</sub> both compute the vector `v` in the same way:
+The prover (P<sub>=</sub>) and right verifier (P<sub>+</sub>) both compute the vector `v` in the same way:
 
 ~~~ pseudocode
 v = (h_1<sup>(1)</sup>, h_2<sup>(1)</sup>, h_3<sup>(1)</sup>, h_4<sup>(1)</sup>,
