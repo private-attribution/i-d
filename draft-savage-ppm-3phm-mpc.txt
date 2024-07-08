@@ -254,19 +254,10 @@ Table of Contents
    share (with x₁ being the next highest after x₃).  This is illustrated
    in Figure 1:
 
-        x₁ .----. x₂  x₂ .----.  x₃  x₃ .----. x₁
-      .---+  P₁  +------+  P₂  +------+  P₃  +---.
-       \   `----'        `----'        `----'   /
-        '--------------------------------------'
-
-
-           x₁  .----.  x₂
-          .---|  P₁  |---.
-         /     `----'     \
-    x₁  /                  \  x₂
-    .----.                .----.
-   |  P₃  |--------------|  P₂  |
-    `----'  x₃        x₃  `----'
+            x₁ .----. x₂  x₂ .----. x₃  x₃ .----. x₁
+          .---+  P₁  +------+  P₂  +------+  P₃  +---.
+           \   `----'        `----'        `----'   /
+            '--------------------------------------'
 
                         Figure 1: Parties and Shares
 
@@ -286,10 +277,10 @@ Table of Contents
             '---------------------------------'
 
    send
-   right:     .----.      .----.      .----.
-         .-->|  P₁  +--->+  P₂  +--->|  P₃  +--.
-          \   `----'      `----'      `----'  /
-           '---------------------------------'
+   right:      .----.      .----.      .----.
+          .-->|  P₁  +--->+  P₂  +--->|  P₃  +--.
+           \   `----'      `----'      `----'  /
+            '---------------------------------'
 
                   Figure 2: Parties and Sending Directions
 
@@ -739,14 +730,14 @@ Table of Contents
        choice of r, the likelihood that a dishonest prover can cheat
        without detection is inversely proportional to the field size.
 
-       1.  If we define two new vectors u’ = <p₀(r), …,
-           p<sub>s-1</sub>(r)>, and v’ = <q₀(r), …, q<sub>s-1</sub>(r)>,
-           then we can rewrite the statement that needs to be proven as:
-           u’ · v’ = G(r).  This is of the same form as the original
-           statement, but with the new vectors u’ and v’ having length L
-           times shorter than the original vectors.
+       1.  If we define two new vectors u′ = { p₀(r), …, pₛ₋₁(r) }, and
+           v′ = { <q₀(r), …, qₛ₋₁(r) }, then we can rewrite the
+           statement that needs to be proven as: u′ · v′ = G(r).  This
+           is of the same form as the original statement, but with the
+           new vectors u′ and v′ having length L times shorter than the
+           original vectors.
 
-       2.  u’ and v’ need not be communicated, since the prover and left
+       2.  u′ and v′ need not be communicated, since the prover and left
            verifier (P₋) can both compute each value pᵢ(r) using
            Lagrange interpolation, just as the prover and right verifier
            (P₊) can compute each value qᵢ(r).
@@ -761,7 +752,7 @@ Table of Contents
            transforms this protocol from a multi-round interactive
            protocol into a constant round protocol.
 
-   5.  The vectors u and v are replaced by u’ and v’, the value of t is
+   5.  The vectors u and v are replaced by u′ and v′, the value of t is
        set to G(r), and the next iteration is started.
 
    The recursion ends when the vectors u and v have length less than L.
@@ -951,13 +942,13 @@ Table of Contents
 
    G(x) = sum(i=0..s, pᵢ(x)·qᵢ(x))
 
-   This is equivalent to providing that u’ · v’ = G(r), where:
+   This is equivalent to providing that u′ · v′ = G(r), where:
 
-   u’ = <p₀(r), p₁(r), …>
-   v’ = <q₀(r), q₁(r), …>
+   u′ = <p₀(r), p₁(r), …>
+   v′ = <q₀(r), q₁(r), …>
 
    This is a problem of exactly the same form as the original problem,
-   except that the length of u’ and v’ is now a factor of L shorter than
+   except that the length of u′ and v′ is now a factor of L shorter than
    the original length of u and v.
 
    The prover (P_(=)) and left verifier (P_(-)) use Lagrange
@@ -1088,7 +1079,7 @@ Table of Contents
       -  Show equation for how many bits of security you get when
          validating N multiplications
 
-   *  You can’t just use the multiplication protocol without the
+   *  You can't just use the multiplication protocol without the
       validation protocol due to the additive attack (explain why)
 
    *  Communication security (authentication)
