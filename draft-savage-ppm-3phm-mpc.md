@@ -377,7 +377,7 @@ replicated secret sharing of the product of `x` and `y`.
 # Validation Protocol {#validation}
 
 The basic multiplication protocol in {{multiplication}} only offers semi-honest
-security. It is "secure up to an additive attack". Validating multiplications
+security. It is secure up to an additive attack; see {{additive-attack}}. Validating multiplications
 allows an additive attack to be detected, ensuring that a protocol is aborted
 before any result is produced that might compromise the confidentiality of
 inputs.
