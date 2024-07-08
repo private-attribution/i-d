@@ -3,6 +3,13 @@
 This is the working area for Internet-Drafts related to [Interoperable Private
 Attribution](https://github.com/patcg-individual-drafts/ipa).
 
+## Simple and Efficient Binomial Protocols for Differential Privacy in MPC
+
+* [Editor's Copy](https://private-attribution.github.io/i-d/#go.draft-case-ppm-binomial-dp.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-case-ppm-binomial-dp)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-case-ppm-binomial-dp)
+* [Compare Editor's Copy to Individual Draft](https://private-attribution.github.io/i-d/#go.draft-case-ppm-binomial-dp.diff)
+
 ## Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC Setting
 
 * [Editor's Copy](https://private-attribution.github.io/i-d/#go.draft-savage-ppm-3phm-mpc.html)
