@@ -115,7 +115,7 @@ Concretely, this means that a single dishonest party cannot cause the value of
 inputs to be revealed. Also, a single dishonest party cannot alter the output of
 any operation without detection. The protocol is aborted if honest parties
 detect an error that might indicate the actions of a dishonest party. This means
-that a dishonest party can disrupt the protocol
+that a dishonest party can disrupt the protocol.
 
 
 ## MPC Protocol Prerequisites
