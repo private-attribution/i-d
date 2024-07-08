@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                 B. Savage
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 7 January 2025                                          Mozilla
-                                                             6 July 2024
+Expires: 9 January 2025                                          Mozilla
+                                                             8 July 2024
 
 
 Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 January 2025.
+   This Internet-Draft will expire on 9 January 2025.
 
 Copyright Notice
 
@@ -490,18 +490,21 @@ Table of Contents
 
    x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 
-   This statement is true if the protocol was followed correctly, but
-   the value will be non-zero if there was an additive attack.
+   The left hand side of this expression will equal zero if the protocol
+   was followed correctly, but it will equal one if there was an
+   additive attack.
 
    Validation is made more efficient by validating multiple
-   multiplications at the same time.  The above formula is computed in
-   large prime field (not the original binary field), with the sum
-   across all of the multiplications being a count of how much error was
-   introduced by an additive attack (or, for a binary field, the number
-   of additive attacks).  Provided that the number of multiplications
-   included in the validation batch is smaller than the size of the
-   prime field, this approach will detect any deviation from the
-   protocol with high probability.
+   multiplications at the same time.
+
+   The above statement can be transformed to yield the result (either
+   zero or one) as a value in a large prime field Section 4.6.  These
+   values can be summed across all the multiplications in a large batch.
+   The total sum will be the count of additive attacks applied, which
+   will be zero if the prover correctly followed the protocol.  There
+   will not be any wrapping around so long as the number of
+   multiplications in the batch is smaller than the prime used to define
+   the field.
 
    For this protocol, the parties will use the field of integers mod p,
    where p is a large prime.
@@ -645,12 +648,18 @@ Table of Contents
    The prover (P_(=)), and verifier (P_(-)) both produce the vector u by
    concatenating the vectors from all multiplications:
 
-   u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾, … , g₁⁽ᵐ⁾, g₂⁽ᵐ⁾, g₃⁽ᵐ⁾, g₄⁽ᵐ⁾)
+   u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾,
+        g₁⁽²⁾, g₂⁽²⁾, g₃⁽²⁾, g₄⁽²⁾,
+        …
+        g₁⁽ᵐ⁾, g₂⁽ᵐ⁾, g₃⁽ᵐ⁾, g₄⁽ᵐ⁾)
 
    The prover (P_(=)) and verifier P_(+) both compute the vector v in
    the same way:
 
-   v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾, … , h₁⁽ᵐ⁾, h₂⁽ᵐ⁾, h₃⁽ᵐ⁾, h₄⁽ᵐ⁾)
+   v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾,
+        h₁⁽²⁾, h₂⁽²⁾, h₃⁽²⁾, h₄⁽²⁾,
+        … ,
+        h₁⁽ᵐ⁾, h₂⁽ᵐ⁾, h₃⁽ᵐ⁾, h₄⁽ᵐ⁾)
 
    If no additive attacks were applied by the prover, the dot product of
    these two vectors should be:
@@ -789,7 +798,7 @@ Table of Contents
 
    They will interpret each chunk as L points lying on a polynomial,
    pᵢ(x) of degree L-1, corresponding to the x coordinates { 0, 1, …,
-   L-1}, that is to say they will interpret them as { pᵢ(0), pᵢ(1), …,
+   L-1 }, that is to say they will interpret them as { pᵢ(0), pᵢ(1), …,
    pᵢ(L-1) }.
 
    The prover (P_(=)) and verifier (P_(-)) can find the value of pᵢ(x)
