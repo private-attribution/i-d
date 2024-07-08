@@ -2403,10 +2403,10 @@ r = (bytes2int(commitment[..16]) % (prime - L)) + L
 enough to ensure that the value of r has minimal bias. For SHA-256 and a prime
 field modulo 2<sup>61</sup>-1, the bias is in the order of 2<sup>-67</sup>,
 which is negligible.<a href="#section-4.10.4-4" class="pilcrow">¶</a></p>
-<p id="section-4.10.4-5">The verifiers generate the same point r independently. Each verifier only has
+<p id="section-4.10.4-5">The verifiers generate the same point <code>r</code> independently. Each verifier only has
 access to one set of shares from <code>G(x)</code> so they each compute a hash of the shares
-they have. They then send that hash to each other, after which they can compute
-the full hash value.<a href="#section-4.10.4-5" class="pilcrow">¶</a></p>
+they have. They then send that hash to each other, after which they can concatenate
+the two hash values and compute the challenge point.<a href="#section-4.10.4-5" class="pilcrow">¶</a></p>
 <p id="section-4.10.4-6">Note that one verifier does not need to receive their shares of <code>G(x)</code> from the
 prover, so they are able to compute their hash before even starting any
 computation.<a href="#section-4.10.4-6" class="pilcrow">¶</a></p>
