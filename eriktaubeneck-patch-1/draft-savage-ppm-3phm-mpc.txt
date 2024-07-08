@@ -209,7 +209,7 @@ Table of Contents
    integer that is greater than 1.
 
    The validation protocol described in this document (see Section 4)
-   uses a modulo 2 ring.  This ring is referred to throughput as a
+   uses a modulo 2 ring.  This ring is referred to throughout as a
    binary field as it is also a field and it contains two values: 0 and
    1.  Addition and multiplication in a binary field correspond to
    Boolean operations.  Addition in a binary field is equivalent to the
