@@ -1,6 +1,7 @@
-# PPM Drafts
+# IPA Drafts
 
-This is the working area for individual Internet-Drafts.
+This is the working area for Internet-Drafts related to [Interoperable Private
+Attribution](https://github.com/patcg-individual-drafts/ipa).
 
 ## Simple and Efficient Binomial Protocols for Differential Privacy in MPC
 
