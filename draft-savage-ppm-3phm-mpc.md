@@ -364,8 +364,8 @@ Each party uses `r_-` and `r_+` to create a masked value of `z_-` as follows:
 z_- = x_-·y_- + x_-·y_+ + x_+·y_- + r_- - r_+
 ~~~
 
-Each of these three mask values are added once and subtracted once, so this 
-masking does not alter the result. Importantly, the value of `r_+` is not 
+Each of these three mask values are added once and subtracted once, so this
+masking does not alter the result. Importantly, the value of `r_+` is not
 known to P<sub>-</sub>, which ensures that `z_-` cannot be used by P<sub>-</sub>
 to recover `x` or `y`. Thus, `z_-` is safe to send to P<sub>-</sub>.
 
