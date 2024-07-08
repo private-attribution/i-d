@@ -1,4 +1,5 @@
 # Automatically generated CODEOWNERS
 # Regenerate with `make update-codeowners`
+draft-case-ppm-binomial-dp.md bmcase@meta.com mt@lowentropy.net
 draft-savage-ppm-3phm-mpc.md btsavage@meta.com mt@lowentropy.net
 draft-thomson-ppm-prss.md mt@lowentropy.net btsavage@meta.com
