@@ -920,7 +920,7 @@ Table of Contents
    only has access to one set of shares from G(x) so they each compute a
    hash of the shares they have.  They then send that hash to each
    other, after which they can concatenate the two hash values and
-   compute commitment hash value.
+   compute the challenge point.
 
    Note that one verifier does not need to receive their shares of G(x)
    from the prover, so they are able to compute their hash before even
