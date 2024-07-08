@@ -623,8 +623,8 @@ h_4 = 1 − 2·r_+
 These vectors form the basis of later stages of the proof.
 
 {:aside}
-> In the prime field modulo 2<sup>61</sup>-1, the negative inverse of two (-½) is
-> 1,152,921,504,606,846,975.
+> In the prime field modulo 2<sup>61</sup>-1, the negative inverse of two
+> (-2<sup>-1</sup> or -½) is 1,152,921,504,606,846,975.
 
 ## Validating a batch of multiplications {#initial-uv}
 
@@ -632,7 +632,8 @@ Each multiplication therefore produces two vectors, with each vector being
 length 4. To validate a batch of `m` multiplications, the prover
 (P<sub>=</sub>), forms two vectors of length `4m`.
 
-The prover (P<sub>=</sub>), and left verifier (P<sub>-</sub>) both produce the vector `u` by concatenating the vectors from all multiplications:
+The prover (P<sub>=</sub>), and left verifier (P<sub>-</sub>) both produce the
+vector `u` by concatenating the vectors from all multiplications:
 
 ~~~ pseudocode
 u = (g_1<sup>(1)</sup>, g_2<sup>(1)</sup>, g_3<sup>(1)</sup>, g_4<sup>(1)</sup>,
