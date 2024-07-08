@@ -74,14 +74,18 @@ informative:
 
 --- abstract
 
-TODO
+A method for computing a binomial noise in Multiparty Computation (MPC) is
+described.  The binomial mechanism for differential privacy (DP) is a simple
+mechanism that is well suited to MPC, where computation of more complex
+algorithms can be expensive.  This document describes how to select the correct
+parameters and apply binomial noise in MPC.
 
 
 --- middle
 
 # Introduction
 
-Using multiparty computation (MPC) to compute aggregate statistics has some very
+Using Multiparty Computation (MPC) to compute aggregate statistics has some very
 promising privacy characteristics. MPC provides strong assurances about the
 confidentiality of input values, relying only on the assumption that the parties
 performing the computation do not collude. Depending on the MPC system in use,
