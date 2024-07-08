@@ -950,11 +950,11 @@ Table of Contents
    except that the length of u’ and v’ is now a factor of L shorter than
    the original length of u and v.
 
-   The prover (P_(=)) and left verifier P_(-) use Lagrange interpolation
-   to compute the value of pᵢ(r) for all chunks in the range 0..s and
-   set this as the new vector u.
+   The prover (P_(=)) and left verifier (P_(-)) use Lagrange
+   interpolation to compute the value of pᵢ(r) for all chunks in the
+   range 0..s and set this as the new vector u.
 
-   Similarly, the prover (P_(=)) and right verifier P_(+) use Lagrange
+   Similarly, the prover (P_(=)) and (right verifier P_(+)) use Lagrange
    interpolation to compute the value of qᵢ(r) and set this as the new
    vector v.
 
