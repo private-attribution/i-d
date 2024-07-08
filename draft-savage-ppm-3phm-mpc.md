@@ -710,9 +710,9 @@ At each iteration:
    the prover cannot control the choice of `r`, the likelihood that a dishonest
    prover can cheat without detection is inversely proportional to the field size.
 
-    1. If we define two new vectors `u’ = <p<sub>0</sub>(r), …,
-       p<sub>s-1</sub>(r)>`, and `v’ = <q<sub>0</sub>(r), …,
-       q<sub>s-1</sub>(r)>`, then we can rewrite the statement that needs to be
+    1. If we define two new vectors `u’ = p<sub>0</sub>(r), …,
+       p<sub>s-1</sub>(r)`, and `v’ = q<sub>0</sub>(r), …,
+       q<sub>s-1</sub>(r)`, then we can rewrite the statement that needs to be
        proven as: `u’ · v’ = G(r)`. This is of the same form as the original
        statement, but with the new vectors `u’` and `v’` having length `L` times
        shorter than the original vectors.
