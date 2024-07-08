@@ -254,6 +254,12 @@ Table of Contents
    share (with x₁ being the next highest after x₃).  This is illustrated
    in Figure 1:
 
+        x₃ .----. x₁  x₁ .----. x₂  x₂ .----.  x₃
+      .---+  P₁  +------+  P₂  +------+  P₃  +---.
+       \   `----'        `----'        `----'   /
+        '--------------------------------------'
+
+
            x₁  .----.  x₂
           .---|  P₁  |---.
          /     `----'     \
@@ -273,14 +279,17 @@ Table of Contents
    P_1, and P_3 sends to P_2.  The sending directions are illustrated in
    Figure 2.
 
-   send                               send
-   left:       .----.                 right:      .----.
-          .---|  P₁  |<--.                   .-->|  P₁  |---.
-         /     `----'     \                 /     `----'     \
-        v                  \               /                  v
-    .----.                .----.       .----.                .----.
-   |  P₃  |------------->|  P₂  |     |  P₃  |<-------------|  P₂  |
-    `----'                `----'       `----'                `----'
+   send
+   left:      .----.      .----.      .----.
+           .-+  P₁  |<---+  P₂  |<---+  P₃  |<--.
+            \ `----'      `----'      `----'   /
+             '--------------------------------'
+
+   send
+   right:     .----.      .----.      .----.
+         .-->|  P₁  +--->+  P₂  +--->|  P₃  +-.
+          \   `----'      `----'      `----' /
+           '--------------------------------'
 
                   Figure 2: Parties and Sending Directions
 
