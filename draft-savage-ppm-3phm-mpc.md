@@ -200,12 +200,12 @@ other share, or right share, held by each is the next highest-numbered share
 illustrated in {{fig-shares-parties}}:
 
 ~~~ aasvg
-        x₂  .----.  x₁
+        x₁  .----.  x₂
        .---|  P₁  |---.
       /     `----'     \
- x₂  /                  \  x₁
+ x₁  /                  \  x₂
  .----.                .----.
-|  P₂  |--------------|  P₃  |
+|  P₃  |--------------|  P₂  |
  `----'  x₃        x₃  `----'
 ~~~
 {: #fig-shares-parties title="Parties and Shares"}
@@ -223,11 +223,11 @@ are illustrated in {{fig-send-direction}}.
 ~~~ aasvg
 send                               send
 left:       .----.                 right:      .----.
-       .-->|  P₁  |---.                   .---|  P₁  |<--.
+       .---|  P₁  |<--.                   .-->|  P₁  |---.
       /     `----'     \                 /     `----'     \
-     /                  v               v                  \
+     v                  \               /                  v
  .----.                .----.       .----.                .----.
-|  P₂  |<-------------|  P₃  |     |  P₂  |------------->|  P₃  |
+|  P₃  |------------->|  P₂  |     |  P₃  |<-------------|  P₂  |
  `----'                `----'       `----'                `----'
 ~~~
 {: #fig-send-direction title="Parties and Sending Directions"}
