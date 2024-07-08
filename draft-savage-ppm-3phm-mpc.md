@@ -680,7 +680,7 @@ At each iteration:
    portion of `u` and `v`. So the goal becomes proving that `sum(i=0..L-1, G(i)) = t`.
 
    In the first iteration, the target value `t` is known by all parties to be
-   `-m/2`, so left verifier `P_-` sets their share `t_-` to `-m/2` and the right
+   `-m/2`, so left verifier (`P_-`) sets their share `t_-` to `-m/2` and the right
    verifier `P_+` sets their share `t_+` to zero. In subsequent iterations the
    target value will not be known to both verifiers.
 
@@ -717,9 +717,9 @@ At each iteration:
        statement, but with the new vectors `u’` and `v’` having length `L` times
        shorter than the original vectors.
 
-    2. `u’` and `v’` need not be communicated, since the prover and left verifier `P_-`
+    2. `u’` and `v’` need not be communicated, since the prover and left verifier (`P_-`)
        can both compute each value `p<sub>i</sub>(r)` using Lagrange interpolation,
-       just as the prover and right verifier `P_+` can compute each value `q<sub>i</sub>(r)`.
+       just as the prover and right verifier (`P_+`) can compute each value `q<sub>i</sub>(r)`.
 
     3. Each of the verifiers can use the `2L - 1` points they received (their share
        of `G(x)`) to compute a share of `G(r)` using Lagrange interpolation. These
@@ -753,7 +753,7 @@ lookup tables if necessary.
 
 ### Producing Polynomials `p(x)` and `q(x)`
 
-The prover (P<sub>=</sub>) and the left verifier P<sub>-</sub>, chunk the vector
+The prover (P<sub>=</sub>) and the left verifier (P<sub>-</sub>), chunk the vector
 `u` into `s` chunks of length `L`.
 
 * chunk 0: <u<sub>0</sub>, u<sub>1</sub>, …, u<sub>L-1</sub>>
@@ -779,9 +779,9 @@ The prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) can find the value 
 The prover (P<sub>=</sub>) uses Lagrange interpolation to compute the values `{
 p<sub>i</sub>(L), p<sub>i</sub>(L+1), …, p<sub>i</sub>(2L-2) }`.
 
-The same process is applied for the vector `v` with the right verifier, P<sub>+</sub>.
+The same process is applied for the vector `v` with the right verifier, (P<sub>+</sub>).
 
-The prover (P<sub>=</sub>) and the right verifier P<sub>+</sub>, chunk the vector `v`
+The prover (P<sub>=</sub>) and the right verifier (P<sub>+</sub>), chunk the vector `v`
 into `s` chunks of length `L`.
 
 * chunk 0: <v<sub>0</sub>, v<sub>1</sub>, …, v<sub>L-1</sub>>
@@ -933,7 +933,7 @@ The prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) use Lagrange interp
 to compute the value of `p<sub>i</sub>(r)` for all chunks in the range `0..s`
 and set this as the new vector `u`.
 
-Similarly, the prover (P<sub>=</sub>) and (right verifier P<sub>+</sub>) use Lagrange
+Similarly, the prover (P<sub>=</sub>) and right verifier (P<sub>+</sub>) use Lagrange
 interpolation to compute the value of `q<sub>i</sub>(r)` and set this as the new
 vector `v`.
 
@@ -952,16 +952,16 @@ t_+ = lagrange\_interpolate(r, [G_+(0), G_+(1), ..., G_+(2L-2)])
 The proof proceeds recursively until the length of the vectors `u` and `v` are
 strictly less than the compression factor `L`.
 
-Next, the prover (P<sub>=</sub>) and left verifier P<sub>-</sub> jointly
+Next, the prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) jointly
 generate a random field value `p_m` using shared secrets. Similarly, the prover
-(P<sub>=</sub>) and right verifier P<sub>+</sub> generate a random field value
+(P<sub>=</sub>) and right verifier (P<sub>+</sub>) generate a random field value
 `q_m` using shared secrets.
 
-The prover (P<sub>=</sub>) and left verifier P<sub>-</sub> move `u_0` to index
+The prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) move `u_0` to index
 `L-1`. No data will be lost as this replaces a zero value; the length of `u` is
 strictly less than `L`.  The value at index 0 is replaced with `p_m`.
 
-The prover (P<sub>=</sub>) and right verifier P<sub>+</sub> move `v_0`
+The prover (P<sub>=</sub>) and right verifier (P<sub>+</sub>) move `v_0`
 to index `L-1` and place the value `q_m` at index 0.
 
 The prover generates a zero knowledge proof from these polynomials exactly as
@@ -978,8 +978,8 @@ b_+ = t_+ - sum(i=1..L-1, G_+(i))
 
 Verifiers confirm that `b_- + b_+` is zero by exchanging their shares of `b`.
 
-Finally, the left verifier P<sub>-</sub>
-computes both `p_0(r)` and `G_-(r)`, right verifier P<sub>+</sub>
+Finally, the left verifier (P<sub>-</sub>)
+computes both `p_0(r)` and `G_-(r)`, right verifier (P<sub>+</sub>)
 computes `q_0(r)` and `G_+(r)`, and then the verifiers reveal all of
 these values to each other.  They then both verify that:
 
