@@ -511,18 +511,18 @@ Table of Contents
 
 4.4.  Distributed Zero-Knowledge Proofs
 
-   The prover needs to prove that for each multiplication in a batch:
+   The prover (P_(=)) needs to prove that for each multiplication in a
+   batch:
 
    x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
 
-   The verifier on the left, P_(-), knows the values of y₋, x₋, r₋, and
-   z₋.
+   The left verifier (P_(-)) knows the values of y₋, x₋, r₋, and z₋.
 
-   The verifier on the right, P_(+), knows the values of x₊, y₊, r₊.
+   The right verifier (P_(+)) knows the values of x₊, y₊, r₊.
 
-   This means that the "prover", P_(=), does not need to send any of
-   these values to the verifiers.  Verifiers use information they
-   already have to validate the proof.
+   This means that the prover (P_(=)) does not need to send any of these
+   values to the verifiers.  Verifiers use information they already have
+   to validate the proof.
 
    Since the two verifiers possess all of this information distributed
    amongst themselves, this approach is referred to as "Distributed Zero
@@ -539,7 +539,7 @@ Table of Contents
    sum(i=0..n, uᵢ · vᵢ) = t
 
    This depends on the prover (P_(=)) and left verifier (P_(-)) both
-   possessing the n-vector u, the Prover (P_(=)) and the other verifier
+   possessing the n-vector u, the prover (P_(=)) and the right verifier
    (P_(+)) possessing the n-vector v, and the verifiers P_(-) and P_(+)
    jointly holding shares of the target value, t (that is, P_(-) holds
    t₋ and P_(-) holds t₊ such that t₋ + t₊ = t).
@@ -697,8 +697,8 @@ Table of Contents
        sum(i=0..L-1, G(i)) = t.
 
        In the first iteration, the target value t is known by all
-       parties to be -m/2, so verifier P₋ sets their share t₋ to -m/2
-       and the right verifier P₊ sets their share t₊ to zero.  In
+       parties to be -m/2, so left verifier P₋ sets their share t₋ to
+       -m/2 and the right verifier P₊ sets their share t₊ to zero.  In
        subsequent iterations the target value will not be known to both
        verifiers.
 
@@ -737,10 +737,10 @@ Table of Contents
            statement, but with the new vectors u’ and v’ having length L
            times shorter than the original vectors.
 
-       2.  u’ and v’ need not be communicated, since the prover and
+       2.  u’ and v’ need not be communicated, since the prover and left
            verifier P₋ can both compute each value pᵢ(r) using Lagrange
-           interpolation, just as the prover and verifier P₊ can compute
-           each value qᵢ(r).
+           interpolation, just as the prover and right verifier P₊ can
+           compute each value qᵢ(r).
 
        3.  Each of the verifiers can use the 2L - 1 points they received
            (their share of G(x)) to compute a share of G(r) using
@@ -778,8 +778,8 @@ Table of Contents
 
 4.9.2.  Producing Polynomials p(x) and q(x)
 
-   The prover (P_(=)) and the verifier P_(-), chunk the vector u into s
-   chunks of length L.
+   The prover (P_(=)) and the left verifier P_(-), chunk the vector u
+   into s chunks of length L.
 
    *  chunk 0: <u_0, u_1, …, u_(L-1)>
 
@@ -801,16 +801,17 @@ Table of Contents
    L-1 }, that is to say they will interpret them as { pᵢ(0), pᵢ(1), …,
    pᵢ(L-1) }.
 
-   The prover (P_(=)) and verifier (P_(-)) can find the value of pᵢ(x)
-   for any other value of x using Lagrange interpolation.
+   The prover (P_(=)) and left verifier (P_(-)) can find the value of
+   pᵢ(x) for any other value of x using Lagrange interpolation.
 
-   The prover uses Lagrange interpolation to compute the values { pᵢ(L),
-   pᵢ(L+1), …, pᵢ(2L-2) }.
+   The prover (P_(=)) uses Lagrange interpolation to compute the values
+   { pᵢ(L), pᵢ(L+1), …, pᵢ(2L-2) }.
 
-   The same process is applied for the vector v with a verifier, P_(+).
+   The same process is applied for the vector v with the right verifier,
+   P_(+).
 
-   The prover (P_(=)) and the verifier P_(+), chunk the vector v into s
-   chunks of length L.
+   The prover (P_(=)) and the right verifier P_(+), chunk the vector v
+   into s chunks of length L.
 
    *  chunk 0: <v_0, v_1, …, v_(L-1)>
 
@@ -846,7 +847,7 @@ Table of Contents
 
 4.10.1.  Masking the Zero-Knowledge Proof
 
-   The Prover (P_(=)), cannot simply send this zero-knowledge proof to
+   The prover (P_(=)), cannot simply send this zero-knowledge proof to
    the verifiers, as doing so would release private information.
    Instead, the prover produces a two-part additive secret-sharing of
    these 2L-1 points, sending one share to each verifier.
@@ -900,7 +901,7 @@ Table of Contents
    verifiers select this random point, we utilize the Fiat-Shamir
    transform to produce a constant-round proof system.
 
-   The Prover (P_(=)) hashes the zero-knowledge proof shares it has
+   The prover (P_(=)) hashes the zero-knowledge proof shares it has
    generated onto a field element as follows:
 
    commitment = SHA256(
@@ -927,9 +928,9 @@ Table of Contents
 
    Consequently, though each round depends on communication, the total
    latency is two rounds.  In the first, the prover sends shares of G(x)
-   to the first verifier.  Concurrently, the second verifier sends a
-   hash of their shares to the first verifier.  In the second round, the
-   first verifier sends a hash of their shares to the second verifier.
+   to the left verifier.  Concurrently, the right verifier sends a hash
+   of their shares to the left verifier.  In the second round, the left
+   verifier sends a hash of their shares to the right verifier.
 
 4.10.5.  Recursive Proof
 
@@ -949,11 +950,11 @@ Table of Contents
    except that the length of u’ and v’ is now a factor of L shorter than
    the original length of u and v.
 
-   The prover (P_(=)) and verifier P_(-) use Lagrange interpolation to
-   compute the value of pᵢ(r) for all chunks in the range 0..s and set
-   this as the new vector u.
+   The prover (P_(=)) and left verifier P_(-) use Lagrange interpolation
+   to compute the value of pᵢ(r) for all chunks in the range 0..s and
+   set this as the new vector u.
 
-   Similarly, the Prover (P_(=)) and verifier P_(+) use Lagrange
+   Similarly, the prover (P_(=)) and right verifier P_(+) use Lagrange
    interpolation to compute the value of qᵢ(r) and set this as the new
    vector v.
 
@@ -994,9 +995,10 @@ Table of Contents
    Verifiers confirm that b₋ + b₊ is zero by exchanging their shares of
    b.
 
-   Finally, the verifier P_(-) computes both p₀(r) and G₋(r), verifier
-   P_(+) computes q₀(r) and G₊(r), and then the verifiers reveal all of
-   these values to each other.  They then both verify that:
+   Finally, the left verifier P_(-) computes both p₀(r) and G₋(r), right
+   verifier P_(+) computes q₀(r) and G₊(r), and then the verifiers
+   reveal all of these values to each other.  They then both verify
+   that:
 
    G₋(r) + G₊(r) = p₀(r) · q₀(r)
 
