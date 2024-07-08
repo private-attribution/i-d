@@ -764,7 +764,7 @@ fewer chunks.
 
 They will interpret each chunk as `L` points lying on a polynomial,
 `p<sub>i</sub>(x)` of degree `L-1`, corresponding to the `x` coordinates `{ 0,
-1, …, L-1}`, that is to say they will interpret them as `{ p<sub>i</sub>(0),
+1, …, L-1 }`, that is to say they will interpret them as `{ p<sub>i</sub>(0),
 p<sub>i</sub>(1), …, p<sub>i</sub>(L-1) }`.
 
 The prover (P<sub>=</sub>) and verifier (P<sub>-</sub>) can find the value of
