@@ -369,7 +369,7 @@ result. Importantly, the value of `r_+` is not known to P<sub>-</sub>, which
 ensures that `z_-` cannot be used by P<sub>-</sub> to recover `x` or `y`. Thus,
 `z_-` is safe to send to P<sub>-</sub>.
 
-Upon receiving a value from its right -- which the recipient names `z_+` — each
+Upon receiving a value from its right — which the recipient names `z_+` — each
 helper is now in possession of two-of-three shares, (`z_-`, `z_+`), which is a
 replicated secret sharing of the product of `x` and `y`.
 
