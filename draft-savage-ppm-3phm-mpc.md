@@ -462,19 +462,19 @@ For this protocol, the parties will use the field of integers mod `p`, where `p`
 
 ## Distributed Zero-Knowledge Proofs
 
-The prover needs to prove that for each multiplication in a batch:
+The prover (P<sub>=</sub>) needs to prove that for each multiplication in a batch:
 
 ~~~ pseudocode
 x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
-The verifier on the left, P<sub>-</sub>, knows the values of `y_-`, `x_-`,
+The left verifier (P<sub>-</sub>) knows the values of `y_-`, `x_-`,
 `r_-`, and `z_-`.
 
-The verifier on the right, P<sub>+</sub>, knows the values of `x_+`, `y_+`,
+The right verifier (P<sub>+</sub>) knows the values of `x_+`, `y_+`,
 `r_+`.
 
-This means that the "prover", P<sub>=</sub>, does not need to send any of these
+This means that the prover (P<sub>=</sub>) does not need to send any of these
 values to the verifiers. Verifiers use information they already have to validate
 the proof.
 
@@ -495,7 +495,7 @@ sum(i=0..n, u<sub>i</sub> · v<sub>i</sub>) = t
 ~~~
 
 This depends on the prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>)
-both possessing the n-vector `u`, the Prover (P<sub>=</sub>) and the other
+both possessing the n-vector `u`, the prover (P<sub>=</sub>) and the right
 verifier (P<sub>+</sub>) possessing the n-vector `v`, and the verifiers
 P<sub>-</sub> and P<sub>+</sub> jointly holding shares of the target value, `t`
 (that is, P<sub>-</sub> holds `t_-` and P<sub>-</sub> holds `t_+` such that `t_-
@@ -680,7 +680,7 @@ At each iteration:
    portion of `u` and `v`. So the goal becomes proving that `sum(i=0..L-1, G(i)) = t`.
 
    In the first iteration, the target value `t` is known by all parties to be
-   `-m/2`, so verifier `P_-` sets their share `t_-` to `-m/2` and the right
+   `-m/2`, so left verifier `P_-` sets their share `t_-` to `-m/2` and the right
    verifier `P_+` sets their share `t_+` to zero. In subsequent iterations the
    target value will not be known to both verifiers.
 
@@ -717,9 +717,9 @@ At each iteration:
        statement, but with the new vectors `u’` and `v’` having length `L` times
        shorter than the original vectors.
 
-    2. `u’` and `v’` need not be communicated, since the prover and verifier `P_-`
+    2. `u’` and `v’` need not be communicated, since the prover and left verifier `P_-`
        can both compute each value `p<sub>i</sub>(r)` using Lagrange interpolation,
-       just as the prover and verifier `P_+` can compute each value `q<sub>i</sub>(r)`.
+       just as the prover and right verifier `P_+` can compute each value `q<sub>i</sub>(r)`.
 
     3. Each of the verifiers can use the `2L - 1` points they received (their share
        of `G(x)`) to compute a share of `G(r)` using Lagrange interpolation. These
@@ -753,7 +753,7 @@ lookup tables if necessary.
 
 ### Producing Polynomials `p(x)` and `q(x)`
 
-The prover (P<sub>=</sub>) and the verifier P<sub>-</sub>, chunk the vector
+The prover (P<sub>=</sub>) and the left verifier P<sub>-</sub>, chunk the vector
 `u` into `s` chunks of length `L`.
 
 * chunk 0: <u<sub>0</sub>, u<sub>1</sub>, …, u<sub>L-1</sub>>
@@ -773,15 +773,15 @@ They will interpret each chunk as `L` points lying on a polynomial,
 1, …, L-1 }`, that is to say they will interpret them as `{ p<sub>i</sub>(0),
 p<sub>i</sub>(1), …, p<sub>i</sub>(L-1) }`.
 
-The prover (P<sub>=</sub>) and verifier (P<sub>-</sub>) can find the value of
+The prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) can find the value of
 `p<sub>i</sub>(x)` for any other value of `x` using Lagrange interpolation.
 
-The prover uses Lagrange interpolation to compute the values `{
+The prover (P<sub>=</sub>) uses Lagrange interpolation to compute the values `{
 p<sub>i</sub>(L), p<sub>i</sub>(L+1), …, p<sub>i</sub>(2L-2) }`.
 
-The same process is applied for the vector `v` with a verifier, P<sub>+</sub>.
+The same process is applied for the vector `v` with the right verifier, P<sub>+</sub>.
 
-The prover (P<sub>=</sub>) and the verifier P<sub>+</sub>, chunk the vector `v`
+The prover (P<sub>=</sub>) and the right verifier P<sub>+</sub>, chunk the vector `v`
 into `s` chunks of length `L`.
 
 * chunk 0: <v<sub>0</sub>, v<sub>1</sub>, …, v<sub>L-1</sub>>
@@ -818,7 +818,7 @@ An equivalent method of proving `u·v = t`, is to show that `sum(i=0..L-1, G(i))
 
 ### Masking the Zero-Knowledge Proof
 
-The Prover (P<sub>=</sub>), cannot simply send this zero-knowledge proof to the
+The prover (P<sub>=</sub>), cannot simply send this zero-knowledge proof to the
 verifiers, as doing so would release private information. Instead, the prover
 produces a two-part additive secret-sharing of these `2L-1` points, sending one
 share to each verifier.
@@ -876,7 +876,7 @@ To minimize the rounds of communication, instead of having the verifiers select
 this random point, we utilize the Fiat-Shamir transform to produce a
 constant-round proof system.
 
-The Prover (P<sub>=</sub>) hashes the zero-knowledge proof shares it has
+The prover (P<sub>=</sub>) hashes the zero-knowledge proof shares it has
 generated onto a field element as follows:
 
 ~~~ pseudocode
@@ -903,7 +903,7 @@ Note that one verifier does not need to receive their shares of `G(x)` from the
 prover, so they are able to compute their hash before even starting any
 computation.
 
-Consequently, though each round depends on communication, the total latency is two rounds. In the first, the prover sends shares of G(x) to the first verifier. Concurrently, the second verifier sends a hash of their shares to the first verifier. In the second round, the first verifier sends a hash of their shares to the second verifier.
+Consequently, though each round depends on communication, the total latency is two rounds. In the first, the prover sends shares of G(x) to the left verifier. Concurrently, the right verifier sends a hash of their shares to the left verifier. In the second round, the left verifier sends a hash of their shares to the right verifier.
 
 <!-- TODO: this Fiat-Shamir seems worse than an explicit challenge… -->
 
@@ -929,11 +929,11 @@ This is a problem of exactly the same form as the original problem, except that
 the length of `u’` and `v’` is now a factor of `L` shorter than the original
 length of `u` and `v`.
 
-The prover (P<sub>=</sub>) and verifier P<sub>-</sub> use Lagrange interpolation
+The prover (P<sub>=</sub>) and left verifier P<sub>-</sub> use Lagrange interpolation
 to compute the value of `p<sub>i</sub>(r)` for all chunks in the range `0..s`
 and set this as the new vector `u`.
 
-Similarly, the Prover (P<sub>=</sub>) and verifier P<sub>+</sub> use Lagrange
+Similarly, the prover (P<sub>=</sub>) and right verifier P<sub>+</sub> use Lagrange
 interpolation to compute the value of `q<sub>i</sub>(r)` and set this as the new
 vector `v`.
 
@@ -978,8 +978,8 @@ b_+ = t_+ - sum(i=1..L-1, G_+(i))
 
 Verifiers confirm that `b_- + b_+` is zero by exchanging their shares of `b`.
 
-Finally, the verifier P<sub>-</sub>
-computes both `p_0(r)` and `G_-(r)`, verifier P<sub>+</sub>
+Finally, the left verifier P<sub>-</sub>
+computes both `p_0(r)` and `G_-(r)`, right verifier P<sub>+</sub>
 computes `q_0(r)` and `G_+(r)`, and then the verifiers reveal all of
 these values to each other.  They then both verify that:
 
