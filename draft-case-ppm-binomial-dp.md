@@ -23,7 +23,7 @@ venue:
 
 author:
  -
-    name: Ben Case
+    name: Benjamin Case
     organization: Meta
     email: bmcase@meta.com
  -
@@ -360,12 +360,12 @@ described in the following sections.
 ### Bounding `N` by `delta_constraint`
 
 The `delta_constraint` is a function of delta, the dimension, `d`, the
-`sensitivity_infty`, the quantization scale, `s`, and `p` (which is fixed to 0.5
+`sensitivity\_infty`, the quantization scale, `s`, and `p` (which is fixed to 0.5
 in this document).  This produces a simple formula for determining the minimum
 value of `N`:
 
 ~~~ pseudocode
-N >= 4\*max(23\*ln(10\*d/delta), 2\*sensitivity_infty/s)
+N >= 4\*max(23\*ln(10\*d/delta), 2\*sensitivity\_infty/s)
 ~~~
 
 
@@ -435,7 +435,7 @@ trade offs for the mechanism.  An additional equation to note is the error of
 the mechanism which we would like to minimize subject to the privacy constraints
 
 ~~~ pseudocode
-error = d\*s^2\*N\*p\*(1-p) = 4\*d\*s^2\*N
+error = d\*s^2\*N\*p\*(1-p) = 0.25\*d\*s^2\*N
 ~~~
 
 {{CPSGD}} discusses more about why 0.5 is the optimal choice for `p`.  When it
