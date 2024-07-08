@@ -183,12 +183,12 @@ To sample from a `Bin(N, p)` distribution in MPC, two things are needed:
 
 * A means to sum the value of `N` trials.
 
-This protocol a `p` of 0.5. This value of `p` provides both an optimal
-privacy/utility trade off and maximal efficiency for computation in MPC. Each
+This protocol sets `p` to 0.5. This value of `p` provides both an optimal
+privacy/utility trade off and good efficiency for computation in MPC. Each
 Bernoulli sample requires a single, uniformly distributed bit, which can be done
-very efficiently. Using `p = 0.5` also requires the fewest samples for any set of
-parameters, except for cases with extremely low variance requirements, which we
-consider to be out of scope; see Section 2 of {{CPSGD}}.
+very efficiently. Using `p = 0.5` also requires the fewest samples for any set
+of parameters, except for cases with extremely low variance requirements, which
+we consider to be out of scope; see Section 2 of {{CPSGD}}.
 
 There are several ways to instantiate a coin flipping protocol in MPC depending
 what MPC protocol is being used.  {{protocols}} describes some basic protocol
