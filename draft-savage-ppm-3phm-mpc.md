@@ -115,7 +115,7 @@ Concretely, this means that a single dishonest party cannot cause the value of
 inputs to be revealed. Also, a single dishonest party cannot alter the output of
 any operation without detection. The protocol is aborted if honest parties
 detect an error that might indicate the actions of a dishonest party. This means
-that a dishonest party can disrupt the protocol
+that a dishonest party can disrupt the protocol.
 
 
 ## MPC Protocol Prerequisites
@@ -153,7 +153,7 @@ A simple realization of a ring is formed of integers modulo a chosen integer
 that is greater than 1.
 
 The validation protocol described in this document (see {{validation}}) uses a
-modulo 2 ring. This ring is referred to throughput as a binary field as it is
+modulo 2 ring. This ring is referred to throughout as a binary field as it is
 also a field and it contains two values: 0 and 1. Addition and multiplication in
 a binary field correspond to Boolean operations. Addition in a binary field is
 equivalent to the Boolean exclusive OR (XOR) operation. Multiplication in a
@@ -369,7 +369,7 @@ masking does not alter the result. Importantly, the value of `r_+` is not
 known to P<sub>-</sub>, which ensures that `z_-` cannot be used by P<sub>-</sub>
 to recover `x` or `y`. Thus, `z_-` is safe to send to P<sub>-</sub>.
 
-Upon receiving a value from its right -- which the recipient names `z_+` — each
+Upon receiving a value from its right — which the recipient names `z_+` — each
 helper is now in possession of two-of-three shares, (`z_-`, `z_+`), which is a
 replicated secret sharing of the product of `x` and `y`.
 
