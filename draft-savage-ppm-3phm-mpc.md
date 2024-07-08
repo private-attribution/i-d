@@ -903,10 +903,10 @@ enough to ensure that the value of r has minimal bias. For SHA-256 and a prime
 field modulo 2<sup>61</sup>-1, the bias is in the order of 2<sup>-67</sup>,
 which is negligible.
 
-The verifiers generate the same point r independently. Each verifier only has
+The verifiers generate the same point `r` independently. Each verifier only has
 access to one set of shares from `G(x)` so they each compute a hash of the shares
-they have. They then send that hash to each other, after which they can compute
-the full hash value.
+they have. They then send that hash to each other, after which they can concatenate
+the two hash values and compute the challenge point.
 
 Note that one verifier does not need to receive their shares of `G(x)` from the
 prover, so they are able to compute their hash before even starting any
