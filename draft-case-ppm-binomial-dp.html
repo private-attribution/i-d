@@ -8,7 +8,11 @@
 <meta content="Ben Case" name="author">
 <meta content="Martin Thomson" name="author">
 <meta content="
-       TODO 
+       A method for computing a binomial noise in Multiparty Computation (MPC) is
+described.  The binomial mechanism for differential privacy (DP) is a simple
+mechanism that is well suited to MPC, where computation of more complex
+algorithms can be expensive.  This document describes how to select the correct
+parameters and apply binomial noise in MPC. 
     " name="description">
 <meta content="xml2rfc 3.22.0" name="generator">
 <meta content="oneplusoneplusoneplus" name="keyword">
@@ -1066,7 +1070,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Simple and Efficient Binomial Protocols for Differential Privacy in MPC</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">TODO<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">A method for computing a binomial noise in Multiparty Computation (MPC) is
+described.  The binomial mechanism for differential privacy (DP) is a simple
+mechanism that is well suited to MPC, where computation of more complex
+algorithms can be expensive.  This document describes how to select the correct
+parameters and apply binomial noise in MPC.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1246,7 +1254,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">Using multiparty computation (MPC) to compute aggregate statistics has some very
+<p id="section-1-1">Using Multiparty Computation (MPC) to compute aggregate statistics has some very
 promising privacy characteristics. MPC provides strong assurances about the
 confidentiality of input values, relying only on the assumption that the parties
 performing the computation do not collude. Depending on the MPC system in use,
