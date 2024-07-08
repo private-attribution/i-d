@@ -427,10 +427,10 @@ Table of Contents
 4.  Validation Protocol
 
    The basic multiplication protocol in Section 3 only offers semi-
-   honest security.  It is "secure up to an additive attack".
-   Validating multiplications allows an additive attack to be detected,
-   ensuring that a protocol is aborted before any result is produced
-   that might compromise the confidentiality of inputs.
+   honest security.  It is secure up to an additive attack; see
+   Section 4.1.  Validating multiplications allows an additive attack to
+   be detected, ensuring that a protocol is aborted before any result is
+   produced that might compromise the confidentiality of inputs.
 
 4.1.  Additive Attack
 
