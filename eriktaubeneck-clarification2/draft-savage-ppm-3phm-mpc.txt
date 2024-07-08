@@ -697,7 +697,7 @@ Table of Contents
        sum(i=0..L-1, G(i)) = t.
 
        In the first iteration, the target value t is known by all
-       parties to be -m/2, so left verifier P₋ sets their share t₋ to
+       parties to be -m/2, so left verifier (P₋) sets their share t₋ to
        -m/2 and the right verifier P₊ sets their share t₊ to zero.  In
        subsequent iterations the target value will not be known to both
        verifiers.
@@ -738,9 +738,9 @@ Table of Contents
            times shorter than the original vectors.
 
        2.  u’ and v’ need not be communicated, since the prover and left
-           verifier P₋ can both compute each value pᵢ(r) using Lagrange
-           interpolation, just as the prover and right verifier P₊ can
-           compute each value qᵢ(r).
+           verifier (P₋) can both compute each value pᵢ(r) using
+           Lagrange interpolation, just as the prover and right verifier
+           (P₊) can compute each value qᵢ(r).
 
        3.  Each of the verifiers can use the 2L - 1 points they received
            (their share of G(x)) to compute a share of G(r) using
@@ -778,7 +778,7 @@ Table of Contents
 
 4.9.2.  Producing Polynomials p(x) and q(x)
 
-   The prover (P_(=)) and the left verifier P_(-), chunk the vector u
+   The prover (P_(=)) and the left verifier (P_(-)), chunk the vector u
    into s chunks of length L.
 
    *  chunk 0: <u_0, u_1, …, u_(L-1)>
@@ -808,9 +808,9 @@ Table of Contents
    { pᵢ(L), pᵢ(L+1), …, pᵢ(2L-2) }.
 
    The same process is applied for the vector v with the right verifier,
-   P_(+).
+   (P_(+)).
 
-   The prover (P_(=)) and the right verifier P_(+), chunk the vector v
+   The prover (P_(=)) and the right verifier (P_(+)), chunk the vector v
    into s chunks of length L.
 
    *  chunk 0: <v_0, v_1, …, v_(L-1)>
@@ -954,7 +954,7 @@ Table of Contents
    interpolation to compute the value of pᵢ(r) for all chunks in the
    range 0..s and set this as the new vector u.
 
-   Similarly, the prover (P_(=)) and (right verifier P_(+)) use Lagrange
+   Similarly, the prover (P_(=)) and right verifier (P_(+)) use Lagrange
    interpolation to compute the value of qᵢ(r) and set this as the new
    vector v.
 
@@ -970,17 +970,17 @@ Table of Contents
    The proof proceeds recursively until the length of the vectors u and
    v are strictly less than the compression factor L.
 
-   Next, the prover (P_(=)) and left verifier P_(-) jointly generate a
+   Next, the prover (P_(=)) and left verifier (P_(-)) jointly generate a
    random field value pₘ using shared secrets.  Similarly, the prover
-   (P_(=)) and right verifier P_(+) generate a random field value qₘ
+   (P_(=)) and right verifier (P_(+)) generate a random field value qₘ
    using shared secrets.
 
-   The prover (P_(=)) and left verifier P_(-) move u₀ to index L-1.  No
-   data will be lost as this replaces a zero value; the length of u is
-   strictly less than L.  The value at index 0 is replaced with pₘ.
+   The prover (P_(=)) and left verifier (P_(-)) move u₀ to index L-1.
+   No data will be lost as this replaces a zero value; the length of u
+   is strictly less than L.  The value at index 0 is replaced with pₘ.
 
-   The prover (P_(=)) and right verifier P_(+) move v₀ to index L-1 and
-   place the value qₘ at index 0.
+   The prover (P_(=)) and right verifier (P_(+)) move v₀ to index L-1
+   and place the value qₘ at index 0.
 
    The prover generates a zero knowledge proof from these polynomials
    exactly as before, sending each verifier 2L-1 shares of G(x).  The
@@ -995,10 +995,10 @@ Table of Contents
    Verifiers confirm that b₋ + b₊ is zero by exchanging their shares of
    b.
 
-   Finally, the left verifier P_(-) computes both p₀(r) and G₋(r), right
-   verifier P_(+) computes q₀(r) and G₊(r), and then the verifiers
-   reveal all of these values to each other.  They then both verify
-   that:
+   Finally, the left verifier (P_(-)) computes both p₀(r) and G₋(r),
+   right verifier (P_(+)) computes q₀(r) and G₊(r), and then the
+   verifiers reveal all of these values to each other.  They then both
+   verify that:
 
    G₋(r) + G₊(r) = p₀(r) · q₀(r)
 
