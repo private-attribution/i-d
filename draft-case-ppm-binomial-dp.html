@@ -5,7 +5,7 @@
 <meta content="Common,Greek,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
 <title>Simple and Efficient Binomial Protocols for Differential Privacy in MPC</title>
-<meta content="Ben Case" name="author">
+<meta content="Benjamin Case" name="author">
 <meta content="Martin Thomson" name="author">
 <meta content="
        A method for computing a binomial noise in Multiparty Computation (MPC) is
@@ -1546,12 +1546,12 @@ described in the following sections.<a href="#section-3.2-6" class="pilcrow">¶<
 <a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-bounding-n-by-delta_constra" class="section-name selfRef">Bounding <code>N</code> by <code>delta_constraint</code></a>
           </h4>
 <p id="section-3.2.1-1">The <code>delta_constraint</code> is a function of delta, the dimension, <code>d</code>, the
-<code>sensitivityᵢnfty</code>, the quantization scale, <code>s</code>, and <code>p</code> (which is fixed to 0.5
+<code>sensitivity_infty</code>, the quantization scale, <code>s</code>, and <code>p</code> (which is fixed to 0.5
 in this document).  This produces a simple formula for determining the minimum
 value of <code>N</code>:<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-3.2.1-2">
 <pre>
-N &gt;= 4·max(23·ln(10·d/delta), 2·sensitivityᵢnfty/s)
+N &gt;= 4·max(23·ln(10·d/delta), 2·sensitivity_infty/s)
 </pre><a href="#section-3.2.1-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1625,7 +1625,7 @@ trade offs for the mechanism.  An additional equation to note is the error of
 the mechanism which we would like to minimize subject to the privacy constraints<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-3.2.3-2">
 <pre>
-error = d·s²·N·p·(1-p) = 4·d·s²·N
+error = d·s²·N·p·(1-p) = 0.25·d·s²·N
 </pre><a href="#section-3.2.3-2" class="pilcrow">¶</a>
 </div>
 <p id="section-3.2.3-3"><span>[<a href="#CPSGD" class="cite xref">CPSGD</a>]</span> discusses more about why 0.5 is the optimal choice for <code>p</code>.  When it
@@ -1928,7 +1928,7 @@ utility.  The binomial mechanism does not result in any additional noise.<a href
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Ben Case</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Benjamin Case</span></div>
 <div dir="auto" class="left"><span class="org">Meta</span></div>
 <div class="email">
 <span>Email:</span>

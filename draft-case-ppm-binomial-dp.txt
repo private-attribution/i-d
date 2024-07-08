@@ -376,11 +376,11 @@ Table of Contents
 3.2.1.  Bounding N by delta_constraint
 
    The delta_constraint is a function of delta, the dimension, d, the
-   sensitivityᵢnfty, the quantization scale, s, and p (which is fixed to
-   0.5 in this document).  This produces a simple formula for
+   sensitivity_infty, the quantization scale, s, and p (which is fixed
+   to 0.5 in this document).  This produces a simple formula for
    determining the minimum value of N:
 
-   N >= 4·max(23·ln(10·d/delta), 2·sensitivityᵢnfty/s)
+   N >= 4·max(23·ln(10·d/delta), 2·sensitivity_infty/s)
 
 3.2.2.  Bounding N by epsilon_delta_constraint
 
@@ -439,7 +439,7 @@ Table of Contents
    to note is the error of the mechanism which we would like to minimize
    subject to the privacy constraints
 
-   error = d·s²·N·p·(1-p) = 4·d·s²·N
+   error = d·s²·N·p·(1-p) = 0.25·d·s²·N
 
    [CPSGD] discusses more about why 0.5 is the optimal choice for p.
    When it comes to setting the quantization scale s, making it smaller
@@ -681,7 +681,7 @@ Appendix A.  Acknowledgments
 
 Authors' Addresses
 
-   Ben Case
+   Benjamin Case
    Meta
    Email: bmcase@meta.com
 
