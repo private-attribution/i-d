@@ -929,11 +929,11 @@ This is a problem of exactly the same form as the original problem, except that
 the length of `u’` and `v’` is now a factor of `L` shorter than the original
 length of `u` and `v`.
 
-The prover (P<sub>=</sub>) and left verifier P<sub>-</sub> use Lagrange interpolation
+The prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) use Lagrange interpolation
 to compute the value of `p<sub>i</sub>(r)` for all chunks in the range `0..s`
 and set this as the new vector `u`.
 
-Similarly, the prover (P<sub>=</sub>) and right verifier P<sub>+</sub> use Lagrange
+Similarly, the prover (P<sub>=</sub>) and (right verifier P<sub>+</sub>) use Lagrange
 interpolation to compute the value of `q<sub>i</sub>(r)` and set this as the new
 vector `v`.
 
