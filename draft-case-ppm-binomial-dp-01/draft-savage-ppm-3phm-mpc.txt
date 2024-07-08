@@ -1,0 +1,1158 @@
+
+
+
+
+Privacy Preserving Measurement                                 B. Savage
+Internet-Draft                                                      Meta
+Intended status: Standards Track                              M. Thomson
+Expires: 9 January 2025                                          Mozilla
+                                                             8 July 2024
+
+
+Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC
+                                Setting
+                    draft-savage-ppm-3phm-mpc-latest
+
+Abstract
+
+   A three party, honest majority system provides the most efficient
+   protocols for Multiparty Computation (MPC).  This document describes
+   a concrete instantiation of addition and multiplication protocols
+   that provide strong guarantees of security.  The multiplication
+   protocol provides low communication and computation costs, with
+   addition being almost free.  Any single dishonest party is detected
+   with high probability.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at https://private-
+   attribution.github.io/i-d/draft-savage-ppm-3phm-mpc.html.  Status
+   information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-savage-ppm-3phm-mpc/.
+
+   Discussion of this document takes place on the Privacy Preserving
+   Measurement Working Group mailing list (mailto:ppm@ietf.org), which
+   is archived at https://mailarchive.ietf.org/arch/browse/ppm/.
+   Subscribe at https://www.ietf.org/mailman/listinfo/ppm/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/private-attribution/i-d.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 9 January 2025.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  MPC Protocols in Binary Fields
+   2.  Three-Party Honest Majority MPC
+     2.1.  MPC Protocol Prerequisites
+     2.2.  Fields and Rings
+     2.3.  Secret Sharing
+     2.4.  Identifying Shares and Parties
+     2.5.  Reveal Protocol
+     2.6.  Addition
+   3.  Multiplication Protocol
+   4.  Validation Protocol
+     4.1.  Additive Attack
+     4.2.  Malicious Security
+     4.3.  Overview of the Validation Protocol
+     4.4.  Distributed Zero-Knowledge Proofs
+     4.5.  Distributed Zero Knowledge Proofs
+     4.6.  Transforming into a Large Prime Field
+     4.7.  Validating a batch of multiplications
+     4.8.  Overview of Recursive Proof Compression
+     4.9.  Detailed Validation Algorithm
+       4.9.1.  Selecting the Compression Factor
+       4.9.2.  Producing Polynomials p(x) and q(x)
+     4.10. Producing the Zero Knowledge Proof
+       4.10.1.  Masking the Zero-Knowledge Proof
+       4.10.2.  Validating the Proof Increment
+       4.10.3.  Random Challenge
+       4.10.4.  Fiat-Shamir Challenge Selection
+       4.10.5.  Recursive Proof
+       4.10.6.  The Final Iteration
+   5.  Conditions of Usage
+     5.1.  Recommended Parameters
+   6.  Performance Characteristics
+   7.  Security Considerations
+   8.  IANA Considerations
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
+   Appendix A.  Acknowledgments
+   Authors' Addresses
+
+1.  Introduction
+
+   Multiparty Computation (MPC) can perform generic computations over
+   inputs that are never revealed to any single entity.  MPC executes an
+   agreed function, revealing only the output of that function.
+
+   This makes MPC well-suited to handling data that is sensitive or
+   private.  MPC in a three-party honest majority setting, is broadly
+   recognized as being extremely efficient:
+
+   *  Addition and subtraction have zero communication cost and
+      negligible computation cost.
+
+   *  Multiplication is possible with low communication and computation
+      complexity.
+
+   *  Strong guarantees can be made about correctness and
+      confidentiality, relying on only information-theoretic
+      assumptions.
+
+   This document describes the basic elements required to compute basic
+   MPC circuits in this setting.  This includes the basic elements of
+   the replicated secret sharing scheme that is used: generating shares,
+   share addition, and revealing shared values.
+
+   The bulk of the document describes a protocol for multiplication over
+   a binary field.  The basic multiplication protocol scales linearly
+   and involves 1 bit of communication per party.
+
+   This basic multiplication protocol does not prevent an additive
+   attack.  To deal with the additive attack, a batched validation
+   protocol is used, which adds a sub-linear overhead.  This protocol
+   comes with significant memory costs and slightly increased
+   computational costs, but adds negligible communication overhead and
+   latency when there are many multiplications to validate.
+
+1.1.  MPC Protocols in Binary Fields
+
+   This document describes a multiplication protocol that is specialized
+   for use with binary fields; see Section 2.2.
+
+   Composing binary operations into a complete MPC system has proven to
+   be more efficient than alternatives using prime fields in a number of
+   applications.  Some of the components in this document can be applied
+   to rings or larger prime fields, but the validation process used here
+   has been specialized for use with binary values.
+
+2.  Three-Party Honest Majority MPC
+
+   A three-party honest majority MPC system performs computations on
+   secret-shared values using a replicated scheme where each party
+   receives two out of three additive shares of input values.  Strong
+   guarantees are provided regarding the confidentiality of inputs
+   provided that no pair of parties reveals their shares to either of
+   the other parties.
+
+   The protocols described in this document depend on having three MPC
+   parties execute them.  The protocols described here are secure with
+   abort, even when one party is not honest.
+
+   Concretely, this means that a single dishonest party cannot cause the
+   value of inputs to be revealed.  Also, a single dishonest party
+   cannot alter the output of any operation without detection.  The
+   protocol is aborted if honest parties detect an error that might
+   indicate the actions of a dishonest party.  This means that a
+   dishonest party can disrupt the protocol.
+
+2.1.  MPC Protocol Prerequisites
+
+   MPC parties require channels to each of the other parties that
+   provide confidentiality, integrity and peer authentication.
+   Mutually-authenticated TLS [RFC8446] provides the necessary
+   capabilities, however, this document does not define how to arrange
+   communication between parties; protocols that use these mechanisms
+   need to define how communication between parties is established.
+
+   The multiplication protocol described depends on shared randomness
+   for efficiency.  The protocol depends on having a way for parties to
+   pairwise agree on random values.  MPC parties can execute a coin toss
+   protocol using the communication channel, however it is considerably
+   more efficient to use pseudorandom secret sharing [PRSS] when there
+   are a large number of multiplications.
+
+   This section describes basic operations of secret sharing
+   (Section 2.3), reveal protocol (Section 2.5), and addition
+   (Section 2.6).  Multiplication is more involved and is the subject of
+   subsequent sections (Section 3, Section 4).
+
+2.2.  Fields and Rings
+
+   The basic multiplication protocol described in Section 3 operates in
+   any commutative ring, which will be referred to as simply a "ring".
+   A ring is a group that defines addition and multiplication operations
+   that are both associative and commutative.  A ring has an additive
+   inverse for every element, which enables subtraction.  A ring
+   contains a "zero" element that is an additive identity plus a "one"
+   element that is a multiplicative identity.
+
+   A simple realization of a ring is formed of integers modulo a chosen
+   integer that is greater than 1.
+
+   The validation protocol described in this document (see Section 4)
+   uses a modulo 2 ring.  This ring is referred to throughout as a
+   binary field as it is also a field and it contains two values: 0 and
+   1.  Addition and multiplication in a binary field correspond to
+   Boolean operations.  Addition in a binary field is equivalent to the
+   Boolean exclusive OR (XOR) operation.  Multiplication in a binary
+   field is equivalent to the Boolean AND operation.
+
+   The security properties of the validation protocol depend on the use
+   of a prime field of sufficient size.  Fields support the same
+   operations as rings, adding multiplicative inversion of elements,
+   which enables a division operation.  A prime field can be realized
+   from integers modulo any prime.  The validation protocol integrates
+   the projection of values in a binary field to a larger prime field,
+   rather than requiring a separate conversion step.
+
+2.3.  Secret Sharing
+
+   Each input value (x) is split into three shares (x₁, x₂, x₃), such
+   that x = x₁ + x₂ + x₃. Any method can be used, but the following
+   process is typical:
+
+   x₁ = random()
+   x₂ = random()
+   x₃ = x - x₁ - x₂
+
+   Then, each party in the MPC receives a different set of two values.
+   This document adopts the convention that P_1 receives (x₁, x₂), P_2
+   receives (x₂, x₃), and P_3 receives (x₃, x₁).  From this sharing, no
+   single party is able to construct the original value (x), but the
+   values from any two parties include all three shares and can be used
+   to reconstruct the original value.
+
+   Some protocols might require that the parties construct a sharing of
+   a value which is known to all the parties.  In that case, the value
+   of x₁ is set to the known value, with x₂ and x₃ both set to zero.
+
+2.4.  Identifying Shares and Parties
+
+   This document identifies shares and parties by number.  Three parties
+   are identified as P_1, P_2, and P_3.  The first, or left share, value
+   held by each party is identified with the same subscript.  The other
+   share, or right share, held by each is the next highest-numbered
+   share (with x₁ being the next highest after x₃).  This is illustrated
+   in Figure 1:
+
+            x₁ .----. x₂  x₂ .----. x₃  x₃ .----. x₁
+          .---+  P₁  +------+  P₂  +------+  P₃  +---.
+           \   `----'        `----'        `----'   /
+            '--------------------------------------'
+
+                        Figure 1: Parties and Shares
+
+   Three parties are identified as P_1, P_2, and P_3.
+
+   The three parties are logically placed in a ring, with higher
+   numbered parties to the right of lower-numbered parties.  P_3 is
+   placed to the left of P_1.  This means that if a protocol involves
+   sending a value to the left, P_1 sends the value to P_3, P_2 sends to
+   P_1, and P_3 sends to P_2.  The sending directions are illustrated in
+   Figure 2.
+
+   send
+   left:      .----.      .----.      .----.
+          .--+  P₁  |<---+  P₂  |<---+  P₃  |<--.
+           \  `----'      `----'      `----'   /
+            '---------------------------------'
+
+   send
+   right:      .----.      .----.      .----.
+          .-->|  P₁  +--->+  P₂  +--->|  P₃  +--.
+           \   `----'      `----'      `----'  /
+            '---------------------------------'
+
+                  Figure 2: Parties and Sending Directions
+
+   Protocols are often described in terms of the actions of a single
+   party.  The party to the left of that party is P_(-) and the party to
+   the right is P_(+).  Where necessary, the current party is identified
+   as P_(=).
+
+   The two shares that each party holds are referred to as "left" and
+   "right" shares.  The "left" share is identified with a subscript of
+   "-" (e.g., x_-); the numeric identifier for the left share at each
+   party matches the identifier for that party, so the left share of x
+   that P_1 holds is named x_1.  The right share is designated with a
+   subscript of "+" (e.g., y_+); the numeric identifier for the right
+   share is one higher than the identifier for the party, so the right
+   share at P_3 is (also) x_1.
+
+2.5.  Reveal Protocol
+
+   The output of a protocol can be revealed by sending all share values
+   to the entity that will receive the final result.  This entity can
+   validate the consistency of the values it receives by ensuring that
+   the replicated values it receives are identical.  That is, the value
+   of x_1 received from P_1 is the same as the value of x_1 it receives
+   from P_3 and so forth.  If the value of shares are inconsistent, the
+   protocol fails.  After discarding these duplicated values, the
+   revealed value is the sum of the shares that it receives.
+
+   A value can be revealed by sending adjacent parties the one share
+   value they do not have.  That is, P_1 sends x_1 to P_2 and x_2 to
+   P_3; P_2 sends x_2 to P_3 and x_3 to P_(1;) P_3 sends x_3 to P_1 and
+   x_1 to P_2.  Each party verifies that they receive the same value
+   twice, and aborts if they do not.
+
+   If the protocol is executed correctly, each party learns the revealed
+   value, which is the sum of the two shares it holds, plus the share
+   that was received.
+
+   This basic reveal protocol requires that each party send and receive
+   two elements.  More efficient protocols are possible, but these are
+   not defined in this document.
+
+2.6.  Addition
+
+   Addition of two values in this setting is trivial and requires no
+   communication between parties.  To add x to y, each party adds their
+   shares.  That is, to compute z = x + y, each party separately
+   computes the sum of the shares they hold:
+
+   z₋ = x₋ + y₋
+   z₊ = x₊ + y₊
+
+   This produces shares of the sum without requiring communication.
+
+   A similar process can be used for multiplication with a value that is
+   known to all parties, negation, and subtraction.
+
+      |  Note: Addition in a binary field is the same as subtraction and
+      |  both are equivalent to the XOR operation.
+
+3.  Multiplication Protocol
+
+   The product of two shared values, x and y, is computed using the
+   following process.
+
+   Since x = x₁ + x₂ + x₃ and y = y₁ + y₂ + y₃ the product z = x · y can
+   be expanded as:
+
+   z = (x₁ + x₂ + x₃) · (y₁ + y₂ + y₃)
+
+   This can be illustrated with a 3 by 3 table (Table 1):
+
+                   +=====+=========+=========+=========+
+                   |     | y₁      | y₂      | y₃      |
+                   +=====+=========+=========+=========+
+                   | x_1 | x_1*y_1 | x_1*y_2 | x_1*y_3 |
+                   +-----+---------+---------+---------+
+                   | x_2 | x_2*y_1 | x_2*y_2 | x_2*y_3 |
+                   +-----+---------+---------+---------+
+                   | x_3 | x_3*y_1 | x_3*y_2 | x_3*y_3 |
+                   +-----+---------+---------+---------+
+
+                      Table 1: Multiplication by Parts
+
+   To compute the product, each party locally computes the sum of three
+   products as follows:
+
+   z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋
+
+   To visualize this, Figure 3 shows cells labeled with the party
+   responsible for computing that partial product:
+
+           y₁     y₂     y₃            y₁     y₂     y₃
+        +-------------+------+      +--------------------+
+     x₁ |  P₁         |      |   x₁ |                    |
+        |      +------+      |      |      +-------------+
+     x₂ |      |             |   x₂ |      |  P₂         |
+        +------+             |      |      |      +------+
+     x₃ |                    |   x₃ |      |      |      |
+        +--------------------+      +------+------+------+
+
+         y₁     y₂     y₃
+        +-------------+------+
+     x₁ |             |  P₃  |
+        |             +------+
+     x₂ |                    |
+        +------+      +------+
+     x₃ |  P₃  |      |  P₃  |
+        +------+------+------+
+
+                     Figure 3: Multiplication by Party
+
+   The result is a non-replicated sharing of the result z = z₁ + z₂ +
+   z₃.
+
+   To reach the desired state where parties each have replicated shares
+   of z, each party needs to send its share, z₋, to the party to its
+   left.
+
+   Unfortunately, each party cannot simply send this value to another
+   party, as this would allow the recipient to reconstruct the full
+   input values, x and y, using z₋. To prevent this, the value of z₋ is
+   masked with a uniformly distributed random mask that is unknown to
+   party P_(-).
+
+   Using a source of shared randomness (such as [PRSS]), each pair of
+   helpers generates a uniformly distributed random value known only to
+   the two of them.  Let r₋ denote the left value (known to P_(-)) and
+   r₊ be the right value (known to P_(+)).
+
+   Each party uses r₋ and r₊ to create a masked value of z₋ as follows:
+
+   z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋ + r₋ - r₊
+
+   Each of these three mask values are added once and subtracted once,
+   so this masking does not alter the result.  Importantly, the value of
+   r₊ is not known to P_(-), which ensures that z₋ cannot be used by
+   P_(-) to recover x or y.  Thus, z₋ is safe to send to P_(-).
+
+   Upon receiving a value from its right — which the recipient names z₊
+   — each helper is now in possession of two-of-three shares, (z₋, z₊),
+   which is a replicated secret sharing of the product of x and y.
+
+4.  Validation Protocol
+
+   The basic multiplication protocol in Section 3 only offers semi-
+   honest security.  It is secure up to an additive attack; see
+   Section 4.1.  Validating multiplications allows an additive attack to
+   be detected, ensuring that a protocol is aborted before any result is
+   produced that might compromise the confidentiality of inputs.
+
+4.1.  Additive Attack
+
+   By "additive attack", we mean that instead of sending the value z₋, a
+   corrupted party could instead send z₋ + a.  In the context of boolean
+   circuits, the only possible additive attack is to add 1.
+
+   The multiplication protocol described does not prevent this.  Since
+   the value z₋ is randomly distributed, the party (P_(-)) that receives
+   this value cannot tell if an additive attack has been applied.
+
+   While an additive attack does not result in information about the
+   inputs being revealed, it corrupts the results.  If a protocol
+   depends on revealing certain values, this sort of corruption could be
+   used to reveal information that might not otherwise be revealed.
+
+   For example, if the parties were computing a function that erases a
+   value unless it has reached some minimum such as:
+
+   if total_count > 1000:
+       reveal(total_count)
+   else:
+       reveal(0)
+
+   If a corrupted helper wanted to reveal a total_count that was less
+   than 1000, it could add 1 to the final multiplication used to compute
+   the condition total_count > 1000.  The result is that values below
+   the minimum are revealed (and values above the minimum are erased),
+   violating the conditions on the protocol.
+
+4.2.  Malicious Security
+
+   Before any values are revealed, the parties perform a validation
+   protocol.  This protocol confirms that all of the multiplications
+   performed were performed correctly.  That is, that no additive attack
+   was applied by any party.
+
+   If this validation protocol fails, the parties abort the protocol and
+   no values are revealed.  All parties destroy the shares they hold.
+
+4.3.  Overview of the Validation Protocol
+
+   Each of the parties produces a "Zero Knowledge Proof" (ZKP) that
+   proves to the two other parties (P_(-) and P_(+)) that all of the
+   multiplications it performed were done correctly.  The two other
+   parties act as "verifiers" and validate this zero knowledge proof.
+
+   The validation protocol is therefore executed three times, with each
+   party acting as a prover.  Each validation can occur concurrently.
+
+   When operating in a boolean field, if P_(=) followed the protocol
+   correctly, this is how they would compute z₋:
+
+   z₋ = x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊
+
+   This can be restated as:
+
+   x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
+
+   The left hand side of this expression will equal zero if the protocol
+   was followed correctly, but it will equal one if there was an
+   additive attack.
+
+   Validation is made more efficient by validating multiple
+   multiplications at the same time.
+
+   The above statement can be transformed to yield the result (either
+   zero or one) as a value in a large prime field Section 4.6.  These
+   values can be summed across all the multiplications in a large batch.
+   The total sum will be the count of additive attacks applied, which
+   will be zero if the prover correctly followed the protocol.  There
+   will not be any wrapping around so long as the number of
+   multiplications in the batch is smaller than the prime used to define
+   the field.
+
+   For this protocol, the parties will use the field of integers mod p,
+   where p is a large prime.
+
+4.4.  Distributed Zero-Knowledge Proofs
+
+   The prover (P_(=)) needs to prove that for each multiplication in a
+   batch:
+
+   x₋·y₋ ⊕ x₋·y₊ ⊕ x₊·y₋ ⊕ r₋ ⊕ r₊ ⊕ z₋ = 0
+
+   The left verifier (P_(-)) knows the values of y₋, x₋, r₋, and z₋.
+
+   The right verifier (P_(+)) knows the values of x₊, y₊, r₊.
+
+   This means that the prover (P_(=)) does not need to send any of these
+   values to the verifiers.  Verifiers use information they already have
+   to validate the proof.
+
+   Since the two verifiers possess all of this information distributed
+   amongst themselves, this approach is referred to as "Distributed Zero
+   Knowledge Proofs".
+
+4.5.  Distributed Zero Knowledge Proofs
+
+   [FLPCP] describes a system of zero-knowledge proofs that rely on
+   linear operations.  This is expanded in [BOYLE] to apply to three-
+   party honest-majority MPC, requiring only O(logN) communication in
+   total.  These proofs are able to validate the computation of an inner
+   product, or expressions of the form:
+
+   sum(i=0..n, uᵢ · vᵢ) = t
+
+   This depends on the prover (P_(=)) and left verifier (P_(-)) both
+   possessing the n-vector u, the prover (P_(=)) and the right verifier
+   (P_(+)) possessing the n-vector v, and the verifiers P_(-) and P_(+)
+   jointly holding shares of the target value, t (that is, P_(-) holds
+   t₋ and P_(-) holds t₊ such that t₋ + t₊ = t).
+
+   However, the security of this protocol requires the vector elements u
+   and v to be members of a large field.  So the first step of the
+   validation protocol is to take a batch of multiplications, and
+   convert them into a dot product of vectors with elements in a large
+   field.
+
+4.6.  Transforming into a Large Prime Field
+
+   [BINARY] describes how to apply [FLPCP] efficiently for binary
+   fields.  When binary values are directly lifted into a large field,
+   the XOR operation can be computed with the expression:
+
+   f(x, y) = x ⊕ y
+           = x + y - 2·x·y
+           = x·(1 - 2·y) + y
+
+   Using this relation, the expression that must be proven can be
+   converted into a dot-product of two vectors, one of which is known to
+   both P_(=) and P_(-), the other being known to both P_(=) and P_(+).
+
+   Rearranging terms:
+
+   x₋·y₊ ⊕ (x₋·y₋ ⊕ z₋ ⊕ r₋ ) ⊕ x₊·y₋ ⊕ r₊ = 0
+
+   Define:
+
+   e₋ = x₋·y₋ ⊕ z₋ ⊕ r₋
+
+   Then:
+
+   (x₋·y₊ ⊕ e₋ ) ⊕ (x₊·y₋ ⊕ r₊) = 0
+
+   Using: x ⊕ y = x·(1 - 2·y) + y
+
+   (x₋·y₊·(1 - 2e₋) + e₋) ⊕ (x₊·y₋·(1 - 2r₊) + r₊) = 0
+
+   Using: x ⊕ y = x + y - 2·x·y
+
+   (x₋·y₊·(1 - 2e₋) + e₋)
+   + (x₊·y₋·(1 - 2r₊) + r₊)
+   - 2(x₋·y₊·(1 - 2e₋) + e₋)(x₊·y₋·(1 - 2r₊) + r₊) = 0
+
+   Distributing and rearranging terms, plus subtracting 1/2 from both
+   sides, produces:
+
+   - 2x₋·y₋·(1 - 2e₋)·y₊·x₊·(1 - 2r₊)
+   + y₋·x₊·(1 - 2r₊) - 2e₋·y₋·x₊·(1 - 2r₊)
+   + x₋·(1 - 2e₋)·y₊ - 2x₋·(1 - 2e₋)·y₊·r₊
+   + e₋ - 2e₋·r₊ + r₊ - ½ = - ½
+
+   Factoring allows this to be written as an expression with four terms,
+   each with a component taken from the left and a component from the
+   right.
+
+   [-2x₋·y₋·(1 - 2e₋)] · [y₊·x₊·(1 - 2r₊)]
+   + [y₋(1 - 2e₋)] · [x₊·(1 - 2r₊)]
+   + [x₋·(1 - 2e₋)] · [y₊(1 - 2r₊)]
+   + [-½(1 - 2e₋)] · [(1 - 2r₊)] = -½
+
+   Components on the left form a vector that can be named g, and
+   components on the right form a vector, h.  The result is the dot
+   product of two four dimensional vectors:
+
+   g₁·h₁ + g₂·h₂ + g₃·h₃ + g₄·h₄ = -½
+
+   Alternatively:
+
+   sum(i=1..4, gᵢ·hᵢ) = -½
+
+   From this point, each party can compute the vectors that they are
+   able to.
+
+   P_(=) and P_(-) both compute gᵢ as follows:
+
+   g₁ = -2·x₋·y₋·(1 - 2·e₋ )
+   g₂ = y₋·(1 - 2·e₋ )
+   g₃ = x₋·(1 - 2·e₋ )
+   g₄ = -½(1 - 2·e₋)
+
+   And where:
+
+   e₋ = x₋·y₋ ⊕ z₋ ⊕ r₋
+
+   P_(=) and P_(+) both compute hᵢ as follows:
+
+   h₁ = y₊·x₊·(1 - 2·r₊)
+   h₂ = x₊·(1 - 2·r₊)
+   h₃ = y₊·(1 - 2·r₊)
+   h₄ = 1 − 2·r₊
+
+   These vectors form the basis of later stages of the proof.
+
+      |  In the prime field modulo 2^61-1, the negative inverse of two
+      |  (-2^-1 or -½) is 1,152,921,504,606,846,975.
+
+4.7.  Validating a batch of multiplications
+
+   Each multiplication therefore produces two vectors, with each vector
+   being length 4.  To validate a batch of m multiplications, the prover
+   (P_(=)), forms two vectors of length 4m.
+
+   The prover (P_(=)), and left verifier (P_(-)) both produce the vector
+   u by concatenating the vectors from all multiplications:
+
+   u = (g₁⁽¹⁾, g₂⁽¹⁾, g₃⁽¹⁾, g₄⁽¹⁾,
+        g₁⁽²⁾, g₂⁽²⁾, g₃⁽²⁾, g₄⁽²⁾,
+        …
+        g₁⁽ᵐ⁾, g₂⁽ᵐ⁾, g₃⁽ᵐ⁾, g₄⁽ᵐ⁾)
+
+   The prover (P_(=)) and right verifier (P_(+)) both compute the vector
+   v in the same way:
+
+   v = (h₁⁽¹⁾, h₂⁽¹⁾, h₃⁽¹⁾, h₄⁽¹⁾,
+        h₁⁽²⁾, h₂⁽²⁾, h₃⁽²⁾, h₄⁽²⁾,
+        … ,
+        h₁⁽ᵐ⁾, h₂⁽ᵐ⁾, h₃⁽ᵐ⁾, h₄⁽ᵐ⁾)
+
+   If no additive attacks were applied by the prover, the dot product of
+   these two vectors should be:
+
+   u·v = -m/2
+
+4.8.  Overview of Recursive Proof Compression
+
+   Now that we have expressed the work of the prover as a simple dot
+   product of two vectors of large field elements, we can use a
+   recursive approach to prove this expression with O(logN)
+   communication.
+
+   The process is iterative, where at each stage there is a pair of
+   vectors, u and v, and a target, t, where the goal is to prove that
+   u·v = t.  The values of u and v start as described in Section 4.7;
+   with t initially set to a value of -m/2.
+
+   At each iteration:
+
+   1.  Select a compression factor L.
+
+   2.  Chunk the vectors u and v into s segments of length L.
+
+       1.  Each chunk of u uniquely defines a polynomial of degree L - 1
+           which are named pᵢ(x), indexed by i ∊ [0..s).
+
+       2.  Each chunk of v uniquely defines a polynomial of degree L - 1
+           which are named qᵢ(x), indexed by i ∊ [0..s).
+
+   3.  The polynomial G(x) is defined as: sum(i=0..s, pᵢ(x) · qᵢ(x))
+
+       For x ∊ [0..L-1), this polynomial G(x) computes the inner product
+       of a portion of u and v.  So the goal becomes proving that
+       sum(i=0..L-1, G(i)) = t.
+
+       In the first iteration, the target value t is known by all
+       parties to be -m/2, so left verifier (P₋) sets their share t₋ to
+       -m/2 and the right verifier P₊ sets their share t₊ to zero.  In
+       subsequent iterations the target value will not be known to both
+       verifiers.
+
+       1.  The prover will compute the value of G(0), G(1), ... , G(2L -
+           2), the minimal number of points required to uniquely define
+           it.
+
+       2.  These 2L - 1 points are split into two additive secret-shares
+           G(x)_- and G(x)_+ and sent to the verifiers P₋ and P₊,
+           respectively.  These shares form the distributed zero-
+           knowledge proof.
+
+       3.  The verifiers each sum together the first L - 1 points they
+           were given: P₋ computes sum₋ = sum(i=0..L-1, G(i)_-).  P₊
+           computes sum₊ = sum(i=0..L-1, G(i)_+). where sum₋ + sum₊ =
+           sum(0..L-1, G(i)).
+
+       4.  Now the verifiers verify the proposition sum(i=0..L-1, G(i))
+           = t by having P₋ compute b₋ = t₋ - sum₋ and P₊ compute b₊ =
+           t₊ - sum₊. They send each other these values and confirm that
+           b₋ + b₊ = 0.  If this test fails, the entire protocol is
+           aborted.
+
+   4.  At this point, the prover could have produced values for
+       G(0..L-1) that pass this test even if they had performed an
+       additive attack.  The proof needs to be validated by confirming
+       that G(r) = sum(i=0..s, pᵢ(r) · qᵢ(r)) for a randomly selected
+       challenge point r.  As long as the prover cannot control the
+       choice of r, the likelihood that a dishonest prover can cheat
+       without detection is inversely proportional to the field size.
+
+       1.  If we define two new vectors u′ = { p₀(r), …, pₛ₋₁(r) }, and
+           v′ = { <q₀(r), …, qₛ₋₁(r) }, then we can rewrite the
+           statement that needs to be proven as: u′ · v′ = G(r).  This
+           is of the same form as the original statement, but with the
+           new vectors u′ and v′ having length L times shorter than the
+           original vectors.
+
+       2.  u′ and v′ need not be communicated, since the prover and left
+           verifier (P₋) can both compute each value pᵢ(r) using
+           Lagrange interpolation, just as the prover and right verifier
+           (P₊) can compute each value qᵢ(r).
+
+       3.  Each of the verifiers can use the 2L - 1 points they received
+           (their share of G(x)) to compute a share of G(r) using
+           Lagrange interpolation.  These shares become their share of a
+           new value for t.
+
+       4.  The Fiat-Shamir heuristic can be used to generate r by
+           hashing the distributed zero knowledge proof.  This
+           transforms this protocol from a multi-round interactive
+           protocol into a constant round protocol.
+
+   5.  The vectors u and v are replaced by u′ and v′, the value of t is
+       set to G(r), and the next iteration is started.
+
+   The recursion ends when the vectors u and v have length less than L.
+   The verifiers validate the soundness of the final iteration of the
+   proof in a simpler, more direct way; see Section 4.10.6.
+
+4.9.  Detailed Validation Algorithm
+
+4.9.1.  Selecting the Compression Factor
+
+   For the first iteration, the parties will use a compression factor
+   (L) of 32.  In all subsequent rounds they will use a compression
+   factor of 8.
+
+   Note: A larger value for L increases the compression factor, which
+   reduces the overall communication cost.  However, because the
+   computation of the proof requires Lagrange interpolation (which is
+   O(L^2) computation), a larger compression factor quickly becomes
+   expensive.  A slightly larger compression factor on the first round
+   is possible because there are only a small number of possible input
+   values, so the work can be reduced with the use of lookup tables if
+   necessary.
+
+4.9.2.  Producing Polynomials p(x) and q(x)
+
+   The prover (P_(=)) and the left verifier (P_(-)), chunk the vector u
+   into s chunks of length L.
+
+   *  chunk 0: <u_0, u_1, …, u_(L-1)>
+
+   *  chunk 1: <u_L, u_(L+1), …, u_(2L-1)>
+
+   *  …
+
+   *  chunk s-1: <u_((s-1)L), u_((s-1)L+1), …, u_(sL-1)>
+
+   If the length of u is not divisible by L, then the final chunk will
+   be padded with zeros.
+
+   In the first iteration there will be s = ceil(4m / L) chunks, as the
+   original vectors u and v have length 4m.  In subsequent iterations
+   there will be fewer chunks.
+
+   They will interpret each chunk as L points lying on a polynomial,
+   pᵢ(x) of degree L-1, corresponding to the x coordinates { 0, 1, …,
+   L-1 }, that is to say they will interpret them as { pᵢ(0), pᵢ(1), …,
+   pᵢ(L-1) }.
+
+   The prover (P_(=)) and left verifier (P_(-)) can find the value of
+   pᵢ(x) for any other value of x using Lagrange interpolation.
+
+   The prover (P_(=)) uses Lagrange interpolation to compute the values
+   { pᵢ(L), pᵢ(L+1), …, pᵢ(2L-2) }.
+
+   The same process is applied for the vector v with the right verifier,
+   (P_(+)).
+
+   The prover (P_(=)) and the right verifier (P_(+)), chunk the vector v
+   into s chunks of length L.
+
+   *  chunk 0: <v_0, v_1, …, v_(L-1)>
+
+   *  chunk 1: <v_L, v_(L+1), …, v_(2L-1)>
+
+   *  …
+
+   *  chunk s-1: <v_((s-1)L), v_((s-1)L+1), …, v_(sL-1)>
+
+   As before, if the length of v is not a multiple of L, the final chunk
+   will be padded with zeros.
+
+   Each chunk is interpreted as L points on a polynomial.  From this the
+   values { qᵢ(L), qᵢ(L+1), …, qᵢ(2L-2) } are found using using Lagrange
+   interpolation.
+
+4.10.  Producing the Zero Knowledge Proof
+
+   In order to prove that u·v = t, the prover will compute the value of
+   2L-1 points on the polynomial G(x), which is defined as:
+
+   G(x) = sum(i=1..s, pᵢ(x) · qᵢ(x))
+
+   The prover computes the values of { G(0), G(1), …, G(2L-2) } by
+   incrementally aggregating the products of { pᵢ(0), pᵢ(1), …, pᵢ(2L-
+   21) } and { qᵢ(L), qᵢ(L+1), …, qᵢ(2L-2) }, for each chunk.
+
+   These 2L-1 points on the polynomial G(x) constitute the zero-
+   knowledge proof that u·v = t.
+
+   An equivalent method of proving u·v = t, is to show that
+   sum(i=0..L-1, G(i)) = t.
+
+4.10.1.  Masking the Zero-Knowledge Proof
+
+   The prover (P_(=)), cannot simply send this zero-knowledge proof to
+   the verifiers, as doing so would release private information.
+   Instead, the prover produces a two-part additive secret-sharing of
+   these 2L-1 points, sending one share to each verifier.
+
+   The prover (P_(=)) and the right verifier (P_(+)) generate one share
+   using their shared randomness, which means that no communication is
+   needed.  This share is denoted G(x)_+.
+
+   The prover (P_(=)) computes the other share via subtraction.  That
+   is, G₋(x) = G(x) - G₊(x).  This value is sent to the left verifier
+   (P_(-)).  Transmitting this share G(x)_- involves sending 2L-1 field
+   values.
+
+4.10.2.  Validating the Proof Increment
+
+   To check that sum(i=0..L-1, G(i)) = t, the left verifier (P_(-))
+   computes:
+
+   b₋ = t₋ - sum(i=0..L-1, G(i)_-)
+
+   Similarly, the right verifier (P_(+)) computes:
+
+   b₊ = t₊ - sum(i=0..L-1, G(i)_+)
+
+   The two verifiers will reveal these values b₋ and b₊ to one another,
+   so that each can reconstruct the full sum, b = b₋ + b₊.
+
+   Each confirms that b is zero.  If it is not, the parties abort and
+   destroy their shares.
+
+4.10.3.  Random Challenge
+
+   Now that the verifiers have confirmed that the proof says that there
+   was no additive attack, they need to validate that this was indeed a
+   legitimate zero-knowledge proof.  The prover knows the value of t,
+   even if each verifier only has shares of t after the first round.
+   Therefore, it is trivial for a prover to falsify G(x).
+
+   To demonstrate that the prover has provided a valid G(x), a random
+   field element, r, is chosen from the range [L, p) (that is, a value
+   that is not part of the proof).  The prover then has to show that the
+   value of G(r) matches what the verifiers hold.  The verifiers could
+   jointly compute this value using the values of pᵢ(x) and qᵢ(x).
+
+   The key requirement in choosing r is that the prover cannot influence
+   the choice.
+
+4.10.4.  Fiat-Shamir Challenge Selection
+
+   To minimize the rounds of communication, instead of having the
+   verifiers select this random point, we utilize the Fiat-Shamir
+   transform to produce a constant-round proof system.
+
+   The prover (P_(=)) hashes the zero-knowledge proof shares it has
+   generated onto a field element as follows:
+
+   commitment = SHA256(
+     concat(
+       SHA256([G(x)]_-),
+       SHA256([G(x)]_+)
+     )
+   )
+   r = (bytes2int(commitment[..16]) % (prime - L)) + L
+
+   This computation does not use the entire output of the hash function,
+   just enough to ensure that the value of r has minimal bias.  For
+   SHA-256 and a prime field modulo 2^61-1, the bias is in the order of
+   2^-67, which is negligible.
+
+   The verifiers generate the same point r independently.  Each verifier
+   only has access to one set of shares from G(x) so they each compute a
+   hash of the shares they have.  They then send that hash to each
+   other, after which they can concatenate the two hash values and
+   compute the challenge point.
+
+   Note that one verifier does not need to receive their shares of G(x)
+   from the prover, so they are able to compute their hash before even
+   starting any computation.
+
+   Consequently, though each round depends on communication, the total
+   latency is two rounds.  In the first, the prover sends shares of G(x)
+   to the left verifier.  Concurrently, the right verifier sends a hash
+   of their shares to the left verifier.  In the second round, the left
+   verifier sends a hash of their shares to the right verifier.
+
+4.10.5.  Recursive Proof
+
+   At the end of each round, the prover is left with the task of proving
+   that G(r) is correct based on the random challenge. r.
+
+   Recall the definition of G(x):
+
+   G(x) = sum(i=0..s, pᵢ(x)·qᵢ(x))
+
+   This is equivalent to providing that u′ · v′ = G(r), where:
+
+   u′ = <p₀(r), p₁(r), …>
+   v′ = <q₀(r), q₁(r), …>
+
+   This is a problem of exactly the same form as the original problem,
+   except that the length of u′ and v′ is now a factor of L shorter than
+   the original length of u and v.
+
+   The prover (P_(=)) and left verifier (P_(-)) use Lagrange
+   interpolation to compute the value of pᵢ(r) for all chunks in the
+   range 0..s and set this as the new vector u.
+
+   Similarly, the prover (P_(=)) and right verifier (P_(+)) use Lagrange
+   interpolation to compute the value of qᵢ(r) and set this as the new
+   vector v.
+
+   The target value t is set to G(r).  The two verifiers do not learn
+   G(r).  Instead, each uses Lagrange interpolation to compute a share
+   of G(r).  That is:
+
+   t₋ = lagrange_interpolate(r, [G₋(0), G₋(1), …, G₋(2L-2)])
+   t₊ = lagrange_interpolate(r, [G₊(0), G₊(1), …, G₊(2L-2)])
+
+4.10.6.  The Final Iteration
+
+   The proof proceeds recursively until the length of the vectors u and
+   v are strictly less than the compression factor L.
+
+   Next, the prover (P_(=)) and left verifier (P_(-)) jointly generate a
+   random field value pₘ using shared secrets.  Similarly, the prover
+   (P_(=)) and right verifier (P_(+)) generate a random field value qₘ
+   using shared secrets.
+
+   The prover (P_(=)) and left verifier (P_(-)) move u₀ to index L-1.
+   No data will be lost as this replaces a zero value; the length of u
+   is strictly less than L.  The value at index 0 is replaced with pₘ.
+
+   The prover (P_(=)) and right verifier (P_(+)) move v₀ to index L-1
+   and place the value qₘ at index 0.
+
+   The prover generates a zero knowledge proof from these polynomials
+   exactly as before, sending each verifier 2L-1 shares of G(x).  The
+   process of validation then proceeds differently.
+
+   Firstly, when the verifiers compute their shares of b, they ignore
+   the random value at index 0 of G(x).  That is:
+
+   b₋ = t₋ - sum(i=1..L-1, G₋(i))
+   b₊ = t₊ - sum(i=1..L-1, G₊(i))
+
+   Verifiers confirm that b₋ + b₊ is zero by exchanging their shares of
+   b.
+
+   Finally, the left verifier (P_(-)) computes both p₀(r) and G₋(r),
+   right verifier (P_(+)) computes q₀(r) and G₊(r), and then the
+   verifiers reveal all of these values to each other.  They then both
+   verify that:
+
+   G₋(r) + G₊(r) = p₀(r) · q₀(r)
+
+   The addition of random masks (pₘ and qₘ) ensure that revealing G(r)
+   in this way does not reveal anything about the value of the
+   polynomials held by the other party.  Revealing q₀(r), which was
+   computed from the random values, only confirms that the prover did
+   not cheat.
+
+5.  Conditions of Usage
+
+   This protocol requires integration into a larger protocol, which will
+   need to:
+
+   *  set or negotiate parameters,
+
+   *  provide communication channels,
+
+   *  agree on shared secrets, and
+
+   *  arrange the multiplications that are to be validated into batches.
+
+5.1.  Recommended Parameters
+
+   This document recommends several parameters, which are used in the
+   security analysis.  Alternative parameters can be used, provided that
+   they meet the stated requirements.
+
+   For shared secrets, pseudorandom secret sharing [PRSS] is used.  For
+   PRSS parameters, HPKE [RFC9180] with DHKEM(X25519, HKDF-SHA256),
+   HKDF-SHA256, and AES-128-GCM is RECOMMENDED, with the same KDF being
+   used for PRSS and AES-128 as the PRP.
+
+   For validation, the prime field used is modulo the Mersenne prime
+   2^61-1 validation.  Any sufficiently large prime can be used, but
+   this value provides both good performance on 64-bit hardware and
+   useful security margins for typical batch sizes; see TODO/below for
+   an analysis of the batch size requirements and security properties
+   that can be obtained by using this particular prime.
+
+   The Fiat-Shamir transform Section 4.10.3 used in the validation
+   proofs can use SHA-256.  However, any preimage and collision-
+   resistant hash function can be used provided that it has a enough
+   output entropy to avoid bias in the selected field value.
+
+6.  Performance Characteristics
+
+   TODO
+
+   *  Communication - number of bits sent/received
+
+   *  Computation - how many times you invoke PRSS
+
+   *  Vectorization - why it is useful and good
+
+   *  How to multiply in parallel - sending and receiving, stalling,
+      etc…
+
+   *  Memory requirements
+
+      -  Compression factor and choice
+
+      -  Trade-offs - time/memory (factor of 64 during generation of r,
+         for Fiat-Shamir version)
+
+   *  Multiple rounds or Fiat-Shamir
+
+7.  Security Considerations
+
+   TODO
+
+   *  Parameter choice and security margins
+
+      -  Talk about trade-off between attack success probability and
+         prime size.
+
+      -  Show equation for how many bits of security you get when
+         validating N multiplications
+
+   *  You can't just use the multiplication protocol without the
+      validation protocol due to the additive attack (explain why)
+
+   *  Communication security (authentication)
+
+   *  Constant time and implications thereof
+
+   *  Fiat-Shamir vs more rounds
+
+8.  IANA Considerations
+
+   This document has no IANA considerations.
+
+9.  References
+
+9.1.  Normative References
+
+   [PRSS]     Thomson, M. and B. Savage, "High Performance Pseudorandom
+              Secret Sharing (PRSS)", Work in Progress, Internet-Draft,
+              draft-thomson-ppm-prss, July 2024,
+              <https://datatracker.ietf.org/doc/html/draft-thomson-ppm-
+              prss>.
+
+9.2.  Informative References
+
+   [BINARY]   Li, Y., Duan, Y., Huang, Z., Hong, C., Zhang, C., and Y.
+              Song, "Efficient 3PC for binary circuits with application
+              to maliciously-secure DNN inference", USENIX Association,
+              Proceedings of the 32nd USENIX Conference on Security
+              Symposium pp. 5377–5394, ISBN 978-1-939133-37-3, August
+              2023.
+
+   [BOYLE]    Boyle, E., Gilboa, N., Ishai, Y., and A. Nof, "Efficient
+              Fully Secure Computation via Distributed Zero-Knowledge
+              Proofs", Springer International Publishing, Advances in
+              Cryptology – ASIACRYPT 2020 pp. 244-276,
+              DOI 10.1007/978-3-030-64840-4_9, ISBN ["9783030648398",
+              "9783030648404"], 2020,
+              <https://doi.org/10.1007/978-3-030-64840-4_9>.
+
+   [FLPCP]    Boneh, D., Boyle, E., Corrigan-Gibbs, H., Gilboa, N., and
+              Y. Ishai, "Zero-Knowledge Proofs on Secret-Shared Data via
+              Fully Linear PCPs", Springer International Publishing,
+              Advances in Cryptology – CRYPTO 2019 pp. 67-97,
+              DOI 10.1007/978-3-030-26954-8_3, ISBN ["9783030269531",
+              "9783030269548"], 2019,
+              <https://doi.org/10.1007/978-3-030-26954-8_3>.
+
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/rfc/rfc8446>.
+
+   [RFC9180]  Barnes, R., Bhargavan, K., Lipp, B., and C. Wood, "Hybrid
+              Public Key Encryption", RFC 9180, DOI 10.17487/RFC9180,
+              February 2022, <https://www.rfc-editor.org/rfc/rfc9180>.
+
+Appendix A.  Acknowledgments
+
+   This work is a direct implementation of the protocols described in
+   [BINARY], which builds on a lot of prior academic work on MPC.
+
+Authors' Addresses
+
+   Ben Savage
+   Meta
+   Email: btsavage@meta.com
+
+
+   Martin Thomson
+   Mozilla
+   Email: mt@lowentropy.net
