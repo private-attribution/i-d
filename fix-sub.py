@@ -36,7 +36,8 @@ def tr_once(line, pattern, target):
 def tr(line):
     line = line.replace("\\*", "·").replace("\\+", "⊕").replace("...", "…")
     line = tr_once(line, sub, subtr)
-    return tr_once(line, sup, suptr)
+    line = tr_once(line, sup, suptr)
+    return line.replace("\\_", "_")
 
 def trcode(line, code):
     result = ""
