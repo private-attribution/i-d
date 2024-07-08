@@ -153,7 +153,7 @@ A simple realization of a ring is formed of integers modulo a chosen integer
 that is greater than 1.
 
 The validation protocol described in this document (see {{validation}}) uses a
-modulo 2 ring. This ring is referred to throughput as a binary field as it is
+modulo 2 ring. This ring is referred to throughout as a binary field as it is
 also a field and it contains two values: 0 and 1. Addition and multiplication in
 a binary field correspond to Boolean operations. Addition in a binary field is
 equivalent to the Boolean exclusive OR (XOR) operation. Multiplication in a
