@@ -710,14 +710,14 @@ At each iteration:
    the prover cannot control the choice of `r`, the likelihood that a dishonest
    prover can cheat without detection is inversely proportional to the field size.
 
-    1. If we define two new vectors `u’ = <p<sub>0</sub>(r), …,
-       p<sub>s-1</sub>(r)>`, and `v’ = <q<sub>0</sub>(r), …,
-       q<sub>s-1</sub>(r)>`, then we can rewrite the statement that needs to be
-       proven as: `u’ · v’ = G(r)`. This is of the same form as the original
-       statement, but with the new vectors `u’` and `v’` having length `L` times
+    1. If we define two new vectors `u′ = { p<sub>0</sub>(r), …,
+       p<sub>s-1</sub>(r) }`, and `v′ = { <q<sub>0</sub>(r), …,
+       q<sub>s-1</sub>(r) }`, then we can rewrite the statement that needs to be
+       proven as: `u′ · v′ = G(r)`. This is of the same form as the original
+       statement, but with the new vectors `u′` and `v′` having length `L` times
        shorter than the original vectors.
 
-    2. `u’` and `v’` need not be communicated, since the prover and left verifier (`P_-`)
+    2. `u′` and `v′` need not be communicated, since the prover and left verifier (`P_-`)
        can both compute each value `p<sub>i</sub>(r)` using Lagrange interpolation,
        just as the prover and right verifier (`P_+`) can compute each value `q<sub>i</sub>(r)`.
 
@@ -729,7 +729,7 @@ At each iteration:
        distributed zero knowledge proof. This transforms this protocol from a
        multi-round interactive protocol into a constant round protocol.
 
-5. The vectors `u` and `v` are replaced by `u’` and `v’`, the value of `t` is
+5. The vectors `u` and `v` are replaced by `u′` and `v′`, the value of `t` is
    set to `G(r)`, and the next iteration is started.
 
 The recursion ends when the vectors `u` and `v` have length less than `L`.  The
@@ -918,15 +918,15 @@ Recall the definition of `G(x)`:
 G(x) = sum(i=0..s, p<sub>i</sub>(x)·q<sub>i</sub>(x))
 ~~~
 
-This is equivalent to providing that `u’ · v’ = G(r)`, where:
+This is equivalent to providing that `u′ · v′ = G(r)`, where:
 
 ~~~ pseudocode
-u’ = <p<sub>0</sub>(r), p<sub>1</sub>(r), …>
-v’ = <q<sub>0</sub>(r), q<sub>1</sub>(r), …>
+u′ = <p<sub>0</sub>(r), p<sub>1</sub>(r), …>
+v′ = <q<sub>0</sub>(r), q<sub>1</sub>(r), …>
 ~~~
 
 This is a problem of exactly the same form as the original problem, except that
-the length of `u’` and `v’` is now a factor of `L` shorter than the original
+the length of `u′` and `v′` is now a factor of `L` shorter than the original
 length of `u` and `v`.
 
 The prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) use Lagrange interpolation
@@ -1046,7 +1046,7 @@ TODO
 - Parameter choice and security margins
   - Talk about trade-off between attack success probability and prime size.
   - Show equation for how many bits of security you get when validating N multiplications
-- You can’t just use the multiplication protocol without the validation protocol due to the additive attack (explain why)
+- You can't just use the multiplication protocol without the validation protocol due to the additive attack (explain why)
 - Communication security (authentication)
 - Constant time and implications thereof
 - Fiat-Shamir vs more rounds
