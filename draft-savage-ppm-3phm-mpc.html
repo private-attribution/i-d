@@ -1336,7 +1336,7 @@ party is not honest.<a href="#section-2-2" class="pilcrow">¶</a></p>
 inputs to be revealed. Also, a single dishonest party cannot alter the output of
 any operation without detection. The protocol is aborted if honest parties
 detect an error that might indicate the actions of a dishonest party. This means
-that a dishonest party can disrupt the protocol<a href="#section-2-3" class="pilcrow">¶</a></p>
+that a dishonest party can disrupt the protocol.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <div id="mpc-protocol-prerequisites">
 <section id="section-2.1">
         <h3 id="name-mpc-protocol-prerequisites">
@@ -1374,7 +1374,7 @@ identity plus a "one" element that is a multiplicative identity.<a href="#sectio
 <p id="section-2.2-2">A simple realization of a ring is formed of integers modulo a chosen integer
 that is greater than 1.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.2-3">The validation protocol described in this document (see <a href="#validation" class="auto internal xref">Section 4</a>) uses a
-modulo 2 ring. This ring is referred to throughput as a binary field as it is
+modulo 2 ring. This ring is referred to throughout as a binary field as it is
 also a field and it contains two values: 0 and 1. Addition and multiplication in
 a binary field correspond to Boolean operations. Addition in a binary field is
 equivalent to the Boolean exclusive OR (XOR) operation. Multiplication in a
@@ -1779,7 +1779,7 @@ z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋ + r₋ - r₊
 masking does not alter the result. Importantly, the value of <code>r₊</code> is not
 known to P<sub>-</sub>, which ensures that <code>z₋</code> cannot be used by P<sub>-</sub>
 to recover <code>x</code> or <code>y</code>. Thus, <code>z₋</code> is safe to send to P<sub>-</sub>.<a href="#section-3-16" class="pilcrow">¶</a></p>
-<p id="section-3-17">Upon receiving a value from its right -- which the recipient names <code>z₊</code> — each
+<p id="section-3-17">Upon receiving a value from its right — which the recipient names <code>z₊</code> — each
 helper is now in possession of two-of-three shares, (<code>z₋</code>, <code>z₊</code>), which is a
 replicated secret sharing of the product of <code>x</code> and <code>y</code>.<a href="#section-3-17" class="pilcrow">¶</a></p>
 </section>
