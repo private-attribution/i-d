@@ -415,10 +415,10 @@ Table of Contents
 
    z₋ = x₋·y₋ + x₋·y₊ + x₊·y₋ + r₋ - r₊
 
-   These three mask values sum to zero, so this masking does not alter
-   the result.  Importantly, the value of r₊ is not known to P_(-),
-   which ensures that z₋ cannot be used by P_(-) to recover x or y.
-   Thus, z₋ is safe to send to P_(-).
+   Each of these three mask values are added once and subtracted once,
+   so this masking does not alter the result.  Importantly, the value of
+   r₊ is not known to P_(-), which ensures that z₋ cannot be used by
+   P_(-) to recover x or y.  Thus, z₋ is safe to send to P_(-).
 
    Upon receiving a value from its right -- which the recipient names z₊
    — each helper is now in possession of two-of-three shares, (z₋, z₊),
