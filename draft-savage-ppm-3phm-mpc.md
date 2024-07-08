@@ -445,15 +445,15 @@ This can be restated as:
 x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
-The left hand side of this expression will equal zero if the protocol was followed 
-correctly, but it will equal one if there was an additive attack. 
+The left hand side of this expression will equal zero if the protocol was followed
+correctly, but it will equal one if there was an additive attack.
 
 Validation is made more efficient by validating multiple multiplications at the
 same time.
 
 The above statement can be transformed to yield the result (either zero or one)
 as a value in a large prime field {{prime_field_transformation}}. These values
-can be summed across all the multiplications in a large batch. The total sum will 
+can be summed across all the multiplications in a large batch. The total sum will
 be the count of additive attacks applied, which will be zero if the prover correctly
 followed the protocol. There will not be any wrapping around so long as the number
 of multiplications in the batch is smaller than the prime used to define the field.
