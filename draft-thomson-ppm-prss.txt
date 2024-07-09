@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                               B. Savage
-Expires: 9 January 2025                                             Meta
-                                                             8 July 2024
+Expires: 10 January 2025                                            Meta
+                                                             9 July 2024
 
 
           High Performance Pseudorandom Secret Sharing (PRSS)
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 January 2025.
+   This Internet-Draft will expire on 10 January 2025.
 
 Copyright Notice
 
@@ -326,11 +326,11 @@ Table of Contents
    A randomness context is produced by invoking the Expand() function of
    the chosen KDF, passing the shared entropy generated in Section 5.1
    as the prk input, the byte sequence that identifies the context
-   (ctxᵢd) as the info input, and the PRF parameter Nk as the L input
+   (ctx_id) as the info input, and the PRF parameter Nk as the L input
    (see Section 6), as follows:
 
-   def context = Context.new(kdf, prf, extracted, ctxᵢd):
-       context = kdf.Expand(prk = extracted, info = ctxᵢd, L = prf.Nk)
+   def context = Context.new(kdf, prf, extracted, ctx_id):
+       context = kdf.Expand(prk = extracted, info = ctx_id, L = prf.Nk)
 
    The expanded entropy produced by this process is the only information
    that is essential for a randomness context, though a real
@@ -588,8 +588,8 @@ Table of Contents
 
    We use this first component to bound the value of q for the second
    component.  If advantage is equally divided between each component we
-   can bound q to be at most 2⁽(k-a)/2), where a is the desired attacker
-   advantage in bits (that is, advantage is at most 2^-a).
+   can bound q to be at most 2^((k-a)/2), where a is the desired
+   attacker advantage in bits (that is, advantage is at most 2^-a).
 
    Using that value for q and an advantage of (2^a)/2 for the second
    component leads to a limit for p of 2⁽b-(k+a)/2-2).  For example, to
@@ -602,7 +602,7 @@ Table of Contents
    Consequently, increasing q only reduces the value of p.
 
    On this basis, the same q value can be used for AES-256 as for AES-
-   128.  The usage limit for AES-256 can be doubled to 2⁽b-(k+a)/2-1)
+   128.  The usage limit for AES-256 can be doubled to 2^(b-(k+a)/2-1)
    (2^43 for 40 bits of security; the first component is a negligible
    2^-169).
 

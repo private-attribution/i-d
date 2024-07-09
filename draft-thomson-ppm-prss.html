@@ -1035,7 +1035,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Thomson &amp; Savage</td>
-<td class="center">Expires 9 January 2025</td>
+<td class="center">Expires 10 January 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1048,12 +1048,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-thomson-ppm-prss-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-07-08" class="published">8 July 2024</time>
+<time datetime="2024-07-09" class="published">9 July 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-01-09">9 January 2025</time></dd>
+<dd class="expires"><time datetime="2025-01-10">10 January 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1110,7 +1110,7 @@ multi-party computation (MPC).<a href="#section-abstract-1" class="pilcrow">¶</
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 9 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 10 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1565,12 +1565,12 @@ Participants with the same shared entropy and the same randomness context
 identifier will produce the same randomness.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2-2">A randomness context is produced by invoking the <code>Expand()</code> function of the
 chosen KDF, passing the shared entropy generated in <a href="#extract" class="auto internal xref">Section 5.1</a> as the <code>prk</code>
-input, the byte sequence that identifies the context (<code>ctxᵢd</code>) as the <code>info</code>
+input, the byte sequence that identifies the context (<code>ctx_id</code>) as the <code>info</code>
 input, and the PRF parameter <code>Nk</code> as the <code>L</code> input (see <a href="#prf" class="auto internal xref">Section 6</a>), as follows:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-5.2-3">
 <pre>
-def context = Context.new(kdf, prf, extracted, ctxᵢd):
-    context = kdf.Expand(prk = extracted, info = ctxᵢd, L = prf.Nk)
+def context = Context.new(kdf, prf, extracted, ctx_id):
+    context = kdf.Expand(prk = extracted, info = ctx_id, L = prf.Nk)
 </pre><a href="#section-5.2-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.2-4">The expanded entropy produced by this process is the only information that is
@@ -1896,7 +1896,7 @@ This first term therefore places an upper bound on the value that <code>q</code>
 before an attacker can rely solely on this computational limit.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
 <p id="section-9.1-4">We use this first component to bound the value of <code>q</code> for the second component.
 If advantage is equally divided between each component we can bound <code>q</code> to be at
-most <code>2⁽(k-a)/2)</code>, where <code>a</code> is the desired attacker advantage in bits (that
+most <code>2^((k-a)/2)</code>, where <code>a</code> is the desired attacker advantage in bits (that
 is, advantage is at most 2<sup>-a</sup>).<a href="#section-9.1-4" class="pilcrow">¶</a></p>
 <p id="section-9.1-5">Using that value for <code>q</code> and an advantage of <code>(2^a)/2</code> for the second component
 leads to a limit for <code>p</code> of <code>2⁽b-(k+a)/2-2)</code>.  For example, to obtain 40 bits
@@ -1907,7 +1907,7 @@ for any value of <code>q</code>, unless <code>p</code> and <code>a</code> are bo
 AES-256 having the same 128-bit block size as AES-128.  Consequently, increasing
 <code>q</code> only reduces the value of <code>p</code>.<a href="#section-9.1-6" class="pilcrow">¶</a></p>
 <p id="section-9.1-7">On this basis, the same <code>q</code> value can be used for AES-256 as for AES-128. The
-usage limit for AES-256 can be doubled to <code>2⁽b-(k+a)/2-1)</code> (2<sup>43</sup> for
+usage limit for AES-256 can be doubled to <code>2^(b-(k+a)/2-1)</code> (2<sup>43</sup> for
 40 bits of security; the first component is a negligible 2<sup>-169</sup>).<a href="#section-9.1-7" class="pilcrow">¶</a></p>
 <p id="section-9.1-8">This analysis models AES as an ideal pseudorandom permutation.<a href="#section-9.1-8" class="pilcrow">¶</a></p>
 </section>
