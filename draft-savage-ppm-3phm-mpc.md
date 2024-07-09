@@ -184,9 +184,9 @@ x_3 = x - x_1 - x_2
 ~~~
 
 Then, each party in the MPC receives a different set of two values. This
-document adopts the convention that P<sub>1</sub> receives (`x<sub>1</sub>`,
-`x<sub>2</sub>`), P<sub>2</sub> receives (`x<sub>2</sub>`, `x<sub>3</sub>`), and
-P<sub>3</sub> receives (`x<sub>3</sub>`, `x<sub>1</sub>`). From this sharing, no
+document adopts the convention that `P_1` receives (`x<sub>1</sub>`,
+`x<sub>2</sub>`), `P_2` receives (`x<sub>2</sub>`, `x<sub>3</sub>`), and
+`P_3` receives (`x<sub>3</sub>`, `x<sub>1</sub>`). From this sharing, no
 single party is able to construct the original value (`x`), but the values from
 any two parties include all three shares and can be used to reconstruct the
 original value.
@@ -198,7 +198,7 @@ set to the known value, with `x<sub>2</sub>` and `x<sub>3</sub>` both set to zer
 ## Identifying Shares and Parties
 
 This document identifies shares and parties by number. Three parties are
-identified as P<sub>1</sub>, P<sub>2</sub>, and P<sub>3</sub>. The first, or
+identified as `P_1`, `P_2`, and `P_3`. The first, or
 left share, value held by each party is identified with the same subscript.  The
 other share, or right share, held by each is the next highest-numbered share
 (with `x<sub>1</sub>` being the next highest after `x<sub>3</sub>`). This is
@@ -212,13 +212,13 @@ illustrated in {{fig-shares-parties}}:
 ~~~
 {: #fig-shares-parties title="Parties and Shares"}
 
-Three parties are identified as P<sub>1</sub>, P<sub>2</sub>, and P<sub>3</sub>.
+Three parties are identified as `P_1`, `P_2`, and `P_3`.
 
 The three parties are logically placed in a ring, with higher numbered parties
-to the right of lower-numbered parties. P<sub>3</sub> is placed to the left of
-P<sub>1</sub>. This means that if a protocol involves sending a value to the
-left, P<sub>1</sub> sends the value to P<sub>3</sub>, P<sub>2</sub> sends to
-P<sub>1</sub>, and P<sub>3</sub> sends to P<sub>2</sub>. The sending directions
+to the right of lower-numbered parties. `P_3` is placed to the left of
+`P_1`. This means that if a protocol involves sending a value to the
+left, `P_1` sends the value to `P_3`, `P_2` sends to
+`P_1`, and `P_3` sends to `P_2`. The sending directions
 are illustrated in {{fig-send-direction}}.
 
 
@@ -239,17 +239,17 @@ right:      .----.      .----.      .----.
 
 
 Protocols are often described in terms of the actions of a single party. The
-party to the left of that party is P<sub>-</sub> and the party to the right is
-P<sub>+</sub>. Where necessary, the current party is identified as
-P<sub>=</sub>.
+party to the left of that party is `P_-` and the party to the right is
+`P_+`. Where necessary, the current party is identified as
+`P_=`.
 
 The two shares that each party holds are referred to as "left" and "right"
 shares. The "left" share is identified with a subscript of "-" (e.g.,
 x_-); the numeric identifier for the left share at each party matches
-the identifier for that party, so the left share of x that P<sub>1</sub> holds
+the identifier for that party, so the left share of x that `P_1` holds
 is named x<sub>1</sub>. The right share is designated with a subscript of "+"
 (e.g., y_+); the numeric identifier for the right share is one higher
-than the identifier for the party, so the right share at P<sub>3</sub> is (also)
+than the identifier for the party, so the right share at `P_3` is (also)
 x<sub>1</sub>.
 
 ## Reveal Protocol {#reveal}
@@ -258,16 +258,16 @@ The output of a protocol can be revealed by sending all share values to the
 entity that will receive the final result. This entity can validate the
 consistency of the values it receives by ensuring that the replicated values it
 receives are identical. That is, the value of x<sub>1</sub> received from
-P<sub>1</sub> is the same as the value of x<sub>1</sub> it receives from
-P<sub>3</sub> and so forth. If the value of shares are inconsistent, the
+`P_1` is the same as the value of x<sub>1</sub> it receives from
+`P_3` and so forth. If the value of shares are inconsistent, the
 protocol fails. After discarding these duplicated values, the revealed value is
 the sum of the shares that it receives.
 
 A value can be revealed by sending adjacent parties the one share value they do
-not have. That is, P<sub>1</sub> sends x<sub>1</sub> to P<sub>2</sub> and
-x<sub>2</sub> to P<sub>3</sub>; P<sub>2</sub> sends x<sub>2</sub> to
-P<sub>3</sub> and x<sub>3</sub> to P<sub>1;</sub> P<sub>3</sub> sends
-x<sub>3</sub> to P<sub>1</sub> and x<sub>1</sub> to P<sub>2</sub>. Each party
+not have. That is, `P_1` sends x<sub>1</sub> to `P_2` and
+x<sub>2</sub> to `P_3`; `P_2` sends x<sub>2</sub> to
+`P_3` and x<sub>3</sub> to P<sub>1;</sub> `P_3` sends
+x<sub>3</sub> to `P_1` and x<sub>1</sub> to `P_2`. Each party
 verifies that they receive the same value twice, and aborts if they do not.
 
 If the protocol is executed correctly, each party learns the revealed value,
@@ -356,12 +356,12 @@ party needs to send its share, `z_-`, to the party to its left.
 Unfortunately, each party cannot simply send this value to another party, as
 this would allow the recipient to reconstruct the full input values, `x` and
 `y`, using `z_-`. To prevent this, the value of `z_-` is masked with a uniformly
-distributed random mask that is unknown to party P<sub>-</sub>.
+distributed random mask that is unknown to party `P_-`.
 
 Using a source of shared randomness (such as {{PRSS}}), each pair of helpers
 generates a uniformly distributed random value known only to the two of
-them. Let `r_-` denote the left value (known to P<sub>-</sub>) and `r_+` be the
-right value (known to P<sub>+</sub>).
+them. Let `r_-` denote the left value (known to `P_-`) and `r_+` be the
+right value (known to `P_+`).
 
 Each party uses `r_-` and `r_+` to create a masked value of `z_-` as follows:
 
@@ -371,8 +371,8 @@ z_- = x_-·y_- + x_-·y_+ + x_+·y_- + r_- - r_+
 
 Each of these three mask values are added once and subtracted once, so this
 masking does not alter the result. Importantly, the value of `r_+` is not
-known to P<sub>-</sub>, which ensures that `z_-` cannot be used by P<sub>-</sub>
-to recover `x` or `y`. Thus, `z_-` is safe to send to P<sub>-</sub>.
+known to `P_-`, which ensures that `z_-` cannot be used by `P_-`
+to recover `x` or `y`. Thus, `z_-` is safe to send to `P_-`.
 
 Upon receiving a value from its right — which the recipient names `z_+` — each
 helper is now in possession of two-of-three shares, (`z_-`, `z_+`), which is a
@@ -394,7 +394,7 @@ party could instead send `z_- + a`. In the context of boolean circuits, the only
 possible additive attack is to add 1.
 
 The multiplication protocol described does not prevent this. Since the value
-`z_-` is randomly distributed, the party (P<sub>-</sub>) that receives this
+`z_-` is randomly distributed, the party (`P_-`) that receives this
 value cannot tell if an additive attack has been applied.
 
 While an additive attack does not result in information about the inputs being
@@ -430,14 +430,14 @@ are revealed. All parties destroy the shares they hold.
 ## Overview of the Validation Protocol
 
 Each of the parties produces a "Zero Knowledge Proof" (ZKP) that proves to the
-two other parties (P<sub>-</sub> and P<sub>+</sub>) that all of the
+two other parties (`P_-` and `P_+`) that all of the
 multiplications it performed were done correctly. The two other parties act as
 "verifiers" and validate this zero knowledge proof.
 
 The validation protocol is therefore executed three times, with each party
 acting as a prover.  Each validation can occur concurrently.
 
-When operating in a boolean field, if P<sub>=</sub> followed the protocol
+When operating in a boolean field, if `P_=` followed the protocol
 correctly, this is how they would compute `z_-`:
 
 ~~~ pseudocode
@@ -467,19 +467,19 @@ For this protocol, the parties will use the field of integers mod `p`, where `p`
 
 ## Distributed Zero-Knowledge Proofs
 
-The prover (P<sub>=</sub>) needs to prove that for each multiplication in a batch:
+The prover (`P_=`) needs to prove that for each multiplication in a batch:
 
 ~~~ pseudocode
 x_-·y_- ⊕ x_-·y_+ ⊕ x_+·y_- ⊕ r_- ⊕ r_+ ⊕ z_- = 0
 ~~~
 
-The left verifier (P<sub>-</sub>) knows the values of `y_-`, `x_-`,
+The left verifier (`P_-`) knows the values of `y_-`, `x_-`,
 `r_-`, and `z_-`.
 
-The right verifier (P<sub>+</sub>) knows the values of `x_+`, `y_+`,
+The right verifier (`P_+`) knows the values of `x_+`, `y_+`,
 `r_+`.
 
-This means that the prover (P<sub>=</sub>) does not need to send any of these
+This means that the prover (`P_=`) does not need to send any of these
 values to the verifiers. Verifiers use information they already have to validate
 the proof.
 
@@ -499,11 +499,11 @@ of the form:
 sum(i=0..n, u<sub>i</sub> · v<sub>i</sub>) = t
 ~~~
 
-This depends on the prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>)
-both possessing the n-vector `u`, the prover (P<sub>=</sub>) and the right
-verifier (P<sub>+</sub>) possessing the n-vector `v`, and the verifiers
-P<sub>-</sub> and P<sub>+</sub> jointly holding shares of the target value, `t`
-(that is, P<sub>-</sub> holds `t_-` and P<sub>-</sub> holds `t_+` such that `t_-
+This depends on the prover (`P_=`) and left verifier (`P_-`)
+both possessing the n-vector `u`, the prover (`P_=`) and the right
+verifier (`P_+`) possessing the n-vector `v`, and the verifiers
+`P_-` and `P_+` jointly holding shares of the target value, `t`
+(that is, `P_-` holds `t_-` and `P_-` holds `t_+` such that `t_-
 + t_+ = t`).
 
 However, the security of this protocol requires the vector elements `u` and `v`
@@ -524,8 +524,8 @@ f(x, y) = x ⊕ y
 ~~~
 
 Using this relation, the expression that must be proven can be converted into a
-dot-product of two vectors, one of which is known to both P<sub>=</sub> and
-P<sub>-</sub>, the other being known to both P<sub>=</sub> and P<sub>+</sub>.
+dot-product of two vectors, one of which is known to both `P_=` and
+`P_-`, the other being known to both `P_=` and `P_+`.
 
 Rearranging terms:
 
@@ -596,7 +596,7 @@ sum(i=1..4, g_i·h_i) = -½
 
 From this point, each party can compute the vectors that they are able to.
 
-P<sub>=</sub> and P<sub>-</sub> both compute `g_i` as follows:
+`P_=` and `P_-` both compute `g_i` as follows:
 
 ~~~ pseudocode
 g_1 = -2·x_-·y_-·(1 - 2·e_- )
@@ -611,7 +611,7 @@ And where:
 e_- = x_-·y_- ⊕ z_- ⊕ r_-
 ~~~
 
-P<sub>=</sub> and P<sub>+</sub> both compute `h_i` as follows:
+`P_=` and `P_+` both compute `h_i` as follows:
 
 ~~~ pseudocode
 h_1 = y_+·x_+·(1 - 2·r_+)
@@ -630,9 +630,9 @@ These vectors form the basis of later stages of the proof.
 
 Each multiplication therefore produces two vectors, with each vector being
 length 4. To validate a batch of `m` multiplications, the prover
-(P<sub>=</sub>), forms two vectors of length `4m`.
+(`P_=`), forms two vectors of length `4m`.
 
-The prover (P<sub>=</sub>), and left verifier (P<sub>-</sub>) both produce the
+The prover (`P_=`), and left verifier (`P_-`) both produce the
 vector `u` by concatenating the vectors from all multiplications:
 
 ~~~ pseudocode
@@ -642,7 +642,7 @@ u = (g_1<sup>(1)</sup>, g_2<sup>(1)</sup>, g_3<sup>(1)</sup>, g_4<sup>(1)</sup>,
      g_1<sup>(m)</sup>, g_2<sup>(m)</sup>, g_3<sup>(m)</sup>, g_4<sup>(m)</sup>)
 ~~~
 
-The prover (P<sub>=</sub>) and right verifier (P<sub>+</sub>) both compute the vector `v` in the same way:
+The prover (`P_=`) and right verifier (`P_+`) both compute the vector `v` in the same way:
 
 ~~~ pseudocode
 v = (h_1<sup>(1)</sup>, h_2<sup>(1)</sup>, h_3<sup>(1)</sup>, h_4<sup>(1)</sup>,
@@ -674,10 +674,10 @@ At each iteration:
 
 2. Chunk the vectors `u` and `v` into `s` segments of length `L`.
 
-    1. Each chunk of `u` uniquely defines a polynomial of degree `L - 1` which
+    1. Each chunk of `u` uniquely defines a polynomial of degree `L-1` which
        are named `p<sub>i</sub>(x)`, indexed by `i ∊ [0..s)`.
 
-    2. Each chunk of `v` uniquely defines a polynomial of degree `L - 1` which
+    2. Each chunk of `v` uniquely defines a polynomial of degree `L-1` which
        are named `q<sub>i</sub>(x)`, indexed by `i ∊ [0..s)`.
 
 3. The polynomial `G(x)` is defined as: `sum(i=0..s, p<sub>i</sub>(x) · q<sub>i</sub>(x))`
@@ -690,17 +690,17 @@ At each iteration:
    verifier `P_+` sets their share `t_+` to zero. In subsequent iterations the
    target value will not be known to both verifiers.
 
-    1. The prover will compute the value of `G(0)`, `G(1)`, ... , `G(2L - 2)`,
+    1. The prover will compute the value of `G(0)`, `G(1)`, ... , `G(2L-2)`,
        the minimal number of points required to uniquely define it.
 
-    2. These `2L - 1` points are split into two additive secret-shares
+    2. These `2L-1` points are split into two additive secret-shares
        `G(x)_-` and `G(x)_+` and sent to the verifiers
        `P_-` and `P_+`, respectively. These shares form the
        distributed zero-knowledge proof.
 
-    3. The verifiers each sum together the first `L - 1` points they were given:
-       `P_-` computes `sum_- = sum(i=0..L-1, G(i)_-)`.
-       `P_+` computes `sum_+ = sum(i=0..L-1, G(i)_+)`.
+    3. The verifiers each sum together the first `L-1` points they were given:
+       `P_-` computes `sum_- = sum(i=0..L-1, G_-(i))`.
+       `P_+` computes `sum_+ = sum(i=0..L-1, G_+(i))`.
        where `sum_- + sum_+ = sum(0..L-1, G(i))`.
 
     4. Now the verifiers verify the proposition `sum(i=0..L-1, G(i)) = t` by having
@@ -727,7 +727,7 @@ At each iteration:
        can both compute each value `p<sub>i</sub>(r)` using Lagrange interpolation,
        just as the prover and right verifier (`P_+`) can compute each value `q<sub>i</sub>(r)`.
 
-    3. Each of the verifiers can use the `2L - 1` points they received (their share
+    3. Each of the verifiers can use the `2L-1` points they received (their share
        of `G(x)`) to compute a share of `G(r)` using Lagrange interpolation. These
        shares become their share of a new value for `t`.
 
@@ -759,7 +759,7 @@ lookup tables if necessary.
 
 ### Producing Polynomials `p(x)` and `q(x)`
 
-The prover (P<sub>=</sub>) and the left verifier (P<sub>-</sub>), chunk the vector
+The prover (`P_=`) and the left verifier (`P_-`), chunk the vector
 `u` into `s` chunks of length `L`.
 
 * chunk 0: <u<sub>0</sub>, u<sub>1</sub>, …, u<sub>L-1</sub>>
@@ -779,15 +779,15 @@ They will interpret each chunk as `L` points lying on a polynomial,
 1, …, L-1 }`, that is to say they will interpret them as `{ p<sub>i</sub>(0),
 p<sub>i</sub>(1), …, p<sub>i</sub>(L-1) }`.
 
-The prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) can find the value of
+The prover (`P_=`) and left verifier (`P_-`) can find the value of
 `p<sub>i</sub>(x)` for any other value of `x` using Lagrange interpolation.
 
-The prover (P<sub>=</sub>) uses Lagrange interpolation to compute the values `{
+The prover (`P_=`) uses Lagrange interpolation to compute the values `{
 p<sub>i</sub>(L), p<sub>i</sub>(L+1), …, p<sub>i</sub>(2L-2) }`.
 
-The same process is applied for the vector `v` with the right verifier, (P<sub>+</sub>).
+The same process is applied for the vector `v` with the right verifier, (`P_+`).
 
-The prover (P<sub>=</sub>) and the right verifier (P<sub>+</sub>), chunk the vector `v`
+The prover (`P_=`) and the right verifier (`P_+`), chunk the vector `v`
 into `s` chunks of length `L`.
 
 * chunk 0: <v<sub>0</sub>, v<sub>1</sub>, …, v<sub>L-1</sub>>
@@ -824,33 +824,33 @@ An equivalent method of proving `u·v = t`, is to show that `sum(i=0..L-1, G(i))
 
 ### Masking the Zero-Knowledge Proof
 
-The prover (P<sub>=</sub>), cannot simply send this zero-knowledge proof to the
+The prover (`P_=`), cannot simply send this zero-knowledge proof to the
 verifiers, as doing so would release private information. Instead, the prover
 produces a two-part additive secret-sharing of these `2L-1` points, sending one
 share to each verifier.
 
-The prover (P<sub>=</sub>) and the right verifier (P<sub>+</sub>) generate one
+The prover (`P_=`) and the right verifier (`P_+`) generate one
 share using their shared randomness, which means that no communication is
 needed.  This share is denoted `G(x)_+`.
 
-The prover (P<sub>=</sub>) computes the other share via subtraction.  That is,
+The prover (`P_=`) computes the other share via subtraction.  That is,
 `G_-(x) = G(x) - G_+(x)`.  This value is sent to the left verifier
-(P<sub>-</sub>). Transmitting this share `G(x)_-` involves sending `2L-1` field
+(`P_-`). Transmitting this share `G(x)_-` involves sending `2L-1` field
 values.
 
 ### Validating the Proof Increment
 
-To check that `sum(i=0..L-1, G(i)) = t`, the left verifier (P<sub>-</sub>)
+To check that `sum(i=0..L-1, G(i)) = t`, the left verifier (`P_-`)
 computes:
 
 ~~~ pseudocode
-b_- = t_- - sum(i=0..L-1, G(i)_-)
+b_- = t_- - sum(i=0..L-1, G_-(i))
 ~~~
 
-Similarly, the right verifier (P<sub>+</sub>) computes:
+Similarly, the right verifier (`P_+`) computes:
 
 ~~~ pseudocode
-b_+ = t_+ - sum(i=0..L-1, G(i)_+)
+b_+ = t_+ - sum(i=0..L-1, G_+(i))
 ~~~
 
 The two verifiers will reveal these values `b_-` and `b_+` to one another, so
@@ -882,7 +882,7 @@ To minimize the rounds of communication, instead of having the verifiers select
 this random point, we utilize the Fiat-Shamir transform to produce a
 constant-round proof system.
 
-The prover (P<sub>=</sub>) hashes the zero-knowledge proof shares it has
+The prover (`P_=`) hashes the zero-knowledge proof shares it has
 generated onto a field element as follows:
 
 ~~~ pseudocode
@@ -935,11 +935,11 @@ This is a problem of exactly the same form as the original problem, except that
 the length of `u′` and `v′` is now a factor of `L` shorter than the original
 length of `u` and `v`.
 
-The prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) use Lagrange interpolation
+The prover (`P_=`) and left verifier (`P_-`) use Lagrange interpolation
 to compute the value of `p<sub>i</sub>(r)` for all chunks in the range `0..s`
 and set this as the new vector `u`.
 
-Similarly, the prover (P<sub>=</sub>) and right verifier (P<sub>+</sub>) use Lagrange
+Similarly, the prover (`P_=`) and right verifier (`P_+`) use Lagrange
 interpolation to compute the value of `q<sub>i</sub>(r)` and set this as the new
 vector `v`.
 
@@ -958,16 +958,16 @@ t_+ = lagrange\_interpolate(r, [G_+(0), G_+(1), ..., G_+(2L-2)])
 The proof proceeds recursively until the length of the vectors `u` and `v` are
 strictly less than the compression factor `L`.
 
-Next, the prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) jointly
+Next, the prover (`P_=`) and left verifier (`P_-`) jointly
 generate a random field value `p_m` using shared secrets. Similarly, the prover
-(P<sub>=</sub>) and right verifier (P<sub>+</sub>) generate a random field value
+(`P_=`) and right verifier (`P_+`) generate a random field value
 `q_m` using shared secrets.
 
-The prover (P<sub>=</sub>) and left verifier (P<sub>-</sub>) move `u_0` to index
+The prover (`P_=`) and left verifier (`P_-`) move `u_0` to index
 `L-1`. No data will be lost as this replaces a zero value; the length of `u` is
 strictly less than `L`.  The value at index 0 is replaced with `p_m`.
 
-The prover (P<sub>=</sub>) and right verifier (P<sub>+</sub>) move `v_0`
+The prover (`P_=`) and right verifier (`P_+`) move `v_0`
 to index `L-1` and place the value `q_m` at index 0.
 
 The prover generates a zero knowledge proof from these polynomials exactly as
@@ -984,8 +984,8 @@ b_+ = t_+ - sum(i=1..L-1, G_+(i))
 
 Verifiers confirm that `b_- + b_+` is zero by exchanging their shares of `b`.
 
-Finally, the left verifier (P<sub>-</sub>)
-computes both `p_0(r)` and `G_-(r)`, right verifier (P<sub>+</sub>)
+Finally, the left verifier (`P_-`)
+computes both `p_0(r)` and `G_-(r)`, right verifier (`P_+`)
 computes `q_0(r)` and `G_+(r)`, and then the verifiers reveal all of
 these values to each other.  They then both verify that:
 
