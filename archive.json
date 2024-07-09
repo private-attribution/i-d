@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-07T01:06:12.081778+00:00",
+  "timestamp": "2024-07-09T01:01:53.789793+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -57,7 +57,7 @@
       "url": "https://github.com/private-attribution/i-d/issues/12",
       "state": "OPEN",
       "author": "martinthomson",
-      "authorAssociation": "COLLABORATOR",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "![image](https://github.com/private-attribution/i-d/assets/67641/6fc44568-5708-4087-b8e9-8dfbba981bcd)\r\n\r\nLook into how that might be avoided.",
@@ -65,6 +65,30 @@
       "updatedAt": "2024-07-05T11:34:59Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 17,
+      "id": "I_kwDOJgF-t86O0i7z",
+      "title": "Use of 1/2 in a field is confusing",
+      "url": "https://github.com/private-attribution/i-d/issues/17",
+      "state": "OPEN",
+      "author": "eriktaubeneck",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "It would probably be clearer to use $2^{-1}$, and maybe even define it, e.g., \"... subtracting the multiplicative inverse of 2, $2^{-1}$, ...\"",
+      "createdAt": "2024-07-08T17:07:20Z",
+      "updatedAt": "2024-07-08T22:35:45Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yeah, we have a note at some point in the document saying what 1/2 actually is.  I thought that was fine, but Ben and I didn't really settle on anything.\r\n\r\nIt might be worth adding to that note.",
+          "createdAt": "2024-07-08T22:35:44Z",
+          "updatedAt": "2024-07-08T22:35:44Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -75,7 +99,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/1",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "COLLABORATOR",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I'm trying out a pythonic syntax (mostly)",
@@ -103,7 +127,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/2",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "COLLABORATOR",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "@benjaminsavage, you might need approval for this.  Talk to Murray if you have questions about IETF participation at Meta; I have no idea what rules you need to follow.",
@@ -131,7 +155,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/3",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "COLLABORATOR",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I spent some time with this and concluded that our limits were not good in the first time around.  A more careful analysis shows that we are still OK, but the limits are closer than ideal.  We're assuming $2^{44}$ work for the adversary here for 40 bits of security, which is probably fine, though it is much weaker than the same analysis I've seen for cipher usage elsewhere.\r\n\r\nConcrete numbers: $2^{64}$ becomes $2^{42}$ for AES-128 (double that for AES-256).",
@@ -157,7 +181,7 @@
             "abbreviatedOid": "8acb6b6"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-06-24T06:29:26Z",
@@ -177,7 +201,7 @@
             "abbreviatedOid": "a6c4aa3"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-06-24T06:29:46Z",
@@ -197,7 +221,7 @@
             "abbreviatedOid": "7e55ac6"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-06-26T01:45:36Z",
@@ -243,7 +267,7 @@
             "abbreviatedOid": "d367e3a"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-06-28T04:37:35Z",
@@ -266,7 +290,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/4",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "COLLABORATOR",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "This will look like a complete mess.  But I wanted to get this out there now so that we can iterate on the details.\r\n\r\nI need to look into how we manage subscripts as a high priority item. There are a bunch of places where we should be tagging stuff as code or using pseudocode blocks, but I stopped doing the conversion for now until I sort out the subscript business.",
@@ -308,7 +332,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/5",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "COLLABORATOR",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
@@ -329,7 +353,7 @@
       "comments": [
         {
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "body": "This should work for code blocks only for now.  Next step is a bit trickier, because matching on inline code is fiddly.",
           "createdAt": "2024-07-05T05:28:58Z",
           "updatedAt": "2024-07-05T05:28:58Z"
@@ -370,7 +394,7 @@
             "abbreviatedOid": "323cd09"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "Perfect.  If we're sending left, it's funny that we compute x-*y- when the left party knows that bit already, but that's fine.",
           "createdAt": "2024-07-05T05:30:49Z",
@@ -383,7 +407,7 @@
             "abbreviatedOid": "323cd09"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-07-05T05:31:54Z",
@@ -432,7 +456,7 @@
             "abbreviatedOid": "0b3d1aa"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-05T05:43:32Z",
@@ -487,7 +511,7 @@
             "abbreviatedOid": "2e11229"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-05T05:51:51Z",
@@ -529,7 +553,7 @@
             "abbreviatedOid": "8e554d6"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-05T06:09:05Z",
@@ -571,7 +595,7 @@
             "abbreviatedOid": "24c3a26"
           },
           "author": "martinthomson",
-          "authorAssociation": "COLLABORATOR",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-05T11:43:51Z",
@@ -587,7 +611,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/11",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "COLLABORATOR",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I think that we can skip this step.  It's a bit messy.",
@@ -619,6 +643,627 @@
           "createdAt": "2024-07-05T11:30:25Z",
           "updatedAt": "2024-07-05T11:30:25Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "PR_kwDOJgF-t850ppUp",
+      "title": "Add DP draft",
+      "url": "https://github.com/private-attribution/i-d/pull/13",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-07-08T06:53:28Z",
+      "updatedAt": "2024-07-08T21:02:59Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "5d0bc05112d980b7a52bd7acc7e37c7eee6b4627",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "dp",
+      "headRefOid": "e639afbc4aca51717985d017046a9fd63aaf26c1",
+      "closedAt": "2024-07-08T21:02:57Z",
+      "mergedAt": "2024-07-08T21:02:57Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "256af0205422409ddca7fc4d13046dd1186b430d"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 14,
+      "id": "PR_kwDOJgF-t850uCPi",
+      "title": "arrange parties clockwise",
+      "url": "https://github.com/private-attribution/i-d/pull/14",
+      "state": "MERGED",
+      "author": "eriktaubeneck",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "this is only a suggestion, but it felt strange to have a circular representation of numbers in anti-clockwise order.\r\n\r\n\r\n~~~ aasvg\r\n        x\u2081  .----.  x\u2082\r\n       .---|  P\u2081  |---.\r\n      /     `----'     \\\r\n x\u2081  /                  \\  x\u2082\r\n .----.                .----.\r\n|  P\u2083  |--------------|  P\u2082  |\r\n `----'  x\u2083        x\u2083  `----'\r\n~~~\r\n\r\n~~~ aasvg\r\nsend                               send\r\nleft:       .----.                 right:      .----.\r\n       .---|  P\u2081  |<--.                   .-->|  P\u2081  |---.\r\n      /     `----'     \\                 /     `----'     \\\r\n     v                  \\               /                  v\r\n .----.                .----.       .----.                .----.\r\n|  P\u2083  |------------->|  P\u2082  |     |  P\u2083  |<-------------|  P\u2082  |\r\n `----'                `----'       `----'                `----'\r\n~~~\r\n\r\n",
+      "createdAt": "2024-07-08T16:35:19Z",
+      "updatedAt": "2024-07-08T21:47:00Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "3279073edd12ec4f15e5c65ba57f2f2001705518",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "eriktaubeneck-clockwise",
+      "headRefOid": "bc8e044f98806d130696b78348ce041a4f01dff3",
+      "closedAt": "2024-07-08T21:46:59Z",
+      "mergedAt": "2024-07-08T21:46:59Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "f38ab2c25179e189cbaf4a976c1e5b8973c1dd88"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86A_YkA",
+          "commit": {
+            "abbreviatedOid": "92541df"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T18:43:55Z",
+          "updatedAt": "2024-07-08T18:43:56Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "Unfortunately, from the perspective of each helper in this picture, the directions no longer match the names.\r\n\r\nLooking at these arrows, in the figure on the left (which is labeled as \"send left\"), P_3 is clearly sending a value to it's \"right\".",
+              "createdAt": "2024-07-08T18:43:56Z",
+              "updatedAt": "2024-07-08T18:43:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86A_biE",
+          "commit": {
+            "abbreviatedOid": "92541df"
+          },
+          "author": "eriktaubeneck",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T18:50:08Z",
+          "updatedAt": "2024-07-08T18:50:09Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "Yes, but the other way around, P_1 and P_2 send values in the \"wrong\" direction. With a circle, you'll always have some going the \"wrong\" way. \r\n\r\nThis change makes \"send left\" align with counter-clockwise and \"send right\" align with clockwise, and has the advantage that P_1 at the top is sending in the \"correct\" direction, as well as 2 out of 3 sending in the correct direction (instead of 1 out of 3).",
+              "createdAt": "2024-07-08T18:50:09Z",
+              "updatedAt": "2024-07-08T18:51:03Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BARWR",
+          "commit": {
+            "abbreviatedOid": "92541df"
+          },
+          "author": "eriktaubeneck",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T20:21:39Z",
+          "updatedAt": "2024-07-08T20:21:39Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "Oh, I think I see what you're saying now. If you picture this as 3 people looking inward, then the original makes sense. That's not at all how I visualized it; I see it more like a clock, and it feels way more natural to think of left as counter clockwise and right as clockwise (righty-tighty, lefty-loosey...)\r\n\r\nHere's an alternative:\r\n```\r\n~~~ aasvg\r\nsend\r\nleft:      .----.      .----.      .----.\r\n        .-+  P\u2081  |<---+  P\u2082  |<---+  P\u2083  |<--.\r\n         \\ `----'      `----'      `----'   /\r\n          '--------------------------------'\r\n\r\nsend\r\nright:     .----.      .----.      .----.\r\n      .-->|  P\u2081  +--->+  P\u2082  +--->|  P\u2083  +-.\r\n       \\   `----'      `----'      `----' /\r\n        '--------------------------------'\r\n~~~\r\n```\r\nwhich renders as:\r\n<img width=\"429\" alt=\"image\" src=\"https://github.com/private-attribution/i-d/assets/982499/1b240641-ae9c-4c6f-b97a-ca81137e3000\">\r\n\r\n\r\nThe down side to this approach is that making the top diagram consistent is a clearly not as nice looking:\r\n<img width=\"395\" alt=\"image\" src=\"https://github.com/private-attribution/i-d/assets/982499/13148640-425d-46ca-a222-2879296ec9de\">\r\n",
+              "createdAt": "2024-07-08T20:21:39Z",
+              "updatedAt": "2024-07-08T20:21:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BA4cq",
+          "commit": {
+            "abbreviatedOid": "0f2b4b2"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T21:42:46Z",
+          "updatedAt": "2024-07-08T21:42:47Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "```suggestion\r\n       .--+  P\u2081  |<---+  P\u2082  |<---+  P\u2083  |<--.\r\n        \\  `----'      `----'      `----'   /\r\n         '---------------------------------'\r\n```",
+              "createdAt": "2024-07-08T21:42:46Z",
+              "updatedAt": "2024-07-08T21:42:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BA41b",
+          "commit": {
+            "abbreviatedOid": "3a957b1"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T21:44:03Z",
+          "updatedAt": "2024-07-08T21:44:04Z",
+          "comments": [
+            {
+              "originalPosition": 44,
+              "body": "```suggestion\r\n      .-->|  P\u2081  +--->+  P\u2082  +--->|  P\u2083  +--.\r\n       \\   `----'      `----'      `----'  /\r\n        '---------------------------------'\r\n```",
+              "createdAt": "2024-07-08T21:44:03Z",
+              "updatedAt": "2024-07-08T21:44:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BA5R5",
+          "commit": {
+            "abbreviatedOid": "e90e1b6"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T21:45:37Z",
+          "updatedAt": "2024-07-08T21:45:37Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\n     x\u2081 .----. x\u2082  x\u2082 .----.  x\u2083  x\u2083 .----. x\u2081\r\n```",
+              "createdAt": "2024-07-08T21:45:37Z",
+              "updatedAt": "2024-07-08T21:45:37Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BA5rV",
+          "commit": {
+            "abbreviatedOid": "bc8e044"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-08T21:46:48Z",
+          "updatedAt": "2024-07-08T21:46:48Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "PR_kwDOJgF-t850uFJm",
+      "title": "Update draft-savage-ppm-3phm-mpc.md",
+      "url": "https://github.com/private-attribution/i-d/pull/15",
+      "state": "MERGED",
+      "author": "eriktaubeneck",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "small change to add clarity. the change is only on 367 (the rest is simply to keep the width consistent.)",
+      "createdAt": "2024-07-08T16:43:58Z",
+      "updatedAt": "2024-07-08T18:41:27Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "3279073edd12ec4f15e5c65ba57f2f2001705518",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "eriktaubeneck-clarification",
+      "headRefOid": "848a98e900122a77308ed2b04f1424455f67a0c8",
+      "closedAt": "2024-07-08T18:41:25Z",
+      "mergedAt": "2024-07-08T18:41:25Z",
+      "mergedBy": "benjaminsavage",
+      "mergeCommit": {
+        "oid": "8c5fb1e9c03e04cc2db80f54abb3a0efc9ab00fd"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86A_Xgr",
+          "commit": {
+            "abbreviatedOid": "848a98e"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thank you. This is better. Every time I read that section it bothered me, but I wasn't exactly sure how to improve it. This is better than what I had.",
+          "createdAt": "2024-07-08T18:41:20Z",
+          "updatedAt": "2024-07-08T18:41:20Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "PR_kwDOJgF-t850uIJA",
+      "title": "remove quotes around semi-honest security",
+      "url": "https://github.com/private-attribution/i-d/pull/16",
+      "state": "MERGED",
+      "author": "eriktaubeneck",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This is the only place the term \"semi-honest security\" is used in the document. Quotes aren't necessary unless quoting from elsewhere (in the doc or in another), or defining a term.",
+      "createdAt": "2024-07-08T16:52:02Z",
+      "updatedAt": "2024-07-08T21:50:56Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "3279073edd12ec4f15e5c65ba57f2f2001705518",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "eriktaubeneck-patch-2",
+      "headRefOid": "20a61646f745722868acc3e41afb7b0adfab3251",
+      "closedAt": "2024-07-08T21:50:55Z",
+      "mergedAt": "2024-07-08T21:50:55Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "af37f3b975320f0dd5047643e19852cbfafb964f"
+      },
+      "comments": [
+        {
+          "author": "eriktaubeneck",
+          "authorAssociation": "MEMBER",
+          "body": "It probably makes sense to remove them from \"secure up to an additive attack\" in the next sentence too, unless that is a quote from a paper (in which case, we should add a citation.)",
+          "createdAt": "2024-07-08T16:53:00Z",
+          "updatedAt": "2024-07-08T16:53:00Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86A_W02",
+          "commit": {
+            "abbreviatedOid": "18d34c6"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T18:40:03Z",
+          "updatedAt": "2024-07-08T18:40:04Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "@martinthomson had a comment in the original Google doc saying that we should probably define the things in scare quotes up in the definitions section... But I felt like these terms were already defined in the text immediately following the introduction of these terms. @martinthomson - what do you think we should do? Should we add definitions for these things or is the current text OK?",
+              "createdAt": "2024-07-08T18:40:04Z",
+              "updatedAt": "2024-07-08T18:40:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BA6OU",
+          "commit": {
+            "abbreviatedOid": "18d34c6"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T21:48:17Z",
+          "updatedAt": "2024-07-08T21:48:18Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "```suggestion\r\nsecurity. It is secure up to an additive attack; see {{additive-attack}}. Validating multiplications\r\n```",
+              "createdAt": "2024-07-08T21:48:18Z",
+              "updatedAt": "2024-07-08T21:48:18Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BA6Sx",
+          "commit": {
+            "abbreviatedOid": "20a6164"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-08T21:48:32Z",
+          "updatedAt": "2024-07-08T21:48:32Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "PR_kwDOJgF-t850uQXn",
+      "title": "add clarification on left and right verifier",
+      "url": "https://github.com/private-attribution/i-d/pull/18",
+      "state": "MERGED",
+      "author": "eriktaubeneck",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "this makes consistent the use of \"left verifier\" and \"right verifier\".",
+      "createdAt": "2024-07-08T17:10:57Z",
+      "updatedAt": "2024-07-08T18:38:27Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "3279073edd12ec4f15e5c65ba57f2f2001705518",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "eriktaubeneck-clarification2",
+      "headRefOid": "029ced30493decbb791c86215298ec97bfa510b3",
+      "closedAt": "2024-07-08T18:38:26Z",
+      "mergedAt": "2024-07-08T18:38:26Z",
+      "mergedBy": "benjaminsavage",
+      "mergeCommit": {
+        "oid": "4c1841d3e5f9d742eed89f7d300b73422caa2de9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86A_WHV",
+          "commit": {
+            "abbreviatedOid": "029ced3"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-08T18:38:20Z",
+          "updatedAt": "2024-07-08T18:38:20Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "PR_kwDOJgF-t850ulhz",
+      "title": "clarification on hashing commitment",
+      "url": "https://github.com/private-attribution/i-d/pull/19",
+      "state": "MERGED",
+      "author": "eriktaubeneck",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "on first read, this seemed to suggest the verifiers could independently compute half a hash function, which didn't make sense. this attempts to make it clearer that there are 3 different hashing happening (in line with the pseudocode.)",
+      "createdAt": "2024-07-08T18:07:52Z",
+      "updatedAt": "2024-07-08T21:50:37Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "3279073edd12ec4f15e5c65ba57f2f2001705518",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "eriktaubeneck-clarification-hasing",
+      "headRefOid": "90128cebe4b7a4db48dc8a312cb45180efcffb95",
+      "closedAt": "2024-07-08T21:50:36Z",
+      "mergedAt": "2024-07-08T21:50:36Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "327a7a8539d6e27690f83d1f730ea5eec5adf038"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86A_VLg",
+          "commit": {
+            "abbreviatedOid": "82f48ea"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T18:36:22Z",
+          "updatedAt": "2024-07-08T18:36:22Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "Thanks for improving this! The last bit about \"compute commitment hash value\" is still confusing to me. How about this: \"...after which they can concatenate the two hash values and then hash that a final time to generate the challenge point `r`.",
+              "createdAt": "2024-07-08T18:36:22Z",
+              "updatedAt": "2024-07-08T18:36:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86A_ecS",
+          "commit": {
+            "abbreviatedOid": "82f48ea"
+          },
+          "author": "eriktaubeneck",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T18:55:04Z",
+          "updatedAt": "2024-07-08T18:55:04Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "yea, I stuggled with the end of this too. I used \"commitment\" since it's used the the pseudo code. The final hash isn't exactly the challenge point, so maybe:\r\n\r\n> ... after which they can concatenate the two hash values, hash the concatenation, and proceed with computing the challenge point `r`.",
+              "createdAt": "2024-07-08T18:55:04Z",
+              "updatedAt": "2024-07-08T18:55:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BA6hP",
+          "commit": {
+            "abbreviatedOid": "82f48ea"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-08T21:49:22Z",
+          "updatedAt": "2024-07-08T21:50:07Z",
+          "comments": [
+            {
+              "originalPosition": 2,
+              "body": "```suggestion\r\nThe verifiers generate the same point `r` independently. Each verifier only has\r\n```",
+              "createdAt": "2024-07-08T21:49:22Z",
+              "updatedAt": "2024-07-08T21:50:07Z"
+            },
+            {
+              "originalPosition": 7,
+              "body": "Yeah, this is better, but I'm going with:\r\n\r\n```suggestion\r\nthe two hash values and compute the challenge point.\r\n```",
+              "createdAt": "2024-07-08T21:49:57Z",
+              "updatedAt": "2024-07-08T21:50:07Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "PR_kwDOJgF-t850upU0",
+      "title": "typos",
+      "url": "https://github.com/private-attribution/i-d/pull/20",
+      "state": "MERGED",
+      "author": "eriktaubeneck",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "just a few typos",
+      "createdAt": "2024-07-08T18:17:19Z",
+      "updatedAt": "2024-07-08T21:59:59Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "69f4359784a06b45fe7905a5302b76d3321f629f",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "eriktaubeneck-patch-1",
+      "headRefOid": "daf2fb5b34fcda3822efa0e62169040a50f6646a",
+      "closedAt": "2024-07-08T21:59:58Z",
+      "mergedAt": "2024-07-08T21:59:58Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "5ea6c75b59fabdb29db81b03b97d6faf7e8509fb"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86A_Ttp",
+          "commit": {
+            "abbreviatedOid": "e9f5158"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T18:33:08Z",
+          "updatedAt": "2024-07-08T18:33:08Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "The reason I did this is because @martinthomson's converter was converting this into:\r\n```\r\nlagrange<sub>interpolate</sub>\r\n```\r\ndue to the use of a really simplistic regular expression =). My \"solution\" here does not render nicely either though...",
+              "createdAt": "2024-07-08T18:33:08Z",
+              "updatedAt": "2024-07-08T18:33:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86A_T7l",
+          "commit": {
+            "abbreviatedOid": "e9f5158"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Thanks for fixing these @eriktaubeneck. I would merge it if it weren't for that final one with `lagrange_interpolate`. If you can revert those lines I'll merge it.",
+          "createdAt": "2024-07-08T18:33:42Z",
+          "updatedAt": "2024-07-08T18:33:42Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOJgF-t86A_fU_",
+          "commit": {
+            "abbreviatedOid": "e9f5158"
+          },
+          "author": "eriktaubeneck",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T18:56:54Z",
+          "updatedAt": "2024-07-08T18:56:55Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "ahh got it. maybe camel case? `lagrangeInterpolate(...`?",
+              "createdAt": "2024-07-08T18:56:55Z",
+              "updatedAt": "2024-07-08T18:56:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86A_gGZ",
+          "commit": {
+            "abbreviatedOid": "e9f5158"
+          },
+          "author": "eriktaubeneck",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T18:58:22Z",
+          "updatedAt": "2024-07-08T18:58:22Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "why doesn't `total_count` above get converted?",
+              "createdAt": "2024-07-08T18:58:22Z",
+              "updatedAt": "2024-07-08T18:58:29Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86A_zpk",
+          "commit": {
+            "abbreviatedOid": "e9f5158"
+          },
+          "author": "eriktaubeneck",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T19:30:33Z",
+          "updatedAt": "2024-07-08T19:30:33Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "> why doesn't `total_count` above get converted?\r\n\r\nahh so two reasons. once because it's in `python` and not `pseudocode`, however that doesn't work here because we want `t_-` and `t_+` to get converted correctly. the second time because only `chars = \"-+=()0123456789im\"` are used, and `i` makes sense since it's often used as an index, so we can't remove it.\r\n\r\nI reverted this, but then also added a small change to @martinthomson's converter to swap out `\\_` with `_` after the conversions have been found.",
+              "createdAt": "2024-07-08T19:30:33Z",
+              "updatedAt": "2024-07-08T19:30:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BA798",
+          "commit": {
+            "abbreviatedOid": "e9f5158"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T21:54:10Z",
+          "updatedAt": "2024-07-08T21:54:10Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "@eriktaubeneck made the same change that I did :)  The underscore here is what I went with also.",
+              "createdAt": "2024-07-08T21:54:10Z",
+              "updatedAt": "2024-07-08T21:54:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86BA8Nz",
+          "commit": {
+            "abbreviatedOid": "e9f5158"
+          },
+          "author": "eriktaubeneck",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-08T21:55:01Z",
+          "updatedAt": "2024-07-08T21:55:01Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "@martinthomson great minds!",
+              "createdAt": "2024-07-08T21:55:01Z",
+              "updatedAt": "2024-07-08T21:55:01Z"
+            }
+          ]
         }
       ]
     }
