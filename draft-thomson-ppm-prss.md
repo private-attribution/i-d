@@ -280,12 +280,12 @@ identifier will produce the same randomness.
 
 A randomness context is produced by invoking the `Expand()` function of the
 chosen KDF, passing the shared entropy generated in {{extract}} as the `prk`
-input, the byte sequence that identifies the context (`ctx_id`) as the `info`
+input, the byte sequence that identifies the context (`ctx\_id`) as the `info`
 input, and the PRF parameter `Nk` as the `L` input (see {{prf}}), as follows:
 
 ~~~ pseudocode
-def context = Context.new(kdf, prf, extracted, ctx_id):
-    context = kdf.Expand(prk = extracted, info = ctx_id, L = prf.Nk)
+def context = Context.new(kdf, prf, extracted, ctx\_id):
+    context = kdf.Expand(prk = extracted, info = ctx\_id, L = prf.Nk)
 ~~~
 
 The expanded entropy produced by this process is the only information that is
@@ -560,7 +560,7 @@ p <= 2^{b-(k+a)/2-2}
 
 We use this first component to bound the value of `q` for the second component.
 If advantage is equally divided between each component we can bound `q` to be at
-most `2^((k-a)/2)`, where `a` is the desired attacker advantage in bits (that
+most `2\^((k-a)/2)`, where `a` is the desired attacker advantage in bits (that
 is, advantage is at most 2<sup>-a</sup>).
 
 Using that value for `q` and an advantage of `(2^a)/2` for the second component
@@ -574,7 +574,7 @@ AES-256 having the same 128-bit block size as AES-128.  Consequently, increasing
 `q` only reduces the value of `p`.
 
 On this basis, the same `q` value can be used for AES-256 as for AES-128. The
-usage limit for AES-256 can be doubled to `2^(b-(k+a)/2-1)` (2<sup>43</sup> for
+usage limit for AES-256 can be doubled to `2\^(b-(k+a)/2-1)` (2<sup>43</sup> for
 40 bits of security; the first component is a negligible 2<sup>-169</sup>).
 
 This analysis models AES as an ideal pseudorandom permutation.
