@@ -719,8 +719,8 @@ Table of Contents
 
        3.  The verifiers each sum together the first L-1 points they
            were given: P₋ computes sum₋ = sum(i=0..L-1, G₋(i)).  P₊
-           computes sum₊ = sum(i=0..L-1, G₊(i)). where sum₋ + sum₊ =
-           sum(0..L-1, G(i)).
+           computes sum₊ = sum(i=0..L-1, G₊(i)).  As a result, sum₋ +
+           sum₊ = sum(0..L-1, G(i)).
 
        4.  Now the verifiers verify the proposition sum(i=0..L-1, G(i))
            = t by having P₋ compute b₋ = t₋ - sum₋ and P₊ compute b₊ =
