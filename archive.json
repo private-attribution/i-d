@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-09T01:01:53.789793+00:00",
+  "timestamp": "2024-07-11T01:02:32.460759+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -55,16 +55,24 @@
       "id": "I_kwDOJgF-t86OmZln",
       "title": "Oops",
       "url": "https://github.com/private-attribution/i-d/issues/12",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "![image](https://github.com/private-attribution/i-d/assets/67641/6fc44568-5708-4087-b8e9-8dfbba981bcd)\r\n\r\nLook into how that might be avoided.",
       "createdAt": "2024-07-05T11:34:59Z",
-      "updatedAt": "2024-07-05T11:34:59Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2024-07-10T04:53:25Z",
+      "closedAt": "2024-07-10T04:53:25Z",
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Fixed with thanks to Erik.",
+          "createdAt": "2024-07-10T04:53:25Z",
+          "updatedAt": "2024-07-10T04:53:25Z"
+        }
+      ]
     },
     {
       "number": 17,
@@ -89,6 +97,22 @@
           "updatedAt": "2024-07-08T22:35:44Z"
         }
       ]
+    },
+    {
+      "number": 21,
+      "id": "I_kwDOJgF-t86O4Tf3",
+      "title": "We should quote P_i",
+      "url": "https://github.com/private-attribution/i-d/issues/21",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The text format for RFCs takes our `P<sub>+</sub>` and spits out \"P_(+)\".  This is fine, but \"P\u208a\" would be better.  All we need to do is slap a pair of \"`\" characters around each instance.",
+      "createdAt": "2024-07-09T04:56:40Z",
+      "updatedAt": "2024-07-09T05:00:56Z",
+      "closedAt": "2024-07-09T05:00:56Z",
+      "comments": []
     }
   ],
   "pulls": [
