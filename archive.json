@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-11T01:02:32.460759+00:00",
+  "timestamp": "2024-07-14T01:07:11.640404+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -112,6 +112,22 @@
       "createdAt": "2024-07-09T04:56:40Z",
       "updatedAt": "2024-07-09T05:00:56Z",
       "closedAt": "2024-07-09T05:00:56Z",
+      "comments": []
+    },
+    {
+      "number": 22,
+      "id": "I_kwDOJgF-t86PUQFj",
+      "title": "Double-check our use of Fiat-Shamir",
+      "url": "https://github.com/private-attribution/i-d/issues/22",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The process for generating the random value, $r$, that is used at each iteration of the protocol is non-interactive.  The prover produces shares of $G(x)$ for all $x\\in{0, \\dots, 2L-1}$.  Those shares are hashed to produce $r$.\r\n\r\nFor an attacker who is seeking to hide an additive attack, the goal might be to produce values that will result in the following two equalities:\r\n\r\n$$\r\n\\sum_{i\\in\\\\{0, \\dots, L-1\\\\}}G(i) = \\sum_{i\\in\\\\{0, \\dots, L-1\\\\}}G'(i)\r\n$$\r\n\r\n$$\r\nG(r) = G'(r)\r\n$$\r\n\r\nWithin these constraints, there is a lot of flexibility, and because the prover gets to pick a set of values, test out what value of $r$ that produces, my understanding is that an attack is possible, albeit with a somewhat high cost in hashing.  Even if we model this as a second preimage attack, the inputs have higher entropy than the output and the output domain is $|p|$.  We're using $2^{61}-1$, which would be a lot of hashing to brute force, but this is not a completely implausible attack.\r\n\r\nMaybe this only points to a need for a larger prime, but I think that it would be safer if we went with an interactive protocol.\r\n\r\nThe overall latency and communication cost benefits of this Fiat-Shamir approach are not necessarily better than interactive. The verifiers used shared randomness to generate $r$ and only revealed the value once they have both received their shares of $G(x)$ (in practice this involves only the first verifier, as the second verifier uses shared randomness to receive their shares).  This adds a round of communication to each iteration, with a communication cost of one prime per iteration.  Contrast that with the current cost, which involves verifiers sending each other the output of the hash function, the communication cost is basically 1/8th.  That off a miniscule base, but it's a thing.\r\n\r\nThe real cost to an interactive protocol is the potential for added latency.   The protocol now has fewer straight line dependencies.  The prover can do all of its work without communication.  The latency only occurs between verifiers, but the second verifier has all values it needs from the outset.  The first verifier needs to wait for both the prover to provide shares and the second verifier to share its hash, but these two sources of information only have computation to do.  The second verifier needs to wait for the first verifier only.  An interactive protocol forces the prover to stop and wait.",
+      "createdAt": "2024-07-12T00:54:08Z",
+      "updatedAt": "2024-07-12T01:08:32Z",
+      "closedAt": null,
       "comments": []
     }
   ],
