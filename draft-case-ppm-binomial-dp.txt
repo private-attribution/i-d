@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                   B. Case
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 10 January 2025                                         Mozilla
-                                                             9 July 2024
+Expires: 23 January 2025                                         Mozilla
+                                                            22 July 2024
 
 
 Simple and Efficient Binomial Protocols for Differential Privacy in MPC
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 January 2025.
+   This Internet-Draft will expire on 23 January 2025.
 
 Copyright Notice
 

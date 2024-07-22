@@ -1036,7 +1036,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Savage &amp; Thomson</td>
-<td class="center">Expires 10 January 2025</td>
+<td class="center">Expires 23 January 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1049,12 +1049,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-savage-ppm-3phm-mpc-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-07-09" class="published">9 July 2024</time>
+<time datetime="2024-07-22" class="published">22 July 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-01-10">10 January 2025</time></dd>
+<dd class="expires"><time datetime="2025-01-23">23 January 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1113,7 +1113,7 @@ is detected with high probability.<a href="#section-abstract-1" class="pilcrow">
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1576,12 +1576,12 @@ party to the left of that party is <code>P₋</code> and the party to the right 
 <code>P₌</code>.<a href="#section-2.4-6" class="pilcrow">¶</a></p>
 <p id="section-2.4-7">The two shares that each party holds are referred to as "left" and "right"
 shares. The "left" share is identified with a subscript of "-" (e.g.,
-x_-); the numeric identifier for the left share at each party matches
-the identifier for that party, so the left share of x that <code>P₁</code> holds
-is named x<sub>1</sub>. The right share is designated with a subscript of "+"
-(e.g., y_+); the numeric identifier for the right share is one higher
+<code>x₋</code>); the numeric identifier for the left share at each party matches
+the identifier for that party, so the left share of <code>x</code> that <code>P₁</code> holds
+is named <code>x₁</code>. The right share is designated with a subscript of "+"
+(e.g., <code>y₊</code>); the numeric identifier for the right share is one higher
 than the identifier for the party, so the right share at <code>P₃</code> is (also)
-x<sub>1</sub>.<a href="#section-2.4-7" class="pilcrow">¶</a></p>
+<code>x₁</code>.<a href="#section-2.4-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="reveal">
@@ -1592,17 +1592,16 @@ x<sub>1</sub>.<a href="#section-2.4-7" class="pilcrow">¶</a></p>
 <p id="section-2.5-1">The output of a protocol can be revealed by sending all share values to the
 entity that will receive the final result. This entity can validate the
 consistency of the values it receives by ensuring that the replicated values it
-receives are identical. That is, the value of x<sub>1</sub> received from
-<code>P₁</code> is the same as the value of x<sub>1</sub> it receives from
+receives are identical. That is, the value of <code>x₁</code> received from
+<code>P₁</code> is the same as the value of <code>x₁</code> it receives from
 <code>P₃</code> and so forth. If the value of shares are inconsistent, the
 protocol fails. After discarding these duplicated values, the revealed value is
 the sum of the shares that it receives.<a href="#section-2.5-1" class="pilcrow">¶</a></p>
 <p id="section-2.5-2">A value can be revealed by sending adjacent parties the one share value they do
-not have. That is, <code>P₁</code> sends x<sub>1</sub> to <code>P₂</code> and
-x<sub>2</sub> to <code>P₃</code>; <code>P₂</code> sends x<sub>2</sub> to
-<code>P₃</code> and x<sub>3</sub> to P<sub>1;</sub> <code>P₃</code> sends
-x<sub>3</sub> to <code>P₁</code> and x<sub>1</sub> to <code>P₂</code>. Each party
-verifies that they receive the same value twice, and aborts if they do not.<a href="#section-2.5-2" class="pilcrow">¶</a></p>
+not have. That is, <code>P₁</code> sends <code>x₁</code> to <code>P₂</code> and <code>x₂</code> to <code>P₃</code>; <code>P₂</code> sends
+<code>x₂</code> to <code>P₃</code> and <code>x₃</code> to <code>P₁</code>; <code>P₃</code> sends <code>x₃</code> to <code>P₁</code> and <code>x₁</code> to
+<code>P₂</code>. Each party verifies that they receive the same value twice, and aborts if
+they do not.<a href="#section-2.5-2" class="pilcrow">¶</a></p>
 <p id="section-2.5-3">If the protocol is executed correctly, each party learns the revealed value,
 which is the sum of the two shares it holds, plus the share that was received.<a href="#section-2.5-3" class="pilcrow">¶</a></p>
 <p id="section-2.5-4">This basic reveal protocol requires that each party send and receive two
@@ -1616,8 +1615,8 @@ this document.<a href="#section-2.5-4" class="pilcrow">¶</a></p>
 <a href="#section-2.6" class="section-number selfRef">2.6. </a><a href="#name-addition" class="section-name selfRef">Addition</a>
         </h3>
 <p id="section-2.6-1">Addition of two values in this setting is trivial and requires no communication
-between parties. To add x to y, each party adds their shares. That is, to
-compute z = x + y, each party separately computes the sum of the shares they
+between parties. To add <code>x</code> to <code>y</code>, each party adds their shares. That is, to
+compute <code>z = x + y</code>, each party separately computes the sum of the shares they
 hold:<a href="#section-2.6-1" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-2.6-2">
 <pre>
@@ -1666,33 +1665,45 @@ z = (x₁ + x₂ + x₃) · (y₁ + y₂ + y₃)
         </thead>
         <tbody>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>1</sub>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₁</code>
 </td>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>1</sub>*y<sub>1</sub>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₁·y₁</code>
 </td>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>1</sub>*y<sub>2</sub>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₁·y₂</code>
 </td>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>1</sub>*y<sub>3</sub>
-</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>2</sub>
-</td>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>2</sub>*y<sub>1</sub>
-</td>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>2</sub>*y<sub>2</sub>
-</td>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>2</sub>*y<sub>3</sub>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₁·y₃</code>
 </td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>3</sub>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₂</code>
 </td>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>3</sub>*y<sub>1</sub>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₂·y₁</code>
 </td>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>3</sub>*y<sub>2</sub>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₂·y₂</code>
 </td>
-            <td class="text-left" rowspan="1" colspan="1">x<sub>3</sub>*y<sub>3</sub>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₂·y₃</code>
+</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₃</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₃·y₁</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₃·y₂</code>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <code>x₃·y₃</code>
 </td>
           </tr>
         </tbody>
@@ -2134,7 +2145,7 @@ the minimal number of points required to uniquely define it.<a href="#section-4.
 </li>
               <li id="section-4.8-4.3.4.2">
                 <p id="section-4.8-4.3.4.2.1">These <code>2L-1</code> points are split into two additive secret-shares
-<code>G(x)_-</code> and <code>G(x)_+</code> and sent to the verifiers
+<code>G₋(x)</code> and <code>G₊(x)</code> and sent to the verifiers
 <code>P₋</code> and <code>P₊</code>, respectively. These shares form the
 distributed zero-knowledge proof.<a href="#section-4.8-4.3.4.2.1" class="pilcrow">¶</a></p>
 </li>
@@ -2308,10 +2319,10 @@ produces a two-part additive secret-sharing of these <code>2L-1</code> points, s
 share to each verifier.<a href="#section-4.10.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.10.1-2">The prover (<code>P₌</code>) and the right verifier (<code>P₊</code>) generate one
 share using their shared randomness, which means that no communication is
-needed.  This share is denoted <code>G(x)_+</code>.<a href="#section-4.10.1-2" class="pilcrow">¶</a></p>
+needed.  This share is denoted <code>G₊(x)</code>.<a href="#section-4.10.1-2" class="pilcrow">¶</a></p>
 <p id="section-4.10.1-3">The prover (<code>P₌</code>) computes the other share via subtraction.  That is,
 <code>G₋(x) = G(x) - G₊(x)</code>.  This value is sent to the left verifier
-(<code>P₋</code>). Transmitting this share <code>G(x)_-</code> involves sending <code>2L-1</code> field
+(<code>P₋</code>). Transmitting this share <code>G₋(x)</code> involves sending <code>2L-1</code> field
 values.<a href="#section-4.10.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2603,6 +2614,7 @@ field value.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 <p id="section-8-1">This document has no IANA considerations.<a href="#section-8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
+<div id="sec-combined-references">
 <section id="section-9">
       <h2 id="name-references">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
@@ -2650,6 +2662,7 @@ field value.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
+</div>
 <div id="acknowledgments">
 <section id="appendix-A">
       <h2 id="name-acknowledgments">

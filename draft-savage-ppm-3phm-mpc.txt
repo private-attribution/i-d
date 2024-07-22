@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                 B. Savage
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 10 January 2025                                         Mozilla
-                                                             9 July 2024
+Expires: 23 January 2025                                         Mozilla
+                                                            22 July 2024
 
 
 Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 January 2025.
+   This Internet-Draft will expire on 23 January 2025.
 
 Copyright Notice
 
@@ -297,12 +297,12 @@ Table of Contents
 
    The two shares that each party holds are referred to as "left" and
    "right" shares.  The "left" share is identified with a subscript of
-   "-" (e.g., x_-); the numeric identifier for the left share at each
+   "-" (e.g., x₋); the numeric identifier for the left share at each
    party matches the identifier for that party, so the left share of x
-   that P₁ holds is named x_1.  The right share is designated with a
-   subscript of "+" (e.g., y_+); the numeric identifier for the right
+   that P₁ holds is named x₁. The right share is designated with a
+   subscript of "+" (e.g., y₊); the numeric identifier for the right
    share is one higher than the identifier for the party, so the right
-   share at P₃ is (also) x_1.
+   share at P₃ is (also) x₁.
 
 2.5.  Reveal Protocol
 
@@ -310,16 +310,16 @@ Table of Contents
    to the entity that will receive the final result.  This entity can
    validate the consistency of the values it receives by ensuring that
    the replicated values it receives are identical.  That is, the value
-   of x_1 received from P₁ is the same as the value of x_1 it receives
+   of x₁ received from P₁ is the same as the value of x₁ it receives
    from P₃ and so forth.  If the value of shares are inconsistent, the
    protocol fails.  After discarding these duplicated values, the
    revealed value is the sum of the shares that it receives.
 
    A value can be revealed by sending adjacent parties the one share
-   value they do not have.  That is, P₁ sends x_1 to P₂ and x_2 to P₃;
-   P₂ sends x_2 to P₃ and x_3 to P_(1;) P₃ sends x_3 to P₁ and x_1 to
-   P₂. Each party verifies that they receive the same value twice, and
-   aborts if they do not.
+   value they do not have.  That is, P₁ sends x₁ to P₂ and x₂ to P₃; P₂
+   sends x₂ to P₃ and x₃ to P₁; P₃ sends x₃ to P₁ and x₁ to P₂. Each
+   party verifies that they receive the same value twice, and aborts if
+   they do not.
 
    If the protocol is executed correctly, each party learns the revealed
    value, which is the sum of the two shares it holds, plus the share
@@ -359,17 +359,18 @@ Table of Contents
 
    This can be illustrated with a 3 by 3 table (Table 1):
 
-                   +=====+=========+=========+=========+
-                   |     | y₁      | y₂      | y₃      |
-                   +=====+=========+=========+=========+
-                   | x_1 | x_1*y_1 | x_1*y_2 | x_1*y_3 |
-                   +-----+---------+---------+---------+
-                   | x_2 | x_2*y_1 | x_2*y_2 | x_2*y_3 |
-                   +-----+---------+---------+---------+
-                   | x_3 | x_3*y_1 | x_3*y_2 | x_3*y_3 |
-                   +-----+---------+---------+---------+
+                      +====+=======+=======+=======+
+                      |    | y₁    | y₂    | y₃    |
+                      +====+=======+=======+=======+
+                      | x₁ | x₁·y₁ | x₁·y₂ | x₁·y₃ |
+                      +----+-------+-------+-------+
+                      | x₂ | x₂·y₁ | x₂·y₂ | x₂·y₃ |
+                      +----+-------+-------+-------+
+                      | x₃ | x₃·y₁ | x₃·y₂ | x₃·y₃ |
+                      +----+-------+-------+-------+
 
-                      Table 1: Multiplication by Parts
+                        Table 1: Multiplication by
+                                  Parts
 
    To compute the product, each party locally computes the sum of three
    products as follows:
@@ -713,7 +714,7 @@ Table of Contents
            it.
 
        2.  These 2L-1 points are split into two additive secret-shares
-           G(x)_- and G(x)_+ and sent to the verifiers P₋ and P₊,
+           G₋(x) and G₊(x) and sent to the verifiers P₋ and P₊,
            respectively.  These shares form the distributed zero-
            knowledge proof.
 
@@ -860,11 +861,11 @@ Table of Contents
 
    The prover (P₌) and the right verifier (P₊) generate one share using
    their shared randomness, which means that no communication is needed.
-   This share is denoted G(x)_+.
+   This share is denoted G₊(x).
 
    The prover (P₌) computes the other share via subtraction.  That is,
    G₋(x) = G(x) - G₊(x).  This value is sent to the left verifier (P₋).
-   Transmitting this share G(x)_- involves sending 2L-1 field values.
+   Transmitting this share G₋(x) involves sending 2L-1 field values.
 
 4.10.2.  Validating the Proof Increment
 
