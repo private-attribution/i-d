@@ -173,8 +173,8 @@ field, rather than requiring a separate conversion step.
 
 ## Secret Sharing {#sharing}
 
-Each input value (`x`) is split into three shares (`x<sub>1</sub>`, `x<sub>2</sub>`,
-`x<sub>3</sub>`), such that `x = x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub>`. Any
+Each input value (`x`) is split into three shares (`x<sub>1</sub>`, `x_2`,
+`x<sub>3</sub>`), such that `x = x<sub>1</sub> + x_2 + x<sub>3</sub>`. Any
 method can be used, but the following process is typical:
 
 ~~~ pseudocode
@@ -185,7 +185,7 @@ x_3 = x - x_1 - x_2
 
 Then, each party in the MPC receives a different set of two values. This
 document adopts the convention that `P_1` receives (`x<sub>1</sub>`,
-`x<sub>2</sub>`), `P_2` receives (`x<sub>2</sub>`, `x<sub>3</sub>`), and
+`x_2`), `P_2` receives (`x_2`, `x<sub>3</sub>`), and
 `P_3` receives (`x<sub>3</sub>`, `x<sub>1</sub>`). From this sharing, no
 single party is able to construct the original value (`x`), but the values from
 any two parties include all three shares and can be used to reconstruct the
@@ -193,7 +193,7 @@ original value.
 
 Some protocols might require that the parties construct a sharing of a value
 which is known to all the parties. In that case, the value of `x<sub>1</sub>` is
-set to the known value, with `x<sub>2</sub>` and `x<sub>3</sub>` both set to zero.
+set to the known value, with `x_2` and `x<sub>3</sub>` both set to zero.
 
 ## Identifying Shares and Parties
 
@@ -245,30 +245,29 @@ party to the left of that party is `P_-` and the party to the right is
 
 The two shares that each party holds are referred to as "left" and "right"
 shares. The "left" share is identified with a subscript of "-" (e.g.,
-x_-); the numeric identifier for the left share at each party matches
-the identifier for that party, so the left share of x that `P_1` holds
-is named x<sub>1</sub>. The right share is designated with a subscript of "+"
-(e.g., y_+); the numeric identifier for the right share is one higher
+`x_-`); the numeric identifier for the left share at each party matches
+the identifier for that party, so the left share of `x` that `P_1` holds
+is named `x_1`. The right share is designated with a subscript of "+"
+(e.g., `y_+`); the numeric identifier for the right share is one higher
 than the identifier for the party, so the right share at `P_3` is (also)
-x<sub>1</sub>.
+`x_1`.
 
 ## Reveal Protocol {#reveal}
 
 The output of a protocol can be revealed by sending all share values to the
 entity that will receive the final result. This entity can validate the
 consistency of the values it receives by ensuring that the replicated values it
-receives are identical. That is, the value of x<sub>1</sub> received from
-`P_1` is the same as the value of x<sub>1</sub> it receives from
+receives are identical. That is, the value of `x_1` received from
+`P_1` is the same as the value of `x_1` it receives from
 `P_3` and so forth. If the value of shares are inconsistent, the
 protocol fails. After discarding these duplicated values, the revealed value is
 the sum of the shares that it receives.
 
 A value can be revealed by sending adjacent parties the one share value they do
-not have. That is, `P_1` sends x<sub>1</sub> to `P_2` and
-x<sub>2</sub> to `P_3`; `P_2` sends x<sub>2</sub> to
-`P_3` and x<sub>3</sub> to P<sub>1;</sub> `P_3` sends
-x<sub>3</sub> to `P_1` and x<sub>1</sub> to `P_2`. Each party
-verifies that they receive the same value twice, and aborts if they do not.
+not have. That is, `P_1` sends `x_1` to `P_2` and `x_2` to `P_3`; `P_2` sends
+`x_2` to `P_3` and `x_3` to `P_1`; `P_3` sends `x_3` to `P_1` and `x_1` to
+`P_2`. Each party verifies that they receive the same value twice, and aborts if
+they do not.
 
 If the protocol is executed correctly, each party learns the revealed value,
 which is the sum of the two shares it holds, plus the share that was received.
@@ -280,8 +279,8 @@ this document.
 ## Addition {#addition}
 
 Addition of two values in this setting is trivial and requires no communication
-between parties. To add x to y, each party adds their shares. That is, to
-compute z = x + y, each party separately computes the sum of the shares they
+between parties. To add `x` to `y`, each party adds their shares. That is, to
+compute `z = x + y`, each party separately computes the sum of the shares they
 hold:
 
 ~~~ pseudocode
@@ -302,20 +301,20 @@ all parties, negation, and subtraction.
 
 The product of two shared values, x and y, is computed using the following process.
 
-Since `x = x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub>` and `y = y<sub>1</sub> +
-y<sub>2</sub> + y<sub>3</sub>` the product `z = x \* y` can be expanded as:
+Since `x = x_1 + x_2 + x_3` and `y = y_1 +
+y_2 + y_3` the product `z = x \* y` can be expanded as:
 
 ~~~ pseudocode
-z = (x<sub>1</sub> + x<sub>2</sub> + x<sub>3</sub>) \* (y<sub>1</sub> + y<sub>2</sub> + y<sub>3</sub>)
+z = (x_1 + x_2 + x_3) \* (y_1 + y_2 + y_3)
 ~~~
 
 This can be illustrated with a 3 by 3 table ({{tab-mul}}):
 
 |  |  y₁ | y₂ | y₃ |
 |---|---|---|---|
-| x<sub>1</sub> | x<sub>1</sub>\*y<sub>1</sub> | x<sub>1</sub>\*y<sub>2</sub> | x<sub>1</sub>\*y<sub>3</sub> |
-| x<sub>2</sub> | x<sub>2</sub>\*y<sub>1</sub> | x<sub>2</sub>\*y<sub>2</sub> | x<sub>2</sub>\*y<sub>3</sub> |
-| x<sub>3</sub> | x<sub>3</sub>\*y<sub>1</sub> | x<sub>3</sub>\*y<sub>2</sub> | x<sub>3</sub>\*y<sub>3</sub> |
+| `x_1` | `x_1\*y_1` | `x_1\*y_2` | `x_1\*y_3` |
+| `x_2` | `x_2\*y_1` | `x_2\*y_2` | `x_2\*y_3` |
+| `x_3` | `x_3\*y_1` | `x_3\*y_2` | `x_3\*y_3` |
 {: #tab-mul title="Multiplication by Parts"}
 
 To compute the product, each party locally computes the sum of three products as follows:
@@ -327,7 +326,6 @@ z_- = x_-·y_- + x_-·y_+ + x_+·y_-
 To visualize this, {{fig-mul}} shows cells labeled with the party responsible for computing that partial product:
 
 ~~~ aasvg
-
         y₁     y₂     y₃            y₁     y₂     y₃
      +-------------+------+      +--------------------+
   x₁ |  P₁         |      |   x₁ |                    |
@@ -694,7 +692,7 @@ At each iteration:
        the minimal number of points required to uniquely define it.
 
     2. These `2L-1` points are split into two additive secret-shares
-       `G(x)_-` and `G(x)_+` and sent to the verifiers
+       `G_-(x)` and `G_+(x)` and sent to the verifiers
        `P_-` and `P_+`, respectively. These shares form the
        distributed zero-knowledge proof.
 
@@ -831,11 +829,11 @@ share to each verifier.
 
 The prover (`P_=`) and the right verifier (`P_+`) generate one
 share using their shared randomness, which means that no communication is
-needed.  This share is denoted `G(x)_+`.
+needed.  This share is denoted `G_+(x)`.
 
 The prover (`P_=`) computes the other share via subtraction.  That is,
 `G_-(x) = G(x) - G_+(x)`.  This value is sent to the left verifier
-(`P_-`). Transmitting this share `G(x)_-` involves sending `2L-1` field
+(`P_-`). Transmitting this share `G_-(x)` involves sending `2L-1` field
 values.
 
 ### Validating the Proof Increment
@@ -927,8 +925,8 @@ G(x) = sum(i=0..s, p<sub>i</sub>(x)·q<sub>i</sub>(x))
 This is equivalent to providing that `u′ · v′ = G(r)`, where:
 
 ~~~ pseudocode
-u′ = <p<sub>0</sub>(r), p<sub>1</sub>(r), …>
-v′ = <q<sub>0</sub>(r), q<sub>1</sub>(r), …>
+u′ = <p<sub>0</sub>(r), p_1(r), …>
+v′ = <q<sub>0</sub>(r), q_1(r), …>
 ~~~
 
 This is a problem of exactly the same form as the original problem, except that
