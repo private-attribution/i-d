@@ -203,12 +203,12 @@ sensitivity, {{compute-n}} describes how to determine the number of Bernoulli
 samples needed.
 
 To count the number of successes across these `N` trials, the MPC helpers simply
-run an aggregation circuit over the secret shared results of the `N` Bernoulli
-trials, each or which is either 0 or 1.  The result of this sum is a sample from
-a `Bin(N, p)` distribution. This binomial noise value is then added to the
-output inside the MPC and then the final noised result revealed to the
-appropriate output parties.  That is, if the MPC computes `f(D)`, it outputs
-shares of the result `f(D) + Bin(N,p)`.
+add the secret shared results of the `N` Bernoulli trials, each or which is
+either 0 or 1.  The result of this sum is a sample from a `Bin(N, p)`
+distribution. This binomial noise value is then added to the output inside the
+MPC and then the final noised result revealed to the appropriate output parties.
+That is, if the MPC computes `f(D)`, it outputs shares of the result `f(D) +
+Bin(N,p)`.
 
 The party receiving the output can then postprocess this output to get an
 unbiased estimate for `f(D)` by subtracting the mean of the `Bin(N,p)`
@@ -264,7 +264,7 @@ o = f(D) / s + X
 For an MPC system, the output of the system is shares of this scaled and biased
 value. The recipient can reconstruct the an unbiased, unscaled, noised value by:
 
-* Adding the shares it receives: `o = sum(o_i, o_2, …)`
+* Adding the shares it receives: `o = sum(o_1, o_2, …)`
 * Correcting for bias: `o - N\*p`
 * Scaling the value: `f′(D) = s * (o - N\*p)`
 
@@ -299,7 +299,7 @@ For `f(D)` that produces output that is a `d`-dimensional vector of integer
 values, the `p`-norms of interest for use with the binomial mechanism is the L1,
 L2, and L∞ (or Linfty) norms.
 
-The L1 norm of `x∊ℤ<sup>d</sup>` is:
+The L1 norm of `x` (where x∊ℤ<sup>d</sup>) is:
 
 ~~~ pseudocode
 sensitivity\_1 = ||x||<sub>1</sub> = sum(i=1..d, |x_i|)
