@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-23T01:02:43.141808+00:00",
+  "timestamp": "2024-07-25T01:02:38.615021+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -47,6 +47,21 @@
       "name": "wontfix",
       "description": "This will not be worked on",
       "color": "ffffff"
+    },
+    {
+      "name": "prss",
+      "description": "",
+      "color": "FBCA04"
+    },
+    {
+      "name": "binomial",
+      "description": "",
+      "color": "FBCA04"
+    },
+    {
+      "name": "multiply",
+      "description": "",
+      "color": "FBCA04"
     }
   ],
   "issues": [
@@ -83,10 +98,12 @@
       "author": "eriktaubeneck",
       "authorAssociation": "MEMBER",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "multiply"
+      ],
       "body": "It would probably be clearer to use $2^{-1}$, and maybe even define it, e.g., \"... subtracting the multiplicative inverse of 2, $2^{-1}$, ...\"",
       "createdAt": "2024-07-08T17:07:20Z",
-      "updatedAt": "2024-07-08T22:35:45Z",
+      "updatedAt": "2024-07-24T21:27:45Z",
       "closedAt": null,
       "comments": [
         {
@@ -123,10 +140,30 @@
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "multiply"
+      ],
       "body": "The process for generating the random value, $r$, that is used at each iteration of the protocol is non-interactive.  The prover produces shares of $G(x)$ for all $x\\in{0, \\dots, 2L-1}$.  Those shares are hashed to produce $r$.\r\n\r\nFor an attacker who is seeking to hide an additive attack, the goal might be to produce values that will result in the following two equalities:\r\n\r\n$$\r\n\\sum_{i\\in\\\\{0, \\dots, L-1\\\\}}G(i) = \\sum_{i\\in\\\\{0, \\dots, L-1\\\\}}G'(i)\r\n$$\r\n\r\n$$\r\nG(r) = G'(r)\r\n$$\r\n\r\nWithin these constraints, there is a lot of flexibility, and because the prover gets to pick a set of values, test out what value of $r$ that produces, my understanding is that an attack is possible, albeit with a somewhat high cost in hashing.  Even if we model this as a second preimage attack, the inputs have higher entropy than the output and the output domain is $|p|$.  We're using $2^{61}-1$, which would be a lot of hashing to brute force, but this is not a completely implausible attack.\r\n\r\nMaybe this only points to a need for a larger prime, but I think that it would be safer if we went with an interactive protocol.\r\n\r\nThe overall latency and communication cost benefits of this Fiat-Shamir approach are not necessarily better than interactive. The verifiers used shared randomness to generate $r$ and only revealed the value once they have both received their shares of $G(x)$ (in practice this involves only the first verifier, as the second verifier uses shared randomness to receive their shares).  This adds a round of communication to each iteration, with a communication cost of one prime per iteration.  Contrast that with the current cost, which involves verifiers sending each other the output of the hash function, the communication cost is basically 1/8th.  That off a miniscule base, but it's a thing.\r\n\r\nThe real cost to an interactive protocol is the potential for added latency.   The protocol now has fewer straight line dependencies.  The prover can do all of its work without communication.  The latency only occurs between verifiers, but the second verifier has all values it needs from the outset.  The first verifier needs to wait for both the prover to provide shares and the second verifier to share its hash, but these two sources of information only have computation to do.  The second verifier needs to wait for the first verifier only.  An interactive protocol forces the prover to stop and wait.",
       "createdAt": "2024-07-12T00:54:08Z",
-      "updatedAt": "2024-07-12T01:08:32Z",
+      "updatedAt": "2024-07-24T21:27:46Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 24,
+      "id": "I_kwDOJgF-t86Qv_Yk",
+      "title": "Should we invert the scaling factor (s)",
+      "url": "https://github.com/private-attribution/i-d/issues/24",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [
+        "binomial"
+      ],
+      "body": "In our binomial draft, we have to divide by s.  In practice, s will be a tiny fraction of 1.  We might find it easier to invert it so that s is an integer.",
+      "createdAt": "2024-07-24T21:23:18Z",
+      "updatedAt": "2024-07-24T21:27:35Z",
       "closedAt": null,
       "comments": []
     }
@@ -1306,6 +1343,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 23,
+      "id": "PR_kwDOJgF-t852YY7k",
+      "title": "nit: \"increase\" -> \"decrease\"",
+      "url": "https://github.com/private-attribution/i-d/pull/23",
+      "state": "OPEN",
+      "author": "cjpatton",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-07-24T19:29:20Z",
+      "updatedAt": "2024-07-24T19:29:21Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "bb7e0405e62d6dc5c3a6fbaae6e743d2882378db",
+      "headRepository": "cjpatton/i-d",
+      "headRefName": "binom-dp/nits/1",
+      "headRefOid": "1e1a18f46992b56a1a2c559197594bb52f020559",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
