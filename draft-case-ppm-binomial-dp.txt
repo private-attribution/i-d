@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                   B. Case
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 23 January 2025                                         Mozilla
-                                                            22 July 2024
+Expires: 27 January 2025                                         Mozilla
+                                                            26 July 2024
 
 
 Simple and Efficient Binomial Protocols for Differential Privacy in MPC
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 January 2025.
+   This Internet-Draft will expire on 27 January 2025.
 
 Copyright Notice
 
@@ -229,13 +229,12 @@ Table of Contents
    of Bernoulli samples needed.
 
    To count the number of successes across these N trials, the MPC
-   helpers simply run an aggregation circuit over the secret shared
-   results of the N Bernoulli trials, each or which is either 0 or 1.
-   The result of this sum is a sample from a Bin(N, p) distribution.
-   This binomial noise value is then added to the output inside the MPC
-   and then the final noised result revealed to the appropriate output
-   parties.  That is, if the MPC computes f(D), it outputs shares of the
-   result f(D) + Bin(N,p).
+   helpers simply add the secret shared results of the N Bernoulli
+   trials, each or which is either 0 or 1.  The result of this sum is a
+   sample from a Bin(N, p) distribution.  This binomial noise value is
+   then added to the output inside the MPC and then the final noised
+   result revealed to the appropriate output parties.  That is, if the
+   MPC computes f(D), it outputs shares of the result f(D) + Bin(N,p).
 
    The party receiving the output can then postprocess this output to
    get an unbiased estimate for f(D) by subtracting the mean of the
@@ -286,7 +285,7 @@ Table of Contents
    and biased value.  The recipient can reconstruct the an unbiased,
    unscaled, noised value by:
 
-   *  Adding the shares it receives: o = sum(oᵢ, o₂, …)
+   *  Adding the shares it receives: o = sum(o₁, o₂, …)
 
    *  Correcting for bias: o - N·p
 
@@ -321,7 +320,7 @@ Table of Contents
    integer values, the p-norms of interest for use with the binomial
    mechanism is the L1, L2, and L∞ (or Linfty) norms.
 
-   The L1 norm of x∊ℤ<sup>d</sup> is:
+   The L1 norm of x (where x∊ℤ^d) is:
 
    sensitivity_1 = ||x||₁ = sum(i=1..d, |xᵢ|)
 
@@ -427,7 +426,7 @@ Table of Contents
    The formula for epsilon can then be written as a quadratic equation
    in N:
 
-   0 = (epsilon / c₁)^2·N² + (2·epsilon·c₂ / c₁² - 1)·N + (c₂ / c₁)^2
+   0 = (epsilon / c₁)²·N² + (2·epsilon·c₂ / c₁² - 1)·N + (c₂ / c₁)²
 
    Once the values of all the other parameters are fixed, this can be
    solved with the quadratic formula.

@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                 B. Savage
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 23 January 2025                                         Mozilla
-                                                            22 July 2024
+Expires: 27 January 2025                                         Mozilla
+                                                            26 July 2024
 
 
 Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 January 2025.
+   This Internet-Draft will expire on 27 January 2025.
 
 Copyright Notice
 
@@ -573,7 +573,7 @@ Table of Contents
 
    Rearranging terms:
 
-   x₋·y₊ ⊕ (x₋·y₋ ⊕ z₋ ⊕ r₋ ) ⊕ x₊·y₋ ⊕ r₊ = 0
+   x₋·y₊ ⊕ (x₋·y₋ ⊕ z₋ ⊕ r₋) ⊕ x₊·y₋ ⊕ r₊ = 0
 
    Define:
 
@@ -581,7 +581,7 @@ Table of Contents
 
    Then:
 
-   (x₋·y₊ ⊕ e₋ ) ⊕ (x₊·y₋ ⊕ r₊) = 0
+   (x₋·y₊ ⊕ e₋) ⊕ (x₊·y₋ ⊕ r₊) = 0
 
    Using: x ⊕ y = x·(1 - 2·y) + y
 
@@ -625,9 +625,9 @@ Table of Contents
 
    P₌ and P₋ both compute gᵢ as follows:
 
-   g₁ = -2·x₋·y₋·(1 - 2·e₋ )
-   g₂ = y₋·(1 - 2·e₋ )
-   g₃ = x₋·(1 - 2·e₋ )
+   g₁ = -2·x₋·y₋·(1 - 2·e₋)
+   g₂ = y₋·(1 - 2·e₋)
+   g₃ = x₋·(1 - 2·e₋)
    g₄ = -½(1 - 2·e₋)
 
    And where:
