@@ -528,7 +528,7 @@ dot-product of two vectors, one of which is known to both `P_=` and
 Rearranging terms:
 
 ~~~ pseudocode
-x_-·y_+ ⊕ (x_-·y_- ⊕ z_- ⊕ r_- ) ⊕ x_+·y_- ⊕ r_+ = 0
+x_-·y_+ ⊕ (x_-·y_- ⊕ z_- ⊕ r_-) ⊕ x_+·y_- ⊕ r_+ = 0
 ~~~
 
 Define:
@@ -540,7 +540,7 @@ e_- = x_-·y_- ⊕ z_- ⊕ r_-
 Then:
 
 ~~~ pseudocode
-(x_-·y_+ ⊕ e_- ) ⊕ (x_+·y_- ⊕ r_+) = 0
+(x_-·y_+ ⊕ e_-) ⊕ (x_+·y_- ⊕ r_+) = 0
 ~~~
 
 Using: `x ⊕ y = x·(1 - 2·y) + y`
@@ -597,9 +597,9 @@ From this point, each party can compute the vectors that they are able to.
 `P_=` and `P_-` both compute `g_i` as follows:
 
 ~~~ pseudocode
-g_1 = -2·x_-·y_-·(1 - 2·e_- )
-g_2 = y_-·(1 - 2·e_- )
-g_3 = x_-·(1 - 2·e_- )
+g_1 = -2·x_-·y_-·(1 - 2·e_-)
+g_2 = y_-·(1 - 2·e_-)
+g_3 = x_-·(1 - 2·e_-)
 g_4 = -½(1 - 2·e_-)
 ~~~
 
