@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-25T01:02:38.615021+00:00",
+  "timestamp": "2024-07-28T01:07:25.998613+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -164,6 +164,98 @@
       "body": "In our binomial draft, we have to divide by s.  In practice, s will be a tiny fraction of 1.  We might find it easier to invert it so that s is an integer.",
       "createdAt": "2024-07-24T21:23:18Z",
       "updatedAt": "2024-07-24T21:27:35Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 25,
+      "id": "I_kwDOJgF-t86Q5Clc",
+      "title": "Specify the algorithmn for finding `N` ",
+      "url": "https://github.com/private-attribution/i-d/issues/25",
+      "state": "OPEN",
+      "author": "cjpatton",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "binom-dp [refers to an algorithm](https://private-attribution.github.io/i-d/draft-case-ppm-binomial-dp.html#section-3.2-6) for finding a number of Bernoulli trials satisfies a given $\\epsilon, \\delta$. It would be valuable to specify this algorithm, or even include a table enumerating a few good choices.",
+      "createdAt": "2024-07-25T19:48:41Z",
+      "updatedAt": "2024-07-25T19:49:36Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 26,
+      "id": "I_kwDOJgF-t86Q5D7x",
+      "title": "Align terminiology with DAP?",
+      "url": "https://github.com/private-attribution/i-d/issues/26",
+      "state": "OPEN",
+      "author": "cjpatton",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "bionom-dp refers to \"helpers\". I understand this term to stem from the \"helper networks\" of IPA. In DAP, we've adopted the term \"Aggregator\": a \"Helper\" is a particular type of Aggregator. It might be helpful to adopt the term Aggregator, or at least disambiguate the term somewhere in the draft.",
+      "createdAt": "2024-07-25T19:52:33Z",
+      "updatedAt": "2024-07-25T19:52:33Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 27,
+      "id": "I_kwDOJgF-t86Q5MB7",
+      "title": "draft-thomson-ppm-prss-00 5.1: Why include `Npk` and `Nenc` in `LabeledExtract`?",
+      "url": "https://github.com/private-attribution/i-d/issues/27",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "prss"
+      ],
+      "body": "Section 5.1 instructs implementations to include the `Npk` and `Nenc` values in the label used to extract entropy from a shared secret. These values are constant parameters of the KEM in use, whose unique ID is already in the label. So why include them? Seems like this just introduces the risk of implementations getting this wrong.\r\n",
+      "createdAt": "2024-07-25T20:16:31Z",
+      "updatedAt": "2024-07-27T21:16:58Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I doubt that this will result in an interoperability problem (this is stuff that you have to be careful with anyway), but I do agree that this is redundant.  Absent objections, I'll remove this.",
+          "createdAt": "2024-07-27T21:16:58Z",
+          "updatedAt": "2024-07-27T21:16:58Z"
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "id": "I_kwDOJgF-t86Q5MPF",
+      "title": "draft-thomson-ppm-prss-00 6.1: Could PRFs other than AES ever be supported?",
+      "url": "https://github.com/private-attribution/i-d/issues/28",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [
+        "prss"
+      ],
+      "body": "The document is generic over abstract descriptions of KEMs and KDFs, but then concretely requires either AES128 or 256 for the PRF. Section 6.1 cites GKWY20, which only considers AES. If someone did security proofs etc., could this method be extended to hashes (TurboSHAKE as in VDAF) or other symmetric ciphers?",
+      "createdAt": "2024-07-25T20:17:06Z",
+      "updatedAt": "2024-07-27T22:49:06Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 30,
+      "id": "I_kwDOJgF-t86Q5aLH",
+      "title": "draft-savage-ppm-3phm-mpc-01: section names 4.4 and 4.5 repeat",
+      "url": "https://github.com/private-attribution/i-d/issues/30",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Sections [4.4](https://datatracker.ietf.org/doc/html/draft-savage-ppm-3phm-mpc-01#section-4.4) and [4.5](https://datatracker.ietf.org/doc/html/draft-savage-ppm-3phm-mpc-01#section-4.5) are titled \"Distributed Zero-Knowledge Proofs\" and \"Distributed Zero Knowledge Proofs\", respectively. Perhaps they should be merged into a single heading?",
+      "createdAt": "2024-07-25T20:59:29Z",
+      "updatedAt": "2024-07-25T20:59:29Z",
       "closedAt": null,
       "comments": []
     }
@@ -1356,7 +1448,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-07-24T19:29:20Z",
-      "updatedAt": "2024-07-24T19:29:21Z",
+      "updatedAt": "2024-07-27T17:47:51Z",
       "baseRepository": "private-attribution/i-d",
       "baseRefName": "main",
       "baseRefOid": "bb7e0405e62d6dc5c3a6fbaae6e743d2882378db",
@@ -1368,7 +1460,94 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86DUmiM",
+          "commit": {
+            "abbreviatedOid": "1e1a18f"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "I think that the original text is correct, though the reference point is unclear.",
+          "createdAt": "2024-07-27T17:47:46Z",
+          "updatedAt": "2024-07-27T17:47:51Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\n50% increase in the amount of noise relative to the ideal.\r\n```",
+              "createdAt": "2024-07-27T17:47:46Z",
+              "updatedAt": "2024-07-27T17:47:51Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "id": "PR_kwDOJgF-t852gt6l",
+      "title": "draft-thomson-ppm-prss.md: typos",
+      "url": "https://github.com/private-attribution/i-d/pull/29",
+      "state": "OPEN",
+      "author": "tgeoghegan",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I believe these are all typos in the draft but I'm happy to be wrong.",
+      "createdAt": "2024-07-25T20:18:12Z",
+      "updatedAt": "2024-07-27T21:18:39Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "bb7e0405e62d6dc5c3a6fbaae6e743d2882378db",
+      "headRepository": "tgeoghegan/i-d",
+      "headRefName": "patch-1",
+      "headRefOid": "0ed614c4b30da27364e733371592a2dc1502e667",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86DJx-P",
+          "commit": {
+            "abbreviatedOid": "0ed614c"
+          },
+          "author": "tgeoghegan",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-07-25T20:18:48Z",
+          "updatedAt": "2024-07-25T20:19:36Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "`ss` seems to better match the identifier used in the pseudo-Python on L192-193 and the line on L196.",
+              "createdAt": "2024-07-25T20:18:48Z",
+              "updatedAt": "2024-07-25T20:19:36Z"
+            },
+            {
+              "originalPosition": 14,
+              "body": "I suspect this was copy-pasted from the previous section discussing KEMs. KDFs are more relevant here right?",
+              "createdAt": "2024-07-25T20:19:24Z",
+              "updatedAt": "2024-07-25T20:19:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86DUrLY",
+          "commit": {
+            "abbreviatedOid": "0ed614c"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thanks Tim, these are helpful.",
+          "createdAt": "2024-07-27T21:18:39Z",
+          "updatedAt": "2024-07-27T21:18:39Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
