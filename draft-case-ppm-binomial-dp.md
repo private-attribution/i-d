@@ -132,7 +132,7 @@ present. In two-party MPC, each party has to assume the other is dishonest, so
 each adds the entire noise quantity, ultimately doubling the overall noise that
 is added. In a three-party honest majority MPC, each party can add half of the
 required noise on the assumption that one other party is honest, resulting in a
-50% decrease in the amount of noise.
+50% increase in the amount of noise relative to the ideal.
 
 Finally, an MPC protocol can be executed to add noise. The primary drawback of
 this approach is that there is an increased cost to generating the noise in MPC.
