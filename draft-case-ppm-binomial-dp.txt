@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                   B. Case
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 27 January 2025                                         Mozilla
-                                                            26 July 2024
+Expires: 1 February 2025                                         Mozilla
+                                                            31 July 2024
 
 
 Simple and Efficient Binomial Protocols for Differential Privacy in MPC
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 January 2025.
+   This Internet-Draft will expire on 1 February 2025.
 
 Copyright Notice
 
@@ -154,7 +154,8 @@ Table of Contents
    quantity, ultimately doubling the overall noise that is added.  In a
    three-party honest majority MPC, each party can add half of the
    required noise on the assumption that one other party is honest,
-   resulting in a 50% increase in the amount of noise.
+   resulting in a 50% increase in the amount of noise relative to the
+   ideal.
 
    Finally, an MPC protocol can be executed to add noise.  The primary
    drawback of this approach is that there is an increased cost to
