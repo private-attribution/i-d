@@ -65,7 +65,7 @@ are never revealed to any single entity. MPC executes an agreed function,
 revealing only the output of that function.
 
 This makes MPC well-suited to handling data that is sensitive or private. MPC in
-a three-party honest majority setting, is broadly recognized as being extremely
+a three-party honest majority setting is broadly recognized as being extremely
 efficient:
 
 * Addition and subtraction have zero communication cost and negligible
@@ -1018,7 +1018,7 @@ AES-128-GCM is RECOMMENDED, with the same KDF being used for PRSS and AES-128 as
 the PRP.
 
 For validation, the prime field used is modulo the Mersenne prime
-2<sup>61</sup>-1 validation.  Any sufficiently large prime can be used, but this
+2<sup>61</sup>-1.  Any sufficiently large prime can be used, but this
 value provides both good performance on 64-bit hardware and useful security
 margins for typical batch sizes; see TODO/below for an analysis of the batch
 size requirements and security properties that can be obtained by using this

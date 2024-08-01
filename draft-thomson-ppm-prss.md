@@ -447,7 +447,7 @@ fixed range of values.
 
 The total randomness available is limited by the entropy from the chosen KEM,
 KDF, and PRF.  Each KEM is only able to convey a maximum amount of entropy.
-Similarly, each KDF is limited in the amount of entropy it only able to retain.
+Similarly, each KDF is limited in the amount of entropy it is able to retain.
 Finally, each PRF also has limits that might further reduce the maximum entropy
 available.
 
