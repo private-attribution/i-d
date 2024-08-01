@@ -107,7 +107,7 @@ can be made about the amount of privacy loss that applies to any given input.
 There are multiple methods for applying noise to aggregates, but the one that
 offers the lowest amount of noise — and therefore the most useful outputs — is
 one where a single entity samples and adds noise, known as central
-DP. Alternatives include local DP, where each noise is added to each input to
+DP. Alternatives include local DP, where noise is added to each input to
 the aggregation, or shuffle DP, which reduces noise requirements for local DP by
 shuffling inputs.
 
@@ -376,7 +376,7 @@ The `epsilon_delta_constraint` is a function of epsilon, delta, `s`, `d`,
 more complicated formula.
 
 
-For the `epsilon_delta constraint`, {{CPSGD}} defines some intermediate
+For the `epsilon_delta_constraint`, {{CPSGD}} defines some intermediate
 functions of the success probability, `p`. For `p = 0.5`, these become fixed
 constants:
 
