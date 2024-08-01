@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-30T01:02:43.786713+00:00",
+  "timestamp": "2024-08-01T01:08:20.049965+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -174,7 +174,7 @@
       "url": "https://github.com/private-attribution/i-d/issues/25",
       "state": "OPEN",
       "author": "cjpatton",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "binom-dp [refers to an algorithm](https://private-attribution.github.io/i-d/draft-case-ppm-binomial-dp.html#section-3.2-6) for finding a number of Bernoulli trials satisfies a given $\\epsilon, \\delta$. It would be valuable to specify this algorithm, or even include a table enumerating a few good choices.",
@@ -190,7 +190,7 @@
       "url": "https://github.com/private-attribution/i-d/issues/26",
       "state": "OPEN",
       "author": "cjpatton",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "bionom-dp refers to \"helpers\". I understand this term to stem from the \"helper networks\" of IPA. In DAP, we've adopted the term \"Aggregator\": a \"Helper\" is a particular type of Aggregator. It might be helpful to adopt the term Aggregator, or at least disambiguate the term somewhere in the draft.",
@@ -1441,24 +1441,26 @@
       "id": "PR_kwDOJgF-t852YY7k",
       "title": "nit: \"increase\" -> \"decrease\"",
       "url": "https://github.com/private-attribution/i-d/pull/23",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "cjpatton",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-07-24T19:29:20Z",
-      "updatedAt": "2024-07-29T15:04:39Z",
+      "updatedAt": "2024-07-31T03:10:03Z",
       "baseRepository": "private-attribution/i-d",
       "baseRefName": "main",
       "baseRefOid": "bb7e0405e62d6dc5c3a6fbaae6e743d2882378db",
       "headRepository": "cjpatton/i-d",
       "headRefName": "binom-dp/nits/1",
       "headRefOid": "c3c6aa07c4b540a2a36fd9be0c8a8c2f48cce2e9",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-07-31T03:10:03Z",
+      "mergedAt": "2024-07-31T03:10:03Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "58c298f63f1f9f92fd204e6f751fe0e46ce90a99"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1480,6 +1482,19 @@
               "updatedAt": "2024-07-27T17:47:51Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOJgF-t86Dq5Zr",
+          "commit": {
+            "abbreviatedOid": "c3c6aa0"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-07-31T03:09:55Z",
+          "updatedAt": "2024-07-31T03:09:55Z",
+          "comments": []
         }
       ]
     },
