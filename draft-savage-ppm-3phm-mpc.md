@@ -484,8 +484,6 @@ the proof.
 Since the two verifiers possess all of this information distributed amongst
 themselves, this approach is referred to as "Distributed Zero Knowledge Proofs".
 
-## Distributed Zero Knowledge Proofs
-
 {{?FLPCP=DOI.10.1007/978-3-030-26954-8_3}} describes a system of zero-knowledge
 proofs that rely on linear operations. This is expanded in
 {{?BOYLE=DOI.10.1007/978-3-030-64840-4_9}} to apply to three-party
