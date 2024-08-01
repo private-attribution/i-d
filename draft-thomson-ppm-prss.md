@@ -185,7 +185,7 @@ def ss, enc = Send(kem, pk_bytes):
     ss, enc = kem.Encap(pk)
 ~~~
 
-The sender then sends the encapsulated public key, `enc`, to the receiver.  The
+The sender then sends the encapsulated secret, `enc`, to the receiver.  The
 receiver decapsulates this value to obtain the shared secret, `secret`:
 
 ~~~ pseudocode
