@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                   B. Case
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 1 February 2025                                         Mozilla
-                                                            31 July 2024
+Expires: 2 February 2025                                         Mozilla
+                                                           1 August 2024
 
 
 Simple and Efficient Binomial Protocols for Differential Privacy in MPC
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 February 2025.
+   This Internet-Draft will expire on 2 February 2025.
 
 Copyright Notice
 
@@ -128,9 +128,9 @@ Table of Contents
    There are multiple methods for applying noise to aggregates, but the
    one that offers the lowest amount of noise — and therefore the most
    useful outputs — is one where a single entity samples and adds noise,
-   known as central DP.  Alternatives include local DP, where each noise
-   is added to each input to the aggregation, or shuffle DP, which
-   reduces noise requirements for local DP by shuffling inputs.
+   known as central DP.  Alternatives include local DP, where noise is
+   added to each input to the aggregation, or shuffle DP, which reduces
+   noise requirements for local DP by shuffling inputs.
 
    Applying noise in a single place ensures that the amount of noise is
    directly proportional to the sensitivity (that is, the maximum amount
@@ -388,7 +388,7 @@ Table of Contents
    sensitivity_1, sensitivity_2, sensitivity_infty, and p (0.5).  It is
    a more complicated formula.
 
-   For the epsilon_delta constraint, [CPSGD] defines some intermediate
+   For the epsilon_delta_constraint, [CPSGD] defines some intermediate
    functions of the success probability, p.  For p = 0.5, these become
    fixed constants:
 

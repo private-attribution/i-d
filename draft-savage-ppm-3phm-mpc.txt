@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                 B. Savage
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 1 February 2025                                         Mozilla
-                                                            31 July 2024
+Expires: 2 February 2025                                         Mozilla
+                                                           1 August 2024
 
 
 Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 February 2025.
+   This Internet-Draft will expire on 2 February 2025.
 
 Copyright Notice
 
@@ -88,20 +88,19 @@ Table of Contents
      4.2.  Malicious Security
      4.3.  Overview of the Validation Protocol
      4.4.  Distributed Zero-Knowledge Proofs
-     4.5.  Distributed Zero Knowledge Proofs
-     4.6.  Transforming into a Large Prime Field
-     4.7.  Validating a batch of multiplications
-     4.8.  Overview of Recursive Proof Compression
-     4.9.  Detailed Validation Algorithm
-       4.9.1.  Selecting the Compression Factor
-       4.9.2.  Producing Polynomials p(x) and q(x)
-     4.10. Producing the Zero Knowledge Proof
-       4.10.1.  Masking the Zero-Knowledge Proof
-       4.10.2.  Validating the Proof Increment
-       4.10.3.  Random Challenge
-       4.10.4.  Fiat-Shamir Challenge Selection
-       4.10.5.  Recursive Proof
-       4.10.6.  The Final Iteration
+     4.5.  Transforming into a Large Prime Field
+     4.6.  Validating a batch of multiplications
+     4.7.  Overview of Recursive Proof Compression
+     4.8.  Detailed Validation Algorithm
+       4.8.1.  Selecting the Compression Factor
+       4.8.2.  Producing Polynomials p(x) and q(x)
+     4.9.  Producing the Zero Knowledge Proof
+       4.9.1.  Masking the Zero-Knowledge Proof
+       4.9.2.  Validating the Proof Increment
+       4.9.3.  Random Challenge
+       4.9.4.  Fiat-Shamir Challenge Selection
+       4.9.5.  Recursive Proof
+       4.9.6.  The Final Iteration
    5.  Conditions of Usage
      5.1.  Recommended Parameters
    6.  Performance Characteristics
@@ -120,7 +119,7 @@ Table of Contents
    agreed function, revealing only the output of that function.
 
    This makes MPC well-suited to handling data that is sensitive or
-   private.  MPC in a three-party honest majority setting, is broadly
+   private.  MPC in a three-party honest majority setting is broadly
    recognized as being extremely efficient:
 
    *  Addition and subtraction have zero communication cost and
@@ -505,7 +504,7 @@ Table of Contents
    multiplications at the same time.
 
    The above statement can be transformed to yield the result (either
-   zero or one) as a value in a large prime field Section 4.6.  These
+   zero or one) as a value in a large prime field Section 4.5.  These
    values can be summed across all the multiplications in a large batch.
    The total sum will be the count of additive attacks applied, which
    will be zero if the prover correctly followed the protocol.  There
@@ -535,8 +534,6 @@ Table of Contents
    amongst themselves, this approach is referred to as "Distributed Zero
    Knowledge Proofs".
 
-4.5.  Distributed Zero Knowledge Proofs
-
    [FLPCP] describes a system of zero-knowledge proofs that rely on
    linear operations.  This is expanded in [BOYLE] to apply to three-
    party honest-majority MPC, requiring only O(logN) communication in
@@ -557,7 +554,7 @@ Table of Contents
    convert them into a dot product of vectors with elements in a large
    field.
 
-4.6.  Transforming into a Large Prime Field
+4.5.  Transforming into a Large Prime Field
 
    [BINARY] describes how to apply [FLPCP] efficiently for binary
    fields.  When binary values are directly lifted into a large field,
@@ -646,7 +643,7 @@ Table of Contents
       |  In the prime field modulo 2^61-1, the negative inverse of two
       |  (-2^-1 or -½) is 1,152,921,504,606,846,975.
 
-4.7.  Validating a batch of multiplications
+4.6.  Validating a batch of multiplications
 
    Each multiplication therefore produces two vectors, with each vector
    being length 4.  To validate a batch of m multiplications, the prover
@@ -673,7 +670,7 @@ Table of Contents
 
    u·v = -m/2
 
-4.8.  Overview of Recursive Proof Compression
+4.7.  Overview of Recursive Proof Compression
 
    Now that we have expressed the work of the prover as a simple dot
    product of two vectors of large field elements, we can use a
@@ -682,7 +679,7 @@ Table of Contents
 
    The process is iterative, where at each stage there is a pair of
    vectors, u and v, and a target, t, where the goal is to prove that
-   u·v = t.  The values of u and v start as described in Section 4.7;
+   u·v = t.  The values of u and v start as described in Section 4.6;
    with t initially set to a value of -m/2.
 
    At each iteration:
@@ -764,11 +761,11 @@ Table of Contents
 
    The recursion ends when the vectors u and v have length less than L.
    The verifiers validate the soundness of the final iteration of the
-   proof in a simpler, more direct way; see Section 4.10.6.
+   proof in a simpler, more direct way; see Section 4.9.6.
 
-4.9.  Detailed Validation Algorithm
+4.8.  Detailed Validation Algorithm
 
-4.9.1.  Selecting the Compression Factor
+4.8.1.  Selecting the Compression Factor
 
    For the first iteration, the parties will use a compression factor
    (L) of 32.  In all subsequent rounds they will use a compression
@@ -783,7 +780,7 @@ Table of Contents
    values, so the work can be reduced with the use of lookup tables if
    necessary.
 
-4.9.2.  Producing Polynomials p(x) and q(x)
+4.8.2.  Producing Polynomials p(x) and q(x)
 
    The prover (P₌) and the left verifier (P₋), chunk the vector u into s
    chunks of length L.
@@ -835,7 +832,7 @@ Table of Contents
    values { qᵢ(L), qᵢ(L+1), …, qᵢ(2L-2) } are found using using Lagrange
    interpolation.
 
-4.10.  Producing the Zero Knowledge Proof
+4.9.  Producing the Zero Knowledge Proof
 
    In order to prove that u·v = t, the prover will compute the value of
    2L-1 points on the polynomial G(x), which is defined as:
@@ -852,7 +849,7 @@ Table of Contents
    An equivalent method of proving u·v = t, is to show that
    sum(i=0..L-1, G(i)) = t.
 
-4.10.1.  Masking the Zero-Knowledge Proof
+4.9.1.  Masking the Zero-Knowledge Proof
 
    The prover (P₌), cannot simply send this zero-knowledge proof to the
    verifiers, as doing so would release private information.  Instead,
@@ -867,7 +864,7 @@ Table of Contents
    G₋(x) = G(x) - G₊(x).  This value is sent to the left verifier (P₋).
    Transmitting this share G₋(x) involves sending 2L-1 field values.
 
-4.10.2.  Validating the Proof Increment
+4.9.2.  Validating the Proof Increment
 
    To check that sum(i=0..L-1, G(i)) = t, the left verifier (P₋)
    computes:
@@ -884,7 +881,7 @@ Table of Contents
    Each confirms that b is zero.  If it is not, the parties abort and
    destroy their shares.
 
-4.10.3.  Random Challenge
+4.9.3.  Random Challenge
 
    Now that the verifiers have confirmed that the proof says that there
    was no additive attack, they need to validate that this was indeed a
@@ -901,7 +898,7 @@ Table of Contents
    The key requirement in choosing r is that the prover cannot influence
    the choice.
 
-4.10.4.  Fiat-Shamir Challenge Selection
+4.9.4.  Fiat-Shamir Challenge Selection
 
    To minimize the rounds of communication, instead of having the
    verifiers select this random point, we utilize the Fiat-Shamir
@@ -939,7 +936,7 @@ Table of Contents
    of their shares to the left verifier.  In the second round, the left
    verifier sends a hash of their shares to the right verifier.
 
-4.10.5.  Recursive Proof
+4.9.5.  Recursive Proof
 
    At the end of each round, the prover is left with the task of proving
    that G(r) is correct based on the random challenge. r.
@@ -972,7 +969,7 @@ Table of Contents
    t₋ = lagrange_interpolate(r, [G₋(0), G₋(1), …, G₋(2L-2)])
    t₊ = lagrange_interpolate(r, [G₊(0), G₊(1), …, G₊(2L-2)])
 
-4.10.6.  The Final Iteration
+4.9.6.  The Final Iteration
 
    The proof proceeds recursively until the length of the vectors u and
    v are strictly less than the compression factor L.
@@ -1039,16 +1036,16 @@ Table of Contents
    used for PRSS and AES-128 as the PRP.
 
    For validation, the prime field used is modulo the Mersenne prime
-   2^61-1 validation.  Any sufficiently large prime can be used, but
-   this value provides both good performance on 64-bit hardware and
-   useful security margins for typical batch sizes; see TODO/below for
-   an analysis of the batch size requirements and security properties
-   that can be obtained by using this particular prime.
+   2^61-1.  Any sufficiently large prime can be used, but this value
+   provides both good performance on 64-bit hardware and useful security
+   margins for typical batch sizes; see TODO/below for an analysis of
+   the batch size requirements and security properties that can be
+   obtained by using this particular prime.
 
-   The Fiat-Shamir transform Section 4.10.3 used in the validation
-   proofs can use SHA-256.  However, any preimage and collision-
-   resistant hash function can be used provided that it has a enough
-   output entropy to avoid bias in the selected field value.
+   The Fiat-Shamir transform Section 4.9.3 used in the validation proofs
+   can use SHA-256.  However, any preimage and collision-resistant hash
+   function can be used provided that it has a enough output entropy to
+   avoid bias in the selected field value.
 
 6.  Performance Characteristics
 
