@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-01T01:08:20.049965+00:00",
+  "timestamp": "2024-08-04T01:07:42.601315+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -1560,6 +1560,48 @@
           "body": "Thanks Tim, these are helpful.",
           "createdAt": "2024-07-27T21:18:39Z",
           "updatedAt": "2024-07-27T21:18:39Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "id": "PR_kwDOJgF-t853LZsi",
+      "title": "Editorial fixes",
+      "url": "https://github.com/private-attribution/i-d/pull/31",
+      "state": "MERGED",
+      "author": "divergentdave",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This makes a few editorial fixes across the three drafts for issues I noticed on my first read-through.",
+      "createdAt": "2024-08-01T21:33:03Z",
+      "updatedAt": "2024-08-01T22:42:50Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "58c298f63f1f9f92fd204e6f751fe0e46ce90a99",
+      "headRepository": "divergentdave/i-d",
+      "headRefName": "editorial",
+      "headRefOid": "7ec36a266de10a8946a77f8004f5cc535141a80c",
+      "closedAt": "2024-08-01T22:42:50Z",
+      "mergedAt": "2024-08-01T22:42:50Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "e6158e6bda338317e0fa2758a3e50b01f6c8036e"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86D-WYN",
+          "commit": {
+            "abbreviatedOid": "7ec36a2"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-08-01T22:42:29Z",
+          "updatedAt": "2024-08-01T22:42:29Z",
           "comments": []
         }
       ]
