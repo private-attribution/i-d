@@ -232,13 +232,9 @@ sequences of bytes:
 4. The identifier for the chosen PRF from {{prf}}, encoded in two bytes in
    network byte order.
 
-5. A two byte encoding of the KEM parameter `Npk` in network byte order.
+5. The value of `pk_bytes`, the public key from the receiver.
 
-6. The value of `pk_bytes`, the public key from the receiver.
-
-7. A two byte encoding of the KEM parameter `Nenc` in network byte order.
-
-8. The value of `enc`, the key encapsulation from the sender.
+6. The value of `enc`, the key encapsulation from the sender.
 
 Note:
 
@@ -259,9 +255,7 @@ def extracted = LabeledExtract(kem, kdf, prf, ss, pk_bytes, enc):
             I2OSP(kem.id, 2),
             I2OSP(kdf.id, 2),
             I2OSP(prf.id, 2),
-            I2OSP(kem.Npk, 2),
             pk_bytes,
-            I2OSP(kem.Nenc, 2),
             enc,
           )
     extracted = kdf.Extract(salt = ss, ikm = label)
