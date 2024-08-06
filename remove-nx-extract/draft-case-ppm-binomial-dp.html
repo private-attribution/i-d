@@ -1,0 +1,1959 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Greek,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Simple and Efficient Binomial Protocols for Differential Privacy in MPC</title>
+<meta content="Benjamin Case" name="author">
+<meta content="Martin Thomson" name="author">
+<meta content="
+       A method for computing a binomial noise in Multiparty Computation (MPC) is
+described.  The binomial mechanism for differential privacy (DP) is a simple
+mechanism that is well suited to MPC, where computation of more complex
+algorithms can be expensive.  This document describes how to select the correct
+parameters and apply binomial noise in MPC. 
+    " name="description">
+<meta content="xml2rfc 3.22.0" name="generator">
+<meta content="oneplusoneplusoneplus" name="keyword">
+<meta content="noise" name="keyword">
+<meta content="counting coins" name="keyword">
+<meta content="draft-case-ppm-binomial-dp-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.22.0
+    Python 3.12.3
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.0
+    intervaltree 3.1.0
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.2.2
+    pycountry 22.3.5
+    PyYAML 6.0.1
+    requests 2.32.3
+    setuptools 69.5.1
+    wcwidth 0.2.13
+-->
+<link href="draft-case-ppm-binomial-dp.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+}
+:is(ol, ul) :is(ol, ul) {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  line-height: 1;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+}
+dl.olPercent {
+  --indent: 5ch;
+}
+dl > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+dl.olPercent > dt {
+  min-width: calc(var(--indent) - 2ch);
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:first-child, .break:first-child + *) {
+  margin-top: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:last-child) {
+  margin-bottom: 0;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    overflow-x: auto;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+}
+a.pilcrow[href] { color: var(--pilcrow-weak); }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  min-width: var(--identifier-width);
+  clear: left;
+  float: left;
+  text-align: right;
+  margin-right: 1ch;
+}
+#identifiers dd {
+  margin: 0;
+  margin-left: calc(1em + var(--identifier-width)) !important;
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 2px 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 10ch;
+  margin-right: 1.5ch;
+}
+.references dt:target::before {
+  content: "⇒";
+  width: 15px;
+  margin: 0 10px 0 -25px;
+}
+.references dd {
+  margin-left: 12ch !important;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul :is(p, li) {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+  .toplink {
+    display: none;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">Binomal DP in MPC</td>
+<td class="right">August 2024</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Case &amp; Thomson</td>
+<td class="center">Expires 7 February 2025</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Privacy Preserving Measurement</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-case-ppm-binomial-dp-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2024-08-06" class="published">6 August 2024</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2025-02-07">7 February 2025</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">B. Case</div>
+<div class="org">Meta</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Thomson</div>
+<div class="org">Mozilla</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Simple and Efficient Binomial Protocols for Differential Privacy in MPC</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">A method for computing a binomial noise in Multiparty Computation (MPC) is
+described.  The binomial mechanism for differential privacy (DP) is a simple
+mechanism that is well suited to MPC, where computation of more complex
+algorithms can be expensive.  This document describes how to select the correct
+parameters and apply binomial noise in MPC.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://private-attribution.github.io/i-d/draft-case-ppm-binomial-dp.html">https://private-attribution.github.io/i-d/draft-case-ppm-binomial-dp.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-case-ppm-binomial-dp/">https://datatracker.ietf.org/doc/draft-case-ppm-binomial-dp/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        Privacy Preserving Measurement Working Group mailing list (<span><a href="mailto:ppm@ietf.org">mailto:ppm@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/ppm/">https://mailarchive.ietf.org/arch/browse/ppm/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/ppm/">https://www.ietf.org/mailman/listinfo/ppm/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/private-attribution/i-d">https://github.com/private-attribution/i-d</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 7 February 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2024 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-dp-noise-in-mpc" class="internal xref">DP Noise in MPC</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
+                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-binomal-noise" class="internal xref">Binomal Noise</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.3">
+                <p id="section-toc.1-1.1.2.3.1" class="keepWithNext"><a href="#section-1.3" class="auto internal xref">1.3</a>.  <a href="#name-requirements-language" class="internal xref">Requirements Language</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-the-binomial-mechanism-for-" class="internal xref">The Binomial Mechanism for MPC</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-document-organization" class="internal xref">Document Organization</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-quantization-scale" class="internal xref">Quantization Scale</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-determining-number-of-berno" class="internal xref">Determining number of Bernoulli trials</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.1">
+                    <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="auto internal xref">3.1.1</a>.  <a href="#name-sensitivity" class="internal xref">Sensitivity</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-epsilon-and-delta-constrain" class="internal xref">Epsilon and Delta Constraints</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="auto internal xref">3.2.1</a>.  <a href="#name-bounding-n-by-delta_constra" class="internal xref">Bounding <code>N</code> by <code>delta_constraint</code></a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="auto internal xref">3.2.2</a>.  <a href="#name-bounding-n-by-epsilon_delta" class="internal xref">Bounding <code>N</code> by <code>epsilon_delta_constraint</code></a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.3">
+                    <p id="section-toc.1-1.3.2.2.2.3.1"><a href="#section-3.2.3" class="auto internal xref">3.2.3</a>.  <a href="#name-setting-the-quantization-sc" class="internal xref">Setting the Quantization Scale</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-noise-generation-algorithm" class="internal xref">Noise Generation Algorithm</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-coin-flipping-and-aggregati" class="internal xref">Coin Flipping and Aggregation Protocols</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
+                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-three-party-honest-majority" class="internal xref">Three Party Honest Majority</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.2">
+                    <p id="section-toc.1-1.4.2.1.2.2.1"><a href="#section-4.1.2" class="auto internal xref">4.1.2</a>.  <a href="#name-three-party-binary-field-pr" class="internal xref">Three Party Binary Field Protocol</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.3">
+                    <p id="section-toc.1-1.4.2.1.2.3.1"><a href="#section-4.1.3" class="auto internal xref">4.1.3</a>.  <a href="#name-three-party-large-prime-fie" class="internal xref">Three Party Large Prime Field Protocol</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.4">
+                    <p id="section-toc.1-1.4.2.1.2.4.1"><a href="#section-4.1.4" class="auto internal xref">4.1.4</a>.  <a href="#name-two-party-protocols" class="internal xref">Two Party Protocols</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-performance-characteristics" class="internal xref">Performance Characteristics</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-cost-analysis" class="internal xref">Cost Analysis</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-comparison-with-alternative" class="internal xref">Comparison with Alternative Approaches</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">Using Multiparty Computation (MPC) to compute aggregate statistics has some very
+promising privacy characteristics. MPC provides strong assurances about the
+confidentiality of input values, relying only on the assumption that the parties
+performing the computation do not collude. Depending on the MPC system in use,
+the cryptographic assumptions involved can be conservative.  For instance, MPC
+is the basis of the Verifiable, Distributed Aggregation Functions (VDAFs)
+<span>[<a href="#VDAF" class="cite xref">VDAF</a>]</span> used in DAP <span>[<a href="#DAP" class="cite xref">DAP</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Depending on how the system is used, particularly for systems where the MPC
+system offers some flexibility in how it can be queried, concrete privacy
+guarantees are harder to provide.  Multiple aggregations over similar input data
+might be computed, leading to aggregates that can be compared to reveal
+aggregates over a small set of inputs or even the value of specific inputs.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Differential privacy (DP) <span>[<a href="#DWORK" class="cite xref">DWORK</a>]</span>) offers a framework
+for both analyzing and protecting privacy that can be applied to this problem to
+great effect.  By adding some amount of noise to aggregates, strong guarantees
+can be made about the amount of privacy loss that applies to any given input.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">There are multiple methods for applying noise to aggregates, but the one that
+offers the lowest amount of noise — and therefore the most useful outputs — is
+one where a single entity samples and adds noise, known as central
+DP. Alternatives include local DP, where noise is added to each input to
+the aggregation, or shuffle DP, which reduces noise requirements for local DP by
+shuffling inputs.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">Applying noise in a single place ensures that the amount of noise is directly
+proportional to the sensitivity (that is, the maximum amount that any input
+might contribute to the output) rather than being in some way proportional to
+the number of inputs.  The amount of noise relative to aggregates decreases as
+the number of inputs increases, meaning that central DP effectively provides an
+optimal amount of noise.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<div id="dp-noise-in-mpc">
+<section id="section-1.1">
+        <h3 id="name-dp-noise-in-mpc">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-dp-noise-in-mpc" class="section-name selfRef">DP Noise in MPC</a>
+        </h3>
+<p id="section-1.1-1">There are several approaches to adding noise in MPC.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">Use of local or shuffle DP is possible. As noted, these methods can add more
+noise than is ideal.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">Noise can be added by each party independently. Each party adds noise in a
+fraction that is based on its understanding of the number of honest parties
+present. In two-party MPC, each party has to assume the other is dishonest, so
+each adds the entire noise quantity, ultimately doubling the overall noise that
+is added. In a three-party honest majority MPC, each party can add half of the
+required noise on the assumption that one other party is honest, resulting in a
+50% increase in the amount of noise relative to the ideal.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">Finally, an MPC protocol can be executed to add noise. The primary drawback of
+this approach is that there is an increased cost to generating the noise in MPC.
+However, MPC protocols can avoid having to include additional noise in order to
+compensate for the risk of information leakage from a dishonest participant.
+Adding noise using MPC provides strong assurances that noise is not known to any
+party, including the parties that perform the computation, up to the limits of
+the MPC scheme in use.  Finally, the costs of computation in MPC scale only with
+the privacy parameters for the differential privacy, not the number of inputs.
+Amortizing this cost over large sets of inputs can make the additional cost
+small.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="binomal-noise">
+<section id="section-1.2">
+        <h3 id="name-binomal-noise">
+<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-binomal-noise" class="section-name selfRef">Binomal Noise</a>
+        </h3>
+<p id="section-1.2-1">The Bernoulli distribution provides approximate differential privacy (DP)
+<span>[<a href="#DWORK" class="cite xref">DWORK</a>]</span>. This is sometimes named (epsilon, delta)-differential privacy or (ε,
+δ)-differential privacy.  The epsilon value in approximate DP bounds privacy
+loss for most contributions to the output, however the delta value is a non-zero
+bound on the probability that a higher privacy loss occurs.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+<p id="section-1.2-2">A binomial, <code>Bin(N, p)</code>, distribution is the number of successes out of <code>N</code>
+Bernoulli trials, where each Bernoulli trial is a coin flip with success
+probability <code>p</code>.<a href="#section-1.2-2" class="pilcrow">¶</a></p>
+<p id="section-1.2-3">Due to the central limit theorem, a binomial distribution with large <code>N</code> is a
+close approximation of a Normal or Gaussian distribution, which has a number of
+useful properties.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
+<p id="section-1.2-4">This document describes a simple MPC protocol, with several instantiations, for
+efficiently computing binomial noise.<a href="#section-1.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="requirements-language">
+<section id="section-1.3">
+        <h3 id="name-requirements-language">
+<a href="#section-1.3" class="section-number selfRef">1.3. </a><a href="#name-requirements-language" class="section-name selfRef">Requirements Language</a>
+        </h3>
+<p id="section-1.3-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#BCP14" class="cite xref">BCP14</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-1.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="the-binomial-mechanism-for-mpc">
+<section id="section-2">
+      <h2 id="name-the-binomial-mechanism-for-">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-the-binomial-mechanism-for-" class="section-name selfRef">The Binomial Mechanism for MPC</a>
+      </h2>
+<p id="section-2-1">The binomial mechanism for DP generates binomial noise in MPC and adds it to
+outputs before they are released.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">Our parameter choices rely on an analysis from <span>[<a href="#CPSGD" class="cite xref">CPSGD</a>]</span>, which provides more
+comprehensive formulae for a range of parameters.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">To sample from a <code>Bin(N, p)</code> distribution in MPC, two things are needed:<a href="#section-2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-4.1">
+          <p id="section-2-4.1.1">A protocol for Bernoulli trials, or coin-flipping protocol, that produces a
+value of 1 with probability <code>p</code> and 0 otherwise.<a href="#section-2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-4.2">
+          <p id="section-2-4.2.1">A means to sum the value of <code>N</code> trials.<a href="#section-2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-2-5">This protocol sets <code>p</code> to 0.5. This value of <code>p</code> provides both an optimal
+privacy/utility trade off and good efficiency for computation in MPC. Each
+Bernoulli sample requires a single, uniformly distributed bit, which can be done
+very efficiently. Using <code>p = 0.5</code> also requires the fewest samples for any set
+of parameters, except for cases with extremely low variance requirements, which
+we consider to be out of scope; see Section 2 of <span>[<a href="#CPSGD" class="cite xref">CPSGD</a>]</span>.<a href="#section-2-5" class="pilcrow">¶</a></p>
+<p id="section-2-6">There are several ways to instantiate a coin flipping protocol in MPC depending
+what MPC protocol is being used.  <a href="#protocols" class="auto internal xref">Section 4.1</a> describes some basic protocol
+instantiations.<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-7">For any given set of privacy parameters (epsilon, delta) and for a known
+sensitivity, <a href="#compute-n" class="auto internal xref">Section 3.1</a> describes how to determine the number of Bernoulli
+samples needed.<a href="#section-2-7" class="pilcrow">¶</a></p>
+<p id="section-2-8">To count the number of successes across these <code>N</code> trials, the MPC helpers simply
+add the secret shared results of the <code>N</code> Bernoulli trials, each or which is
+either 0 or 1.  The result of this sum is a sample from a <code>Bin(N, p)</code>
+distribution. This binomial noise value is then added to the output inside the
+MPC and then the final noised result revealed to the appropriate output parties.
+That is, if the MPC computes <code>f(D)</code>, it outputs shares of the result <code>f(D) +
+Bin(N,p)</code>.<a href="#section-2-8" class="pilcrow">¶</a></p>
+<p id="section-2-9">The party receiving the output can then postprocess this output to get an
+unbiased estimate for <code>f(D)</code> by subtracting the mean of the <code>Bin(N,p)</code>
+distribution, which is <code>N·p</code>.<a href="#section-2-9" class="pilcrow">¶</a></p>
+<div id="document-organization">
+<section id="section-2.1">
+        <h3 id="name-document-organization">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-document-organization" class="section-name selfRef">Document Organization</a>
+        </h3>
+<p id="section-2.1-1">In the remainder of this document is organized as follows:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.1-2.1">
+            <p id="section-2.1-2.1.1"><a href="#scale" class="auto internal xref">Section 3</a> introduces an additional quantization scaling parameter that can
+be used to optimize the privacy/utility tradeoff.<a href="#section-2.1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.1-2.2">
+            <p id="section-2.1-2.2.1"><a href="#compute-n" class="auto internal xref">Section 3.1</a> details the process of determining for a given function <code>f()</code>
+and privacy parameters how to determine the optimal number of trials, <code>N</code>.<a href="#section-2.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.1-2.3">
+            <p id="section-2.1-2.3.1"><a href="#protocols" class="auto internal xref">Section 4.1</a> describes some instantiations of the coin flipping protocol and
+the aggregation protocol.<a href="#section-2.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.1-2.4">
+            <p id="section-2.1-2.4.1"><a href="#cost" class="auto internal xref">Section 5.1</a> includes a cost analysis of different instantiations in both
+computation and communication costs.<a href="#section-2.1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.1-2.5">
+            <p id="section-2.1-2.5.1"><a href="#comparison" class="auto internal xref">Section 5.2</a> compares the binomial mechanism to other DP approaches that
+might be used in MPC.<a href="#section-2.1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="scale">
+<section id="section-3">
+      <h2 id="name-quantization-scale">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-quantization-scale" class="section-name selfRef">Quantization Scale</a>
+      </h2>
+<p id="section-3-1"><span>[<a href="#CPSGD" class="cite xref">CPSGD</a>]</span> provides an additional "quantization scale" parameter, <code>s</code>, for the
+binomial mechanism that can be tuned to make it more closely approximate the
+Gaussian mechanism and get an improved privacy/utility tradeoff.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">The paper defines the application of the binomial mechanism as:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3-3">
+<pre>
+f(D) + (X - Np) * s
+</pre><a href="#section-3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3-4">where <code>f(D)</code> is the value that is protected and <code>X</code> is a sample from a <code>Bin(N,
+p)</code> distribution.  This produces a scaled and unbiased output.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">The value of <code>s</code> is typically smaller than one, meaning that the sample noise is
+effectively able to produce non-integer values. However, operating on
+non-integer values in MPC is more complex, so this documents uses a modified
+version where the MPC computes:<a href="#section-3-5" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3-6">
+<pre>
+o = f(D) / s + X
+</pre><a href="#section-3-6" class="pilcrow">¶</a>
+</div>
+<p id="section-3-7">For an MPC system, the output of the system is shares of this scaled and biased
+value. The recipient can reconstruct the an unbiased, unscaled, noised value by:<a href="#section-3-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-8.1">
+          <p id="section-3-8.1.1">Adding the shares it receives: <code>o = sum(o₁, o₂, …)</code><a href="#section-3-8.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-8.2">
+          <p id="section-3-8.2.1">Correcting for bias: <code>o - N·p</code><a href="#section-3-8.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-8.3">
+          <p id="section-3-8.3.1">Scaling the value: <code>f′(D) = s * (o - N·p)</code><a href="#section-3-8.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-9">The resulting value is always within <code>N·p·s</code> of the computed aggregate, but it
+could be negative if that aggregate is smaller than <code>N·p·s</code>.<a href="#section-3-9" class="pilcrow">¶</a></p>
+<div id="compute-n">
+<section id="section-3.1">
+        <h3 id="name-determining-number-of-berno">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-determining-number-of-berno" class="section-name selfRef">Determining number of Bernoulli trials</a>
+        </h3>
+<p id="section-3.1-1">Applying noise for differential privacy requires understanding the function
+being computed, <code>f()</code>, and the private dataset, <code>D</code>.  For an <code>f</code> that is a
+<code>d</code>-dimensional query with integer outputs, the output vector is in <code>ℤ&lt;sup&gt;d&lt;/sup&gt;</code>.  That
+is, the output is a <code>d</code>-dimensional vector of natural numbers.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">The binomial mechanism requires understanding the sensitivity of the result
+under three separate norms.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<div id="sensitivity">
+<section id="section-3.1.1">
+          <h4 id="name-sensitivity">
+<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-sensitivity" class="section-name selfRef">Sensitivity</a>
+          </h4>
+<p id="section-3.1.1-1">Differential privacy describes sensitivity in terms of databases.  In this,
+databases are considering "neighboring" if the additional, removal, or sometimes
+the substitution of inputs related to a single subject turns one database into
+the other.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-2">For two neighboring databases <code>D₁</code>, <code>D₂</code>, the sensitivity of <code>f</code> is:<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.1.1-3">
+<pre>
+||f(D₁) - f(D₂)||ₚ
+</pre><a href="#section-3.1.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1.1-4">For <code>f(D)</code> that produces output that is a <code>d</code>-dimensional vector of integer
+values, the <code>p</code>-norms of interest for use with the binomial mechanism is the L1,
+L2, and L∞ (or Linfty) norms.<a href="#section-3.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-5">The L1 norm of <code>x</code> (where x∊ℤ<sup>d</sup>) is:<a href="#section-3.1.1-5" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.1.1-6">
+<pre>
+sensitivity_1 = ||x||₁ = sum(i=1..d, |xᵢ|)
+</pre><a href="#section-3.1.1-6" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1.1-7">The L2 norm is:<a href="#section-3.1.1-7" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.1.1-8">
+<pre>
+sensitivity_2 = ||x||₂ = sqrt(sum(i=1..d,xᵢ²))
+</pre><a href="#section-3.1.1-8" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1.1-9">Finally, the L∞ norm is:<a href="#section-3.1.1-9" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.1.1-10">
+<pre>
+sensitivity_infty = ||x||∞ = maxᵢ(|xᵢ|)
+</pre><a href="#section-3.1.1-10" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1.1-11">These properties of the function <code>f()</code> are all specific to the use case and need
+to be known.<a href="#section-3.1.1-11" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="epsilon-and-delta-constraints">
+<section id="section-3.2">
+        <h3 id="name-epsilon-and-delta-constrain">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-epsilon-and-delta-constrain" class="section-name selfRef">Epsilon and Delta Constraints</a>
+        </h3>
+<p id="section-3.2-1">The privacy parameters for approximate DP are epsilon, ε, and delta, δ.  These
+parameters determine the bounds on privacy loss.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Epsilon may vary considerably, though is typically in the range <code>[0.01,
+10]</code>. Often, multiple queries spend proportions of a larger epsilon privacy
+budget.  For example, a privacy budget of <code>epsilon=3</code> might be spent in three
+separate queries with epsilon 1 or as four queries with epsilon of 2, 0.1, 0.3,
+and 0.6.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">Delta is often be fixed in the range
+(2<sup>-29</sup>..2<sup>-24</sup>). Typically, the only constraint on delta is
+to ensure that <code>1/delta &gt; population</code>; that is, expected number of contributions
+that will suffer privacy loss greater than epsilon is kept less than one.  For
+MPC functions that include very large numbers of inputs, delta might need to be
+reduced.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">Theorem 1 of <span>[<a href="#CPSGD" class="cite xref">CPSGD</a>]</span> gives a way to determine the fewest Bernoulli trials,
+<code>N</code>, needed to achieve approximate DP.  There are two main constraints that need
+to be satisfied which we call the <code>delta_constraint</code> and
+<code>epsilon_delta_constraint</code>.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-5">As the number Bernoulli trials increases, each constraint monotonically allows
+for smaller epsilon and delta values to be achieved.  To find the smallest
+number of Bernoullis that simultaneously satisfies both constraints, find the
+minimum <code>N</code> determined by the <code>delta_constraint</code> and the minimum <code>N</code> determined
+by the <code>epsilon_delta_contraint</code> and then take the maximum of these two values.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-6">A possible approach to satisfying both constraints is to perform a binary search
+over <code>N</code> to find the smallest one satisfying both constraints simultaneously.  A
+search might be acceptable as the computation only needs to be performed once
+for each set of parameters.  An alternative and more direct approach is
+described in the following sections.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+<div id="bounding-n-by-deltaconstraint">
+<section id="section-3.2.1">
+          <h4 id="name-bounding-n-by-delta_constra">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-bounding-n-by-delta_constra" class="section-name selfRef">Bounding <code>N</code> by <code>delta_constraint</code></a>
+          </h4>
+<p id="section-3.2.1-1">The <code>delta_constraint</code> is a function of delta, the dimension, <code>d</code>, the
+<code>sensitivity_infty</code>, the quantization scale, <code>s</code>, and <code>p</code> (which is fixed to 0.5
+in this document).  This produces a simple formula for determining the minimum
+value of <code>N</code>:<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.2.1-2">
+<pre>
+N &gt;= 4·max(23·ln(10·d/delta), 2·sensitivity_infty/s)
+</pre><a href="#section-3.2.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="bounding-n-by-epsilondeltaconstraint">
+<section id="section-3.2.2">
+          <h4 id="name-bounding-n-by-epsilon_delta">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-bounding-n-by-epsilon_delta" class="section-name selfRef">Bounding <code>N</code> by <code>epsilon_delta_constraint</code></a>
+          </h4>
+<p id="section-3.2.2-1">The <code>epsilon_delta_constraint</code> is a function of epsilon, delta, <code>s</code>, <code>d</code>,
+<code>sensitivity_1</code>, <code>sensitivity_2</code>, <code>sensitivity_infty</code>, and <code>p</code> (0.5).  It is a
+more complicated formula.<a href="#section-3.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.2-2">For the <code>epsilon_delta_constraint</code>, <span>[<a href="#CPSGD" class="cite xref">CPSGD</a>]</span> defines some intermediate
+functions of the success probability, <code>p</code>. For <code>p = 0.5</code>, these become fixed
+constants:<a href="#section-3.2.2-2" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.2.2-3">
+<pre>
+bₚ = 1/3
+cₚ = sqrt(2)·7/4
+dₚ = 2/3
+</pre><a href="#section-3.2.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.2-4">The <code>epsilon_delta_constraint</code>, as written in formula (7) of <span>[<a href="#CPSGD" class="cite xref">CPSGD</a>]</span>,
+determines what epsilon is currently attained by the provided <code>N</code> and other
+parameters:<a href="#section-3.2.2-4" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.2.2-5">
+<pre>
+epsilon =
+  sensitivity_2·sqrt(2·ln(1.25/delta))
+    / (s/2·sqrt(N))
+  + (sensitivity_2·cₚ·sqrt(ln(10/delta)) + sensitivity_1·bₚ)
+    / ((s/4)·(1-delta/10) · N)
+  + (2/3·sensitivity_infty·ln(1.25/delta)
+      + sensitivity_infty·dₚ·ln(20·d/delta)·ln(10/delta))
+    / ((s/4)·N)
+</pre><a href="#section-3.2.2-5" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.2-6">The value of <code>N</code> for a fixed set of values for epsilon, delta, sensitivity, and
+<code>s</code>, is a quadratic equation in <code>N</code>.<a href="#section-3.2.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.2.2-7">To see this first write equation (7) as with other variables gathered into
+constants <code>c₁</code> and <code>c₂</code>:<a href="#section-3.2.2-7" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.2.2-8">
+<pre>
+epsilon = c₁ / sqrt(N) + c₂ / N
+c₁ = 2·sensitivity_2·sqrt(2·ln(1.25/delta))
+c₂ = 4 / s·(
+    (sensitivity_2·cₚ·sqrt(ln(10/delta)) + sensitivity_1·bₚ)
+      / (1-delta/10)
+    + 2·sensitivity_infty·ln(1.25/delta) / 3
+    + sensitivity_infty·dₚ·ln(20·d/delta)·ln(10/delta)
+  )
+</pre><a href="#section-3.2.2-8" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.2-9">The formula for epsilon can then be written as a quadratic equation in <code>N</code>:<a href="#section-3.2.2-9" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.2.2-10">
+<pre>
+0 = (epsilon / c₁)²·N² + (2·epsilon·c₂ / c₁² - 1)·N + (c₂ / c₁)²
+</pre><a href="#section-3.2.2-10" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.2-11">Once the values of all the other parameters are fixed, this can be solved with
+the quadratic formula.<a href="#section-3.2.2-11" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="setting-the-quantization-scale">
+<section id="section-3.2.3">
+          <h4 id="name-setting-the-quantization-sc">
+<a href="#section-3.2.3" class="section-number selfRef">3.2.3. </a><a href="#name-setting-the-quantization-sc" class="section-name selfRef">Setting the Quantization Scale</a>
+          </h4>
+<p id="section-3.2.3-1">Setting the quantization scale correctly can help get the best privacy/utility
+trade offs for the mechanism.  An additional equation to note is the error of
+the mechanism which we would like to minimize subject to the privacy constraints<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
+<div class="lang-pseudocode sourcecode" id="section-3.2.3-2">
+<pre>
+error = d·s²·N·p·(1-p) = 0.25·d·s²·N
+</pre><a href="#section-3.2.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.3-3"><span>[<a href="#CPSGD" class="cite xref">CPSGD</a>]</span> discusses more about why 0.5 is the optimal choice for <code>p</code>.  When it
+comes to setting the quantization scale s, making it smaller will decrease the
+error directly but also require a larger <code>N</code>.<a href="#section-3.2.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.3-4">It is generally the case that making <code>s</code> smaller will continually decrease the
+error, but at some point there is necessarily a performance constraint from the
+MPC cost of how large an <code>N</code> is practical.<a href="#section-3.2.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.2.3-5">One approach to setting the scale parameter would be to first determine an upper
+bound allowed for <code>N</code> and then set <code>s</code> as small as possible within that
+constraint.  Another approach would be to look for a point at which decreasing
+<code>s</code> and increasing <code>N</code> leads to diminishing returns in reducing the error of the
+mechanism.<a href="#section-3.2.3-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="noise-generation-algorithm">
+<section id="section-4">
+      <h2 id="name-noise-generation-algorithm">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-noise-generation-algorithm" class="section-name selfRef">Noise Generation Algorithm</a>
+      </h2>
+<p id="section-4-1">Once the optimal number of Bernoulli trials has been determined, there are two
+phases to the algorithm:<a href="#section-4-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4-2">
+<li id="section-4-2.1">
+          <p id="section-4-2.1.1">Perform a distributed coin flipping protocol so that all helpers hold secret
+shares of 0 or 1 with probability, <code>p</code>.<a href="#section-4-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-4-2.2">
+          <p id="section-4-2.2.1">Sum up these secret shared samples into a sample from a <code>Bin(N, p)</code>.<a href="#section-4-2.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ol>
+<p id="section-4-3">This document uses <code>p = 0.5</code>, so the coin flipping protocol can use a
+uniformly-distributed source of entropy.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<div id="protocols">
+<section id="section-4.1">
+        <h3 id="name-coin-flipping-and-aggregati">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-coin-flipping-and-aggregati" class="section-name selfRef">Coin Flipping and Aggregation Protocols</a>
+        </h3>
+<p id="section-4.1-1">The use of the binomial mechanism for <code>p = 0.5</code> in a concrete MPC requires a
+protocol for jointly computing a number of random bits. Different systems will
+have different requirements. This section describes three basic protocols that
+can be used to compute the binomial distribution.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<div id="three-party-honest-majority">
+<section id="section-4.1.1">
+          <h4 id="name-three-party-honest-majority">
+<a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-three-party-honest-majority" class="section-name selfRef">Three Party Honest Majority</a>
+          </h4>
+<p id="section-4.1.1-1">A three party honest majority system is appealing because there are very
+efficient protocols for performing multiplication; see <span>[<a href="#MPC-MUL" class="cite xref">MPC-MUL</a>]</span>.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-2">Two protocols are described:<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.1.1-3.1">
+              <p id="section-4.1.1-3.1.1">A binary circuit allows the coin flip to be performed without any
+communication cost using PRSS <span>[<a href="#PRSS" class="cite xref">PRSS</a>]</span>. Aggregation requires the use of an
+addition circuit, which requires one binary multiplication per bit.<a href="#section-4.1.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.1.1-3.2">
+              <p id="section-4.1.1-3.2.1">A circuit using prime fields allows the aggregation to be performed without
+communication, but the coin flip protocol, which also uses PRSS, requires a
+modulus conversion operation.<a href="#section-4.1.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-4.1.1-4">Overall, the binary circuit is more efficient in terms of communication costs,
+but it might be easier to integrate the prime field circuit into a system that
+uses prime fields.<a href="#section-4.1.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="three-party-binary-field-protocol">
+<section id="section-4.1.2">
+          <h4 id="name-three-party-binary-field-pr">
+<a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-three-party-binary-field-pr" class="section-name selfRef">Three Party Binary Field Protocol</a>
+          </h4>
+<p id="section-4.1.2-1">A coin flip protocol in a three party honest majority system simply samples a
+random share using PRSS.  The result is a three-way, replicated sharing of a
+random binary value.<a href="#section-4.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-2">Aggregating these values can be performed using a binary circuit in a tree.  Two
+bits, <code>a</code> and <code>b</code>, are added to form a binary value, <code>{a∧b, a⊕b}</code>.<a href="#section-4.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-3">This process is continued pairwise. The resulting pairs, <code>{a1, a2}</code> and <code>{b1,
+b2}</code>, are also added pairwise to produce a three-bit value, <code>{a1∧b1,
+a1⊕b1⊕(a2∧b2), a2⊕b2}</code>.<a href="#section-4.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-4">Each successive iteration involves one more bit and half as many values, until a
+single value with <code>log₂(N)</code> bits is produced.<a href="#section-4.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.1.2-5">This aggregation process requires at most <code>4N</code> binary multiplications.<a href="#section-4.1.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="three-party-large-prime-field-protocol">
+<section id="section-4.1.3">
+          <h4 id="name-three-party-large-prime-fie">
+<a href="#section-4.1.3" class="section-number selfRef">4.1.3. </a><a href="#name-three-party-large-prime-fie" class="section-name selfRef">Three Party Large Prime Field Protocol</a>
+          </h4>
+<p id="section-4.1.3-1">Addition of values in a prime field with a modulus greater than the number of
+samples (N) can be performed trivially. However, producing a replicated secret
+sharing across three parties using a single bit sample from PRSS results in a
+value that is uniformly distributed between 0 and 2 inclusive.<a href="#section-4.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.3-2">A modulus conversion operation can be used to convert that into a sharing in the
+prime field.  This requires two multiplications, though some parts of those
+multiplications can be avoided; see <span>[<a href="#KIMHC" class="cite xref">KIMHC</a>]</span>.<a href="#section-4.1.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.1.3-3">Three bits are sampled by each pair of parties.  These are turned into three
+shared values, where two of the shared values are filled with zeros. The
+exclusive OR of these three values is computed using two multiplications in the
+form: <code>x⊕y = x + y - 2xy</code>.  This produces a three-way replicated sharing of a
+bit in the prime field.<a href="#section-4.1.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.1.3-4">Shares can then be aggregated through simple addition.<a href="#section-4.1.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="two-party-protocols">
+<section id="section-4.1.4">
+          <h4 id="name-two-party-protocols">
+<a href="#section-4.1.4" class="section-number selfRef">4.1.4. </a><a href="#name-two-party-protocols" class="section-name selfRef">Two Party Protocols</a>
+          </h4>
+<p id="section-4.1.4-1">Obtaining multiple random bits in a two party protocol might involve the use of
+an oblivious transfer protocol.  Ideally, these are obtained in a large prime
+field so that addition is free.<a href="#section-4.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.4-2">Details of OT protocol TBD.<a href="#section-4.1.4-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="performance-characteristics">
+<section id="section-5">
+      <h2 id="name-performance-characteristics">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-performance-characteristics" class="section-name selfRef">Performance Characteristics</a>
+      </h2>
+<p id="section-5-1">A binomial function is relatively inexpensive to compute in MPC.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div id="cost">
+<section id="section-5.1">
+        <h3 id="name-cost-analysis">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-cost-analysis" class="section-name selfRef">Cost Analysis</a>
+        </h3>
+<p id="section-5.1-1">With large epsilon and delta values (that is, low privacy) the use of the
+binomial mechanism can be very efficient.  However, smaller values for epsilon
+or delta can require significant numbers of Bernoulli trials.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">The following table shows some typical values and the resulting number of
+trials, along with approximate values for the quantization scaling factor (<code>s</code>)
+and error.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+          <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+            <tr>
+              <th class="text-right" rowspan="1" colspan="1">epsilon</th>
+              <th class="text-right" rowspan="1" colspan="1">delta</th>
+              <th class="text-right" rowspan="1" colspan="1">N</th>
+              <th class="text-right" rowspan="1" colspan="1">s</th>
+              <th class="text-right" rowspan="1" colspan="1">error</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-right" rowspan="1" colspan="1">3</td>
+              <td class="text-right" rowspan="1" colspan="1">10e-6</td>
+              <td class="text-right" rowspan="1" colspan="1">TODO</td>
+              <td class="text-right" rowspan="1" colspan="1">TODO</td>
+              <td class="text-right" rowspan="1" colspan="1">TODO</td>
+            </tr>
+            <tr>
+              <td class="text-right" rowspan="1" colspan="1">1</td>
+              <td class="text-right" rowspan="1" colspan="1">10e-6</td>
+              <td class="text-right" rowspan="1" colspan="1">TODO</td>
+              <td class="text-right" rowspan="1" colspan="1">TODO</td>
+              <td class="text-right" rowspan="1" colspan="1">TODO</td>
+            </tr>
+            <tr>
+              <td class="text-right" rowspan="1" colspan="1">0.1</td>
+              <td class="text-right" rowspan="1" colspan="1">10e-6</td>
+              <td class="text-right" rowspan="1" colspan="1">TODO</td>
+              <td class="text-right" rowspan="1" colspan="1">TODO</td>
+              <td class="text-right" rowspan="1" colspan="1">TODO</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+<div id="comparison">
+<section id="section-5.2">
+        <h3 id="name-comparison-with-alternative">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-comparison-with-alternative" class="section-name selfRef">Comparison with Alternative Approaches</a>
+        </h3>
+<p id="section-5.2-1">Two other approaches that should be compared with are:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.2-2.1">
+            <p id="section-5.2-2.1.1">simply having each helper party add noise independently <span>[<a href="#DWORK" class="cite xref">DWORK</a>]</span><a href="#section-5.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.2">
+            <p id="section-5.2-2.2.1">amplification by shuffling <span>[<a href="#SHUFLDP" class="cite xref">SHUFLDP</a>]</span> where
+local DP is added by clients and used to get a central DP guarantee<a href="#section-5.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-5.2-3">A binomial will alway give better privacy/utility trade offs compared to
+independent noise.  An MPC system has to ensure that <code>t</code> out of <code>P</code> parties can
+reveal their shares without degrading the privacy of outputs.  Consequently, the
+noise that each party adds needs to be proportional to <code>P/(P-t)</code> times the
+target amount, assuming that noise can be simply added.  For a three party
+honest majority system, <code>P</code> is 3 and <code>t</code> is 1, producing 50% more noise than is
+ideal.  For a two party system, the amount of noise needs to be doubled.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-5.2-4">Shuffling and any scheme that makes use of noised inputs results in noise that
+increases in magnitude as the number of inputs increases, which degrades
+utility.  The binomial mechanism does not result in any additional noise.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-6">
+      <h2 id="name-security-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-6-1">TODO<a href="#section-6-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-7">
+      <h2 id="name-iana-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-7-1">This document has no IANA considerations.<a href="#section-7-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-8">
+      <h2 id="name-references">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-8.1">
+        <h3 id="name-normative-references">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="BCP14">[BCP14]</dt>
+        <dd>
+<div class="refInstance">Best Current Practice 14, <span>&lt;<a href="https://www.rfc-editor.org/info/bcp14">https://www.rfc-editor.org/info/bcp14</a>&gt;</span>.<br><span>At the time of writing, this BCP comprises the following:</span>
+</div>
+<div class="refInstance" id="RFC2119">
+            <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </div>
+<div class="refInstance" id="RFC8174">
+            <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </div>
+</dd>
+<dd class="break"></dd>
+<dt id="MPC-MUL">[MPC-MUL]</dt>
+        <dd>
+<span class="refAuthor">Savage, B.</span> and <span class="refAuthor">M. Thomson</span>, <span class="refTitle">"Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC Setting"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-savage-ppm-3phm-mpc</span>, <time datetime="2024-07" class="refDate">July 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-savage-ppm-3phm-mpc">https://datatracker.ietf.org/doc/html/draft-savage-ppm-3phm-mpc</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="PRSS">[PRSS]</dt>
+      <dd>
+<span class="refAuthor">Thomson, M.</span> and <span class="refAuthor">B. Savage</span>, <span class="refTitle">"High Performance Pseudorandom Secret Sharing (PRSS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-thomson-ppm-prss</span>, <time datetime="2024-07" class="refDate">July 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-thomson-ppm-prss">https://datatracker.ietf.org/doc/html/draft-thomson-ppm-prss</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-8.2">
+        <h3 id="name-informative-references">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="CPSGD">[CPSGD]</dt>
+        <dd>
+<span class="refAuthor">Agarwal, N.</span>, <span class="refAuthor">Suresh, A. T.</span>, <span class="refAuthor">Yu, F.</span>, <span class="refAuthor">Kumar, S.</span>, and <span class="refAuthor">H. B. Mcmahan</span>, <span class="refTitle">"cpSGD: Communication-efficient and differentially-private distributed SGD"</span>, <time datetime="2018-05" class="refDate">May 2018</time>. </dd>
+<dd class="break"></dd>
+<dt id="DAP">[DAP]</dt>
+        <dd>
+<span class="refAuthor">Geoghegan, T.</span>, <span class="refAuthor">Patton, C.</span>, <span class="refAuthor">Pitman, B.</span>, <span class="refAuthor">Rescorla, E.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Distributed Aggregation Protocol for Privacy Preserving Measurement"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ppm-dap-11</span>, <time datetime="2024-05-21" class="refDate">21 May 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-11">https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-11</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DWORK">[DWORK]</dt>
+        <dd>
+<span class="refAuthor">Dwork, C.</span> and <span class="refAuthor">A. Roth</span>, <span class="refTitle">"The Algorithmic Foundations of Differential Privacy"</span>, <span class="refContent">Now Publishers</span>, <span class="seriesInfo">Foundations and Trends® in Theoretical Computer Science vol. 9, no. 3-4, pp. 211-407</span>, <span class="seriesInfo">DOI 10.1561/0400000042</span>, <time datetime="2013" class="refDate">2013</time>, <span>&lt;<a href="https://doi.org/10.1561/0400000042">https://doi.org/10.1561/0400000042</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="KIMHC">[KIMHC]</dt>
+        <dd>
+<span class="refAuthor">Kikuchi, R.</span>, <span class="refAuthor">Ikarashi, D.</span>, <span class="refAuthor">Matsuda, T.</span>, <span class="refAuthor">Hamada, K.</span>, and <span class="refAuthor">K. Chida</span>, <span class="refTitle">"Efficient Bit-Decomposition and Modulus-Conversion Protocols with an Honest Majority"</span>, <span class="refContent">Springer International Publishing</span>, <span class="seriesInfo">Lecture Notes in Computer Science pp. 64-82</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-93638-3_5</span>, <span class="seriesInfo">ISBN ["9783319936376", "9783319936383"]</span>, <time datetime="2018" class="refDate">2018</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-319-93638-3_5">https://doi.org/10.1007/978-3-319-93638-3_5</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="SHUFLDP">[SHUFLDP]</dt>
+        <dd>
+<span class="refAuthor">Cheu, A.</span>, <span class="refAuthor">Smith, A.</span>, <span class="refAuthor">Ullman, J.</span>, <span class="refAuthor">Zeber, D.</span>, and <span class="refAuthor">M. Zhilyaev</span>, <span class="refTitle">"Distributed Differential Privacy via Shuffling"</span>, <span class="refContent">Springer International Publishing</span>, <span class="seriesInfo">Lecture Notes in Computer Science pp. 375-403</span>, <span class="seriesInfo">DOI 10.1007/978-3-030-17653-2_13</span>, <span class="seriesInfo">ISBN ["9783030176525", "9783030176532"]</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-030-17653-2_13">https://doi.org/10.1007/978-3-030-17653-2_13</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="VDAF">[VDAF]</dt>
+      <dd>
+<span class="refAuthor">Barnes, R.</span>, <span class="refAuthor">Cook, D.</span>, <span class="refAuthor">Patton, C.</span>, and <span class="refAuthor">P. Schoppmann</span>, <span class="refTitle">"Verifiable Distributed Aggregation Functions"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-vdaf-10</span>, <time datetime="2024-07-08" class="refDate">8 July 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vdaf-10">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-vdaf-10</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-A">
+      <h2 id="name-acknowledgments">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-A-1">TODO<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-B">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Benjamin Case</span></div>
+<div dir="auto" class="left"><span class="org">Meta</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:bmcase@meta.com" class="email">bmcase@meta.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Martin Thomson</span></div>
+<div dir="auto" class="left"><span class="org">Mozilla</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:mt@lowentropy.net" class="email">mt@lowentropy.net</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
