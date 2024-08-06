@@ -186,7 +186,7 @@ def ss, enc = Send(kem, pk_bytes):
 ~~~
 
 The sender then sends the encapsulated secret, `enc`, to the receiver.  The
-receiver decapsulates this value to obtain the shared secret, `secret`:
+receiver decapsulates this value to obtain the shared secret:
 
 ~~~ pseudocode
 def ss = Receive(kem, sk, enc):
@@ -206,7 +206,7 @@ A randomness context is a concept that is defined by protocols that use PRSS.
 Each context is identified by a unique string of bytes.  This string is passed
 to the KDF to produce a shared value that is unique to that context.
 
-This document uses the system of describing, naming, and identifying KEMs
+This document uses the system of describing, naming, and identifying KDFs
 defined in {{!HPKE=RFC9180}}.  A KDF is first chosen for use.  KDF identifiers
 from {{Section 7.2 of !HPKE}} are used for identification and can be used in
 negotiation.
@@ -503,7 +503,7 @@ For a target range that is much smaller than the range of values produced by the
 PRF, reducing the PRF output modulo the maximum in the range can produce outputs
 with negligible bias.
 
-For example, an application goal might seek to produce values in the prime field
+For example, an application might seek to produce values in the prime field
 `p` = 2<sup>61</sup> - 1.  Using the AES PRF, where `Mo` is 2<sup>128</sup>, and
 reducing its output modulo `p` results in a bias that causes the first 64 values
 of the field to be chosen with a probability of about 2<sup>-67</sup> more than
