@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                 B. Savage
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 2 February 2025                                         Mozilla
-                                                           1 August 2024
+Expires: 7 February 2025                                         Mozilla
+                                                           6 August 2024
 
 
 Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 February 2025.
+   This Internet-Draft will expire on 7 February 2025.
 
 Copyright Notice
 
@@ -1115,8 +1115,8 @@ Table of Contents
 
    [BOYLE]    Boyle, E., Gilboa, N., Ishai, Y., and A. Nof, "Efficient
               Fully Secure Computation via Distributed Zero-Knowledge
-              Proofs", Springer International Publishing, Advances in
-              Cryptology – ASIACRYPT 2020 pp. 244-276,
+              Proofs", Springer International Publishing, Lecture Notes
+              in Computer Science pp. 244-276,
               DOI 10.1007/978-3-030-64840-4_9, ISBN ["9783030648398",
               "9783030648404"], 2020,
               <https://doi.org/10.1007/978-3-030-64840-4_9>.
@@ -1124,7 +1124,7 @@ Table of Contents
    [FLPCP]    Boneh, D., Boyle, E., Corrigan-Gibbs, H., Gilboa, N., and
               Y. Ishai, "Zero-Knowledge Proofs on Secret-Shared Data via
               Fully Linear PCPs", Springer International Publishing,
-              Advances in Cryptology – CRYPTO 2019 pp. 67-97,
+              Lecture Notes in Computer Science pp. 67-97,
               DOI 10.1007/978-3-030-26954-8_3, ISBN ["9783030269531",
               "9783030269548"], 2019,
               <https://doi.org/10.1007/978-3-030-26954-8_3>.

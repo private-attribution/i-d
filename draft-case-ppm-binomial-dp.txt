@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                   B. Case
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 2 February 2025                                         Mozilla
-                                                           1 August 2024
+Expires: 7 February 2025                                         Mozilla
+                                                           6 August 2024
 
 
 Simple and Efficient Binomial Protocols for Differential Privacy in MPC
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 February 2025.
+   This Internet-Draft will expire on 7 February 2025.
 
 Copyright Notice
 
@@ -656,15 +656,15 @@ Table of Contents
    [KIMHC]    Kikuchi, R., Ikarashi, D., Matsuda, T., Hamada, K., and K.
               Chida, "Efficient Bit-Decomposition and Modulus-Conversion
               Protocols with an Honest Majority", Springer International
-              Publishing, Information Security and Privacy pp. 64-82,
+              Publishing, Lecture Notes in Computer Science pp. 64-82,
               DOI 10.1007/978-3-319-93638-3_5, ISBN ["9783319936376",
               "9783319936383"], 2018,
               <https://doi.org/10.1007/978-3-319-93638-3_5>.
 
    [SHUFLDP]  Cheu, A., Smith, A., Ullman, J., Zeber, D., and M.
               Zhilyaev, "Distributed Differential Privacy via
-              Shuffling", Springer International Publishing, Advances in
-              Cryptology – EUROCRYPT 2019 pp. 375-403,
+              Shuffling", Springer International Publishing, Lecture
+              Notes in Computer Science pp. 375-403,
               DOI 10.1007/978-3-030-17653-2_13, ISBN ["9783030176525",
               "9783030176532"], 2019,
               <https://doi.org/10.1007/978-3-030-17653-2_13>.
