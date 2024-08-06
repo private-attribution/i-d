@@ -471,7 +471,8 @@ Binary sampling produces uniformly random values with the only drawback being
 the constraint on its output range.
 
 For small values of `n`, the same PRF invocation could be used to produce
-multiple values, depending on the value of `Mo` for the chosen PRF.
+multiple values, depending on the value of `Mo` for the chosen PRF.  For large
+values of `n`, multiple invocations of the PRF can be used.
 
 
 ## Rejection Sampling {#rejection}
@@ -564,7 +565,7 @@ most `2\^((k-a)/2)`, where `a` is the desired attacker advantage in bits (that
 is, advantage is at most 2<sup>-a</sup>).
 
 Using that value for `q` and an advantage of `(2^a)/2` for the second component
-leads to a limit for `p` of `2^(b-(k+a)/2-2)`.  For example, to obtain 40 bits
+leads to a limit for `p` of `2\^(b-(k+a)/2-2)`.  For example, to obtain 40 bits
 of security, the value of `p` for AES-128 is limited to 2<sup>42</sup>, which
 assumes a value of `q` no more than 2<sup>44</sup>.
 
