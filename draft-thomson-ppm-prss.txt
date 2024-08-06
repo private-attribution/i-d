@@ -233,8 +233,7 @@ Table of Contents
        ss, enc = kem.Encap(pk)
 
    The sender then sends the encapsulated secret, enc, to the receiver.
-   The receiver decapsulates this value to obtain the shared secret,
-   secret:
+   The receiver decapsulates this value to obtain the shared secret:
 
    def ss = Receive(kem, sk, enc):
        ss = kem.Decap(enc, sk)
@@ -254,7 +253,7 @@ Table of Contents
    unique to that context.
 
    This document uses the system of describing, naming, and identifying
-   KEMs defined in [HPKE].  A KDF is first chosen for use.  KDF
+   KDFs defined in [HPKE].  A KDF is first chosen for use.  KDF
    identifiers from Section 7.2 of [HPKE] are used for identification
    and can be used in negotiation.
 
@@ -545,8 +544,8 @@ Table of Contents
    produced by the PRF, reducing the PRF output modulo the maximum in
    the range can produce outputs with negligible bias.
 
-   For example, an application goal might seek to produce values in the
-   prime field p = 2^61 - 1.  Using the AES PRF, where Mo is 2^128, and
+   For example, an application might seek to produce values in the prime
+   field p = 2^61 - 1.  Using the AES PRF, where Mo is 2^128, and
    reducing its output modulo p results in a bias that causes the first
    64 values of the field to be chosen with a probability of about 2^-67
    more than other values.  This degree of bias might be acceptable in

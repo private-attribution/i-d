@@ -1456,7 +1456,7 @@ def ss, enc = Send(kem, pk_bytes):
 </pre><a href="#section-4-8" class="pilcrow">¶</a>
 </div>
 <p id="section-4-9">The sender then sends the encapsulated secret, <code>enc</code>, to the receiver.  The
-receiver decapsulates this value to obtain the shared secret, <code>secret</code>:<a href="#section-4-9" class="pilcrow">¶</a></p>
+receiver decapsulates this value to obtain the shared secret:<a href="#section-4-9" class="pilcrow">¶</a></p>
 <div class="lang-pseudocode sourcecode" id="section-4-10">
 <pre>
 def ss = Receive(kem, sk, enc):
@@ -1477,7 +1477,7 @@ randomness from the secret and then to expand it for use in different contexts.<
 <p id="section-5-2">A randomness context is a concept that is defined by protocols that use PRSS.
 Each context is identified by a unique string of bytes.  This string is passed
 to the KDF to produce a shared value that is unique to that context.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">This document uses the system of describing, naming, and identifying KEMs
+<p id="section-5-3">This document uses the system of describing, naming, and identifying KDFs
 defined in <span>[<a href="#HPKE" class="cite xref">HPKE</a>]</span>.  A KDF is first chosen for use.  KDF identifiers
 from <span><a href="https://rfc-editor.org/rfc/rfc9180#section-7.2" class="relref">Section 7.2</a> of [<a href="#HPKE" class="cite xref">HPKE</a>]</span> are used for identification and can be used in
 negotiation.<a href="#section-5-3" class="pilcrow">¶</a></p>
@@ -1847,7 +1847,7 @@ capping the number of PRF invocations.<a href="#section-8.3-4" class="pilcrow">�
 <p id="section-8.4-1">For a target range that is much smaller than the range of values produced by the
 PRF, reducing the PRF output modulo the maximum in the range can produce outputs
 with negligible bias.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
-<p id="section-8.4-2">For example, an application goal might seek to produce values in the prime field
+<p id="section-8.4-2">For example, an application might seek to produce values in the prime field
 <code>p</code> = 2<sup>61</sup> - 1.  Using the AES PRF, where <code>Mo</code> is 2<sup>128</sup>, and
 reducing its output modulo <code>p</code> results in a bias that causes the first 64 values
 of the field to be chosen with a probability of about 2<sup>-67</sup> more than
