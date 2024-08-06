@@ -699,4 +699,4 @@ others to zero.
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+Tim Geoghegan provided constructive feedback.
