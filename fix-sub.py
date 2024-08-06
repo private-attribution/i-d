@@ -10,8 +10,8 @@ suptr = "⁻⁺⁼⁽⁾⁰¹²³⁴⁵⁶⁷⁸⁹ⁱᵐᵖˢ"
 
 blockcode = re.compile(r"^(~~~~*) *(\w+)$")
 inlinecode = re.compile(r"(?:^|(?<=[^\\]))`")
-sub = re.compile(r"(?:<sub>([" + chars + r"]+)</sub>|(?<=\w)_([" + chars + r"]))")
-sup = re.compile(r"(?:<sup>([" + chars + r"]+)</sup>|(?<=\w)\^([" + chars + r"]))")
+sub = re.compile(r"(?:<sub>([" + chars + r"]+)</sub>|(?<=[\w\)])_([" + chars + r"]))")
+sup = re.compile(r"(?:<sup>([" + chars + r"]+)</sup>|(?<=[\w\)])\^([" + chars + r"]))")
 
 def warn(msg, **kwargs):
     print(msg, file=sys.stderr, **kwargs)

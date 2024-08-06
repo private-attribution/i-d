@@ -185,8 +185,8 @@ def ss, enc = Send(kem, pk_bytes):
     ss, enc = kem.Encap(pk)
 ~~~
 
-The sender then sends the encapsulated public key, `enc`, to the receiver.  The
-receiver decapsulates this value to obtain the shared secret, `ss`:
+The sender then sends the encapsulated secret, `enc`, to the receiver.  The
+receiver decapsulates this value to obtain the shared secret:
 
 ~~~ pseudocode
 def ss = Receive(kem, sk, enc):
@@ -447,7 +447,7 @@ fixed range of values.
 
 The total randomness available is limited by the entropy from the chosen KEM,
 KDF, and PRF.  Each KEM is only able to convey a maximum amount of entropy.
-Similarly, each KDF is limited in the amount of entropy it only able to retain.
+Similarly, each KDF is limited in the amount of entropy it is able to retain.
 Finally, each PRF also has limits that might further reduce the maximum entropy
 available.
 
@@ -471,7 +471,8 @@ Binary sampling produces uniformly random values with the only drawback being
 the constraint on its output range.
 
 For small values of `n`, the same PRF invocation could be used to produce
-multiple values, depending on the value of `Mo` for the chosen PRF.
+multiple values, depending on the value of `Mo` for the chosen PRF.  For large
+values of `n`, multiple invocations of the PRF can be used.
 
 
 ## Rejection Sampling {#rejection}
@@ -564,7 +565,7 @@ most `2\^((k-a)/2)`, where `a` is the desired attacker advantage in bits (that
 is, advantage is at most 2<sup>-a</sup>).
 
 Using that value for `q` and an advantage of `(2^a)/2` for the second component
-leads to a limit for `p` of `2^(b-(k+a)/2-2)`.  For example, to obtain 40 bits
+leads to a limit for `p` of `2\^(b-(k+a)/2-2)`.  For example, to obtain 40 bits
 of security, the value of `p` for AES-128 is limited to 2<sup>42</sup>, which
 assumes a value of `q` no more than 2<sup>44</sup>.
 

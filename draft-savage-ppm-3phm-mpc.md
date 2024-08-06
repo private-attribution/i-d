@@ -65,7 +65,7 @@ are never revealed to any single entity. MPC executes an agreed function,
 revealing only the output of that function.
 
 This makes MPC well-suited to handling data that is sensitive or private. MPC in
-a three-party honest majority setting, is broadly recognized as being extremely
+a three-party honest majority setting is broadly recognized as being extremely
 efficient:
 
 * Addition and subtraction have zero communication cost and negligible
@@ -484,8 +484,6 @@ the proof.
 Since the two verifiers possess all of this information distributed amongst
 themselves, this approach is referred to as "Distributed Zero Knowledge Proofs".
 
-## Distributed Zero Knowledge Proofs
-
 {{?FLPCP=DOI.10.1007/978-3-030-26954-8_3}} describes a system of zero-knowledge
 proofs that rely on linear operations. This is expanded in
 {{?BOYLE=DOI.10.1007/978-3-030-64840-4_9}} to apply to three-party
@@ -528,7 +526,7 @@ dot-product of two vectors, one of which is known to both `P_=` and
 Rearranging terms:
 
 ~~~ pseudocode
-x_-·y_+ ⊕ (x_-·y_- ⊕ z_- ⊕ r_- ) ⊕ x_+·y_- ⊕ r_+ = 0
+x_-·y_+ ⊕ (x_-·y_- ⊕ z_- ⊕ r_-) ⊕ x_+·y_- ⊕ r_+ = 0
 ~~~
 
 Define:
@@ -540,7 +538,7 @@ e_- = x_-·y_- ⊕ z_- ⊕ r_-
 Then:
 
 ~~~ pseudocode
-(x_-·y_+ ⊕ e_- ) ⊕ (x_+·y_- ⊕ r_+) = 0
+(x_-·y_+ ⊕ e_-) ⊕ (x_+·y_- ⊕ r_+) = 0
 ~~~
 
 Using: `x ⊕ y = x·(1 - 2·y) + y`
@@ -597,9 +595,9 @@ From this point, each party can compute the vectors that they are able to.
 `P_=` and `P_-` both compute `g_i` as follows:
 
 ~~~ pseudocode
-g_1 = -2·x_-·y_-·(1 - 2·e_- )
-g_2 = y_-·(1 - 2·e_- )
-g_3 = x_-·(1 - 2·e_- )
+g_1 = -2·x_-·y_-·(1 - 2·e_-)
+g_2 = y_-·(1 - 2·e_-)
+g_3 = x_-·(1 - 2·e_-)
 g_4 = -½(1 - 2·e_-)
 ~~~
 
@@ -1018,7 +1016,7 @@ AES-128-GCM is RECOMMENDED, with the same KDF being used for PRSS and AES-128 as
 the PRP.
 
 For validation, the prime field used is modulo the Mersenne prime
-2<sup>61</sup>-1 validation.  Any sufficiently large prime can be used, but this
+2<sup>61</sup>-1.  Any sufficiently large prime can be used, but this
 value provides both good performance on 64-bit hardware and useful security
 margins for typical batch sizes; see TODO/below for an analysis of the batch
 size requirements and security properties that can be obtained by using this
