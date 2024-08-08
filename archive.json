@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-06T01:02:59.750200+00:00",
+  "timestamp": "2024-08-08T01:03:38.980131+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -204,17 +204,17 @@
       "id": "I_kwDOJgF-t86Q5MB7",
       "title": "draft-thomson-ppm-prss-00 5.1: Why include `Npk` and `Nenc` in `LabeledExtract`?",
       "url": "https://github.com/private-attribution/i-d/issues/27",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "tgeoghegan",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [
         "prss"
       ],
       "body": "Section 5.1 instructs implementations to include the `Npk` and `Nenc` values in the label used to extract entropy from a shared secret. These values are constant parameters of the KEM in use, whose unique ID is already in the label. So why include them? Seems like this just introduces the risk of implementations getting this wrong.\r\n",
       "createdAt": "2024-07-25T20:16:31Z",
-      "updatedAt": "2024-07-27T21:16:58Z",
-      "closedAt": null,
+      "updatedAt": "2024-08-08T00:05:32Z",
+      "closedAt": "2024-08-08T00:05:32Z",
       "comments": [
         {
           "author": "martinthomson",
@@ -232,7 +232,7 @@
       "url": "https://github.com/private-attribution/i-d/issues/28",
       "state": "OPEN",
       "author": "tgeoghegan",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [
         "prss"
@@ -250,7 +250,7 @@
       "url": "https://github.com/private-attribution/i-d/issues/30",
       "state": "OPEN",
       "author": "tgeoghegan",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Sections [4.4](https://datatracker.ietf.org/doc/html/draft-savage-ppm-3phm-mpc-01#section-4.4) and [4.5](https://datatracker.ietf.org/doc/html/draft-savage-ppm-3phm-mpc-01#section-4.5) are titled \"Distributed Zero-Knowledge Proofs\" and \"Distributed Zero Knowledge Proofs\", respectively. Perhaps they should be merged into a single heading?",
@@ -1503,24 +1503,26 @@
       "id": "PR_kwDOJgF-t852gt6l",
       "title": "draft-thomson-ppm-prss.md: typos",
       "url": "https://github.com/private-attribution/i-d/pull/29",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "tgeoghegan",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I believe these are all typos in the draft but I'm happy to be wrong.",
       "createdAt": "2024-07-25T20:18:12Z",
-      "updatedAt": "2024-07-27T21:18:39Z",
+      "updatedAt": "2024-08-06T06:07:00Z",
       "baseRepository": "private-attribution/i-d",
       "baseRefName": "main",
-      "baseRefOid": "bb7e0405e62d6dc5c3a6fbaae6e743d2882378db",
+      "baseRefOid": "e7d0047c4e301d8a36046f37bb1def9cc74a4d95",
       "headRepository": "tgeoghegan/i-d",
       "headRefName": "patch-1",
-      "headRefOid": "0ed614c4b30da27364e733371592a2dc1502e667",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "82ebdc5cf114c81b674b2247b29fbada80a09674",
+      "closedAt": "2024-08-06T06:07:00Z",
+      "mergedAt": "2024-08-06T06:07:00Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "bcba83cb4fc691c10efb9197aca768145239a92c"
+      },
       "comments": [],
       "reviews": [
         {
@@ -1529,7 +1531,7 @@
             "abbreviatedOid": "0ed614c"
           },
           "author": "tgeoghegan",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-07-25T20:18:48Z",
@@ -1602,6 +1604,48 @@
           "body": "",
           "createdAt": "2024-08-01T22:42:29Z",
           "updatedAt": "2024-08-01T22:42:29Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "PR_kwDOJgF-t853hnD3",
+      "title": "Remove nx extract",
+      "url": "https://github.com/private-attribution/i-d/pull/32",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-08-06T06:05:43Z",
+      "updatedAt": "2024-08-08T00:05:33Z",
+      "baseRepository": "private-attribution/i-d",
+      "baseRefName": "main",
+      "baseRefOid": "e7d0047c4e301d8a36046f37bb1def9cc74a4d95",
+      "headRepository": "private-attribution/i-d",
+      "headRefName": "remove-nx-extract",
+      "headRefOid": "aee3a98e8d5615611b445c400060bee7b1f9e1d1",
+      "closedAt": "2024-08-08T00:05:31Z",
+      "mergedAt": "2024-08-08T00:05:31Z",
+      "mergedBy": "martinthomson",
+      "mergeCommit": {
+        "oid": "dac5ad66a1b3765d7d63f996de5bf692d6d8deac"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOJgF-t86Ej2-n",
+          "commit": {
+            "abbreviatedOid": "aee3a98"
+          },
+          "author": "benjaminsavage",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-08-07T10:22:09Z",
+          "updatedAt": "2024-08-07T10:22:09Z",
           "comments": []
         }
       ]
