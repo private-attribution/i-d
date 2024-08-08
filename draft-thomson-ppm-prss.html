@@ -1035,7 +1035,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Thomson &amp; Savage</td>
-<td class="center">Expires 7 February 2025</td>
+<td class="center">Expires 9 February 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1048,12 +1048,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-thomson-ppm-prss-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-08-06" class="published">6 August 2024</time>
+<time datetime="2024-08-08" class="published">8 August 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-02-07">7 February 2025</time></dd>
+<dd class="expires"><time datetime="2025-02-09">9 February 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1110,7 +1110,7 @@ multi-party computation (MPC).<a href="#section-abstract-1" class="pilcrow">¶</
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 February 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 February 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1508,16 +1508,10 @@ two bytes in network byte order.<a href="#section-5.1-3.3.1" class="pilcrow">¶<
 network byte order.<a href="#section-5.1-3.4.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-5.1-3.5">
-            <p id="section-5.1-3.5.1">A two byte encoding of the KEM parameter <code>Npk</code> in network byte order.<a href="#section-5.1-3.5.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-3.5.1">The value of <code>pk_bytes</code>, the public key from the receiver.<a href="#section-5.1-3.5.1" class="pilcrow">¶</a></p>
 </li>
           <li id="section-5.1-3.6">
-            <p id="section-5.1-3.6.1">The value of <code>pk_bytes</code>, the public key from the receiver.<a href="#section-5.1-3.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li id="section-5.1-3.7">
-            <p id="section-5.1-3.7.1">A two byte encoding of the KEM parameter <code>Nenc</code> in network byte order.<a href="#section-5.1-3.7.1" class="pilcrow">¶</a></p>
-</li>
-          <li id="section-5.1-3.8">
-            <p id="section-5.1-3.8.1">The value of <code>enc</code>, the key encapsulation from the sender.<a href="#section-5.1-3.8.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-3.6.1">The value of <code>enc</code>, the key encapsulation from the sender.<a href="#section-5.1-3.6.1" class="pilcrow">¶</a></p>
 </li>
         </ol>
 <span class="break"></span><dl class="dlParallel" id="section-5.1-4">
@@ -1542,9 +1536,7 @@ def extracted = LabeledExtract(kem, kdf, prf, ss, pk_bytes, enc):
             I2OSP(kem.id, 2),
             I2OSP(kdf.id, 2),
             I2OSP(prf.id, 2),
-            I2OSP(kem.Npk, 2),
             pk_bytes,
-            I2OSP(kem.Nenc, 2),
             enc,
           )
     extracted = kdf.Extract(salt = ss, ikm = label)
@@ -2126,7 +2118,7 @@ others to zero.<a href="#appendix-B-4" class="pilcrow">¶</a></p>
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-C-1">TODO acknowledge.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-1">Tim Geoghegan provided constructive feedback.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">

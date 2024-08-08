@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                               B. Savage
-Expires: 7 February 2025                                            Meta
-                                                           6 August 2024
+Expires: 9 February 2025                                            Meta
+                                                           8 August 2024
 
 
           High Performance Pseudorandom Secret Sharing (PRSS)
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 February 2025.
+   This Internet-Draft will expire on 9 February 2025.
 
 Copyright Notice
 
@@ -278,15 +278,9 @@ Table of Contents
    4.  The identifier for the chosen PRF from Section 6, encoded in two
        bytes in network byte order.
 
-   5.  A two byte encoding of the KEM parameter Npk in network byte
-       order.
+   5.  The value of pk_bytes, the public key from the receiver.
 
-   6.  The value of pk_bytes, the public key from the receiver.
-
-   7.  A two byte encoding of the KEM parameter Nenc in network byte
-       order.
-
-   8.  The value of enc, the key encapsulation from the sender.
+   6.  The value of enc, the key encapsulation from the sender.
 
    Note:  Draft versions of this protocol will be identified as "PRSS-
       00".  The suffix of this string matches the draft revision in
@@ -305,9 +299,7 @@ Table of Contents
                I2OSP(kem.id, 2),
                I2OSP(kdf.id, 2),
                I2OSP(prf.id, 2),
-               I2OSP(kem.Npk, 2),
                pk_bytes,
-               I2OSP(kem.Nenc, 2),
                enc,
              )
        extracted = kdf.Extract(salt = ss, ikm = label)
@@ -783,7 +775,7 @@ Appendix B.  Application to 2-of-3 Replicated Secret Sharing
 
 Acknowledgments
 
-   TODO acknowledge.
+   Tim Geoghegan provided constructive feedback.
 
 Authors' Addresses
 
