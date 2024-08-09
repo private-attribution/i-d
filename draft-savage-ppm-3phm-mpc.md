@@ -884,8 +884,8 @@ generated onto a field element as follows:
 ~~~ pseudocode
 commitment = SHA256(
   concat(
-    SHA256([G(x)]_-),
-    SHA256([G(x)]_+)
+    SHA256([G_-(x)]),
+    SHA256([G_+(x)])
   )
 )
 r = (bytes2int(commitment[..16]) % (prime - L)) + L
@@ -905,7 +905,11 @@ Note that one verifier does not need to receive their shares of `G(x)` from the
 prover, so they are able to compute their hash before even starting any
 computation.
 
-Consequently, though each round depends on communication, the total latency is two rounds. In the first, the prover sends shares of G(x) to the left verifier. Concurrently, the right verifier sends a hash of their shares to the left verifier. In the second round, the left verifier sends a hash of their shares to the right verifier.
+Consequently, though each round depends on communication, the total latency is
+two rounds. In the first, the prover sends shares of `G(x)` to the left
+verifier. Concurrently, the right verifier sends a hash of their shares to the
+left verifier. In the second round, the left verifier sends a hash of their
+shares to the right verifier.
 
 <!-- TODO: this Fiat-Shamir seems worse than an explicit challenge… -->
 
