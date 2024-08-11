@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-08T01:03:38.980131+00:00",
+  "timestamp": "2024-08-11T01:08:52.569306+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -239,9 +239,17 @@
       ],
       "body": "The document is generic over abstract descriptions of KEMs and KDFs, but then concretely requires either AES128 or 256 for the PRF. Section 6.1 cites GKWY20, which only considers AES. If someone did security proofs etc., could this method be extended to hashes (TurboSHAKE as in VDAF) or other symmetric ciphers?",
       "createdAt": "2024-07-25T20:17:06Z",
-      "updatedAt": "2024-07-27T22:49:06Z",
+      "updatedAt": "2024-08-09T05:18:21Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The use of an XOF would be very interesting here.  The shape changes quite a bit, of course.\r\n\r\nMy view is that we'd want to see whether an XOF variant is faster.  If it is faster always, then we'd stop using AES.  If it is faster sometimes, that might make a case for two options, but we'd need to discuss what the costs look like.",
+          "createdAt": "2024-08-09T05:18:20Z",
+          "updatedAt": "2024-08-09T05:18:20Z"
+        }
+      ]
     },
     {
       "number": 30,
@@ -252,12 +260,22 @@
       "author": "tgeoghegan",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "multiply"
+      ],
       "body": "Sections [4.4](https://datatracker.ietf.org/doc/html/draft-savage-ppm-3phm-mpc-01#section-4.4) and [4.5](https://datatracker.ietf.org/doc/html/draft-savage-ppm-3phm-mpc-01#section-4.5) are titled \"Distributed Zero-Knowledge Proofs\" and \"Distributed Zero Knowledge Proofs\", respectively. Perhaps they should be merged into a single heading?",
       "createdAt": "2024-07-25T20:59:29Z",
-      "updatedAt": "2024-07-25T20:59:29Z",
+      "updatedAt": "2024-08-09T05:19:14Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Fixed in a recent update.",
+          "createdAt": "2024-08-09T05:19:10Z",
+          "updatedAt": "2024-08-09T05:19:10Z"
+        }
+      ]
     }
   ],
   "pulls": [
