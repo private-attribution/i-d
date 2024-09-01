@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-29T01:06:18.586372+00:00",
+  "timestamp": "2024-09-01T01:17:00.035851+00:00",
   "repo": "private-attribution/i-d",
   "labels": [
     {
@@ -72,7 +72,7 @@
       "url": "https://github.com/private-attribution/i-d/issues/12",
       "state": "CLOSED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "![image](https://github.com/private-attribution/i-d/assets/67641/6fc44568-5708-4087-b8e9-8dfbba981bcd)\r\n\r\nLook into how that might be avoided.",
@@ -82,7 +82,7 @@
       "comments": [
         {
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "body": "Fixed with thanks to Erik.",
           "createdAt": "2024-07-10T04:53:25Z",
           "updatedAt": "2024-07-10T04:53:25Z"
@@ -108,7 +108,7 @@
       "comments": [
         {
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "body": "Yeah, we have a note at some point in the document saying what 1/2 actually is.  I thought that was fine, but Ben and I didn't really settle on anything.\r\n\r\nIt might be worth adding to that note.",
           "createdAt": "2024-07-08T22:35:44Z",
           "updatedAt": "2024-07-08T22:35:44Z"
@@ -122,7 +122,7 @@
       "url": "https://github.com/private-attribution/i-d/issues/21",
       "state": "CLOSED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "The text format for RFCs takes our `P<sub>+</sub>` and spits out \"P_(+)\".  This is fine, but \"P\u208a\" would be better.  All we need to do is slap a pair of \"`\" characters around each instance.",
@@ -138,7 +138,7 @@
       "url": "https://github.com/private-attribution/i-d/issues/22",
       "state": "OPEN",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [
         "multiply"
@@ -156,7 +156,7 @@
       "url": "https://github.com/private-attribution/i-d/issues/24",
       "state": "OPEN",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [
         "binomial"
@@ -218,7 +218,7 @@
       "comments": [
         {
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "body": "I doubt that this will result in an interoperability problem (this is stuff that you have to be careful with anyway), but I do agree that this is redundant.  Absent objections, I'll remove this.",
           "createdAt": "2024-07-27T21:16:58Z",
           "updatedAt": "2024-07-27T21:16:58Z"
@@ -244,7 +244,7 @@
       "comments": [
         {
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "body": "The use of an XOF would be very interesting here.  The shape changes quite a bit, of course.\r\n\r\nMy view is that we'd want to see whether an XOF variant is faster.  If it is faster always, then we'd stop using AES.  If it is faster sometimes, that might make a case for two options, but we'd need to discuss what the costs look like.",
           "createdAt": "2024-08-09T05:18:20Z",
           "updatedAt": "2024-08-09T05:18:20Z"
@@ -270,7 +270,7 @@
       "comments": [
         {
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "body": "Fixed in a recent update.",
           "createdAt": "2024-08-09T05:19:10Z",
           "updatedAt": "2024-08-09T05:19:10Z"
@@ -286,7 +286,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/1",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "I'm trying out a pythonic syntax (mostly)",
@@ -314,7 +314,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/2",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "@benjaminsavage, you might need approval for this.  Talk to Murray if you have questions about IETF participation at Meta; I have no idea what rules you need to follow.",
@@ -342,7 +342,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/3",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "I spent some time with this and concluded that our limits were not good in the first time around.  A more careful analysis shows that we are still OK, but the limits are closer than ideal.  We're assuming $2^{44}$ work for the adversary here for 40 bits of security, which is probably fine, though it is much weaker than the same analysis I've seen for cipher usage elsewhere.\r\n\r\nConcrete numbers: $2^{64}$ becomes $2^{42}$ for AES-128 (double that for AES-256).",
@@ -368,7 +368,7 @@
             "abbreviatedOid": "8acb6b6"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-06-24T06:29:26Z",
@@ -388,7 +388,7 @@
             "abbreviatedOid": "a6c4aa3"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-06-24T06:29:46Z",
@@ -408,7 +408,7 @@
             "abbreviatedOid": "7e55ac6"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-06-26T01:45:36Z",
@@ -454,7 +454,7 @@
             "abbreviatedOid": "d367e3a"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-06-28T04:37:35Z",
@@ -477,7 +477,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/4",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "This will look like a complete mess.  But I wanted to get this out there now so that we can iterate on the details.\r\n\r\nI need to look into how we manage subscripts as a high priority item. There are a bunch of places where we should be tagging stuff as code or using pseudocode blocks, but I stopped doing the conversion for now until I sort out the subscript business.",
@@ -519,7 +519,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/5",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "",
@@ -540,7 +540,7 @@
       "comments": [
         {
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "body": "This should work for code blocks only for now.  Next step is a bit trickier, because matching on inline code is fiddly.",
           "createdAt": "2024-07-05T05:28:58Z",
           "updatedAt": "2024-07-05T05:28:58Z"
@@ -581,7 +581,7 @@
             "abbreviatedOid": "323cd09"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "Perfect.  If we're sending left, it's funny that we compute x-*y- when the left party knows that bit already, but that's fine.",
           "createdAt": "2024-07-05T05:30:49Z",
@@ -594,7 +594,7 @@
             "abbreviatedOid": "323cd09"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-07-05T05:31:54Z",
@@ -643,7 +643,7 @@
             "abbreviatedOid": "0b3d1aa"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-05T05:43:32Z",
@@ -698,7 +698,7 @@
             "abbreviatedOid": "2e11229"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-05T05:51:51Z",
@@ -740,7 +740,7 @@
             "abbreviatedOid": "8e554d6"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-05T06:09:05Z",
@@ -782,7 +782,7 @@
             "abbreviatedOid": "24c3a26"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-05T11:43:51Z",
@@ -798,7 +798,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/11",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "I think that we can skip this step.  It's a bit messy.",
@@ -840,7 +840,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/13",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "",
@@ -954,7 +954,7 @@
             "abbreviatedOid": "0f2b4b2"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-07-08T21:42:46Z",
@@ -974,7 +974,7 @@
             "abbreviatedOid": "3a957b1"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-07-08T21:44:03Z",
@@ -994,7 +994,7 @@
             "abbreviatedOid": "e90e1b6"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-07-08T21:45:37Z",
@@ -1014,7 +1014,7 @@
             "abbreviatedOid": "bc8e044"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-08T21:46:48Z",
@@ -1126,7 +1126,7 @@
             "abbreviatedOid": "18d34c6"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-07-08T21:48:17Z",
@@ -1146,7 +1146,7 @@
             "abbreviatedOid": "20a6164"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-08T21:48:32Z",
@@ -1270,7 +1270,7 @@
             "abbreviatedOid": "82f48ea"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-08T21:49:22Z",
@@ -1418,7 +1418,7 @@
             "abbreviatedOid": "e9f5158"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2024-07-08T21:54:10Z",
@@ -1487,7 +1487,7 @@
             "abbreviatedOid": "1e1a18f"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "COMMENTED",
           "body": "I think that the original text is correct, though the reference point is unclear.",
           "createdAt": "2024-07-27T17:47:46Z",
@@ -1507,7 +1507,7 @@
             "abbreviatedOid": "c3c6aa0"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-07-31T03:09:55Z",
@@ -1575,7 +1575,7 @@
             "abbreviatedOid": "0ed614c"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "Thanks Tim, these are helpful.",
           "createdAt": "2024-07-27T21:18:39Z",
@@ -1617,7 +1617,7 @@
             "abbreviatedOid": "7ec36a2"
           },
           "author": "martinthomson",
-          "authorAssociation": "CONTRIBUTOR",
+          "authorAssociation": "MEMBER",
           "state": "APPROVED",
           "body": "",
           "createdAt": "2024-08-01T22:42:29Z",
@@ -1633,7 +1633,7 @@
       "url": "https://github.com/private-attribution/i-d/pull/32",
       "state": "MERGED",
       "author": "martinthomson",
-      "authorAssociation": "CONTRIBUTOR",
+      "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "",
