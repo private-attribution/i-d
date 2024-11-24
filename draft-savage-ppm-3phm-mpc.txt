@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                 B. Savage
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 10 February 2025                                        Mozilla
-                                                           9 August 2024
+Expires: 28 May 2025                                             Mozilla
+                                                        24 November 2024
 
 
 Efficient Protocols for Binary Fields in the 3-Party Honest Majority MPC
@@ -55,7 +55,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 February 2025.
+   This Internet-Draft will expire on 28 May 2025.
 
 Copyright Notice
 

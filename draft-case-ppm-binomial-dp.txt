@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                   B. Case
 Internet-Draft                                                      Meta
 Intended status: Standards Track                              M. Thomson
-Expires: 10 February 2025                                        Mozilla
-                                                           9 August 2024
+Expires: 28 May 2025                                             Mozilla
+                                                        24 November 2024
 
 
 Simple and Efficient Binomial Protocols for Differential Privacy in MPC
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 February 2025.
+   This Internet-Draft will expire on 28 May 2025.
 
 Copyright Notice
 
@@ -643,9 +643,9 @@ Table of Contents
    [DAP]      Geoghegan, T., Patton, C., Pitman, B., Rescorla, E., and
               C. A. Wood, "Distributed Aggregation Protocol for Privacy
               Preserving Measurement", Work in Progress, Internet-Draft,
-              draft-ietf-ppm-dap-11, 21 May 2024,
+              draft-ietf-ppm-dap-13, 2 November 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-
-              11>.
+              13>.
 
    [DWORK]    Dwork, C. and A. Roth, "The Algorithmic Foundations of
               Differential Privacy", Now Publishers, Foundations and
@@ -671,9 +671,9 @@ Table of Contents
 
    [VDAF]     Barnes, R., Cook, D., Patton, C., and P. Schoppmann,
               "Verifiable Distributed Aggregation Functions", Work in
-              Progress, Internet-Draft, draft-irtf-cfrg-vdaf-10, 8 July
-              2024, <https://datatracker.ietf.org/doc/html/draft-irtf-
-              cfrg-vdaf-10>.
+              Progress, Internet-Draft, draft-irtf-cfrg-vdaf-13, 2
+              November 2024, <https://datatracker.ietf.org/doc/html/
+              draft-irtf-cfrg-vdaf-13>.
 
 Appendix A.  Acknowledgments
 

@@ -5,8 +5,8 @@
 Privacy Preserving Measurement                                M. Thomson
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                               B. Savage
-Expires: 10 February 2025                                           Meta
-                                                           9 August 2024
+Expires: 28 May 2025                                                Meta
+                                                        24 November 2024
 
 
           High Performance Pseudorandom Secret Sharing (PRSS)
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 February 2025.
+   This Internet-Draft will expire on 28 May 2025.
 
 Copyright Notice
 
@@ -656,9 +656,10 @@ Table of Contents
 
 11.1.  Normative References
 
-   [AES]      "Advanced encryption standard (AES)", National Institute
-              of Standards and Technology, DOI 10.6028/nist.fips.197,
-              November 2001, <https://doi.org/10.6028/nist.fips.197>.
+   [AES]      "Advanced Encryption Standard (AES)", National Institute
+              of Standards and Technology (U.S.),
+              DOI 10.6028/nist.fips.197, 2001,
+              <https://doi.org/10.6028/nist.fips.197>.
 
    [ASCII]    Cerf, V., "ASCII format for network interchange", STD 80,
               RFC 20, DOI 10.17487/RFC0020, October 1969,
@@ -722,9 +723,9 @@ Table of Contents
 
    [VDAF]     Barnes, R., Cook, D., Patton, C., and P. Schoppmann,
               "Verifiable Distributed Aggregation Functions", Work in
-              Progress, Internet-Draft, draft-irtf-cfrg-vdaf-10, 8 July
-              2024, <https://datatracker.ietf.org/doc/html/draft-irtf-
-              cfrg-vdaf-10>.
+              Progress, Internet-Draft, draft-irtf-cfrg-vdaf-13, 2
+              November 2024, <https://datatracker.ietf.org/doc/html/
+              draft-irtf-cfrg-vdaf-13>.
 
 Appendix A.  Alternative Designs
 
